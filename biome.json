@@ -1,0 +1,25 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+	"files": {
+		"includes": [
+			"src/**/*.{js,jsx,ts,tsx,json,css,md}",
+			"Docs/**/*.md",
+			"*.md",
+			"*.json"
+		]
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"linter": {
+		"enabled": false
+	}
+}

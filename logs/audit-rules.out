@@ -1,0 +1,127 @@
+🔍 STREAMLINED PRODUCTION AUDIT (Business Logic Only)
+============================================================
+
+🚫 RULE 1: NO MOCK DATA (COMPREHENSIVE PATTERNS)
+
+📋 Scanning: Mock data variables (mockSomething)
+✅ Clean
+
+📋 Scanning: Demo data variables (demoSomething)
+✅ Clean
+
+📋 Scanning: Stub data variables (stubSomething)
+✅ Clean
+
+📋 Scanning: Sample data variables (sampleSomething)
+✅ Clean
+
+📋 Scanning: Fake data variables (fakeSomething)
+✅ Clean
+
+📋 Scanning: Test data variables (testSomething)
+✅ Clean
+
+📋 Scanning: Mock/temporary data comments
+✅ Clean
+
+📋 Scanning: Hardcoded business data arrays
+✅ Clean
+
+📋 Scanning: Lorem ipsum and placeholder content
+✅ Clean
+
+🆔 RULE 2: NO FAKE UUIDS
+
+📋 Scanning: Hardcoded UUIDs
+❌ 1 violations found
+   src/server\api\routers\invoices.ts:807:					job_id: draft.job_id || "550e8400-e29b-41d4-a716-446655440000", // Default job_id for now (required field)
+
+🔐 RULE 3: NO CLIENT-SIDE SECRETS
+
+📋 Scanning: Server secrets in client code
+✅ Clean
+
+📞 RULE 4: NO FAKE CONTACT INFO
+
+📋 Scanning: Fake Dutch phone numbers
+❌ 2 violations found
+   src/lib\invoice-format.ts:167:	// Dutch mobile: +31 6 12345678
+   src/lib\invoice-format.ts:172:	// Dutch landline: +31 20 1234567 (Amsterdam)
+
+📋 Scanning: Fake email addresses
+✅ Clean
+
+📋 Scanning: Fake Dutch addresses
+✅ Clean
+
+📅 RULE 5: NO HARDCODED DATES
+
+📋 Scanning: Hardcoded dates (should use Temporal)
+✅ Clean
+
+💰 RULE 6: DUTCH MARKET COMPLIANCE
+
+📋 Scanning: Non-Euro currency symbols
+✅ Clean
+
+📋 Scanning: Non-Dutch locales
+✅ Clean
+
+📋 Scanning: Non-Amsterdam timezone configs
+✅ Clean
+
+🗄️ RULE 7: ARCHITECTURE VIOLATIONS
+
+📋 Scanning: Direct Supabase calls in client code (use tRPC)
+✅ Clean
+
+📋 Scanning: External HTTP calls (should use tRPC)
+✅ Clean
+
+📋 Scanning: Non-Mollie payment providers
+✅ Clean
+
+🎨 RULE 8: UI/UX VIOLATIONS
+
+📋 Scanning: Non-Tailwind CSS frameworks
+✅ Clean
+
+📋 Scanning: Non-shadcn UI libraries
+✅ Clean
+
+🔧 RULE 9: CODE QUALITY VIOLATIONS
+
+📋 Scanning: TypeScript suppressions (fix types instead)
+✅ Clean
+
+📋 Scanning: ESLint suppressions (fix issues instead)
+✅ Clean
+
+📋 Scanning: Console.log statements (use proper logging)
+✅ Clean
+
+🏢 RULE 10: BUSINESS LOGIC VIOLATIONS
+
+📋 Scanning: Client-side role checks (server-side only)
+✅ Clean
+
+📋 Scanning: Non-Temporal date usage
+✅ Clean
+
+==================================================
+📊 AUDIT SUMMARY
+==================================================
+❌ 2 RULE VIOLATIONS FOUND
+
+1. Hardcoded UUIDs
+   Pattern: [a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}
+   Violations: 1
+
+2. Fake Dutch phone numbers
+   Pattern: \+31.*123.*456|\+31.*555.*|0[0-9].*123.*456
+   Violations: 2
+
+🔧 REMEDIATION REQUIRED:
+- Remove all mock data from application code
+- Use tRPC queries or dev-only seed scripts instead
+- Replace fake data with empty states

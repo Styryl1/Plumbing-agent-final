@@ -1,0 +1,117 @@
+   ▲ Next.js 15.5.2
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.3s
+   Linting and checking validity of types ...
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+
+Failed to compile.
+
+./src/app/jobs/JobEditorDialog.tsx
+425:9  Error: Unexpected string value in conditional. An explicit empty string check is required.  @typescript-eslint/strict-boolean-expressions
+448:9  Error: Unexpected string value in conditional. An explicit empty string check is required.  @typescript-eslint/strict-boolean-expressions
+
+./src/components/invoices/InvoiceDraftFast.tsx
+80:8  Error: 'voiceSummaryConfirmMutation' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+116:9  Error: Unnecessary conditional, value is always truthy.  @typescript-eslint/no-unnecessary-condition
+116:9  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+120:5  Error: React Hook useEffect has a missing dependency: 'speakSummary'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+142:12  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+151:7  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+151:8  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+186:53  Error: Async arrow function 'handleVoiceApprove' has no 'await' expression.  @typescript-eslint/require-await
+197:60  Error: Async arrow function 'handleVoiceRequestChanges' has no 'await' expression.  @typescript-eslint/require-await
+420:22  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+431:22  Error: disallow literal string: <span className="text-sm text-muted-foreground">
+										({item.qty}x {formatMoney(item.unitPriceExVat)})
+									</span>  i18next/no-literal-string
+
+./src/components/invoices/InvoiceDraftSafe.tsx
+30:10  Error: 'cn' is defined but never used.  @typescript-eslint/no-unused-vars
+77:8  Error: 'voiceConfirmLineMutation' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+151:12  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+227:26  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+241:41  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+
+./src/lib/audit.ts
+49:4  Error: Unsafe assignment of an `any` value.  @typescript-eslint/no-unsafe-assignment
+53:9  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/server/api/routers/invoices.ts
+46:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+46:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+46:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+101:8  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+101:9  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+125:5  Error: Use ?? for defaulting instead of || (or justify with a comment).  no-restricted-syntax
+125:40  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+145:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+145:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+145:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+178:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+178:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+178:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+209:20  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+209:23  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+209:24  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+251:20  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+251:23  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+251:24  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+283:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+283:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+283:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+340:20  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+340:23  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+340:24  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+393:7  Error: Unsafe assignment of an `any` value.  @typescript-eslint/no-unsafe-assignment
+393:30  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+434:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+434:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+434:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+465:20  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+465:23  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+465:24  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+507:20  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+507:23  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+507:24  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+631:41  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+695:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+697:18  Error: Unsafe member access .notes on an `any` value.  @typescript-eslint/no-unsafe-member-access
+698:23  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+742:19  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+742:22  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+742:23  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+765:22  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+765:25  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+765:26  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+782:5  Error: Unexpected string value in conditional. An explicit empty string check is required.  @typescript-eslint/strict-boolean-expressions
+782:5  Error: Use ?? for defaulting instead of || (or justify with a comment).  no-restricted-syntax
+782:28  Error: Unexpected string value in conditional. An explicit empty string check is required.  @typescript-eslint/strict-boolean-expressions
+807:27  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+825:21  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+825:24  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+825:25  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+859:16  Error: Unexpected string value in conditional. An explicit empty string check is required.  @typescript-eslint/strict-boolean-expressions
+860:28  Error: Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.  @typescript-eslint/prefer-nullish-coalescing
+
+./src/server/api/routers/orgSettings.ts
+15:7  Error: 'orgSettingsSchema' is assigned a value but only used as a type.  @typescript-eslint/no-unused-vars
+147:26  Error: 'error' is never reassigned. Use 'const' instead.  prefer-const
+222:8  Error: Unnecessary conditional, value is always falsy.  @typescript-eslint/no-unnecessary-condition
+222:9  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+259:34  Error: Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.  @typescript-eslint/no-unnecessary-condition
+259:38  Error: Unnecessary optional chain on a non-nullish value.  @typescript-eslint/no-unnecessary-condition
+
+./src/server/mappers/invoiceMapper.ts
+175:4  Error: Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.  @typescript-eslint/prefer-nullish-coalescing
+175:4  Error: Unnecessary conditional, the types have no overlap.  @typescript-eslint/no-unnecessary-condition
+175:34  Error: Unnecessary conditional, the types have no overlap.  @typescript-eslint/no-unnecessary-condition
+247:5  Error: Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.  @typescript-eslint/prefer-nullish-coalescing
+247:5  Error: Unnecessary conditional, the types have no overlap.  @typescript-eslint/no-unnecessary-condition
+247:35  Error: Unnecessary conditional, the types have no overlap.  @typescript-eslint/no-unnecessary-condition
+303:9  Error: Unnecessary conditional, value is always truthy.  @typescript-eslint/no-unnecessary-condition
+303:9  Error: Unexpected object value in conditional. The condition is always true.  @typescript-eslint/strict-boolean-expressions
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

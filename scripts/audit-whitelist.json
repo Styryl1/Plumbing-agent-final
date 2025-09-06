@@ -1,0 +1,23 @@
+{
+  "temporaryComments": {
+    "description": "Comments about missing database tables - legitimate until tables are restored",
+    "patterns": [
+      "Temporary: Return null until invoice_number_sequences table is restored",
+      "Temporary: Log WhatsApp messages until tables are restored", 
+      "Temporary: Return empty array until ai_recommendations table is restored",
+      "Temporary: always false until invoice_drafts table restored",
+      "Temporary: hardcoded until invoice_drafts table restored",
+      "Temporary: return empty array to test if query works"
+    ]
+  },
+  "externalHttpCalls": {
+    "description": "Legitimate OAuth2 provider integration calls",
+    "files": [
+      "src/server/providers/moneybird/client.ts",
+      "src/app/api/providers/moneybird/oauth/callback/route.ts"
+    ],
+    "urls": [
+      "https://moneybird.com/oauth/token"
+    ]
+  }
+}
