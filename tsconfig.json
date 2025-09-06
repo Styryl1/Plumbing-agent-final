@@ -1,0 +1,49 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"jsx": "preserve",
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"allowJs": false,
+		"resolveJsonModule": true,
+		"verbatimModuleSyntax": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
+		"types": ["node", "react", "react-dom", "next"],
+		"noEmit": true,
+		"incremental": true,
+		"esModuleInterop": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"include": [
+		"next-env.d.ts",
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"scripts/**/*.ts",
+		"tests/**/*.ts",
+		"vitest.config.ts",
+		".next/types/**/*.ts"
+	],
+	"exclude": [
+		"node_modules",
+		".next",
+		"dist",
+		"coverage",
+		"src/components/_legacy_*/**/*",
+		"src/server/**/*.legacy.ts",
+		"src/schema/**/*.legacy.ts"
+	]
+}

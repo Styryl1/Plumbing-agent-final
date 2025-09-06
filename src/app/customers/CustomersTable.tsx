@@ -1,0 +1,659 @@
+"use client";
+
+import {
+	Archive,
+	Check,
+	Copy,
+	Edit,
+	Mail,
+	Phone,
+	Trash2,
+	X,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import type { JSX } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "~/components/ui/table";
+import { formatPhoneNumber } from "~/lib/phone";
+import { epochMs, parseZdt } from "~/lib/time";
+import { api } from "~/lib/trpc/client";
+import type { CustomerDTO } from "~/types/customer";
+
+interface CustomersTableProps {
+	customers: CustomerDTO[];
+	onEdit: (customer: CustomerDTO) => void;
+	onDelete: () => void;
+	showArchived?: boolean;
+}
+
+export default function CustomersTable({
+	customers,
+	onEdit,
+	onDelete,
+	showArchived = false,
+}: CustomersTableProps): JSX.Element {
+	const tCustomers = useTranslations("customers");
+	const tTable = useTranslations("customers.table");
+	const tCommon = useTranslations("common");
+	const tAction = useTranslations("action");
+	const [searchQuery, setSearchQuery] = useState("");
+	const [deletingCustomer, setDeletingCustomer] = useState<CustomerDTO | null>(
+		null,
+	);
+
+	// Inline editing state
+	const [editingCustomer, setEditingCustomer] = useState<{
+		id: string;
+		field: "phone" | "email";
+		value: string;
+	} | null>(null);
+
+	const utils = api.useUtils();
+
+	// Copy address to clipboard for navigation apps
+	const copyAddress = async (
+		address: string,
+		postalCode?: string,
+	): Promise<void> => {
+		try {
+			const fullAddress = postalCode ? `${address}, ${postalCode}` : address;
+			await navigator.clipboard.writeText(fullAddress);
+			toast.success("Address copied to clipboard");
+		} catch (error) {
+			console.error("Failed to copy address:", error);
+			toast.error("Failed to copy address");
+		}
+	};
+
+	// Delete customer mutation with optimistic updates
+	const deleteCustomerMutation = api.customers.delete.useMutation({
+		onMutate: async ({ id }) => {
+			await utils.customers.list.cancel();
+			const previousCustomers = utils.customers.list.getData();
+
+			// Optimistically remove customer from cache (row disappears immediately)
+			utils.customers.list.setData(
+				undefined,
+				(old) => old?.filter((customer) => customer.id !== id) ?? old,
+			);
+
+			// Clear any detail cache
+			utils.customers.byId.setData({ id }, undefined);
+
+			return { previousCustomers };
+		},
+		onError: (error, variables, context) => {
+			// Rollback optimistic update on error (row reappears)
+			if (context?.previousCustomers) {
+				utils.customers.list.setData(undefined, context.previousCustomers);
+			}
+
+			// Check if it's a CONFLICT error (linked data exists)
+			if (
+				error.message.includes("linkedDataExists") ||
+				error.data?.code === "CONFLICT"
+			) {
+				// Keep dialog open - UI will show archive option
+				toast.error(tCustomers("error.deleteLinked"));
+			} else {
+				// Other errors
+				toast.error(tCustomers("error.delete"));
+			}
+		},
+		onSuccess: () => {
+			// Customer was successfully deleted (hard delete)
+			setDeletingCustomer(null);
+			toast.success(tCustomers("success.deleted"));
+			onDelete();
+		},
+		onSettled: () => {
+			// Always invalidate to ensure consistency
+			void utils.customers.list.invalidate();
+			void utils.customers.listArchived.invalidate();
+			void utils.customers.count.invalidate();
+			void utils.customers.countArchived.invalidate();
+		},
+	});
+
+	// Archive customer mutation
+	const archiveCustomerMutation = api.customers.archive.useMutation({
+		onSuccess: () => {
+			setDeletingCustomer(null);
+			toast.success(tCustomers("success.archived"));
+			// Invalidate all customer queries to ensure immediate UI update
+			void utils.customers.list.invalidate();
+			void utils.customers.listArchived.invalidate();
+			void utils.customers.count.invalidate();
+			void utils.customers.countArchived.invalidate();
+			// Also call the callback for additional cleanup
+			onDelete();
+		},
+		onError: (error) => {
+			// Only log actual failures, not "customer not found" after successful operation
+			if (error.message !== "Klant niet gevonden of geen permissie") {
+				console.error("Failed to archive customer:", error);
+				toast.error(tCustomers("error.archive"));
+			}
+		},
+	});
+
+	// Unarchive customer mutation
+	const unarchiveCustomerMutation = api.customers.unarchive.useMutation({
+		onSuccess: () => {
+			// Invalidate all customer queries to ensure immediate UI update
+			void utils.customers.list.invalidate();
+			void utils.customers.listArchived.invalidate();
+			void utils.customers.count.invalidate();
+			void utils.customers.countArchived.invalidate();
+			// Also call the callback for additional cleanup
+			onDelete();
+		},
+		onError: (error) => {
+			// Only log actual failures, not "customer not found" after successful operation
+			if (error.message !== "Klant niet gevonden of geen permissie") {
+				console.error("Failed to unarchive customer:", error);
+			}
+			// TODO: Show error toast notification for real errors only
+		},
+	});
+
+	// Update customer mutation for inline editing
+	const updateCustomerMutation = api.customers.update.useMutation({
+		onSuccess: () => {
+			setEditingCustomer(null);
+			void utils.customers.list.invalidate();
+			toast.success(tCustomers("success.updated"));
+		},
+		onError: (error) => {
+			console.error("Failed to update customer:", error);
+			toast.error(tCustomers("error.update"));
+		},
+	});
+
+	// Linked counts query - only fetch when we have a customer to delete and not currently deleting
+	const { data: linkedCounts, isLoading: isLoadingLinkedCounts } =
+		api.customers.linkedCounts.useQuery(
+			{ customerId: deletingCustomer?.id ?? "" },
+			{
+				enabled: !!deletingCustomer?.id && !deleteCustomerMutation.isPending,
+				refetchOnWindowFocus: false,
+			},
+		);
+
+	// Filter customers based on search
+	const filteredCustomers = customers.filter((customer) => {
+		const query = searchQuery.toLowerCase();
+		return (
+			customer.name.toLowerCase().includes(query) ||
+			(customer.email?.toLowerCase().includes(query) ?? false) ||
+			customer.phone.toLowerCase().includes(query) ||
+			(customer.address?.toLowerCase().includes(query) ?? false)
+		);
+	});
+
+	const handleDeleteConfirm = (): void => {
+		if (!deletingCustomer) return;
+
+		// Always try to delete first - the API will handle whether it's safe
+		// If linked data exists, the API returns 'suggested_archive' and dialog stays open
+		// If no linked data, the API deletes and returns 'deleted'
+		deleteCustomerMutation.mutate({ id: deletingCustomer.id });
+	};
+
+	const handleArchiveConfirm = (): void => {
+		if (!deletingCustomer) return;
+
+		archiveCustomerMutation.mutate({
+			customerId: deletingCustomer.id,
+			reason: "Customer archived due to linked data",
+		});
+	};
+
+	const handleUnarchive = (customer: CustomerDTO): void => {
+		unarchiveCustomerMutation.mutate({
+			customerId: customer.id,
+		});
+	};
+
+	// Inline editing functions
+	const startEdit = (
+		customerId: string,
+		field: "phone" | "email",
+		currentValue: string,
+	): void => {
+		setEditingCustomer({
+			id: customerId,
+			field,
+			value: currentValue,
+		});
+	};
+
+	const cancelEdit = (): void => {
+		setEditingCustomer(null);
+	};
+
+	const saveEdit = (): void => {
+		if (!editingCustomer) return;
+
+		const updateData: { phone?: string; email?: string } = {};
+		updateData[editingCustomer.field] = editingCustomer.value.trim();
+
+		updateCustomerMutation.mutate({
+			id: editingCustomer.id,
+			data: updateData,
+		});
+	};
+
+	// Determine if customer has linked data
+	const hasLinkedData =
+		linkedCounts && (linkedCounts.jobs > 0 || linkedCounts.invoices > 0);
+
+	const formatDate = (dateString: string): string => {
+		const zdt = parseZdt(dateString);
+		const ms = epochMs(zdt);
+		return new Intl.DateTimeFormat("nl-NL", {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric",
+		}).format(ms);
+	};
+
+	return (
+		<div className="space-y-4">
+			{/* Search */}
+			<div className="w-full max-w-sm">
+				<Input
+					placeholder={tCustomers("searchPlaceholder")}
+					value={searchQuery}
+					onChange={(e) => {
+						setSearchQuery(e.target.value);
+					}}
+					className="w-full"
+				/>
+			</div>
+
+			{/* Table */}
+			<div className="rounded-md border">
+				<Table>
+					<TableHeader>
+						<TableRow>
+							<TableHead>{tTable("columns.name")}</TableHead>
+							<TableHead>{tTable("columns.contact")}</TableHead>
+							<TableHead>{tTable("columns.address")}</TableHead>
+							<TableHead>{tTable("columns.created")}</TableHead>
+							<TableHead className="w-[100px]">
+								{tTable("columns.actions")}
+							</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{filteredCustomers.length === 0 ? (
+							<TableRow>
+								<TableCell
+									colSpan={5}
+									className="text-center text-muted-foreground py-8"
+								>
+									{searchQuery !== ""
+										? tCustomers("noCustomersFound")
+										: showArchived
+											? tCustomers("archived.noArchivedFound")
+											: tCustomers("noCustomersFound")}
+								</TableCell>
+							</TableRow>
+						) : (
+							filteredCustomers.map((customer) => (
+								<TableRow key={customer.id}>
+									<TableCell>
+										<div className="space-y-1">
+											<div className="font-medium">{customer.name}</div>
+											<div className="flex items-center gap-1">
+												<Badge variant="outline" className="text-xs">
+													{customer.language === "nl" ? "NL" : "EN"}
+												</Badge>
+												{customer.isArchived && (
+													<Badge variant="secondary" className="text-xs">
+														{tCustomers("archived.badge")}
+													</Badge>
+												)}
+											</div>
+										</div>
+									</TableCell>
+									<TableCell>
+										<div className="space-y-1">
+											{/* Email field - inline editable */}
+											{customer.email && (
+												<div className="flex items-center gap-1 text-sm">
+													<Mail className="h-3 w-3 text-muted-foreground" />
+													{editingCustomer?.id === customer.id &&
+													editingCustomer.field === "email" ? (
+														<div className="flex items-center gap-1 flex-1">
+															<Input
+																value={editingCustomer.value}
+																onChange={(e) => {
+																	setEditingCustomer({
+																		...editingCustomer,
+																		value: e.target.value,
+																	});
+																}}
+																className="h-6 text-xs max-w-[150px]"
+																onKeyDown={(e) => {
+																	if (e.key === "Enter") saveEdit();
+																	if (e.key === "Escape") cancelEdit();
+																}}
+																autoFocus
+															/>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0"
+																onClick={saveEdit}
+																disabled={updateCustomerMutation.isPending}
+															>
+																<Check className="h-3 w-3 text-green-600" />
+															</Button>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0"
+																onClick={cancelEdit}
+															>
+																<X className="h-3 w-3 text-red-600" />
+															</Button>
+														</div>
+													) : (
+														<div className="flex items-center gap-1 flex-1">
+															<a
+																href={`mailto:${customer.email}`}
+																className="text-blue-600 hover:text-blue-800 underline truncate max-w-[150px]"
+																title={`Email ${customer.email}`}
+															>
+																{customer.email}
+															</a>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+																onClick={() => {
+																	startEdit(
+																		customer.id,
+																		"email",
+																		customer.email ?? "",
+																	);
+																}}
+																title="Edit email"
+															>
+																<Edit className="h-3 w-3" />
+															</Button>
+														</div>
+													)}
+												</div>
+											)}
+
+											{/* Phone field - inline editable */}
+											{customer.phone.trim().length > 0 && (
+												<div className="flex items-center gap-1 text-sm">
+													<Phone className="h-3 w-3 text-muted-foreground" />
+													{editingCustomer?.id === customer.id &&
+													editingCustomer.field === "phone" ? (
+														<div className="flex items-center gap-1 flex-1">
+															<Input
+																value={editingCustomer.value}
+																onChange={(e) => {
+																	setEditingCustomer({
+																		...editingCustomer,
+																		value: e.target.value,
+																	});
+																}}
+																className="h-6 text-xs max-w-[150px]"
+																onKeyDown={(e) => {
+																	if (e.key === "Enter") saveEdit();
+																	if (e.key === "Escape") cancelEdit();
+																}}
+																autoFocus
+															/>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0"
+																onClick={saveEdit}
+																disabled={updateCustomerMutation.isPending}
+															>
+																<Check className="h-3 w-3 text-green-600" />
+															</Button>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0"
+																onClick={cancelEdit}
+															>
+																<X className="h-3 w-3 text-red-600" />
+															</Button>
+														</div>
+													) : (
+														<div className="flex items-center gap-1 flex-1">
+															<a
+																href={`tel:${customer.phone}`}
+																className="text-blue-600 hover:text-blue-800 underline"
+																title={`Call ${customer.phone}`}
+															>
+																{formatPhoneNumber(customer.phone)}
+															</a>
+															<Button
+																variant="ghost"
+																size="sm"
+																className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+																onClick={() => {
+																	startEdit(
+																		customer.id,
+																		"phone",
+																		customer.phone,
+																	);
+																}}
+																title="Edit phone"
+															>
+																<Edit className="h-3 w-3" />
+															</Button>
+														</div>
+													)}
+												</div>
+											)}
+										</div>
+									</TableCell>
+									<TableCell>
+										<div className="space-y-1">
+											{customer.address && (
+												<div className="flex items-center gap-1">
+													<div className="text-sm text-muted-foreground max-w-[200px] truncate">
+														{customer.address}
+													</div>
+													<Button
+														variant="ghost"
+														size="sm"
+														className="h-6 w-6 p-0"
+														onClick={() => {
+															void copyAddress(
+																customer.address ?? "",
+																customer.postalCode,
+															);
+														}}
+														title="Copy address for navigation"
+													>
+														<Copy className="h-3 w-3" />
+													</Button>
+												</div>
+											)}
+											{customer.postalCode && (
+												<div className="text-xs text-muted-foreground">
+													{customer.postalCode}
+												</div>
+											)}
+										</div>
+									</TableCell>
+									<TableCell>
+										<div className="text-sm text-muted-foreground">
+											{formatDate(customer.createdAt)}
+										</div>
+									</TableCell>
+									<TableCell>
+										<div className="flex items-center gap-1">
+											{customer.isArchived ? (
+												// Archived customers: only show unarchive button
+												<Button
+													variant="ghost"
+													size="sm"
+													onClick={() => {
+														handleUnarchive(customer);
+													}}
+													disabled={unarchiveCustomerMutation.isPending}
+													title={tCustomers("unarchive.tooltip")}
+												>
+													<Archive className="h-3 w-3" />
+												</Button>
+											) : (
+												// Active customers: show edit and delete buttons
+												<>
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => {
+															onEdit(customer);
+														}}
+													>
+														<Edit className="h-3 w-3" />
+													</Button>
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => {
+															setDeletingCustomer(customer);
+														}}
+													>
+														<Trash2 className="h-3 w-3" />
+													</Button>
+												</>
+											)}
+										</div>
+									</TableCell>
+								</TableRow>
+							))
+						)}
+					</TableBody>
+				</Table>
+			</div>
+
+			{/* Delete/Archive Confirmation Dialog */}
+			<AlertDialog
+				open={!!deletingCustomer}
+				onOpenChange={(open) => {
+					if (!open) setDeletingCustomer(null);
+				}}
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{isLoadingLinkedCounts
+								? tCommon("loading")
+								: hasLinkedData
+									? tCustomers("delete.archive.title")
+									: tCustomers("delete.title")}
+						</AlertDialogTitle>
+						<AlertDialogDescription asChild>
+							<div className="text-muted-foreground text-sm">
+								{isLoadingLinkedCounts ? (
+									<div className="flex items-center gap-2">
+										<div className="text-sm">{tCommon("loading")}...</div>
+									</div>
+								) : hasLinkedData ? (
+									<div className="space-y-2">
+										<div className="font-medium text-orange-600">
+											{tCustomers("delete.archive.cannotDelete")}
+										</div>
+										<div className="text-sm text-muted-foreground">
+											<div>{tCustomers("delete.archive.linkedData")}</div>
+											<ul className="list-disc list-inside ml-2">
+												{linkedCounts.jobs > 0 && (
+													<li>
+														{linkedCounts.jobs}{" "}
+														{tCustomers("delete.archive.jobs")}
+													</li>
+												)}
+												{linkedCounts.invoices > 0 && (
+													<li>
+														{linkedCounts.invoices}{" "}
+														{tCustomers("delete.archive.invoices")}
+													</li>
+												)}
+											</ul>
+										</div>
+										<div className="text-sm">
+											{tCustomers("delete.archive.archiveInstead", {
+												name: deletingCustomer?.name ?? "",
+											})}
+										</div>
+									</div>
+								) : (
+									<div>
+										{tCustomers("delete.description")}
+										{deletingCustomer !== null && (
+											<span className="font-medium">
+												{" "}
+												&quot;{deletingCustomer.name}&quot;
+											</span>
+										)}
+									</div>
+								)}
+							</div>
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+						{isLoadingLinkedCounts ? (
+							<AlertDialogAction disabled>
+								{tCommon("loading")}
+							</AlertDialogAction>
+						) : hasLinkedData ? (
+							<AlertDialogAction
+								onClick={handleArchiveConfirm}
+								disabled={archiveCustomerMutation.isPending}
+							>
+								{archiveCustomerMutation.isPending
+									? tCommon("loading")
+									: "Archiveren"}
+							</AlertDialogAction>
+						) : (
+							<AlertDialogAction
+								onClick={handleDeleteConfirm}
+								disabled={deleteCustomerMutation.isPending}
+							>
+								{deleteCustomerMutation.isPending
+									? tCommon("deleting")
+									: tAction("delete")}
+							</AlertDialogAction>
+						)}
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
+	);
+}
