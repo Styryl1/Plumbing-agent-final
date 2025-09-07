@@ -926,6 +926,36 @@ export type Database = {
 					},
 				];
 			};
+			marketing_waitlist: {
+				Row: {
+					created_at: string | null;
+					email: string;
+					id: string;
+					locale: string;
+					org_name: string | null;
+					phone: string | null;
+					source: string | null;
+				};
+				Insert: {
+					created_at?: string | null;
+					email: string;
+					id?: string;
+					locale?: string;
+					org_name?: string | null;
+					phone?: string | null;
+					source?: string | null;
+				};
+				Update: {
+					created_at?: string | null;
+					email?: string;
+					id?: string;
+					locale?: string;
+					org_name?: string | null;
+					phone?: string | null;
+					source?: string | null;
+				};
+				Relationships: [];
+			};
 			org_settings: {
 				Row: {
 					created_at: string | null;
