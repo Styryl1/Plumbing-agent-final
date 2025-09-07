@@ -62,6 +62,9 @@ temp/
 # Output of 'npm pack'
 *.tgz
 
+# Context bundles (temporary exports)
+*.tar.gz
+
 # Yarn Integrity file
 .yarn-integrity
 
