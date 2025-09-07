@@ -9,6 +9,15 @@ import { env } from "~/lib/env";
 import { featureFlags } from "~/lib/feature-flags";
 import type { Database } from "~/types/supabase";
 
+export interface AnalyzerResult {
+	proposed_text: string;
+	tags: string[];
+	urgency: "low" | "normal" | "high";
+	confidence: number;
+	materials_stub?: string[];
+	time_stub?: string;
+}
+
 export type AnalysisResult = {
 	proposed_text: string;
 	tags: string[];
@@ -31,7 +40,7 @@ export type AnalyzeInboundParams = {
  */
 export async function analyzeInbound(
 	params: AnalyzeInboundParams,
-): Promise<AnalysisResult> {
+): Promise<AnalyzerResult> {
 	const { text, aiMode = featureFlags.AI_MODE } = params;
 
 	// Default to rule-based analysis
@@ -51,11 +60,12 @@ export async function analyzeInbound(
 /**
  * Rule-based message analysis (default, no network calls)
  */
-function analyzeWithRules(text?: string | null): AnalysisResult {
+function analyzeWithRules(text?: string | null): AnalyzerResult {
 	const content = text?.toLowerCase() ?? "";
 	const tags: string[] = [];
-	let urgency: "low" | "medium" | "high" = "low";
-	let timeEstimate: number | null = 45; // Default estimate in minutes
+	let urgency: "low" | "normal" | "high" = "low";
+	let materials_stub: string[] = [];
+	let time_stub = "45-60 minuten";
 	let confidence = 0.6; // Base confidence for rule-based
 
 	// Detect leak/burst patterns
@@ -67,7 +77,8 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 	) {
 		tags.push("lekkage", "urgent");
 		urgency = "high";
-		timeEstimate = 60;
+		materials_stub = ["Reparatieset lekkage", "Nieuwe kraan/fitting"];
+		time_stub = "60-90 minuten";
 		confidence = 0.75;
 
 		return {
@@ -76,7 +87,8 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 			tags,
 			urgency,
 			confidence,
-			time_estimate_min: timeEstimate,
+			materials_stub,
+			time_stub,
 		};
 	}
 
@@ -89,8 +101,9 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 		content.includes("clog")
 	) {
 		tags.push("verstopt", "afvoer");
-		urgency = "medium";
-		timeEstimate = 75;
+		urgency = "normal";
+		materials_stub = ["Ontstopper", "Spiraal", "Afvoerbuis"];
+		time_stub = "75-120 minuten";
 		confidence = 0.7;
 
 		return {
@@ -99,7 +112,8 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 			tags,
 			urgency,
 			confidence,
-			time_estimate_min: timeEstimate,
+			materials_stub,
+			time_stub,
 		};
 	}
 
@@ -112,8 +126,9 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 		content.includes("heating")
 	) {
 		tags.push("verwarming", "cv");
-		urgency = "medium";
-		timeEstimate = 90;
+		urgency = "normal";
+		materials_stub = ["Thermostaat", "CV onderdelen", "Radiatorkraan"];
+		time_stub = "90-150 minuten";
 		confidence = 0.65;
 
 		return {
@@ -122,7 +137,8 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 			tags,
 			urgency,
 			confidence,
-			time_estimate_min: timeEstimate,
+			materials_stub,
+			time_stub,
 		};
 	}
 
@@ -134,7 +150,8 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
 		tags,
 		urgency,
 		confidence: 0.55,
-		time_estimate_min: timeEstimate,
+		materials_stub,
+		time_stub,
 	};
 }
 
@@ -143,7 +160,7 @@ function analyzeWithRules(text?: string | null): AnalysisResult {
  */
 async function analyzeWithOpenAI(
 	params: AnalyzeInboundParams,
-): Promise<AnalysisResult> {
+): Promise<AnalyzerResult> {
 	const { text, mediaKey } = params;
 
 	if (!env.OPENAI_API_KEY) {
@@ -159,14 +176,15 @@ Geef terug in JSON formaat:
 {
   "proposed_text": "Professionele Nederlandse reactie met vraag om postcode en foto",
   "tags": ["relevante tags zoals lekkage, verstopt, etc."],
-  "urgency": "low/medium/high",
+  "urgency": "low/normal/high",
   "confidence": 0.8,
-  "time_estimate_min": 60
+  "materials_stub": ["Reparatieset", "Nieuwe onderdelen"],
+  "time_stub": "60-90 minuten"
 }
 
 Urgentie regels:
 - high: lekkages, overstroming, geen water
-- medium: verstoppingen, verwarmingsuitval  
+- normal: verstoppingen, verwarmingsuitval  
 - low: algemeen onderhoud, vragen
 
 Houd je reactie professioneel maar vriendelijk, vraag altijd om postcode en foto's.`;
@@ -218,7 +236,7 @@ Houd je reactie professioneel maar vriendelijk, vraag altijd om postcode en foto
 
 		// Parse JSON response with fallback
 		try {
-			const parsed = JSON.parse(content) as AnalysisResult;
+			const parsed = JSON.parse(content) as AnalyzerResult;
 			// Validate the response structure
 			const hasValidText = parsed.proposed_text.length > 0;
 			const hasValidUrgency = parsed.urgency.length > 0;
@@ -241,7 +259,7 @@ Houd je reactie professioneel maar vriendelijk, vraag altijd om postcode en foto
 export async function persistSuggestion(
 	db: SupabaseClient<Database>,
 	params: AnalyzeInboundParams,
-	result: AnalysisResult,
+	result: AnalyzerResult,
 ): Promise<Database["public"]["Tables"]["wa_suggestions"]["Row"]> {
 	const { orgId, conversationId, messageId, aiMode = "rule" } = params;
 
@@ -254,7 +272,8 @@ export async function persistSuggestion(
 			tags: result.tags,
 			urgency: result.urgency,
 			confidence: result.confidence,
-			time_estimate_min: result.time_estimate_min,
+			// materials_stub: result.materials_stub ?? null, // TODO: Add to schema
+			// time_stub: result.time_stub ?? null, // TODO: Add to schema
 			source: aiMode,
 		};
 

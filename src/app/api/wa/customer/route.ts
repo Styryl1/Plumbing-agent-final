@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";
+import { analyzeAndPersist } from "~/server/services/analyzers/whatsapp";
 import {
 	parseWhatsAppStatuses,
 	parseWhatsAppWebhook,
@@ -84,6 +85,37 @@ export async function POST(request: NextRequest): Promise<Response> {
 	if (messages.length > 0) {
 		await persistWhatsAppMessages({ messages, orgId, db });
 		await recordWebhookEvent({ eventId, provider: "whatsapp", db, orgId });
+
+		// 5b) Analyze inbound messages with idempotency check
+		for (const message of messages) {
+			// Check if suggestion already exists for this message (idempotency)
+			const existingSuggestion = await db
+				.from("wa_suggestions")
+				.select("id")
+				.eq("message_id", message.waMessageId)
+				.eq("org_id", orgId)
+				.single();
+
+			if (!existingSuggestion.data) {
+				// Get conversation ID from the recently persisted conversation
+				const conversation = await db
+					.from("wa_conversations")
+					.select("id")
+					.eq("org_id", orgId)
+					.eq("wa_contact_id", message.waContactId)
+					.single();
+
+				if (conversation.data) {
+					await analyzeAndPersist(db, {
+						orgId,
+						conversationId: conversation.data.id,
+						messageId: message.waMessageId,
+						text: message.content ?? null,
+						mediaKey: message.mediaUrl ?? null,
+					});
+				}
+			}
+		}
 	}
 
 	// 6) Process status updates

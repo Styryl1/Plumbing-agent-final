@@ -531,5 +531,19 @@
 	},
 	"badges": {
 		"locked_tooltip": "Feature locked for your plan. Enable it in Settings."
+	},
+	"jobCard": {
+		"title": "Job Card",
+		"phone": "Phone",
+		"jobStatus": "Job Status",
+		"jobNumber": "Job",
+		"active": "Active",
+		"scheduled": "Scheduled",
+		"lastResponse": "Last AI Response",
+		"approved": "Approved",
+		"urgency": "Urgency",
+		"schedule": "Schedule",
+		"draftInvoice": "Draft Invoice",
+		"tokenExpires": "Access expires"
 	}
 }

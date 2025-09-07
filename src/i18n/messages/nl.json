@@ -541,5 +541,19 @@
 	},
 	"badges": {
 		"locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen."
+	},
+	"jobCard": {
+		"title": "Werkbon",
+		"phone": "Telefoon",
+		"jobStatus": "Werkstatus",
+		"jobNumber": "Werk",
+		"active": "Actief",
+		"scheduled": "Gepland",
+		"lastResponse": "Laatste AI Reactie",
+		"approved": "Goedgekeurd",
+		"urgency": "Urgentie",
+		"schedule": "Inplannen",
+		"draftInvoice": "Concept Factuur",
+		"tokenExpires": "Toegang verloopt"
 	}
 }
