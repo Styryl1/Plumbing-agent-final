@@ -95,6 +95,8 @@
 	"invoice.modes.fast": "Fast mode",
 	"invoice.summary.title": "Summary",
 	"invoice.summary.items": "Items",
+	"invoice.actions.sendWhatsApp": "Send via WhatsApp",
+	"invoice.actions.sendWhatsAppDescription": "Send payment link directly to customer via WhatsApp",
 	"table.invoice": "Invoice",
 	"table.customer": "Customer",
 	"table.date": "Date",
@@ -123,6 +125,12 @@
 	"jobs.aiSuggestions": "AI suggestions",
 	"jobs.noAiSuggestions": "No AI recommendations available",
 	"jobs.source": "Source:",
+	"jobs.unscheduled.ai.title": "AI Suggestions",
+	"jobs.unscheduled.ai.assign": "Assign to calendar",
+	"jobs.unscheduled.ai.confidence": "Confidence",
+	"jobs.unscheduled.ai.customer": "Customer",
+	"jobs.unscheduled.ai.minutes": "min",
+	"jobs.unscheduled.ai.empty": "No AI suggestions available",
 	"jobs.details": "Job details",
 	"jobs.generateInvoice": "Generate Invoice",
 	"table.paidOn": "Paid On",
@@ -562,5 +570,73 @@
 		"schedule": "Schedule",
 		"draftInvoice": "Draft Invoice",
 		"tokenExpires": "Access expires"
+	},
+	"settings": {
+		"whatsapp": {
+			"title": "WhatsApp Configuration",
+			"description": "Manage WhatsApp number mappings and webhook health",
+			"mappings": {
+				"title": "Number Mappings",
+				"description": "Map Meta phone number IDs to your organization",
+				"empty": "No numbers configured",
+				"label": {
+					"business": "Business",
+					"control": "Control"
+				}
+			},
+			"upsert": {
+				"title": "Add or Update Number",
+				"phoneNumberId": "Phone Number ID",
+				"label": "Label",
+				"submit": "Save Mapping",
+				"success": "Number mapping saved",
+				"error": "Failed to save mapping",
+				"validation": "Phone Number ID is required"
+			},
+			"health": {
+				"title": "Webhook Health",
+				"description": "Monitor WhatsApp integration status",
+				"env": "Environment Variables",
+				"webhook": "Webhook Endpoint",
+				"secret": "Webhook Secret",
+				"ok": "OK",
+				"missing": "Missing",
+				"unreachable": "Unreachable",
+				"refresh": "Refresh Status"
+			},
+			"seed": {
+				"title": "Quick Seed",
+				"description": "Quickly add both business and control numbers",
+				"businessId": "Business Number ID",
+				"controlId": "Control Number ID",
+				"submit": "Seed Numbers",
+				"success": "Numbers seeded successfully",
+				"error": "Failed to seed numbers",
+				"validation": "Both number IDs are required"
+			}
+		}
+	},
+	"jobs": {
+		"invoice": {
+			"createDraft": {
+				"label": "Create Invoice",
+				"creating": "Creating invoice...",
+				"success": "Invoice draft created successfully",
+				"error": "Failed to create invoice draft"
+			}
+		}
+	},
+	"actions": {
+		"sending": "Sending..."
+	},
+	"notifications": {
+		"paymentLink": {
+			"sent": "Payment link sent via WhatsApp"
+		}
+	},
+	"errors": {
+		"paymentLink": {
+			"sendFailed": "Failed to send payment link"
+		}
 	}
 }

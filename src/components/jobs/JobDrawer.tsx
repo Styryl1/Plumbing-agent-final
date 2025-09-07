@@ -5,7 +5,6 @@ import {
 	Clock,
 	Copy,
 	Edit,
-	ExternalLink,
 	Mail,
 	Phone,
 	Receipt,
@@ -174,6 +173,17 @@ export default function JobDrawer({
 			const msg =
 				error instanceof Error ? error.message : tJobs("delete.failed");
 			toast.error(msg);
+		},
+	});
+
+	const createDraftMutation = api.invoiceFlow.createDraftFromJob.useMutation({
+		onSuccess: (result) => {
+			toast.success(t("jobs.invoice.createDraft.success"));
+			onOpenChange(false); // Close drawer
+			router.push(`/invoices/${result.invoiceId}`);
+		},
+		onError: (error) => {
+			toast.error(t("jobs.invoice.createDraft.error") + ": " + error.message);
 		},
 	});
 
@@ -379,16 +389,26 @@ export default function JobDrawer({
 								{/* Generate Invoice Button - only for completed jobs with customers */}
 								{job && job.status === "done" && job.customerId && (
 									<Button
-										onClick={() => {
-											// SPA nav keeps auth context and avoids basePath/locale pitfalls
-											router.push(`/invoices/create?jobId=${job.id}`);
+										onClick={async () => {
+											try {
+												const result = await createDraftMutation.mutateAsync({
+													jobId: job.id,
+												});
+												toast.success(t("jobs.invoice.createDraft.success"));
+												router.push(`/invoices/${result.invoiceId}`);
+											} catch (error) {
+												console.error("Failed to create draft:", error);
+											}
 										}}
 										variant="default"
 										size="sm"
 										className="bg-green-600 hover:bg-green-700"
+										disabled={createDraftMutation.isPending}
 									>
 										<Receipt className="h-4 w-4 mr-1" />
-										{t("jobs.generateInvoice")}
+										{createDraftMutation.isPending
+											? t("actions.creating")
+											: t("jobs.invoice.createDraft")}
 									</Button>
 								)}
 
@@ -869,11 +889,14 @@ export default function JobDrawer({
 										className="w-full"
 										size="lg"
 										onClick={() => {
-											router.push(`/invoices/create?jobId=${job.id}`);
+											createDraftMutation.mutate({ jobId: job.id });
 										}}
+										disabled={createDraftMutation.isPending}
 									>
-										<ExternalLink className="h-4 w-4 mr-2" />
-										{t("cta.createInvoice")}
+										<Receipt className="h-4 w-4 mr-2" />
+										{createDraftMutation.isPending
+											? t("jobs.invoice.createDraft.creating")
+											: t("jobs.invoice.createDraft.label")}
 									</Button>
 								)
 							)}

@@ -18,6 +18,7 @@ const schema = z.object({
 	MONEYBIRD_WEBHOOK_SECRET: z.string().optional(), // Moneybird webhook signature verification
 	// WhatsApp Cloud API configuration
 	WHATSAPP_VERIFY_TOKEN: z.string().min(1), // WhatsApp webhook verification token (required)
+	WHATSAPP_WEBHOOK_SECRET: z.string().optional(), // WhatsApp webhook signature verification
 	WA_APP_SECRET: z.string().min(1), // Meta app secret for HMAC verification (required)
 	WA_GRAPH_TOKEN: z.string().min(1), // Meta access token for API calls (required)
 	WA_CUSTOMER_NUMBER_ID: z.string().min(1), // Phone number ID for customer chat (required)

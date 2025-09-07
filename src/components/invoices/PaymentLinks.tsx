@@ -1,6 +1,12 @@
 "use client";
 
-import { Copy, CreditCard, ExternalLink, FileText } from "lucide-react";
+import {
+	Copy,
+	CreditCard,
+	ExternalLink,
+	FileText,
+	MessageCircle,
+} from "lucide-react";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,6 +25,7 @@ interface PaymentLinksProps {
 	paymentUrl?: string | null | undefined;
 	pdfUrl?: string | null | undefined;
 	invoiceId: string;
+	customerPhone?: string | null | undefined;
 }
 
 /**
@@ -29,6 +36,7 @@ export function PaymentLinks({
 	paymentUrl,
 	pdfUrl,
 	invoiceId,
+	customerPhone,
 }: PaymentLinksProps): JSX.Element {
 	const t = useT();
 	const [isCreatingPayment, setIsCreatingPayment] = useState(false);
@@ -46,6 +54,18 @@ export function PaymentLinks({
 		},
 		onSettled: () => {
 			setIsCreatingPayment(false);
+		},
+	});
+
+	const sendWhatsAppMutation = api.invoiceFlow.sendPaymentLink.useMutation({
+		onSuccess: (result) => {
+			toast.success(
+				t("notifications.paymentLink.sent") +
+					` (${result.mode === "session" ? "session" : "template"})`,
+			);
+		},
+		onError: (error) => {
+			toast.error(t("errors.paymentLink.sendFailed") + ": " + error.message);
 		},
 	});
 
@@ -173,6 +193,33 @@ export function PaymentLinks({
 						</div>
 						<p className="text-xs text-muted-foreground">
 							{t("payment.pdfDescription")}
+						</p>
+					</div>
+				)}
+
+				{/* WhatsApp Send Button - only show if payment URL and customer phone exist */}
+				{paymentUrl && customerPhone && (
+					<div className="space-y-2 border-t pt-3">
+						<Button
+							onClick={async () => {
+								await sendWhatsAppMutation.mutateAsync({
+									invoiceId,
+									phoneE164: customerPhone,
+									url: paymentUrl,
+									locale: "nl",
+								});
+							}}
+							disabled={sendWhatsAppMutation.isPending}
+							className="w-full bg-green-600 hover:bg-green-700"
+							size="sm"
+						>
+							<MessageCircle className="mr-2 h-4 w-4" />
+							{sendWhatsAppMutation.isPending
+								? t("actions.sending")
+								: t("invoice.actions.sendWhatsApp")}
+						</Button>
+						<p className="text-xs text-muted-foreground">
+							{t("invoice.actions.sendWhatsAppDescription")}
 						</p>
 					</div>
 				)}

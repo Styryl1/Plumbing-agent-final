@@ -203,6 +203,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 							paymentUrl={invoice.paymentUrl}
 							pdfUrl={invoice.pdfUrl}
 							invoiceId={invoice.id!}
+							customerPhone={invoice.customer?.phone}
 						/>
 					)}
 
@@ -223,6 +224,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 								paymentUrl={invoice.paymentUrl}
 								pdfUrl={invoice.pdfUrl}
 								invoiceId={invoice.id!}
+								customerPhone={invoice.customer?.phone}
 							/>
 						)}
 

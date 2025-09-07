@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap } from "lucide-react";
+import { Clock, Gauge, Phone, Zap } from "lucide-react";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "~/components/ui/sheet";
+import { Skeleton } from "~/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Textarea } from "~/components/ui/textarea";
 import { useT } from "~/i18n/client";
@@ -47,14 +48,21 @@ interface UnscheduledProps {
 	readonly onJobCreated?: () => void;
 }
 
-interface AIRecommendation {
+interface AiRecommendationDTO {
 	id: string;
-	source: string;
-	source_id: string;
-	payload_json: Record<string, unknown>;
+	createdIso: string;
+	title: string;
+	summary?: string;
 	confidence: number;
-	accepted: boolean;
-	created_at: string;
+	customer?: { name?: string; phoneE164?: string };
+	estimate?: {
+		durationMinutes?: number;
+		materials?: Array<{ name: string; qty: number; unit?: string }>;
+	};
+	media?: string[];
+	urgency: "low" | "medium" | "high";
+	tags: string[];
+	source: "rule" | "openai";
 }
 
 interface WhatsAppLead {
@@ -77,15 +85,14 @@ export default function Unscheduled({
 	const t = useT();
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeRecommendation, setActiveRecommendation] =
-		useState<AIRecommendation | null>(null);
+		useState<AiRecommendationDTO | null>(null);
 	const [activeWhatsAppLead, setActiveWhatsAppLead] =
 		useState<WhatsAppLead | null>(null);
 
 	// Fetch AI recommendations
-	const { data: aiRecommendations = [] } = api.ai.listRecommendations.useQuery(
-		{ limit: 10 },
-		{ enabled: isOpen },
-	) as { data: AIRecommendation[] };
+	const { data: aiData, isLoading: aiLoading } =
+		api.ai.listRecommendations.useQuery({ limit: 25 }, { enabled: isOpen });
+	const aiRecommendations = aiData?.items ?? [];
 
 	// Fetch WhatsApp leads
 	const { data: whatsappLeads = [] } = api.whatsapp.listLeads.useQuery(
@@ -141,23 +148,21 @@ export default function Unscheduled({
 		setActiveWhatsAppLead(null);
 	};
 
-	const handleApplyAIRecommendation = (rec: AIRecommendation): void => {
+	const handleApplyAIRecommendation = (rec: AiRecommendationDTO): void => {
 		setActiveRecommendation(rec);
-		// Extract data from payload_json if available
-		const payload = rec.payload_json as {
-			title?: string;
-			description?: string;
-			priority?: JobPriority;
-			duration?: number;
-			customerId?: string;
-		} | null;
+		// Map AI recommendation to form data
 		setFormData((prev) => ({
 			...prev,
-			title: payload?.title ?? `AI aanbeveling (${rec.source})`,
-			description: payload?.description ?? "",
-			priority: payload?.priority ?? "normal",
-			duration: payload?.duration ?? 60,
-			customerId: payload?.customerId ?? "",
+			title: rec.title,
+			description: rec.summary ?? "",
+			priority:
+				rec.urgency === "high"
+					? "emergency"
+					: rec.urgency === "medium"
+						? "urgent"
+						: "normal",
+			duration: rec.estimate?.durationMinutes ?? 60,
+			customerId: "", // Will need customer picker integration
 		}));
 	};
 
@@ -246,59 +251,103 @@ export default function Unscheduled({
 				<div className="flex-1 overflow-hidden">
 					<Tabs defaultValue="ai" className="h-full flex flex-col">
 						<TabsList className="grid w-full grid-cols-2 mb-4">
-							<TabsTrigger value="ai">{t("jobs.aiSuggestions")}</TabsTrigger>
+							<TabsTrigger value="ai">
+								{t("jobs.unscheduled.ai.title")}{" "}
+								{aiRecommendations.length > 0 && (
+									<span className="ml-1 text-xs opacity-70">
+										({aiRecommendations.length})
+									</span>
+								)}
+							</TabsTrigger>
 							<TabsTrigger value="whatsapp">{t("tabs.whatsapp")}</TabsTrigger>
 						</TabsList>
 
 						{/* AI Recommendations Tab */}
 						<TabsContent value="ai" className="flex-1 overflow-y-auto">
 							<div className="space-y-3">
-								{aiRecommendations.length === 0 ? (
+								{aiLoading ? (
+									<div className="space-y-3">
+										{[1, 2, 3].map((i) => (
+											<Skeleton key={i} className="h-32 w-full" />
+										))}
+									</div>
+								) : aiRecommendations.length === 0 ? (
 									<div className="text-center py-8 text-gray-500">
-										<p>{t("jobs.noAiSuggestions")}</p>
+										<p>{t("jobs.unscheduled.ai.empty")}</p>
 									</div>
 								) : (
 									aiRecommendations.map((rec) => (
 										<div
 											key={rec.id}
-											className="border rounded-lg p-4 space-y-3"
+											className="border rounded-lg p-4 space-y-3 hover:bg-gray-50 transition-colors"
 										>
-											<div className="flex items-start justify-between">
-												<div className="flex-1">
-													<h3 className="font-medium text-sm">
-														{(rec.payload_json as { title?: string } | null)
-															?.title ?? `AI aanbeveling (${rec.source})`}
+											<div className="flex items-start justify-between gap-3">
+												<div className="flex-1 min-w-0">
+													<h3 className="font-medium text-sm truncate">
+														{rec.title}
 													</h3>
-													<p className="text-gray-600 text-xs mt-1">
-														{(
-															rec.payload_json as {
-																description?: string;
-															} | null
-														)?.description ?? "Geen beschrijving beschikbaar"}
-													</p>
+													{rec.summary && (
+														<p className="text-gray-600 text-xs mt-1 line-clamp-2">
+															{rec.summary}
+														</p>
+													)}
 												</div>
-												<div className="flex gap-2 ml-2">
-													<Badge variant="secondary" className="text-xs">
-														{Math.round(rec.confidence * 100)}%
+												<div className="flex flex-col gap-1 items-end">
+													<Badge
+														variant={
+															rec.confidence >= 80
+																? "default"
+																: rec.confidence >= 60
+																	? "secondary"
+																	: "outline"
+														}
+														className="text-xs"
+													>
+														<Gauge className="h-3 w-3 mr-1" />
+														{rec.confidence}%
 													</Badge>
-													{rec.accepted && (
-														<Badge variant="outline" className="text-xs">
-															{t("badge.accepted")}
+													{rec.urgency === "high" && (
+														<Badge variant="destructive" className="text-xs">
+															{t("priority.urgent")}
 														</Badge>
 													)}
 												</div>
 											</div>
 
-											<div className="flex gap-4 text-xs text-gray-500">
+											<div className="flex flex-wrap gap-3 text-xs text-gray-500">
+												{rec.customer?.phoneE164 && (
+													<div className="flex items-center gap-1">
+														<Phone className="h-3 w-3" />
+														<span>{rec.customer.phoneE164}</span>
+													</div>
+												)}
+												{rec.estimate?.durationMinutes && (
+													<div className="flex items-center gap-1">
+														<Clock className="h-3 w-3" />
+														<span>
+															{rec.estimate.durationMinutes}{" "}
+															{t("jobs.unscheduled.ai.minutes")}
+														</span>
+													</div>
+												)}
 												<div className="flex items-center gap-1">
-													<span>{t("jobs.source")}</span>
-													<span>{rec.source}</span>
-												</div>
-												<div className="flex items-center gap-1">
-													<span>{t("meta.created")}</span>
-													<span>{formatDutchDate(rec.created_at)}</span>
+													<span>{formatDutchDate(rec.createdIso)}</span>
 												</div>
 											</div>
+
+											{rec.tags.length > 0 && (
+												<div className="flex flex-wrap gap-1">
+													{rec.tags.map((tag) => (
+														<Badge
+															key={tag}
+															variant="outline"
+															className="text-xs py-0 px-1"
+														>
+															{tag}
+														</Badge>
+													))}
+												</div>
+											)}
 
 											<Button
 												onClick={() => {
@@ -308,7 +357,7 @@ export default function Unscheduled({
 												size="sm"
 												className="w-full"
 											>
-												{t("cta.applySuggestion")}
+												{t("jobs.unscheduled.ai.assign")}
 											</Button>
 										</div>
 									))
