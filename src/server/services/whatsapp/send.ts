@@ -20,8 +20,8 @@ interface MessagePayload {
 export const SendTextInput = z.object({
 	conversationId: z.uuid(),
 	text: z.string().min(1).max(1000),
-	templateName: z.string().default("utility_reengage"), // pre-approved template
-	templateLang: z.string().default("en"),
+	templateName: z.string().default("utility_reengage").optional(), // pre-approved template
+	templateLang: z.string().default("en").optional(),
 });
 
 async function getConversation(
@@ -50,7 +50,12 @@ export async function sendTextMessage(
 	orgId: string,
 	input: z.infer<typeof SendTextInput>,
 ): Promise<{ ok: boolean; mode: "session" | "template"; meta: unknown }> {
-	const { conversationId, text, templateName, templateLang } = input;
+	const {
+		conversationId,
+		text,
+		templateName = "utility_reengage",
+		templateLang = "en",
+	} = input;
 	const convo = await getConversation(db, orgId, conversationId);
 	const nowIso = Temporal.Now.instant().toString();
 
