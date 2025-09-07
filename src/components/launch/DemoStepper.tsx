@@ -10,10 +10,13 @@ import {
 	CreditCardIcon,
 	MessageSquareIcon,
 	MicIcon,
+	PauseIcon,
+	PlayIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { Temporal } from "temporal-polyfill";
+import { analytics, useScrollDepth } from "~/components/analytics/Analytics";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -480,104 +483,357 @@ function StepContent({ step }: StepContentProps): React.ReactElement {
 
 export function DemoStepper(): React.ReactElement {
 	const t = useTranslations();
+	const tDemo = useTranslations("launch.demo_stepper");
 	const [currentStepIndex, setCurrentStepIndex] = useState(0);
+	const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+	const [slideDirection, setSlideDirection] = useState<"left" | "right">(
+		"right",
+	);
+
+	// Track scroll depth for engagement
+	useScrollDepth();
 
 	const currentStep = demoSteps[currentStepIndex];
 	const IconComponent = currentStep
 		? stepIcons[currentStep.id as keyof typeof stepIcons]
 		: MessageSquareIcon;
 
-	const nextStep = (): void => {
+	const nextStep = React.useCallback((): void => {
 		if (currentStepIndex < demoSteps.length - 1) {
-			setCurrentStepIndex(currentStepIndex + 1);
-		}
-	};
+			const newIndex = currentStepIndex + 1;
+			setSlideDirection("right");
+			setCurrentStepIndex(newIndex);
 
-	const prevStep = (): void => {
-		if (currentStepIndex > 0) {
-			setCurrentStepIndex(currentStepIndex - 1);
+			// Track step progression
+			analytics.trackDemoEvent(
+				"step_next",
+				demoSteps[newIndex]?.id,
+				newIndex + 1,
+			);
+
+			// Track completion
+			if (newIndex === demoSteps.length - 1) {
+				analytics.trackDemoEvent(
+					"demo_completed",
+					demoSteps[newIndex]?.id,
+					newIndex + 1,
+				);
+				analytics.trackConversion("demo_completion", 1);
+			}
 		}
-	};
+	}, [currentStepIndex]);
+
+	const prevStep = React.useCallback((): void => {
+		if (currentStepIndex > 0) {
+			const newIndex = currentStepIndex - 1;
+			setSlideDirection("left");
+			setCurrentStepIndex(newIndex);
+
+			// Track backward navigation
+			analytics.trackDemoEvent(
+				"step_previous",
+				demoSteps[newIndex]?.id,
+				newIndex + 1,
+			);
+		}
+	}, [currentStepIndex]);
 
 	const goToStep = (index: number): void => {
-		setCurrentStepIndex(index);
+		if (index !== currentStepIndex) {
+			setSlideDirection(index > currentStepIndex ? "right" : "left");
+			setCurrentStepIndex(index);
+
+			// Track direct navigation
+			analytics.trackDemoEvent("step_jump", demoSteps[index]?.id, index + 1);
+		}
 	};
+
+	const toggleAutoPlay = (): void => {
+		const newAutoPlay = !isAutoPlaying;
+		setIsAutoPlaying(newAutoPlay);
+
+		// Track auto-play usage
+		analytics.trackDemoEvent(
+			newAutoPlay ? "autoplay_started" : "autoplay_paused",
+			currentStep?.id,
+			currentStepIndex + 1,
+		);
+	};
+
+	// Track demo start on mount
+	React.useEffect(() => {
+		analytics.trackDemoEvent("demo_started", demoSteps[0]?.id, 1);
+	}, []);
+
+	// Auto-play functionality
+	React.useEffect(() => {
+		let interval: NodeJS.Timeout | undefined;
+		if (isAutoPlaying && currentStepIndex < demoSteps.length - 1) {
+			interval = setInterval(() => {
+				setCurrentStepIndex((prev) => {
+					if (prev < demoSteps.length - 1) {
+						return prev + 1;
+					}
+					setIsAutoPlaying(false);
+					return prev;
+				});
+			}, 4000); // 4 seconds per step
+		}
+		return () => {
+			if (interval !== undefined) clearInterval(interval);
+		};
+	}, [isAutoPlaying, currentStepIndex]);
+
+	// Keyboard navigation
+	React.useEffect(() => {
+		const handleKeyPress = (e: KeyboardEvent): void => {
+			if (e.key === "ArrowRight") {
+				nextStep();
+			}
+			if (e.key === "ArrowLeft") {
+				prevStep();
+			}
+			if (e.key === " ") {
+				e.preventDefault();
+				setIsAutoPlaying(!isAutoPlaying);
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyPress);
+		return () => {
+			window.removeEventListener("keydown", handleKeyPress);
+		};
+	}, [currentStepIndex, isAutoPlaying, nextStep, prevStep]);
 
 	if (!currentStep) return <div>{t("launch.demo.content.common.loading")}</div>;
 
 	return (
 		<div className="space-y-6">
-			{/* Progress indicator */}
-			<div className="flex items-center justify-between">
-				{demoSteps.map((step, index) => (
-					<button
-						key={step.id}
-						onClick={() => {
-							goToStep(index);
-						}}
-						className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-colors ${
-							index === currentStepIndex
-								? "bg-emerald-600 text-white"
-								: index < currentStepIndex
-									? "bg-emerald-200 text-emerald-800 hover:bg-emerald-300"
-									: "bg-gray-200 text-gray-600 hover:bg-gray-300"
-						}`}
-					>
-						{index + 1}
-					</button>
-				))}
+			{/* Auto-play controls */}
+			<div className="flex items-center justify-center gap-4 mb-4">
+				<button
+					onClick={toggleAutoPlay}
+					className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-sm font-medium"
+				>
+					{isAutoPlaying ? (
+						<>
+							<PauseIcon className="h-3 w-3" />
+							{tDemo("autoplay_pause")}
+						</>
+					) : (
+						<>
+							<PlayIcon className="h-3 w-3" />
+							{tDemo("autoplay_start")}
+						</>
+					)}
+				</button>
+				<div className="text-xs text-gray-500">{tDemo("keyboard_help")}</div>
 			</div>
 
-			{/* Current step card */}
-			<Card className="rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
-				<CardHeader className="pb-4">
+			{/* Enhanced progress indicator with visual progress bar */}
+			<div className="relative">
+				{/* Progress bar background */}
+				<div className="absolute top-4 left-4 right-4 h-0.5 bg-gray-200 rounded-full">
+					{/* Animated progress bar */}
+					<div
+						className="h-full bg-emerald-500 rounded-full transition-all duration-500 ease-out"
+						style={{
+							width: `${(currentStepIndex / (demoSteps.length - 1)) * 100}%`,
+						}}
+					/>
+				</div>
+
+				{/* Step indicators with icons */}
+				<div className="flex items-center justify-between">
+					{demoSteps.map((step, index) => {
+						const StepIcon = stepIcons[step.id as keyof typeof stepIcons];
+						const isCompleted = index < currentStepIndex;
+						const isCurrent = index === currentStepIndex;
+
+						return (
+							<button
+								key={step.id}
+								onClick={() => {
+									goToStep(index);
+								}}
+								className={`relative flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-110 group ${
+									isCurrent
+										? "bg-emerald-600 text-white shadow-lg ring-4 ring-emerald-200"
+										: isCompleted
+											? "bg-emerald-500 text-white shadow-md hover:bg-emerald-600"
+											: "bg-white border-2 border-gray-300 text-gray-600 hover:border-emerald-300 hover:text-emerald-600"
+								}`}
+							>
+								{isCompleted ? (
+									<svg
+										className="w-4 h-4"
+										fill="currentColor"
+										viewBox="0 0 20 20"
+									>
+										<path
+											fillRule="evenodd"
+											d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								) : (
+									<StepIcon className="h-3.5 w-3.5" />
+								)}
+
+								{/* Tooltip */}
+								<div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+									{t(`steps.${step.id}.title`)}
+								</div>
+							</button>
+						);
+					})}
+				</div>
+			</div>
+
+			{/* Current step card with enhanced animations */}
+			<Card className="rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.06)] overflow-hidden">
+				<CardHeader className="pb-4 bg-gradient-to-r from-emerald-50 to-teal-50">
 					<div className="flex items-center gap-3">
-						<div className="rounded-lg bg-emerald-100 p-2">
+						<div className="rounded-lg bg-emerald-100 p-2 animate-pulse">
 							<IconComponent className="h-6 w-6 text-emerald-600" />
 						</div>
-						<div>
-							<CardTitle className="text-xl">
-								{t(`steps.${currentStep.id}.title`)}
-							</CardTitle>
-							<CardDescription>
+						<div className="flex-1">
+							<div className="flex items-center gap-3 mb-1">
+								<CardTitle className="text-xl animate-fade-in">
+									{t(`steps.${currentStep.id}.title`)}
+								</CardTitle>
+								<Badge variant="secondary" className="text-xs">
+									{tDemo("step_counter", {
+										current: currentStepIndex + 1,
+										total: demoSteps.length,
+									})}
+								</Badge>
+							</div>
+							<CardDescription className="animate-fade-in delay-100">
 								{t(`steps.${currentStep.id}.description`)}
 							</CardDescription>
 						</div>
+						{/* Estimated time indicator */}
+						<div className="text-right text-sm text-gray-500">
+							<div>{tDemo("time_estimate")}</div>
+							<div className="text-xs">{tDemo("time_average")}</div>
+						</div>
 					</div>
+
+					{/* Auto-play progress indicator for current step */}
+					{isAutoPlaying && (
+						<div className="mt-3 w-full bg-gray-200 rounded-full h-1 overflow-hidden">
+							<div
+								className="h-full bg-emerald-500 rounded-full animate-progress-bar"
+								style={{ animationDuration: "4s" }}
+							/>
+						</div>
+					)}
 				</CardHeader>
-				<CardContent>
-					<StepContent step={currentStep} />
+				<CardContent className="relative">
+					{/* Slide animation wrapper */}
+					<div
+						key={currentStepIndex}
+						className={`animate-slide-${slideDirection}`}
+					>
+						<StepContent step={currentStep} />
+					</div>
 				</CardContent>
 			</Card>
 
-			{/* Navigation */}
-			<div className="flex items-center justify-between">
+			{/* Enhanced Navigation */}
+			<div className="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
 				<Button
 					variant="outline"
 					onClick={prevStep}
 					disabled={currentStepIndex === 0}
-					className="flex items-center gap-2"
+					className="flex items-center gap-2 disabled:opacity-50 hover:scale-105 transition-all duration-200"
 				>
 					<ChevronLeftIcon className="h-4 w-4" />
 					{t("launch.demo.page.nav.previous")}
 				</Button>
 
-				<span className="text-sm text-gray-600">
-					{t("launch.demo.page.nav.step_counter", {
-						current: currentStepIndex + 1,
-						total: demoSteps.length,
-					})}
-				</span>
+				<div className="flex items-center gap-4">
+					<span className="text-sm text-gray-600 font-medium">
+						{t("launch.demo.page.nav.step_counter", {
+							current: currentStepIndex + 1,
+							total: demoSteps.length,
+						})}
+					</span>
+
+					{/* Quick jump buttons */}
+					<div className="flex gap-1">
+						{demoSteps.map((_, index) => (
+							<button
+								key={index}
+								onClick={() => {
+									goToStep(index);
+								}}
+								className={`w-2 h-2 rounded-full transition-all duration-200 ${
+									index === currentStepIndex
+										? "bg-emerald-500 scale-125"
+										: index < currentStepIndex
+											? "bg-emerald-300 hover:bg-emerald-400"
+											: "bg-gray-300 hover:bg-gray-400"
+								}`}
+								title={tDemo("jump_to_step", { step: index + 1 })}
+							/>
+						))}
+					</div>
+				</div>
 
 				<Button
 					onClick={nextStep}
 					disabled={currentStepIndex === demoSteps.length - 1}
-					className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700"
+					className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 hover:scale-105 transition-all duration-200"
 				>
-					{t("launch.demo.page.nav.next")}
+					{currentStepIndex === demoSteps.length - 1
+						? tDemo("done")
+						: t("launch.demo.page.nav.next")}
 					<ChevronRightIcon className="h-4 w-4" />
 				</Button>
 			</div>
+
+			{/* CSS Animations */}
+			<style jsx>{`
+				@keyframes fade-in {
+					0% { opacity: 0; transform: translateY(10px); }
+					100% { opacity: 1; transform: translateY(0); }
+				}
+				
+				@keyframes slide-right {
+					0% { transform: translateX(-20px); opacity: 0; }
+					100% { transform: translateX(0); opacity: 1; }
+				}
+				
+				@keyframes slide-left {
+					0% { transform: translateX(20px); opacity: 0; }
+					100% { transform: translateX(0); opacity: 1; }
+				}
+				
+				@keyframes progress-bar {
+					0% { width: 0%; }
+					100% { width: 100%; }
+				}
+				
+				.animate-fade-in {
+					animation: fade-in 0.5s ease-out;
+				}
+				
+				.animate-slide-right {
+					animation: slide-right 0.4s ease-out;
+				}
+				
+				.animate-slide-left {
+					animation: slide-left 0.4s ease-out;
+				}
+				
+				.animate-progress-bar {
+					animation: progress-bar linear;
+				}
+				
+				.delay-100 { animation-delay: 100ms; }
+			`}</style>
 		</div>
 	);
 }

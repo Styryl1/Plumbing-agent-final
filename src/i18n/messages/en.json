@@ -540,9 +540,13 @@
 		},
 		"hero": {
 			"headline": "WhatsApp-connected AI that turns chats into jobs, schedules, and invoices",
-			"subhead": "Save ~15 hours/week with AI-powered plumber workflow automation. No typing required.",
-			"cta_demo": "Try the Demo",
-			"cta_waitlist": "Join Waitlist"
+			"subhead": "From 40 hours admin to 25 hours billable work per week. €2,500+ extra revenue by never missing jobs.",
+			"cta_demo": "Free 2-Minute Demo",
+			"cta_waitlist": "Join Waitlist",
+			"no_credit_card": "No credit card required",
+			"demo_duration": "Demo takes 2 minutes",
+			"social_proof": "Trusted by {count}+ plumbers in the Netherlands",
+			"urgency": "First 100 plumbers get 3 months free"
 		},
 		"usp": {
 			"title": "Complete plumber automation",
@@ -575,7 +579,60 @@
 		"trust": {
 			"dutch_compliance": "Dutch Compliance",
 			"ideal_payments": "iDEAL Payments",
-			"whatsapp_business": "WhatsApp Business"
+			"whatsapp_business": "WhatsApp Business",
+			"avg_compliant": "GDPR Compliant",
+			"ideal_partner": "iDEAL Partner",
+			"whatsapp_api": "WhatsApp Business API",
+			"bank_security": "Bank-level security",
+			"dutch_servers": "Data stays in Netherlands",
+			"testimonial": "Saves me 2 hours per day - Alex, Amsterdam Plumbers",
+			"counter_text": "plumbers already trust us",
+			"ideal_certified": "iDEAL Certified",
+			"kvk_registered": "Chamber of Commerce Registered"
+		},
+		"cookie_consent": {
+			"title": "Cookie Consent",
+			"description": "We use cookies to improve your experience and collect website statistics. Only necessary cookies are used without your consent.",
+			"accept_all": "Accept All",
+			"essential_only": "Essential Only",
+			"reject_all": "Reject All",
+			"privacy_policy": "Privacy Policy",
+			"close": "Close"
+		},
+		"demo_stepper": {
+			"autoplay_pause": "Pause Auto-play",
+			"autoplay_start": "Start Auto-play",
+			"keyboard_help": "Keys: ← → navigate, spacebar = pause/play",
+			"step_counter": "Step {current} of {total}",
+			"time_estimate": "~45 sec",
+			"time_average": "average",
+			"done": "Done!",
+			"jump_to_step": "Go to step {step}"
+		},
+		"roi_calculator": {
+			"title": "Calculate Your Time Savings",
+			"subtitle": "How many hours per week do you spend on admin tasks?",
+			"input_label": "Admin hours per week",
+			"current_hours": "Current situation",
+			"with_platform": "With our platform",
+			"time_saved": "Time saved",
+			"hours_per_week": "hrs/week",
+			"billable_hours": "Billable hours",
+			"extra_revenue": "Extra revenue/month",
+			"yearly_savings": "Yearly savings",
+			"rate_per_hour": "Hourly rate: €75",
+			"admin_reduced": "Admin reduced to {hours} hrs/week",
+			"calculate_button": "Calculate My Savings",
+			"results": {
+				"per_week": "per week",
+				"per_month": "per month",
+				"per_year": "per year",
+				"time_savings": "{hours} hours saved",
+				"revenue_increase": "€{amount} extra revenue",
+				"total_value": "€{amount} total value"
+			},
+			"cta_start_saving": "Start Saving →",
+			"placeholder_text": "Enter your admin hours to see your savings"
 		},
 		"waitlist": {
 			"title": "Join the Waitlist",
@@ -651,6 +708,11 @@
 					"previous": "Previous",
 					"next": "Next",
 					"step_counter": "Step {current} of {total}"
+				},
+				"nav": {
+					"previous": "Previous",
+					"next": "Next",
+					"step_counter": "Step {current} of {total}"
 				}
 			},
 			"content": {
@@ -722,6 +784,36 @@
 					"loading": "Loading..."
 				}
 			}
+		}
+	},
+	"steps": {
+		"whatsapp": {
+			"title": "WhatsApp Message",
+			"description": "Customer sends message with photo"
+		},
+		"ai_suggestion": {
+			"title": "AI Analysis",
+			"description": "Issue diagnosis with time/material estimates"
+		},
+		"schedule": {
+			"title": "Approve & Schedule",
+			"description": "Quick calendar assignment to available plumber"
+		},
+		"job_card": {
+			"title": "Job Card",
+			"description": "Mobile-friendly day view with timer"
+		},
+		"voice_draft": {
+			"title": "Voice → Invoice Draft",
+			"description": "AI creates invoice from voice recording"
+		},
+		"send_pay": {
+			"title": "Send & Pay",
+			"description": "Provider-issued PDF + iDEAL PaymentURL"
+		},
+		"reminders": {
+			"title": "Auto Reminders",
+			"description": "WhatsApp dunning sequence (+3/+7/+14 days)"
 		}
 	}
 }

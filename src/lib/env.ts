@@ -58,6 +58,8 @@ const schema = z.object({
 	INTERNAL_JOB_TOKEN: z.string().min(32), // Internal token for status refresh jobs
 	// Marketing tools
 	AIRTABLE_WEBHOOK_URL: z.url().optional(), // Optional Airtable webhook for waitlist mirroring
+	NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(), // Google Analytics measurement ID
+	NEXT_PUBLIC_ANALYTICS_ENABLED: z.enum(["true", "false"]).default("false"), // Analytics enabled flag
 });
 
 const parsed = schema.safeParse({
@@ -107,6 +109,8 @@ const parsed = schema.safeParse({
 	EMAIL_FROM: process.env.EMAIL_FROM,
 	INTERNAL_JOB_TOKEN: process.env.INTERNAL_JOB_TOKEN,
 	AIRTABLE_WEBHOOK_URL: process.env.AIRTABLE_WEBHOOK_URL,
+	NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+	NEXT_PUBLIC_ANALYTICS_ENABLED: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
 });
 
 if (!parsed.success) {

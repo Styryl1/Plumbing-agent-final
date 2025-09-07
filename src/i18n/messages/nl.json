@@ -550,9 +550,13 @@
 		},
 		"hero": {
 			"headline": "WhatsApp-verbonden AI die gesprekken omzet in klussen, planning en facturen",
-			"subhead": "Bespaar ~15 uur/week met AI-gedreven loodgietersworkflow automatisering. Geen typen vereist.",
-			"cta_demo": "Probeer de Demo",
-			"cta_waitlist": "Word lid van Wachtlijst"
+			"subhead": "Van 40 uur administratie naar 25 uur factuurbaar werk per week. €2.500+ extra omzet door geen gemiste klussen meer.",
+			"cta_demo": "Gratis 2-minuten Demo",
+			"cta_waitlist": "Word lid van Wachtlijst",
+			"no_credit_card": "Geen creditcard vereist",
+			"demo_duration": "Demo duurt 2 minuten",
+			"social_proof": "Vertrouwd door {count}+ loodgieters in Nederland",
+			"urgency": "Eerste 100 loodgieters krijgen 3 maanden gratis"
 		},
 		"usp": {
 			"title": "Complete loodgieter automatisering",
@@ -585,7 +589,60 @@
 		"trust": {
 			"dutch_compliance": "Nederlandse Compliance",
 			"ideal_payments": "iDEAL Betalingen",
-			"whatsapp_business": "WhatsApp Business"
+			"whatsapp_business": "WhatsApp Business",
+			"avg_compliant": "AVG Compliant",
+			"ideal_partner": "iDEAL Partner",
+			"whatsapp_api": "WhatsApp Business API",
+			"bank_security": "Bankbeveiliging niveau",
+			"dutch_servers": "Data blijft in Nederland",
+			"testimonial": "Bespaart me 2 uur per dag - Alex, Amsterdam Loodgieters",
+			"counter_text": "loodgieters vertrouwen ons al",
+			"ideal_certified": "iDEAL Gecertificeerd",
+			"kvk_registered": "KVK Geregistreerd"
+		},
+		"cookie_consent": {
+			"title": "Cookie Toestemming",
+			"description": "We gebruiken cookies om je ervaring te verbeteren en websitestatistieken te verzamelen. Alleen noodzakelijke cookies worden gebruikt zonder je toestemming.",
+			"accept_all": "Alles Accepteren",
+			"essential_only": "Alleen Noodzakelijk",
+			"reject_all": "Alles Weigeren",
+			"privacy_policy": "Privacy Beleid",
+			"close": "Sluiten"
+		},
+		"demo_stepper": {
+			"autoplay_pause": "Auto afspelen pauzeren",
+			"autoplay_start": "Auto afspelen starten",
+			"keyboard_help": "Toets: ← → navigeren, spatiebalk = pause/play",
+			"step_counter": "Stap {current} van {total}",
+			"time_estimate": "~45 sec",
+			"time_average": "gemiddeld",
+			"done": "Klaar!",
+			"jump_to_step": "Ga naar stap {step}"
+		},
+		"roi_calculator": {
+			"title": "Bereken je Tijdwinst",
+			"subtitle": "Hoeveel uur per week besteed je aan administratie?",
+			"input_label": "Administratie uren per week",
+			"current_hours": "Huidige situatie",
+			"with_platform": "Met ons platform",
+			"time_saved": "Tijd bespaard",
+			"hours_per_week": "uur/week",
+			"billable_hours": "Factureerbare uren",
+			"extra_revenue": "Extra omzet/maand",
+			"yearly_savings": "Jaarlijkse besparing",
+			"rate_per_hour": "Uurtarief: €75",
+			"admin_reduced": "Administratie gereduceerd naar {hours} uur/week",
+			"calculate_button": "Bereken mijn Winst",
+			"results": {
+				"per_week": "per week",
+				"per_month": "per maand",
+				"per_year": "per jaar",
+				"time_savings": "{hours} uur bespaard",
+				"revenue_increase": "€{amount} extra omzet",
+				"total_value": "€{amount} totale waarde"
+			},
+			"cta_start_saving": "Start Besparen →",
+			"placeholder_text": "Vul je administratie uren in om je besparingen te zien"
 		},
 		"waitlist": {
 			"title": "Word lid van de Wachtlijst",
@@ -661,6 +718,11 @@
 					"previous": "Vorige",
 					"next": "Volgende",
 					"step_counter": "Stap {current} van {total}"
+				},
+				"nav": {
+					"previous": "Vorige",
+					"next": "Volgende",
+					"step_counter": "Stap {current} van {total}"
 				}
 			},
 			"content": {
@@ -732,6 +794,36 @@
 					"loading": "Laden..."
 				}
 			}
+		}
+	},
+	"steps": {
+		"whatsapp": {
+			"title": "WhatsApp Bericht",
+			"description": "Klant stuurt bericht met foto"
+		},
+		"ai_suggestion": {
+			"title": "AI Analyse",
+			"description": "Probleem diagnose met tijd/materiaal schatting"
+		},
+		"schedule": {
+			"title": "Goedkeuren & Inplannen",
+			"description": "Snelle agenda toewijzing aan beschikbare loodgieter"
+		},
+		"job_card": {
+			"title": "Werkkaart",
+			"description": "Mobiel-vriendelijke dagweergave met timer"
+		},
+		"voice_draft": {
+			"title": "Spraak → Factuur Concept",
+			"description": "AI maakt factuur van spraakopname"
+		},
+		"send_pay": {
+			"title": "Versturen & Betalen",
+			"description": "Provider-uitgegeven PDF + iDEAL BetalingURL"
+		},
+		"reminders": {
+			"title": "Automatische Herinneringen",
+			"description": "WhatsApp aanmaningsreeks (+3/+7/+14 dagen)"
 		}
 	}
 }

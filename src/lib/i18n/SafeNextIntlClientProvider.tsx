@@ -1,10 +1,14 @@
 "use client";
 
-import { IntlErrorCode, NextIntlClientProvider } from "next-intl";
+import {
+	type AbstractIntlMessages,
+	IntlErrorCode,
+	NextIntlClientProvider,
+} from "next-intl";
 import type { JSX, ReactNode } from "react";
 import { useCallback } from "react";
 
-type Messages = Record<string, unknown>;
+type Messages = AbstractIntlMessages;
 
 type Props = {
 	locale: string;

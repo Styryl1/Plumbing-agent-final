@@ -10,6 +10,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { getLocale, getMessages } from "next-intl/server";
 import type { JSX } from "react";
 import { Temporal } from "temporal-polyfill";
+import { Analytics } from "~/components/analytics/Analytics";
+import { CookieConsent } from "~/components/analytics/CookieConsent";
 import { TrpcProvider } from "~/components/providers/TrpcProvider";
 import { Toaster } from "~/components/ui/sonner";
 import type { Locale } from "~/i18n";
@@ -20,17 +22,36 @@ import TemporalPolyfill from "./TemporalPolyfill";
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
+	display: "swap",
+	preload: true,
 });
 
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
 	subsets: ["latin"],
+	display: "swap",
+	preload: true,
 });
 
 export const metadata: Metadata = {
 	title: "Loodgieter Agent - Emergency Plumber Dispatch",
 	description:
 		"Netherlands-first AI-powered emergency plumber dispatch platform",
+	viewport: {
+		width: "device-width",
+		initialScale: 1,
+		maximumScale: 5,
+		userScalable: true,
+	},
+	themeColor: [
+		{ media: "(prefers-color-scheme: light)", color: "#10b981" },
+		{ media: "(prefers-color-scheme: dark)", color: "#059669" },
+	],
+	other: {
+		"apple-mobile-web-app-capable": "yes",
+		"apple-mobile-web-app-status-bar-style": "default",
+		"format-detection": "telephone=no",
+	},
 };
 
 export default async function RootLayout({
@@ -90,6 +111,8 @@ export default async function RootLayout({
 						</TrpcProvider>
 					</SafeNextIntlClientProvider>
 					<Toaster />
+					<Analytics />
+					<CookieConsent />
 				</body>
 			</html>
 		</ClerkProvider>

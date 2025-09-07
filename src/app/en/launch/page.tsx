@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 import { Hero } from "~/components/launch/Hero";
+import { LazyRoiCalculator } from "~/components/launch/LazyRoiCalculator";
 import { LocaleSwitcher } from "~/components/launch/LocaleSwitcher";
 import { TrustStrip } from "~/components/launch/TrustStrip";
 import { USPGrid } from "~/components/launch/USPGrid";
@@ -86,6 +87,7 @@ export default function LaunchPageEN(): React.ReactElement {
 				<Hero />
 				<TrustStrip />
 				<USPGrid />
+				<LazyRoiCalculator />
 				<WaitlistForm />
 			</main>
 		</>
