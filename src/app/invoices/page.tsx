@@ -4,6 +4,7 @@ import { Plus, Settings, Zap } from "lucide-react";
 import Link from "next/link";
 import type { JSX } from "react";
 import ProviderBadge from "~/components/invoices/ProviderBadge";
+import ProvidersPanel from "~/components/invoices/ProvidersPanel";
 import OAuthFeedbackHandler from "~/components/providers/OAuthFeedbackHandler";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -56,6 +57,9 @@ export default function InvoicesPage(): JSX.Element {
 
 			{/* OAuth Feedback Handler */}
 			<OAuthFeedbackHandler />
+
+			{/* Providers Panel */}
+			<ProvidersPanel />
 
 			{/* Overview Stats */}
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-4">
