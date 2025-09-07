@@ -85,3 +85,7 @@ temp/
 # Windows problematic files
 nul
 NUL
+
+# Claude Code settings
+.claude/settings.local.json
+.claude/mcp.json
