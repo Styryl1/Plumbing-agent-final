@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Main launch pages - indexable
+Allow: /nl/launch
+Allow: /en/launch
+
+# Demo pages - follow but don't index
+Allow: /nl/launch/demo
+Allow: /en/launch/demo
+
+# API endpoints - disallow
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://loodgieter-agent.nl/sitemap.xml

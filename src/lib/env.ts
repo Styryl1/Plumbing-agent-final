@@ -57,6 +57,10 @@ const schema = z.object({
 	EMAIL_FROM: z.email().default("noreply@loodgieter.nl").optional(), // From address for reminders
 	// Internal job token for secure API operations
 	INTERNAL_JOB_TOKEN: z.string().min(32), // Internal token for status refresh jobs
+	// Marketing tools
+	AIRTABLE_WEBHOOK_URL: z.url().optional(), // Optional Airtable webhook for waitlist mirroring
+	NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(), // Google Analytics measurement ID
+	NEXT_PUBLIC_ANALYTICS_ENABLED: z.enum(["true", "false"]).default("false"), // Analytics enabled flag
 });
 
 const parsed = schema.safeParse({
@@ -105,6 +109,9 @@ const parsed = schema.safeParse({
 	EMAIL_API_KEY: process.env.EMAIL_API_KEY,
 	EMAIL_FROM: process.env.EMAIL_FROM,
 	INTERNAL_JOB_TOKEN: process.env.INTERNAL_JOB_TOKEN,
+	AIRTABLE_WEBHOOK_URL: process.env.AIRTABLE_WEBHOOK_URL,
+	NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+	NEXT_PUBLIC_ANALYTICS_ENABLED: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
 });
 
 if (!parsed.success) {
@@ -153,5 +160,6 @@ export const serverOnlyEnv = (() => {
 		NODE_ENV: env.NODE_ENV,
 		MOLLIE_API_KEY: env.MOLLIE_API_KEY,
 		MOLLIE_WEBHOOK_TOKEN: env.MOLLIE_WEBHOOK_TOKEN,
+		AIRTABLE_WEBHOOK_URL: env.AIRTABLE_WEBHOOK_URL,
 	} as const;
 })();

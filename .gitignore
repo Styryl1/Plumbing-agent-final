@@ -89,6 +89,7 @@ temp/
 nul
 NUL
 
-# Local development configuration
+# Claude Code settings
 .claude/settings.local.json
+.claude/mcp.json
 .mcp.json
