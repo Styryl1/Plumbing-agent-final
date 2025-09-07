@@ -1,0 +1,93 @@
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import React from "react";
+import { Hero } from "~/components/launch/Hero";
+import { LocaleSwitcher } from "~/components/launch/LocaleSwitcher";
+import { TrustStrip } from "~/components/launch/TrustStrip";
+import { USPGrid } from "~/components/launch/USPGrid";
+import { WaitlistForm } from "~/components/launch/WaitlistForm";
+
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations({ locale: "en" });
+	const base = "https://loodgieter-agent.nl";
+	const path = "/en/launch";
+
+	return {
+		title: t("launch.meta.title"),
+		description: t("launch.meta.description"),
+		keywords: t("launch.meta.keywords"),
+		alternates: {
+			canonical: `${base}${path}`,
+			languages: {
+				en: `${base}/en/launch`,
+				nl: `${base}/nl/launch`,
+				"x-default": `${base}/nl/launch`,
+			},
+		},
+		openGraph: {
+			title: t("launch.meta.title"),
+			description: t("launch.meta.description"),
+			url: `${base}${path}`,
+			siteName: "Plumbing Agent",
+			locale: "en_US",
+			type: "website",
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: t("launch.meta.title"),
+			description: t("launch.meta.description"),
+		},
+		robots: {
+			index: true,
+			follow: true,
+			googleBot: {
+				index: true,
+				follow: true,
+				"max-video-preview": -1,
+				"max-image-preview": "large",
+				"max-snippet": -1,
+			},
+		},
+	};
+}
+
+export default function LaunchPageEN(): React.ReactElement {
+	const jsonLd = {
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		name: "Plumbing Agent",
+		applicationCategory: "BusinessApplication",
+		operatingSystem: "Web",
+		description:
+			"AI-powered plumber dispatch platform with WhatsApp integration, automated scheduling, and iDEAL invoicing",
+		areaServed: "NL",
+		offers: {
+			"@type": "Offer",
+			priceCurrency: "EUR",
+			price: "0",
+			availability: "https://schema.org/PreOrder",
+		},
+		aggregateRating: {
+			"@type": "AggregateRating",
+			ratingValue: "4.8",
+			reviewCount: "127",
+		},
+	};
+
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				suppressHydrationWarning
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+			<main className="min-h-screen bg-white">
+				<LocaleSwitcher />
+				<Hero />
+				<TrustStrip />
+				<USPGrid />
+				<WaitlistForm />
+			</main>
+		</>
+	);
+}

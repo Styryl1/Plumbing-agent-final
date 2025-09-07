@@ -541,5 +541,197 @@
 	},
 	"badges": {
 		"locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen."
+	},
+	"launch": {
+		"meta": {
+			"title": "AI Loodgieter Dispatch Platform - WhatsApp naar Factuur Automatisering",
+			"description": "Transformeer spoedmeldingen in betaalde facturen in 7 stappen. WhatsApp loodgieter met AI-receptionist. iDEAL factuur, planning app loodgieter, automatische herinneringen.",
+			"keywords": "loodgieter software, WhatsApp loodgieter, planning app loodgieter, Nederlandse loodgieter automatisering, iDEAL factuur, spoed loodgieter Amsterdam"
+		},
+		"hero": {
+			"headline": "WhatsApp-verbonden AI die gesprekken omzet in klussen, planning en facturen",
+			"subhead": "Bespaar ~15 uur/week met AI-gedreven loodgietersworkflow automatisering. Geen typen vereist.",
+			"cta_demo": "Probeer de Demo",
+			"cta_waitlist": "Word lid van Wachtlijst"
+		},
+		"usp": {
+			"title": "Complete loodgieter automatisering",
+			"subtitle": "Van WhatsApp bericht naar betaalde factuur in 7 naadloze stappen",
+			"whatsapp": {
+				"title": "WhatsApp-First Intake",
+				"description": "Tekst, foto, spraakberichten automatisch verwerkt met loodgieters goedkeuring"
+			},
+			"ai": {
+				"title": "AI Diagnose + Schattingen",
+				"description": "Tijd en materiaalschatting met vertrouwensscore en leersysteem"
+			},
+			"schedule": {
+				"title": "Mobiele Schedule-X",
+				"description": "Week/Dag weergaves met Ongeplande lade. Wijs klussen toe in ≤3 tikken"
+			},
+			"jobcards": {
+				"title": "Offline Klus Kaarten",
+				"description": "Vandaag weergave met timer, snelle materialen, navigeer/bel/WhatsApp shortcuts"
+			},
+			"invoicing": {
+				"title": "Provider Facturen + iDEAL",
+				"description": "Moneybird/WeFact/e-Boekhouden integratie met PaymentURL en incasso"
+			},
+			"compliance": {
+				"title": "Nederlandse Compliance",
+				"description": "AVG, iDEAL, BTW (21/9%), KVK registratie, audit logs"
+			}
+		},
+		"trust": {
+			"dutch_compliance": "Nederlandse Compliance",
+			"ideal_payments": "iDEAL Betalingen",
+			"whatsapp_business": "WhatsApp Business"
+		},
+		"waitlist": {
+			"title": "Word lid van de Wachtlijst",
+			"subtitle": "Wees de eerste die je loodgietersbedrijf transformeert met AI automatisering",
+			"form": {
+				"email": "E-mailadres",
+				"phone": "Telefoonnummer (optioneel)",
+				"org_name": "Bedrijfsnaam (optioneel)",
+				"submit": "Word lid van Wachtlijst",
+				"success": "Bedankt! We laten je weten wanneer we lanceren.",
+				"error": "Er is iets misgegaan. Probeer het opnieuw."
+			},
+			"gdpr_note": "We bewaren je gegevens veilig en delen ze nooit."
+		},
+		"demo": {
+			"title": "Happy Path Demo",
+			"subtitle": "Zie hoe spoedeisende loodgieter oproepen betaalde facturen worden in 7 stappen",
+			"steps": {
+				"whatsapp": {
+					"title": "Inkomende WhatsApp",
+					"description": "Klant stuurt bericht + foto"
+				},
+				"ai_suggestion": {
+					"title": "AI Analyse",
+					"description": "Probleem diagnose met tijd/materiaal schattingen"
+				},
+				"schedule": {
+					"title": "Goedkeuren & Plannen",
+					"description": "Snelle agenda toewijzing aan beschikbare loodgieter"
+				},
+				"job_card": {
+					"title": "Klus Kaart",
+					"description": "Mobiel-vriendelijke vandaag weergave met timer en shortcuts"
+				},
+				"voice_draft": {
+					"title": "Spraak → Factuur Concept",
+					"description": "Spraak-naar-tekst creëert factuurregels met BTW"
+				},
+				"send_pay": {
+					"title": "Verstuur & Betaal",
+					"description": "Provider-uitgegeven PDF + iDEAL PaymentURL"
+				},
+				"reminders": {
+					"title": "Auto Herinneringen",
+					"description": "WhatsApp incasso reeks (+3/+7/+14 dagen)"
+				}
+			},
+			"page": {
+				"back": "Terug",
+				"title": "Happy Path Demo",
+				"headline": "Van WhatsApp naar Betaalde Factuur",
+				"subtitle": "Zie hoe een spoedmelding van een klant binnen 7 stappen wordt omgezet naar een betaalde factuur - volledig geautomatiseerd met AI.",
+				"cta": {
+					"headline": "Klaar om je bedrijf te transformeren?",
+					"subtitle": "Word lid van onze wachtlijst en wees de eerste die van deze AI-automatisering profiteert.",
+					"button": "Word lid van Wachtlijst"
+				},
+				"benefits": {
+					"faster": {
+						"title": "Sneller",
+						"description": "Van melding naar planning in minuten, niet uren"
+					},
+					"smarter": {
+						"title": "Slimmer",
+						"description": "AI analyseert probleem en stelt materialen voor"
+					},
+					"better_paid": {
+						"title": "Beter betaald",
+						"description": "Automatische facturatie met iDEAL betalingen"
+					}
+				},
+				"navigation": {
+					"previous": "Vorige",
+					"next": "Volgende",
+					"step_counter": "Stap {current} van {total}"
+				}
+			},
+			"content": {
+				"whatsapp": {
+					"photo_attached": "Foto bijgevoegd",
+					"ai_analyzing": "AI analyseert..."
+				},
+				"ai_suggestion": {
+					"diagnosis": "Diagnose",
+					"reliable": "betrouwbaar",
+					"urgency": "Urgentie",
+					"emergency": "Spoed",
+					"estimated_time": "Geschatte tijd",
+					"minutes": "minuten",
+					"required_materials": "Benodigde materialen",
+					"quantity_format": "{quantity}x {name}"
+				},
+				"schedule": {
+					"assigned_to": "Toegewezen aan",
+					"start_time": "Starttijd",
+					"end_time": "Eindtijd",
+					"auto_assigned": "Automatisch toegewezen aan dichtstbijzijnde beschikbare monteur"
+				},
+				"job_card": {
+					"address": "Adres",
+					"phone": "Telefoon",
+					"notes": "Notities"
+				},
+				"voice_draft": {
+					"voice_transcript": "Spraak transcript",
+					"invoice_lines": "Factuurregels (automatisch gegenereerd)",
+					"vat": "BTW",
+					"subtotal_ex_vat": "Subtotaal (excl. BTW)",
+					"vat_total": "BTW",
+					"total": "Totaal",
+					"line_format": "{quantity}x • BTW {rate}%"
+				},
+				"send_pay": {
+					"invoice_sent": "Factuur verstuurd",
+					"whatsapp_message": "WhatsApp bericht",
+					"payment_status": "Betalingsstatus",
+					"invoice_id": "Factuur ID",
+					"payment_url": "Betaallink (iDEAL)",
+					"pdf": "PDF",
+					"ubl": "UBL",
+					"awaiting_payment": "Wacht op betaling",
+					"provider": "Via",
+					"click_pay": "Klik om te betalen"
+				},
+				"reminders": {
+					"title": "Incasso herinnering",
+					"original_amount": "Oorspronkelijk bedrag",
+					"days_overdue": "dagen te laat",
+					"after_days": "Na {days} dagen",
+					"reminder_sent": "Herinnering verzonden {time}",
+					"payment_received": "Betaling ontvangen",
+					"collection_complete": "Incasso voltooid",
+					"whatsapp_series": "WhatsApp incasso reeks gepland",
+					"automation_active": "Automatisering actief",
+					"opt_out_respected": "Opt-out wordt gerespecteerd",
+					"email_escalation": "Escalatie naar e-mail na 14 dagen",
+					"scheduled": "Gepland"
+				},
+				"common": {
+					"due_date": "Vervaldatum",
+					"alternative_payment": "Ook beschikbaar: bankoverschrijving, creditcard",
+					"step_data_unavailable": "Stap data niet beschikbaar",
+					"email": "Email",
+					"loading": "Laden..."
+				}
+			}
+		}
 	}
 }

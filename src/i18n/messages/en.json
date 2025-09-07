@@ -531,5 +531,197 @@
 	},
 	"badges": {
 		"locked_tooltip": "Feature locked for your plan. Enable it in Settings."
+	},
+	"launch": {
+		"meta": {
+			"title": "AI Plumber Dispatch Platform - WhatsApp to Invoice Automation",
+			"description": "Transform emergency plumber calls into paid invoices in 7 steps. WhatsApp-first AI receptionist for Dutch plumbers. iDEAL payments, Schedule-X planning, automated reminders.",
+			"keywords": "plumber software, WhatsApp plumber, plumber scheduling app, Dutch plumber automation, iDEAL invoice, emergency plumber dispatch"
+		},
+		"hero": {
+			"headline": "WhatsApp-connected AI that turns chats into jobs, schedules, and invoices",
+			"subhead": "Save ~15 hours/week with AI-powered plumber workflow automation. No typing required.",
+			"cta_demo": "Try the Demo",
+			"cta_waitlist": "Join Waitlist"
+		},
+		"usp": {
+			"title": "Complete plumber automation",
+			"subtitle": "From WhatsApp message to paid invoice in 7 seamless steps",
+			"whatsapp": {
+				"title": "WhatsApp-First Intake",
+				"description": "Text, photo, voice messages automatically processed with plumber approval"
+			},
+			"ai": {
+				"title": "AI Diagnosis + Estimates",
+				"description": "Time and materials estimation with confidence scoring and learning system"
+			},
+			"schedule": {
+				"title": "Mobile Schedule-X",
+				"description": "Week/Day views with Unscheduled drawer. Assign jobs in ≤3 taps"
+			},
+			"jobcards": {
+				"title": "Offline Job Cards",
+				"description": "Today view with timer, quick materials, navigate/call/WhatsApp shortcuts"
+			},
+			"invoicing": {
+				"title": "Provider Invoices + iDEAL",
+				"description": "Moneybird/WeFact/e-Boekhouden integration with PaymentURL and dunning"
+			},
+			"compliance": {
+				"title": "Dutch Compliance",
+				"description": "GDPR, iDEAL, BTW (21/9%), KVK registration, audit logs"
+			}
+		},
+		"trust": {
+			"dutch_compliance": "Dutch Compliance",
+			"ideal_payments": "iDEAL Payments",
+			"whatsapp_business": "WhatsApp Business"
+		},
+		"waitlist": {
+			"title": "Join the Waitlist",
+			"subtitle": "Be the first to transform your plumbing business with AI automation",
+			"form": {
+				"email": "Email address",
+				"phone": "Phone number (optional)",
+				"org_name": "Company name (optional)",
+				"submit": "Join Waitlist",
+				"success": "Thanks! We'll notify you when we launch.",
+				"error": "Something went wrong. Please try again."
+			},
+			"gdpr_note": "We store your data securely and never share it."
+		},
+		"demo": {
+			"title": "Happy Path Demo",
+			"subtitle": "See how emergency plumber calls become paid invoices in 7 steps",
+			"steps": {
+				"whatsapp": {
+					"title": "Inbound WhatsApp",
+					"description": "Customer sends message + photo"
+				},
+				"ai_suggestion": {
+					"title": "AI Analysis",
+					"description": "Issue diagnosis with time/material estimates"
+				},
+				"schedule": {
+					"title": "Approve & Schedule",
+					"description": "Quick calendar assignment to available plumber"
+				},
+				"job_card": {
+					"title": "Job Card",
+					"description": "Mobile-friendly today view with timer and shortcuts"
+				},
+				"voice_draft": {
+					"title": "Voice → Invoice Draft",
+					"description": "Speech-to-text creates invoice lines with VAT"
+				},
+				"send_pay": {
+					"title": "Send & Pay",
+					"description": "Provider-issued PDF + iDEAL PaymentURL"
+				},
+				"reminders": {
+					"title": "Auto Reminders",
+					"description": "WhatsApp dunning sequence (+3/+7/+14 days)"
+				}
+			},
+			"page": {
+				"back": "Back",
+				"title": "Happy Path Demo",
+				"headline": "From WhatsApp to Paid Invoice",
+				"subtitle": "See how an emergency customer report becomes a paid invoice in 7 steps - fully automated with AI.",
+				"cta": {
+					"headline": "Ready to transform your business?",
+					"subtitle": "Join our waitlist and be the first to benefit from this AI automation.",
+					"button": "Join Waitlist"
+				},
+				"benefits": {
+					"faster": {
+						"title": "Faster",
+						"description": "From report to scheduling in minutes, not hours"
+					},
+					"smarter": {
+						"title": "Smarter",
+						"description": "AI analyzes problem and suggests materials"
+					},
+					"better_paid": {
+						"title": "Better Paid",
+						"description": "Automatic invoicing with iDEAL payments"
+					}
+				},
+				"navigation": {
+					"previous": "Previous",
+					"next": "Next",
+					"step_counter": "Step {current} of {total}"
+				}
+			},
+			"content": {
+				"whatsapp": {
+					"photo_attached": "Photo attached",
+					"ai_analyzing": "AI analyzing..."
+				},
+				"ai_suggestion": {
+					"diagnosis": "Diagnosis",
+					"reliable": "reliable",
+					"urgency": "Urgency",
+					"emergency": "Emergency",
+					"estimated_time": "Estimated time",
+					"minutes": "minutes",
+					"required_materials": "Required materials",
+					"quantity_format": "{quantity}x {name}"
+				},
+				"schedule": {
+					"assigned_to": "Assigned to",
+					"start_time": "Start time",
+					"end_time": "End time",
+					"auto_assigned": "Automatically assigned to nearest available plumber"
+				},
+				"job_card": {
+					"address": "Address",
+					"phone": "Phone",
+					"notes": "Notes"
+				},
+				"voice_draft": {
+					"voice_transcript": "Voice transcript",
+					"invoice_lines": "Invoice lines (auto-generated)",
+					"vat": "VAT",
+					"subtotal_ex_vat": "Subtotal (excl. VAT)",
+					"vat_total": "VAT",
+					"total": "Total",
+					"line_format": "{quantity}x • VAT {rate}%"
+				},
+				"send_pay": {
+					"invoice_sent": "Invoice sent",
+					"whatsapp_message": "WhatsApp message",
+					"payment_status": "Payment status",
+					"invoice_id": "Invoice ID",
+					"payment_url": "Payment link (iDEAL)",
+					"pdf": "PDF",
+					"ubl": "UBL",
+					"awaiting_payment": "Awaiting payment",
+					"provider": "Via",
+					"click_pay": "Click to pay"
+				},
+				"reminders": {
+					"title": "Collection reminder",
+					"original_amount": "Original amount",
+					"days_overdue": "days overdue",
+					"after_days": "After {days} days",
+					"reminder_sent": "Reminder sent {time}",
+					"payment_received": "Payment received",
+					"collection_complete": "Collection complete",
+					"whatsapp_series": "WhatsApp collection series scheduled",
+					"automation_active": "Automation active",
+					"opt_out_respected": "Opt-out respected",
+					"email_escalation": "Escalation to email after 14 days",
+					"scheduled": "Scheduled"
+				},
+				"common": {
+					"due_date": "Due date",
+					"alternative_payment": "Also available: bank transfer, credit card",
+					"step_data_unavailable": "Step data not available",
+					"email": "Email",
+					"loading": "Loading..."
+				}
+			}
+		}
 	}
 }
