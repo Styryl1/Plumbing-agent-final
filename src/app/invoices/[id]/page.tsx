@@ -195,20 +195,36 @@ export default function InvoiceDetailPage(): JSX.Element {
 
 				{/* Sidebar - Actions & Status */}
 				<div className="space-y-6">
+					{/* Show PaymentLinks above actions when invoice is issued */}
+					{(invoice.issuedAt != null ||
+						invoice.status === "sent" ||
+						invoice.status === "paid") && (
+						<PaymentLinks
+							paymentUrl={invoice.paymentUrl}
+							pdfUrl={invoice.pdfUrl}
+							invoiceId={invoice.id!}
+						/>
+					)}
+
 					{/* Issue Actions */}
 					<IssueActions
 						invoiceId={invoice.id!}
 						status={invoice.status}
 						provider={invoice.provider}
 						externalId={invoice.externalId}
+						issuedAt={invoice.issuedAt}
 					/>
 
-					{/* Payment & PDF Links */}
-					<PaymentLinks
-						paymentUrl={invoice.paymentUrl}
-						pdfUrl={invoice.pdfUrl}
-						invoiceId={invoice.id!}
-					/>
+					{/* Payment & PDF Links (fallback for non-issued invoices) */}
+					{invoice.issuedAt == null &&
+						invoice.status !== "sent" &&
+						invoice.status !== "paid" && (
+							<PaymentLinks
+								paymentUrl={invoice.paymentUrl}
+								pdfUrl={invoice.pdfUrl}
+								invoiceId={invoice.id!}
+							/>
+						)}
 
 					{/* Timeline */}
 					<Timeline invoiceId={invoice.id!} />

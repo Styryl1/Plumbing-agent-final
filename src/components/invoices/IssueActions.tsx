@@ -1,9 +1,10 @@
 "use client";
 
-import { Send } from "lucide-react";
+import { Lock, Send } from "lucide-react";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -20,6 +21,7 @@ interface IssueActionsProps {
 	status: string;
 	provider?: string | null | undefined;
 	externalId?: string | null | undefined;
+	issuedAt?: string | null | undefined;
 }
 
 /**
@@ -31,6 +33,7 @@ export function IssueActions({
 	status,
 	provider,
 	externalId,
+	issuedAt,
 }: IssueActionsProps): JSX.Element {
 	const t = useT();
 	const [isIssuing, setIsIssuing] = useState(false);
@@ -54,17 +57,34 @@ export function IssueActions({
 		},
 	});
 
-	// Don't show for already sent invoices
-	if (status === "sent" || status === "paid") {
+	// Determine if invoice is locked (post-send state)
+	const isLocked =
+		issuedAt != null ||
+		status === "sent" ||
+		status === "paid" ||
+		["sent", "viewed", "paid", "overdue", "cancelled"].includes(status);
+
+	// Show lock state for already sent invoices
+	if (isLocked) {
 		return (
-			<Card>
-				<CardHeader>
-					<CardTitle>{t("invoice.issueActions")}</CardTitle>
-					<CardDescription>{t("invoice.alreadyIssued")}</CardDescription>
+			<Card className="border-muted bg-muted/20">
+				<CardHeader className="pb-3">
+					<div className="flex items-center justify-between">
+						<CardTitle className="flex items-center gap-2">
+							<Lock className="h-4 w-4 text-muted-foreground" />
+							{t("invoice.issueActions")}
+						</CardTitle>
+						{provider && (
+							<Badge variant="secondary" className="bg-primary/10 text-primary">
+								{t("invoice.lockedBadge", { provider })}
+							</Badge>
+						)}
+					</div>
+					<CardDescription>{t("invoice.lockedDescription")}</CardDescription>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="pt-0">
 					<div className="text-sm text-muted-foreground">
-						{t("invoice.alreadyIssuedDescription")}
+						{t("invoice.providerPdfNote")}
 					</div>
 				</CardContent>
 			</Card>
