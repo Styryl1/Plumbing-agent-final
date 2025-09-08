@@ -2,13 +2,16 @@
 
 import {
 	AlertCircle,
+	ArrowRight,
 	CheckCircle2,
 	Phone,
 	RefreshCw,
+	Settings,
 	Shield,
 	Wifi,
 	XCircle,
 } from "lucide-react";
+import Link from "next/link";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -117,10 +120,47 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 
 	return (
 		<div className="container max-w-4xl py-8 space-y-6">
-			<div>
-				<h1 className="text-3xl font-bold">{t("title")}</h1>
-				<p className="text-muted-foreground mt-2">{t("description")}</p>
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-3xl font-bold">{t("title")}</h1>
+					<p className="text-muted-foreground mt-2">{t("description")}</p>
+				</div>
+				<Button asChild size="lg" className="shrink-0">
+					<Link href="/settings/whatsapp/onboard">
+						<Settings className="h-4 w-4 mr-2" />
+						{t("onboard.title")}
+					</Link>
+				</Button>
 			</div>
+
+			{/* Quick Setup Card for new users */}
+			{(!numbers || numbers.items.length === 0) &&
+				health &&
+				(!health.envOk || !health.secretOk) && (
+					<Card className="border-primary/20 bg-primary/5">
+						<CardContent className="pt-6">
+							<div className="flex items-start gap-4">
+								<div className="p-2 rounded-full bg-primary/10">
+									<Settings className="h-6 w-6 text-primary" />
+								</div>
+								<div className="flex-1">
+									<h3 className="font-semibold text-primary mb-2">
+										{t("onboard.quickTitle")}
+									</h3>
+									<p className="text-sm text-muted-foreground mb-4">
+										{t("onboard.quickDescription")}
+									</p>
+									<Button asChild variant="outline" size="sm">
+										<Link href="/settings/whatsapp/onboard">
+											{t("onboard.start")}
+											<ArrowRight className="h-4 w-4 ml-2" />
+										</Link>
+									</Button>
+								</div>
+							</div>
+						</CardContent>
+					</Card>
+				)}
 
 			{/* Current Mappings */}
 			<Card>

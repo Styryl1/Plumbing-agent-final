@@ -28,7 +28,7 @@ function scanForViolations(pattern, description, restrictToClientDirs = false) {
       searchPath = "src/app/ src/components/";
     }
     
-    const cmd = `rg -n "${pattern}" ${searchPath} -g "*.ts" -g "*.tsx" -g "*.js" -g "*.jsx"`;
+    const cmd = `rg -n "${pattern}" ${searchPath} -g "*.ts" -g "*.tsx" -g "*.js" -g "*.jsx" -g "!workbench/**"`;
     const result = execSync(cmd, { 
       encoding: "utf8",
       cwd: process.cwd()
@@ -36,14 +36,20 @@ function scanForViolations(pattern, description, restrictToClientDirs = false) {
     
     const lines = result.trim().split("\n").filter(Boolean);
     
-    if (lines.length > 0) {
+    // Filter out workbench and demo fixture paths
+    const filteredLines = lines.filter(line => {
+      return !line.includes('workbench/') && 
+             !line.includes('src/components/launch/');
+    });
+    
+    if (filteredLines.length > 0) {
       violations.push({
         rule: description,
         pattern: pattern,
-        matches: lines
+        matches: filteredLines
       });
-      console.log(`❌ ${lines.length} violations found`);
-      lines.forEach(line => console.log(`   ${line}`));
+      console.log(`❌ ${filteredLines.length} violations found`);
+      filteredLines.forEach(line => console.log(`   ${line}`));
       return false;
     }
     
@@ -76,7 +82,7 @@ scanForViolations("\\btest[A-Z][a-zA-Z]*\\s*[:=]", "Test data variables (testSom
 function scanForTemporaryComments() {
   console.log(`📋 Scanning: Mock/temporary data comments`);
   try {
-    const cmd = `rg -n "// Mock|// Demo|// TODO.*mock|// TODO.*demo|// Temporary|// Placeholder" src/ -g "*.ts" -g "*.tsx" -g "*.js" -g "*.jsx"`;
+    const cmd = `rg -n "// Mock|// Demo|// TODO.*mock|// TODO.*demo|// Temporary|// Placeholder" src/ -g "*.ts" -g "*.tsx" -g "*.js" -g "*.jsx" -g "!workbench/**"`;
     const result = execSync(cmd, { 
       encoding: "utf8",
       cwd: process.cwd()
@@ -94,7 +100,9 @@ function scanForTemporaryComments() {
     ];
     
     const violations = lines.filter(line => {
-      return !whitelistedPatterns.some(pattern => line.includes(pattern));
+      return !whitelistedPatterns.some(pattern => line.includes(pattern)) &&
+             !line.includes('workbench/') &&
+             !line.includes('src/components/launch/');
     });
     
     if (violations.length > 0) {

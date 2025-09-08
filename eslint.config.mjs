@@ -68,7 +68,7 @@ export default [
   // TypeScript (v8) — enable parser service for TS files only
   ...tseslint.configs.recommendedTypeChecked.map((cfg) => ({
     ...cfg,
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx}", "middleware.ts"],
     plugins: {
       ...cfg.plugins,
       "@typescript-eslint": tseslint.plugin,
@@ -85,7 +85,7 @@ export default [
 
   // Next.js plugin explicit registration (for proper detection)
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx}", "middleware.ts"],
     plugins: { 
       "@next/next": nextPlugin 
     },
@@ -96,7 +96,7 @@ export default [
 
   // TypeScript rules (typed rules for TS files only)
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx}", "middleware.ts"],
     plugins: { 
       "@typescript-eslint": tseslint.plugin,
       "import-x": importX,
@@ -470,6 +470,27 @@ export default [
       ],
     },
   },
+
+  // Client-side env shim: allow NEXT_PUBLIC_* reads here only
+  {
+    files: ["src/lib/env-client.ts"],
+    rules: {
+      "no-process-env": "off",
+      "no-restricted-properties": ["error", 
+        {
+          "object": "Date", 
+          "property": "now", 
+          "message": "Use Temporal.Now.* instead"
+        },
+        {
+          "object": "Date", 
+          "property": "parse", 
+          "message": "Use Temporal.* parsing instead"
+        }
+      ],
+    },
+  },
+
 
   // Whitelist src/lib/date-bridge.ts for Date constructor (UI compatibility bridge)
   {

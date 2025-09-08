@@ -301,6 +301,134 @@ const generateWhatsAppSliceManifest = async (rootDir) => {
   return slices;
 };
 
+// Parse guard results: ignore everything before summary, preserve all details after
+const parseGuardResults = (guardData) => {
+  if (guardData.success) {
+    return {
+      status: "success",
+      summary: "All validation steps passed successfully.",
+      details: null
+    };
+  }
+
+  const output = guardData.combined || guardData.stdout || "";
+  const stderr = guardData.stderr || "";
+  const fullText = output + "\n" + stderr;
+  
+  // Find the summary section
+  const summaryMarker = "========== GUARD-SAFE SUMMARY ==========";
+  const summaryIndex = fullText.indexOf(summaryMarker);
+  
+  if (summaryIndex === -1) {
+    // Fallback if no summary found - return simplified version
+    return {
+      status: "failed",
+      summary: "Guard validation failed",
+      summarySection: "Summary section not found",
+      detailedOutput: fullText.replace(/\[[0-9;]+m/g, ''),
+      exitCode: guardData.exitCode || 1
+    };
+  }
+  
+  // Extract summary section and everything after it
+  const afterSummary = fullText.substring(summaryIndex);
+  const lines = afterSummary.split("\n");
+  
+  // Parse the summary section to get pass/fail counts
+  let summaryLines = [];
+  let detailLines = [];
+  let inDetails = false;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // Detect end of summary section (when detailed output starts)
+    if (trimmed === "" && summaryLines.length > 0 && !inDetails) {
+      inDetails = true;
+      continue;
+    }
+    
+    if (!inDetails && (line.includes("✅") || line.includes("❌") || line.includes("PASS") || line.includes("FAIL"))) {
+      summaryLines.push(line.replace(/\[[0-9;]+m/g, ''));
+    } else if (inDetails) {
+      // Include all detailed output after summary
+      detailLines.push(line);
+    }
+  }
+  
+  // Count failures from summary
+  const failedSteps = summaryLines.filter(line => line.includes("❌") || line.includes("FAIL")).length;
+  const passedSteps = summaryLines.filter(line => line.includes("✅") || line.includes("PASS")).length;
+  
+  return {
+    status: "failed",
+    summary: `${failedSteps} failed steps, ${passedSteps} passed steps`,
+    summarySection: summaryLines.join('\n'),
+    detailedOutput: detailLines.join('\n').replace(/\[[0-9;]+m/g, ''), // Strip ANSI codes
+    exitCode: guardData.exitCode || 1,
+    totals: {
+      failed: failedSteps,
+      passed: passedSteps
+    }
+  };
+};
+
+// Generate streamlined guard report with summary + all detailed output
+const generateGuardReport = (guardData, parsedResults) => {
+  if (parsedResults.status === "success") {
+    return [
+      "# GUARD VALIDATION REPORT ✅",
+      "",
+      `**Generated**: ${new Date().toISOString()}`,
+      "**Status**: ALL CHECKS PASSED",
+      "",
+      "## Summary",
+      "",
+      "All validation steps completed successfully:",
+      "- ✅ Biome Format",
+      "- ✅ Biome Check", 
+      "- ✅ ESLint",
+      "- ✅ PreTypeCheck",
+      "- ✅ TypeScript",
+      "- ✅ Check Imports",
+      "- ✅ Check Routes",
+      "- ✅ Check Encoding",
+      "- ✅ Audit Production Rules",
+      "- ✅ Next.js Build",
+      ""
+    ].join("\n");
+  }
+  
+  const report = [
+    "# GUARD VALIDATION REPORT ❌",
+    "",
+    `**Generated**: ${new Date().toISOString()}`,
+    `**Status**: FAILED (${parsedResults.summary})`,
+    `**Exit Code**: ${parsedResults.exitCode}`,
+    "",
+    "## Validation Steps Summary",
+    "",
+    "```",
+    parsedResults.summarySection,
+    "```",
+    "",
+    "## Detailed Error Output",
+    "",
+    "All error details with full context (i18n key lists omitted for brevity):",
+    "",
+    "```",
+    parsedResults.detailedOutput.length > 50000 
+      ? parsedResults.detailedOutput.substring(0, 50000) + "\n\n... [Output truncated at 50k chars for readability] ..."
+      : parsedResults.detailedOutput,
+    "```",
+    "",
+    "---",
+    "*This report preserves all validation error details while providing a clean summary section.*"
+  ];
+  
+  return report.join("\n");
+};
+
 // ---------- Main ----------
 (async () => {
   const root = process.cwd();
@@ -392,8 +520,18 @@ const generateWhatsAppSliceManifest = async (rootDir) => {
     console.log("⚠️  pnpm guard-safe reported failures - comprehensive results captured for ChatGPT analysis");
   }
 
-  // Add guard results to manifest
+  // Parse and structure guard results for better analysis
+  console.log("🔍 Parsing and deduplicating guard results...");
+  const parsedResults = parseGuardResults(guardResults);
+  
+  // Add both raw and parsed results to manifest
   manifest.guardResults = guardResults;
+  manifest.guardSummary = {
+    ...parsedResults,
+    // Simplified manifest summary
+    failedSteps: parsedResults.totals?.failed || 0,
+    passedSteps: parsedResults.totals?.passed || 0
+  };
 
   // Generate WhatsApp slice status manifest
   console.log("📋 Generating WhatsApp slice status manifest...");
@@ -407,55 +545,38 @@ const generateWhatsAppSliceManifest = async (rootDir) => {
   await fse.ensureDir(path.dirname(sliceManifestPath));
   await fs.writeFile(sliceManifestPath, JSON.stringify(sliceManifest, null, 2), "utf8");
 
-  // Create GUARD_RESULTS.md with comprehensive validation report
-  const guardReport = [
-    "# GUARD-SAFE VALIDATION REPORT",
-    "",
-    `**Generated**: ${new Date().toISOString()}`,
-    `**Status**: ${guardResults.success ? "✅ PASSED" : "❌ FAILED"}`,
-    guardResults.exitCode ? `**Exit Code**: ${guardResults.exitCode}` : "",
-    "",
-    "## Summary",
-    "",
-    "This report contains the complete output from `pnpm guard-safe`, which runs ALL validation steps sequentially:",
-    "1. Biome Format",
-    "2. Biome Check", 
-    "3. ESLint",
-    "4. PreTypeCheck",
-    "5. TypeScript",
-    "6. Check Imports",
-    "7. Check Routes",
-    "8. Check Encoding",
-    "9. Audit Production Rules",
-    "10. Next.js Build",
-    "",
-    guardResults.success ? 
-      "All validation steps completed successfully." : 
-      "One or more validation steps failed. See detailed output below.",
-    "",
-    "## Detailed Output",
-    "",
-    "```",
-    guardResults.success ? guardResults.output : guardResults.combined || guardResults.stdout || "No output captured",
-    "```",
-    "",
-    guardResults.stderr && !guardResults.success ? [
-      "## Error Output",
+  // Create improved GUARD_RESULTS.md with structured, deduplicated report
+  const guardReport = generateGuardReport(guardResults, parsedResults);
+  await fs.writeFile(path.join(snapshotDir, "GUARD_RESULTS.md"), guardReport, "utf8");
+  
+  // Also save detailed raw output for deeper debugging if needed
+  if (!guardResults.success) {
+    const rawOutput = [
+      "# RAW GUARD OUTPUT (For Deep Debugging)",
+      "",
+      "This file contains the complete unprocessed output from `pnpm guard-safe`.",
+      "For structured analysis, see GUARD_RESULTS.md instead.",
+      "",
+      "## Combined Output",
       "",
       "```",
-      guardResults.stderr,
+      guardResults.combined || guardResults.stdout || "No output captured",
       "```",
-      ""
-    ].join("\n") : "",
-    "---",
-    "*This comprehensive report helps ChatGPT understand all validation issues in the codebase.*"
-  ].filter(line => line !== "").join("\n");
-  
-  await fs.writeFile(path.join(snapshotDir, "GUARD_RESULTS.md"), guardReport, "utf8");
-  console.log(guardResults.success ? 
-    "✅ Guard validation results saved to GUARD_RESULTS.md" : 
-    "📋 Guard errors and full output saved to GUARD_RESULTS.md for ChatGPT analysis"
-  );
+      "",
+      guardResults.stderr ? [
+        "## Standard Error",
+        "",
+        "```",
+        guardResults.stderr,
+        "```"
+      ].join("\n") : ""
+    ].filter(line => line !== "").join("\n");
+    
+    await fs.writeFile(path.join(snapshotDir, "GUARD_RAW_OUTPUT.md"), rawOutput, "utf8");
+    console.log("📋 Structured guard analysis saved to GUARD_RESULTS.md, raw output to GUARD_RAW_OUTPUT.md");
+  } else {
+    console.log("✅ Guard validation results saved to GUARD_RESULTS.md");
+  }
 
   // Create tar.gz
   const outName = `${OUTPUT_BASENAME}.${stamp}.tar.gz`;

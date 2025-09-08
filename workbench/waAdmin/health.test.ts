@@ -1,16 +1,30 @@
 // Test for WhatsApp Admin health logic
 // Tests the pure health derivation function
 
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { deriveHealthFlags } from "../../src/server/api/routers/waAdmin";
 
-describe("deriveHealthFlags", () => {
-	it("returns all false when no env vars are set", () => {
-		// Mock environment with no WhatsApp vars
-		vi.stubGlobal("process", {
-			env: {},
-		});
+// Mock the env module with controllable values
+const mockEnv = {
+	WHATSAPP_BUSINESS_PHONE_ID: undefined as string | undefined,
+	WHATSAPP_ACCESS_TOKEN: undefined as string | undefined,
+	WHATSAPP_WEBHOOK_SECRET: undefined as string | undefined,
+};
 
+vi.mock("~/lib/env", () => ({
+	env: mockEnv,
+}));
+
+describe("deriveHealthFlags", () => {
+	beforeEach(() => {
+		// Reset mock env before each test
+		mockEnv.WHATSAPP_BUSINESS_PHONE_ID = undefined;
+		mockEnv.WHATSAPP_ACCESS_TOKEN = undefined;
+		mockEnv.WHATSAPP_WEBHOOK_SECRET = undefined;
+	});
+
+	it("returns all false when no env vars are set", () => {
+		// Env vars are already undefined from beforeEach
 		const result = deriveHealthFlags();
 
 		expect(result).toEqual({
@@ -21,11 +35,8 @@ describe("deriveHealthFlags", () => {
 	});
 
 	it("returns partial true when some env vars are set", () => {
-		vi.stubGlobal("process", {
-			env: {
-				WHATSAPP_WEBHOOK_SECRET: "test_secret",
-			},
-		});
+		mockEnv.WHATSAPP_WEBHOOK_SECRET = "test_secret";
+		// Keep phone ID and token undefined
 
 		const result = deriveHealthFlags();
 
@@ -37,13 +48,9 @@ describe("deriveHealthFlags", () => {
 	});
 
 	it("returns all true when all required env vars are set", () => {
-		vi.stubGlobal("process", {
-			env: {
-				WHATSAPP_BUSINESS_PHONE_ID: "1234567890",
-				WHATSAPP_ACCESS_TOKEN: "test_token",
-				WHATSAPP_WEBHOOK_SECRET: "test_secret",
-			},
-		});
+		mockEnv.WHATSAPP_BUSINESS_PHONE_ID = "test_phone_id";
+		mockEnv.WHATSAPP_ACCESS_TOKEN = "test_token";
+		mockEnv.WHATSAPP_WEBHOOK_SECRET = "test_secret";
 
 		const result = deriveHealthFlags();
 
@@ -55,13 +62,9 @@ describe("deriveHealthFlags", () => {
 	});
 
 	it("handles empty string env vars as missing", () => {
-		vi.stubGlobal("process", {
-			env: {
-				WHATSAPP_BUSINESS_PHONE_ID: "",
-				WHATSAPP_ACCESS_TOKEN: "test_token",
-				WHATSAPP_WEBHOOK_SECRET: "",
-			},
-		});
+		mockEnv.WHATSAPP_BUSINESS_PHONE_ID = "";
+		mockEnv.WHATSAPP_ACCESS_TOKEN = "test_token";
+		mockEnv.WHATSAPP_WEBHOOK_SECRET = "";
 
 		const result = deriveHealthFlags();
 

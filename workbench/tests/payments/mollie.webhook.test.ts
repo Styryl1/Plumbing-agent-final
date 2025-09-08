@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeDbStub } from "../_helpers/db";
 
 function parseFormUrlEncoded(body: string): Record<string, string> {
@@ -12,6 +12,7 @@ function parseFormUrlEncoded(body: string): Record<string, string> {
 
 describe("mollie webhook processing", () => {
 	let db: ReturnType<typeof makeDbStub>;
+	let fetchSpy: any;
 
 	beforeEach(() => {
 		// Fresh db instance for each test - prevents mock drift
@@ -24,6 +25,14 @@ describe("mollie webhook processing", () => {
 			db = makeDbStub();
 			expect(db.rpc.getMockImplementation()).toBeTruthy();
 		}
+		
+		// Stub global fetch for all cases
+		fetchSpy = vi.spyOn(global, "fetch" as any);
+	});
+	
+	afterEach(() => {
+		// Restore fetch after each test
+		fetchSpy?.mockRestore();
 	});
 
 	it("parses form-urlencoded bodies correctly", () => {
@@ -63,7 +72,7 @@ describe("mollie webhook processing", () => {
 		];
 
 		// Mock Mollie API response
-		vi.spyOn(global, "fetch" as any).mockResolvedValue({
+		fetchSpy.mockResolvedValue({
 			ok: true,
 			json: async () => ({
 				id: "tr_12345",
@@ -199,7 +208,7 @@ describe("mollie webhook processing", () => {
 		expect(db._tables["invoices"]).toHaveLength(0);
 
 		// Mock Mollie API response
-		vi.spyOn(global, "fetch" as any).mockResolvedValue({
+		fetchSpy.mockResolvedValue({
 			ok: true,
 			json: async () => ({
 				id: "tr_unknown",

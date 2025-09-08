@@ -31,6 +31,14 @@ describe("Invoice RLS Security Tests", () => {
 					insert: vi.fn(() => ({
 						select: vi.fn(() => Promise.resolve({ data: [], error: null })),
 					})),
+					update: vi.fn(() => ({
+						eq: vi.fn(() => ({
+							select: vi.fn(() => Promise.resolve({ data: [], error: { code: "42501", message: "insufficient_privilege" } })),
+						})),
+						is: vi.fn(() => ({
+							select: vi.fn(() => Promise.resolve({ data: [], error: { code: "42501", message: "insufficient_privilege" } })),
+						})),
+					})),
 				})),
 				auth: {
 					getUser: vi.fn(() => Promise.resolve({ 

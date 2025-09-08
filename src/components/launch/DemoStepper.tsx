@@ -34,7 +34,7 @@ import {
 	type ScheduleEvent,
 	type VoiceDraft,
 	type WhatsAppMessage,
-} from "~/lib/launch/demo-fixtures";
+} from "../../../workbench/launch/demo-fixtures";
 
 const stepIcons = {
 	whatsapp: MessageSquareIcon,

@@ -1,15 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { epochMs } from "~/lib/time";
 
 // Mock the required dependencies
 vi.mock("~/lib/time", () => ({
-	parseZdt: vi.fn((isoString) => ({
-		epochSeconds: new Date(isoString).getTime() / 1000,
-		toString: () => isoString,
-	})),
-	now: vi.fn(() => ({
-		epochSeconds: Date.now() / 1000,
-		toString: () => new Date().toISOString(),
-	})),
+	parseZdt: vi.fn((iso: string) => Temporal.ZonedDateTime.from(iso)),
+	now: vi.fn(() => Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")),
+	epochMs: vi.fn(() => Temporal.Now.instant().epochMilliseconds),
 }));
 
 vi.mock("~/server/db/client", () => ({
@@ -47,8 +43,8 @@ function mockDunningSelector(invoices: Array<{
 		}
 
 		// Must be overdue (simplified: older than 30 days)
-		const issuedTime = new Date(invoice.issued_at).getTime();
-		const now = Date.now();
+		const issuedTime = Temporal.Instant.from(invoice.issued_at).epochMilliseconds;
+		const now = epochMs();
 		const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
 		
 		if (now - issuedTime < thirtyDaysMs) {
@@ -57,7 +53,7 @@ function mockDunningSelector(invoices: Array<{
 
 		// Skip if dunned recently (within last 7 days)
 		if (invoice.last_dunning_at) {
-			const lastDunningTime = new Date(invoice.last_dunning_at).getTime();
+			const lastDunningTime = Temporal.Instant.from(invoice.last_dunning_at).epochMilliseconds;
 			const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
 			
 			if (now - lastDunningTime < sevenDaysMs) {
@@ -71,23 +67,28 @@ function mockDunningSelector(invoices: Array<{
 
 // Mock status refresh with backoff
 function mockStatusRefresh(invoiceId: string, lastRefreshAt?: string) {
-	const now = Date.now();
+	const now = epochMs();
 	
 	// Implement exponential backoff
 	if (lastRefreshAt) {
-		const lastRefreshTime = new Date(lastRefreshAt).getTime();
-		const timeSinceLastRefresh = now - lastRefreshTime;
-		
-		// Start with 5 minute minimum interval, double up to 2 hours max
-		const baseInterval = 5 * 60 * 1000; // 5 minutes
-		const maxInterval = 2 * 60 * 60 * 1000; // 2 hours
-		
-		// Simple backoff: double interval for each hour since last refresh
-		const hoursSinceRefresh = Math.floor(timeSinceLastRefresh / (60 * 60 * 1000));
-		const currentInterval = Math.min(baseInterval * Math.pow(2, hoursSinceRefresh), maxInterval);
-		
-		if (timeSinceLastRefresh < currentInterval) {
-			return { shouldRefresh: false, reason: "backoff", nextRefreshIn: currentInterval - timeSinceLastRefresh };
+		try {
+			const lastRefreshTime = Temporal.Instant.from(lastRefreshAt).epochMilliseconds;
+			const timeSinceLastRefresh = now - lastRefreshTime;
+			
+			// Start with 5 minute minimum interval, double up to 2 hours max
+			const baseInterval = 5 * 60 * 1000; // 5 minutes
+			const maxInterval = 2 * 60 * 60 * 1000; // 2 hours
+			
+			// Simple backoff: double interval for each hour since last refresh
+			const hoursSinceRefresh = Math.floor(timeSinceLastRefresh / (60 * 60 * 1000));
+			const currentInterval = Math.min(baseInterval * Math.pow(2, hoursSinceRefresh), maxInterval);
+			
+			if (timeSinceLastRefresh < currentInterval) {
+				return { shouldRefresh: false, reason: "backoff", nextRefreshIn: currentInterval - timeSinceLastRefresh };
+			}
+		} catch (error) {
+			// Handle corrupted timestamp - treat as no previous refresh
+			// This allows the refresh to proceed
 		}
 	}
 	
@@ -101,7 +102,7 @@ describe("Invoice Dunning Edge Cases", () => {
 	});
 
 	describe("Late payment exclusion", () => {
-		it("removes invoice from dunning when paid late", () => {
+		it("removes invoice from dunning when paid late", async () => {
 			const invoices = [
 				{
 					id: "invoice-1",
@@ -122,7 +123,8 @@ describe("Invoice Dunning Edge Cases", () => {
 			];
 
 			// Mock current time as February 2024
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-02-01T10:00:00Z").getTime());
+			const timeModule = await import("~/lib/time");
+			vi.mocked(timeModule.epochMs).mockReturnValue(Temporal.Instant.from("2024-02-01T10:00:00Z").epochMilliseconds);
 
 			const dunningCandidates = mockDunningSelector(invoices);
 
@@ -132,7 +134,7 @@ describe("Invoice Dunning Edge Cases", () => {
 			expect(dunningCandidates.find(i => i.id === "invoice-2")).toBeUndefined();
 		});
 
-		it("handles status change during dunning process", () => {
+		it("handles status change during dunning process", async () => {
 			const invoice = {
 				id: "invoice-rapid-pay",
 				status: "sent",
@@ -143,7 +145,8 @@ describe("Invoice Dunning Edge Cases", () => {
 			};
 
 			// First check: eligible for dunning
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-02-01T10:00:00Z").getTime());
+			const timeModule = await import("~/lib/time");
+			vi.mocked(timeModule.epochMs).mockReturnValue(Temporal.Instant.from("2024-02-01T10:00:00Z").epochMilliseconds);
 			let candidates = mockDunningSelector([invoice]);
 			expect(candidates).toHaveLength(1);
 
@@ -153,7 +156,7 @@ describe("Invoice Dunning Edge Cases", () => {
 			expect(candidates).toHaveLength(0); // Should be excluded now
 		});
 
-		it("respects cancelled status for dunning exclusion", () => {
+		it("respects cancelled status for dunning exclusion", async () => {
 			const invoices = [
 				{
 					id: "invoice-cancelled",
@@ -171,7 +174,8 @@ describe("Invoice Dunning Edge Cases", () => {
 				},
 			];
 
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-02-01T10:00:00Z").getTime());
+			const timeModule = await import("~/lib/time");
+			vi.mocked(timeModule.epochMs).mockReturnValue(Temporal.Instant.from("2024-02-01T10:00:00Z").epochMilliseconds);
 			const candidates = mockDunningSelector(invoices);
 
 			// Both cancelled invoices should be excluded
@@ -180,7 +184,7 @@ describe("Invoice Dunning Edge Cases", () => {
 	});
 
 	describe("Dunning frequency controls", () => {
-		it("prevents dunning too frequently", () => {
+		it("prevents dunning too frequently", async () => {
 			const invoice = {
 				id: "invoice-recent-dun",
 				status: "sent",
@@ -191,19 +195,21 @@ describe("Invoice Dunning Edge Cases", () => {
 			};
 
 			// Current time: only 3 days since last dunning
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-01-28T10:00:00Z").getTime());
+			const timeModule = await import("~/lib/time");
+			vi.mocked(timeModule.epochMs).mockReturnValue(Temporal.Instant.from("2024-01-28T10:00:00Z").epochMilliseconds);
 			
 			let candidates = mockDunningSelector([invoice]);
 			expect(candidates).toHaveLength(0); // Too soon
 
 			// Move forward 5 more days (8 days total since last dunning)
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-02-02T10:00:00Z").getTime());
+			const timeModule2 = await import("~/lib/time");
+			vi.mocked(timeModule2.epochMs).mockReturnValue(Temporal.Instant.from("2024-02-02T10:00:00Z").epochMilliseconds);
 			
 			candidates = mockDunningSelector([invoice]);
 			expect(candidates).toHaveLength(1); // Now eligible again
 		});
 
-		it("handles first-time dunning eligibility", () => {
+		it("handles first-time dunning eligibility", async () => {
 			const invoice = {
 				id: "invoice-first-dun",
 				status: "sent",
@@ -213,7 +219,8 @@ describe("Invoice Dunning Edge Cases", () => {
 				last_dunning_at: undefined, // Never dunned
 			};
 
-			vi.mocked(Date.now).mockReturnValue(new Date("2024-02-01T10:00:00Z").getTime());
+			const timeModule = await import("~/lib/time");
+			vi.mocked(timeModule.epochMs).mockReturnValue(Temporal.Instant.from("2024-02-01T10:00:00Z").epochMilliseconds);
 			
 			const candidates = mockDunningSelector([invoice]);
 			expect(candidates).toHaveLength(1);
@@ -230,7 +237,7 @@ describe("Status Refresh Idempotency & Backoff", () => {
 	describe("Idempotency checks", () => {
 		it("prevents duplicate refresh for same invoice", () => {
 			const invoiceId = "invoice-123";
-			const recentRefreshTime = new Date(Date.now() - 2 * 60 * 1000).toISOString(); // 2 minutes ago
+			const recentRefreshTime = Temporal.Instant.fromEpochMilliseconds(epochMs() - 2 * 60 * 1000).toString(); // 2 minutes ago
 			
 			const result = mockStatusRefresh(invoiceId, recentRefreshTime);
 			
@@ -241,7 +248,7 @@ describe("Status Refresh Idempotency & Backoff", () => {
 
 		it("allows refresh after backoff period", () => {
 			const invoiceId = "invoice-123";
-			const oldRefreshTime = new Date(Date.now() - 10 * 60 * 1000).toISOString(); // 10 minutes ago
+			const oldRefreshTime = Temporal.Instant.fromEpochMilliseconds(epochMs() - 10 * 60 * 1000).toString(); // 10 minutes ago
 			
 			const result = mockStatusRefresh(invoiceId, oldRefreshTime);
 			
@@ -255,17 +262,17 @@ describe("Status Refresh Idempotency & Backoff", () => {
 			const invoiceId = "invoice-backoff-test";
 			
 			// First refresh: 3 minutes ago (should allow after 5 minutes)
-			let lastRefresh = new Date(Date.now() - 3 * 60 * 1000).toISOString();
+			let lastRefresh = Temporal.Instant.fromEpochMilliseconds(epochMs() - 3 * 60 * 1000).toString();
 			let result = mockStatusRefresh(invoiceId, lastRefresh);
 			expect(result.shouldRefresh).toBe(false); // Too soon
 			
 			// Second attempt: 6 minutes ago (should allow)
-			lastRefresh = new Date(Date.now() - 6 * 60 * 1000).toISOString();
+			lastRefresh = Temporal.Instant.fromEpochMilliseconds(epochMs() - 6 * 60 * 1000).toString();
 			result = mockStatusRefresh(invoiceId, lastRefresh);
 			expect(result.shouldRefresh).toBe(true); // Now eligible
 			
 			// After 1 hour: interval should have doubled
-			lastRefresh = new Date(Date.now() - 70 * 60 * 1000).toISOString(); // 70 minutes ago
+			lastRefresh = Temporal.Instant.fromEpochMilliseconds(epochMs() - 70 * 60 * 1000).toString(); // 70 minutes ago
 			result = mockStatusRefresh(invoiceId, lastRefresh);
 			expect(result.shouldRefresh).toBe(true); // Should be eligible (backoff period passed)
 		});
@@ -274,7 +281,7 @@ describe("Status Refresh Idempotency & Backoff", () => {
 			const invoiceId = "invoice-max-backoff";
 			
 			// Very old refresh (should use max interval)
-			const veryOldRefresh = new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(); // 10 hours ago
+			const veryOldRefresh = Temporal.Instant.fromEpochMilliseconds(epochMs() - 10 * 60 * 60 * 1000).toString(); // 10 hours ago
 			const result = mockStatusRefresh(invoiceId, veryOldRefresh);
 			
 			expect(result.shouldRefresh).toBe(true); // Should definitely be eligible after 10 hours
@@ -284,7 +291,7 @@ describe("Status Refresh Idempotency & Backoff", () => {
 	describe("Concurrent refresh prevention", () => {
 		it("handles rapid consecutive calls", () => {
 			const invoiceId = "invoice-concurrent";
-			const justRefreshed = new Date(Date.now() - 30 * 1000).toISOString(); // 30 seconds ago
+			const justRefreshed = Temporal.Instant.fromEpochMilliseconds(epochMs() - 30 * 1000).toString(); // 30 seconds ago
 			
 			// Multiple rapid calls should all return false
 			const result1 = mockStatusRefresh(invoiceId, justRefreshed);
@@ -295,8 +302,8 @@ describe("Status Refresh Idempotency & Backoff", () => {
 			expect(result2.shouldRefresh).toBe(false); 
 			expect(result3.shouldRefresh).toBe(false);
 			
-			// All should have similar remaining backoff time
-			expect(result1.nextRefreshIn).toBeCloseTo(result2.nextRefreshIn!, 1000);
+			// All should have identical remaining backoff time since they're called immediately after each other
+			expect(result1.nextRefreshIn).toBe(result2.nextRefreshIn);
 		});
 
 		it("handles race conditions gracefully", () => {

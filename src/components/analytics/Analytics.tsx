@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 import React, { useEffect } from "react";
-import { env } from "~/lib/env";
+import { envClient } from "~/lib/env-client";
 
 declare global {
 	interface Window {
@@ -24,18 +24,17 @@ export function Analytics({
 }: AnalyticsProps): React.ReactElement | null {
 	// Get measurement ID from environment or use default
 	const gaId =
-		measurementId ?? env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-XXXXXXXX";
+		measurementId ?? envClient.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-XXXXXXXX";
 
-	// Only load analytics in production
+	// Only load analytics in production or when explicitly enabled
 	if (typeof window === "undefined") {
 		return null; // Server-side rendering
 	}
 
 	// Check if analytics should be loaded (client-side only)
-	const isProduction = env.NODE_ENV === "production";
-	const analyticsEnabled = env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
+	const analyticsEnabled = envClient.NEXT_PUBLIC_ANALYTICS_ENABLED === "true";
 
-	if (!isProduction && !analyticsEnabled) {
+	if (!analyticsEnabled) {
 		return null;
 	}
 

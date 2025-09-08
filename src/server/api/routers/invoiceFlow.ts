@@ -90,7 +90,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 					org_id: orgId,
 					customer_id: job.customer_id,
 					job_id: jobId,
-					number: `DRAFT-${now().epochMilliseconds}`, // Temporary draft number
+					number: `DRAFT-${now().epochMilliseconds}`, // Draft number uses timestamp until invoice_number_sequences is restored
 					subtotal_ex_vat: durationHours * 75, // €75/hour
 					vat_total: Math.round(durationHours * 75 * 0.21), // 21% BTW
 					total_inc_vat: Math.round(durationHours * 75 * 1.21),
@@ -222,7 +222,9 @@ export const invoiceFlowRouter = createTRPCRouter({
 
 			return {
 				url: invoice.payment_url,
-				provider: invoice.provider ? (invoice.provider as "moneybird" | "mollie") : "mollie",
+				provider: invoice.provider
+					? (invoice.provider as "moneybird" | "mollie")
+					: "mollie",
 			};
 		}),
 

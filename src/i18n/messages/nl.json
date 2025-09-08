@@ -623,6 +623,66 @@
         "success": "Nummers succesvol toegevoegd",
         "error": "Nummers toevoegen mislukt",
         "validation": "Beide nummer ID's zijn verplicht"
+      },
+      "onboard": {
+        "title": "WhatsApp Setup Wizard",
+        "quickTitle": "Eerste keer instellen?",
+        "quickDescription": "Gebruik onze begeleide setup om WhatsApp in minuten te configureren.",
+        "start": "Setup Starten",
+        "description": "Stel WhatsApp integratie in met 4 eenvoudige stappen",
+        "back": "Terug naar Instellingen",
+        "next": "Volgende",
+        "steps": {
+          "prereqs": "Setup",
+          "numbers": "Nummers",
+          "test": "Test",
+          "done": "Klaar"
+        },
+        "prereqs": {
+          "title": "Vereisten",
+          "description": "Voordat we WhatsApp kunnen verbinden, moet u deze webhook instellingen configureren in uw Meta Business Account",
+          "webhookUrl": "Webhook URL",
+          "verifyToken": "Verificatie Token",
+          "webhookHelp": "Kopieer deze URL en plak deze als uw webhook eindpunt in Meta Business Manager",
+          "tokenHelp": "Kopieer deze token en gebruik deze als verificatie token in Meta Business Manager"
+        },
+        "numbers": {
+          "title": "Telefoonnummer ID's",
+          "description": "Voer uw WhatsApp Business telefoonnummer ID's in van Meta Business Manager",
+          "businessLabel": "Zakelijk Telefoonnummer ID",
+          "businessHelp": "Hoofdnummer voor klantcommunicatie via WhatsApp",
+          "controlLabel": "Controle Telefoonnummer ID",
+          "controlHelp": "Intern controlenummer voor administratieve berichten",
+          "save": "Nummers Opslaan",
+          "success": "Telefoonnummers succesvol opgeslagen",
+          "error": "Telefoonnummers opslaan mislukt",
+          "validation": "Beide telefoonnummer ID's zijn verplicht"
+        },
+        "test": {
+          "title": "Testbericht Versturen",
+          "description": "Verstuur een testbericht om te controleren of uw WhatsApp configuratie werkt",
+          "phoneLabel": "Uw Telefoonnummer",
+          "phoneHelp": "Voer uw persoonlijke telefoonnummer in om een testbericht te ontvangen (inclusief landcode)",
+          "messageLabel": "Testbericht (Optioneel)",
+          "messageHelp": "Aangepast testbericht, of laat leeg voor standaard bericht",
+          "messagePlaceholder": "Aangepast testbericht...",
+          "configured": "Geconfigureerde Nummers:",
+          "send": "Testbericht Versturen",
+          "success": "Testbericht succesvol verstuurd",
+          "error": "Testbericht versturen mislukt",
+          "validation": "Telefoonnummer is verplicht"
+        },
+        "done": {
+          "title": "Setup Voltooid!",
+          "description": "Uw WhatsApp integratie is nu klaar voor gebruik",
+          "success": "WhatsApp Configuratie Voltooid",
+          "successDescription": "U kunt nu WhatsApp berichten ontvangen en versturen via uw loodgietersbedrijf account.",
+          "healthSummary": "Systeem Status Check",
+          "environment": "Omgeving",
+          "webhook": "Webhook",
+          "security": "Beveiliging",
+          "goToSettings": "Naar WhatsApp Instellingen"
+        }
       }
     }
   },

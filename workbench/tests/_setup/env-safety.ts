@@ -9,6 +9,11 @@ import "temporal-polyfill/global";
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 import { vi } from 'vitest'
+import { fileURLToPath } from 'url'
+
+// Get current directory in ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Load environment variables from main project
 // Working directory is workbench/, so need to go up one level to reach project root

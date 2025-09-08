@@ -613,6 +613,67 @@
 				"success": "Numbers seeded successfully",
 				"error": "Failed to seed numbers",
 				"validation": "Both number IDs are required"
+			},
+			"onboard": {
+				"title": "Setup WhatsApp",
+				"quickTitle": "First time setup?",
+				"quickDescription": "Use our guided setup to configure WhatsApp in minutes.",
+				"start": "Start Setup",
+				"title": "WhatsApp Setup Wizard",
+				"description": "Set up WhatsApp integration in 4 simple steps",
+				"back": "Back to Settings",
+				"next": "Next",
+				"steps": {
+					"prereqs": "Setup",
+					"numbers": "Numbers",
+					"test": "Test",
+					"done": "Complete"
+				},
+				"prereqs": {
+					"title": "Prerequisites",
+					"description": "Before we can connect WhatsApp, you'll need to configure these webhook settings in your Meta Business Account",
+					"webhookUrl": "Webhook URL",
+					"verifyToken": "Verify Token",
+					"webhookHelp": "Copy this URL and paste it as your webhook endpoint in Meta Business Manager",
+					"tokenHelp": "Copy this token and use it as the verification token in Meta Business Manager"
+				},
+				"numbers": {
+					"title": "Phone Number IDs",
+					"description": "Enter your WhatsApp Business phone number IDs from Meta Business Manager",
+					"businessLabel": "Business Phone Number ID",
+					"businessHelp": "Main customer-facing WhatsApp number for receiving customer messages",
+					"controlLabel": "Control Phone Number ID",
+					"controlHelp": "Internal control number for administrative messages",
+					"save": "Save Numbers",
+					"success": "Phone numbers saved successfully",
+					"error": "Failed to save phone numbers",
+					"validation": "Both phone number IDs are required"
+				},
+				"test": {
+					"title": "Send Test Message",
+					"description": "Send a test message to verify your WhatsApp configuration is working",
+					"phoneLabel": "Your Phone Number",
+					"phoneHelp": "Enter your personal phone number to receive a test message (include country code)",
+					"messageLabel": "Test Message (Optional)",
+					"messageHelp": "Custom test message, or leave empty for default message",
+					"messagePlaceholder": "Custom test message...",
+					"configured": "Configured Numbers:",
+					"send": "Send Test Message",
+					"success": "Test message sent successfully",
+					"error": "Failed to send test message",
+					"validation": "Phone number is required"
+				},
+				"done": {
+					"title": "Setup Complete!",
+					"description": "Your WhatsApp integration is now ready to use",
+					"success": "WhatsApp Configuration Complete",
+					"successDescription": "You can now receive and send WhatsApp messages through your plumbing business account.",
+					"healthSummary": "System Health Check",
+					"environment": "Environment",
+					"webhook": "Webhook",
+					"security": "Security",
+					"goToSettings": "Go to WhatsApp Settings"
+				}
 			}
 		}
 	},

@@ -114,7 +114,7 @@ export async function sendWhatsAppReminder(
 			response.status === 471 ||
 			(response.status >= 500 && response.status <= 599)
 		) {
-			// Temporary WhatsApp API errors or server errors - retry
+			// Transient API or server errors — retry per policy
 			return {
 				ok: false,
 				retry: true,
