@@ -149,13 +149,10 @@ export default function ReviewList({
 										)}
 									</TableCell>
 									<TableCell className="text-right text-sm text-muted-foreground">
-										{formatDistanceToNow(
-											epochMs(parseZdt(row.createdAtISO)),
-											{
-												addSuffix: true,
-												locale: nl,
-											},
-										)}
+										{formatDistanceToNow(epochMs(parseZdt(row.createdAtISO)), {
+											addSuffix: true,
+											locale: nl,
+										})}
 									</TableCell>
 								</TableRow>
 							))

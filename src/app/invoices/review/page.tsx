@@ -35,19 +35,18 @@ export default function InvoiceReviewPage(): JSX.Element {
 		data: drafts = [],
 		refetch: refetchDrafts,
 		isLoading: isLoadingDrafts,
-	} = (api.invoices as any).listReadyDrafts.useQuery({
+	} = api.invoices.listReadyDrafts.useQuery({
 		sinceISO: sinceDate,
 	});
 
-	const createDraftsMutation = (
-		api.invoiceFlow as any
-	).createDraftsFromCompletedJobsSince.useMutation({
-		onSuccess: () => {
-			void refetchDrafts();
-		},
-	});
+	const createDraftsMutation =
+		api.invoiceFlow.createDraftsFromCompletedJobsSince.useMutation({
+			onSuccess: () => {
+				void refetchDrafts();
+			},
+		});
 
-	const bulkSendMutation = (api.invoices as any).bulkSend.useMutation({
+	const bulkSendMutation = api.invoices.bulkSend.useMutation({
 		onSuccess: () => {
 			setSelected({});
 			void refetchDrafts();
@@ -97,9 +96,8 @@ export default function InvoiceReviewPage(): JSX.Element {
 	const handleSinceDateChange = (value: string): void => {
 		try {
 			// Parse the date and set to start of day in Amsterdam timezone
-			const zdtDate = Temporal.PlainDate.from(value).toZonedDateTime(
-				"Europe/Amsterdam",
-			);
+			const zdtDate =
+				Temporal.PlainDate.from(value).toZonedDateTime("Europe/Amsterdam");
 			setSinceDate(zdtDate.toString());
 		} catch {
 			// Invalid date, ignore
@@ -259,16 +257,14 @@ export default function InvoiceReviewPage(): JSX.Element {
 										{t("results.errors")}
 									</div>
 									<div className="space-y-1 text-sm">
-										{bulkSendMutation.data.errors.map(
-											(error: any, idx: number) => (
-												<div
-													key={idx}
-													className="bg-red-50 p-2 rounded text-red-800"
-												>
-													{error.error}
-												</div>
-											),
-										)}
+										{bulkSendMutation.data.errors.map((error, idx) => (
+											<div
+												key={idx}
+												className="bg-red-50 p-2 rounded text-red-800"
+											>
+												{error.error}
+											</div>
+										))}
 									</div>
 								</div>
 							)}

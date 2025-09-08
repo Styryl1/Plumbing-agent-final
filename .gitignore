@@ -93,3 +93,4 @@ NUL
 .claude/settings.local.json
 .claude/mcp.json
 .mcp.json
+cloudflared.exe
