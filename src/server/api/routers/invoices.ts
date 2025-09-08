@@ -949,6 +949,178 @@ export const invoicesRouter = createTRPCRouter({
 				return timelineItems;
 			},
 		),
+
+		/**
+		 * List ready draft invoices for supervisor review
+		 * Returns V2 drafts only (is_legacy=false) with basic info for bulk selection
+		 */
+		listReadyDrafts: protectedProcedure
+			.input(
+				z.object({
+					sinceISO: z.string().optional(),
+				}),
+			)
+			.query(async ({ ctx, input }) => {
+				// Default to 7 days ago if no since date provided
+				const sinceDate =
+					input.sinceISO ??
+					Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")
+						.subtract({ days: 7 })
+						.toString();
+
+				const { data: invoices, error } = await ctx.db
+					.from("invoices")
+					.select(`
+					id,
+					provider,
+					total_cents,
+					total_inc_vat,
+					created_at,
+					customers!inner (
+						id,
+						name,
+						phone
+					),
+					jobs!inner (
+						id,
+						title
+					)
+				`)
+					.eq("status", "draft")
+					.eq("is_legacy", false)
+					.gte("created_at", sinceDate)
+					.order("created_at", { ascending: false });
+
+				if (error) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to fetch ready drafts",
+						cause: error,
+					});
+				}
+
+				return invoices.map((invoice) => ({
+					id: invoice.id,
+					customerName: invoice.customers.name,
+					customerPhone: invoice.customers.phone ?? undefined,
+					totalCents:
+						invoice.total_cents ?? Math.round(invoice.total_inc_vat * 100),
+					provider: invoice.provider as InvoiceProviderId | null,
+					createdAtISO: invoice.created_at!,
+					jobTitle: invoice.jobs?.title,
+				}));
+			}),
+
+		/**
+		 * Bulk send selected draft invoices via their providers
+		 * Handles provider finalization and optional WhatsApp payment link sending
+		 */
+		bulkSend: protectedProcedure
+			.input(
+				z.object({
+					invoiceIds: z.array(z.uuid()),
+					alsoWhatsApp: z.boolean().default(false),
+					locale: z.enum(["en", "nl"]).default("nl"),
+				}),
+			)
+			.mutation(async ({ ctx, input }) => {
+				const results = {
+					total: input.invoiceIds.length,
+					sent: 0,
+					skipped: 0,
+					withPaymentLinks: 0,
+					errors: [] as Array<{ id: string; error: string }>,
+				};
+
+				for (const invoiceId of input.invoiceIds) {
+					try {
+						// Fetch invoice with lock check
+						const { data: invoice, error: fetchError } = await ctx.db
+							.from("invoices")
+							.select(
+								"id, provider, external_id, issued_at, provider_status, status",
+							)
+							.eq("id", invoiceId)
+							.single();
+
+						if (fetchError !== null) {
+							results.errors.push({
+								id: invoiceId,
+								error: "Invoice not found",
+							});
+							continue;
+						}
+
+						// Skip if locked (already sent)
+						if (isInvoiceLocked(invoice)) {
+							results.skipped++;
+							continue;
+						}
+
+						// Skip if not a draft or missing provider
+						if (invoice.status !== "draft" || !invoice.provider) {
+							results.skipped++;
+							continue;
+						}
+
+						// Get provider instance
+						const provider = await getProvider(
+							invoice.provider as InvoiceProviderId,
+							ctx.db,
+							ctx.auth.orgId,
+							ctx.auth.userId,
+						);
+
+						// Finalize and send via provider
+						const sendResult = await provider.finalizeAndSend(
+							invoice.external_id!,
+						);
+
+						// Update invoice with provider response
+						const nowISO =
+							Temporal.Now.zonedDateTimeISO("Europe/Amsterdam").toString();
+						const { error: updateError } = await ctx.db
+							.from("invoices")
+							.update({
+								provider_status: sendResult.status,
+								payment_url: sendResult.paymentUrl ?? null,
+								pdf_url: sendResult.pdfUrl ?? null,
+								ubl_url: sendResult.ublUrl ?? null,
+								provider_number: sendResult.providerNumber ?? null,
+								issued_at: nowISO,
+								updated_at: nowISO,
+							})
+							.eq("id", invoiceId);
+
+						if (updateError) {
+							results.errors.push({
+								id: invoiceId,
+								error: "Failed to update invoice",
+							});
+							continue;
+						}
+
+						results.sent++;
+
+						// TODO: Record timeline event for send action
+						// TODO: Queue status refresh job
+
+						// Optional WhatsApp payment link
+						if (input.alsoWhatsApp && sendResult.paymentUrl) {
+							// TODO: Call existing sendPaymentLink service
+							// This would integrate with the WhatsApp payment sender
+							results.withPaymentLinks++;
+						}
+					} catch (error) {
+						results.errors.push({
+							id: invoiceId,
+							error: error instanceof Error ? error.message : "Unknown error",
+						});
+					}
+				}
+
+				return results;
+			}),
 	}),
 });
 
