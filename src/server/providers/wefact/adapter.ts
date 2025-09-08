@@ -1,6 +1,5 @@
 import "server-only";
 import "~/lib/time";
-import { serverOnlyEnv } from "~/lib/env";
 import type {
 	CreateDraftResult,
 	FinalizeSendResult,
@@ -18,16 +17,10 @@ export class WeFactProvider implements InvoiceProvider {
 
 	private client: WeFactClient;
 
-	constructor() {
-		if (!serverOnlyEnv.WEFACT_API_KEY) {
-			throw new Error("WEFACT_API_KEY environment variable is required");
-		}
-
+	constructor(apiKey: string, baseUrl?: string) {
 		this.client = new WeFactClient({
-			apiKey: serverOnlyEnv.WEFACT_API_KEY,
-			...(serverOnlyEnv.WEFACT_BASE_URL && {
-				baseUrl: serverOnlyEnv.WEFACT_BASE_URL,
-			}),
+			apiKey,
+			baseUrl: baseUrl ?? "https://api.mijnwefact.nl/v2/",
 		});
 	}
 
