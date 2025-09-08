@@ -58,7 +58,7 @@ export function deriveHealthFlags(): WaHealthDTO {
 
 	// Construct webhook URL (safe to expose)
 	const baseUrl = env.NEXT_PUBLIC_APP_URL ?? undefined;
-	const webhookUrl = baseUrl ? `${baseUrl}/api/webhooks/whatsapp` : undefined;
+	const webhookUrl = baseUrl ? `${baseUrl}/api/wa/customer` : undefined;
 
 	return {
 		envOk,

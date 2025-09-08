@@ -7,7 +7,7 @@ import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
 import { signBody } from "../helpers/crypto";
 import { makePostRequest } from "../helpers/next";
-import { ensureMappings, truncateWa, db } from "../helpers/db";
+import { ensureMappings, ensureTestOrg, truncateWa, db } from "../helpers/db";
 import { POST as CustomerPOST } from "~/app/api/wa/customer/route";
 import { textMessagePayloads } from "../fixtures/whatsapp_payloads";
 
@@ -16,6 +16,7 @@ const PNID = process.env.WHATSAPP_BUSINESS_PHONE_ID!;
 
 describe("WhatsApp Basic Integration", () => {
 	beforeEach(async () => {
+		await ensureTestOrg(ORG);
 		await ensureMappings(ORG, PNID, process.env.WHATSAPP_CONTROL_PHONE_ID!);
 		await truncateWa(ORG);
 	});

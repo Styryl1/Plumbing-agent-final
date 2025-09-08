@@ -7,6 +7,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 // Temporal imported for future use in timestamping analysis runs
 import { env } from "~/lib/env";
 import { featureFlags } from "~/lib/feature-flags";
+import { mustSingle } from "~/server/db/unwrap";
 import type { Database } from "~/types/supabase";
 
 export interface AnalyzerResult {
@@ -263,11 +264,21 @@ export async function persistSuggestion(
 ): Promise<Database["public"]["Tables"]["wa_suggestions"]["Row"]> {
 	const { orgId, conversationId, messageId, aiMode = "rule" } = params;
 
+	// Look up the wa_messages.id by wa_message_id to get the correct FK reference
+	const messageQuery = await db
+		.from("wa_messages")
+		.select("id")
+		.eq("wa_message_id", messageId)
+		.eq("org_id", orgId)
+		.single();
+
+	const message = mustSingle(messageQuery);
+
 	const suggestionData: Database["public"]["Tables"]["wa_suggestions"]["Insert"] =
 		{
 			org_id: orgId,
 			conversation_id: conversationId,
-			message_id: messageId,
+			message_id: message.id,
 			proposed_text: result.proposed_text,
 			tags: result.tags,
 			urgency: result.urgency,

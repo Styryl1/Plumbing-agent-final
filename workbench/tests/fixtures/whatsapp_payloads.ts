@@ -1,4 +1,5 @@
 import { Temporal } from "temporal-polyfill";
+import { randomUUID } from "crypto";
 
 /**
  * WhatsApp Business API payload fixtures for comprehensive testing
@@ -39,7 +40,7 @@ export const textMessagePayloads = {
 				contacts: [{ wa_id: from }],
 				messages: [{
 					from,
-					id: "wamid.simple_text",
+					id: `wamid.${randomUUID()}`,
 					timestamp: Math.floor(Temporal.Now.instant().epochMilliseconds / 1000).toString(),
 					type: "text",
 					text: { body: "Simple text message" }
@@ -58,7 +59,7 @@ export const textMessagePayloads = {
 				contacts: [{ wa_id: from }],
 				messages: [{
 					from,
-					id: "wamid.emoji_text",
+					id: `wamid.${randomUUID()}`,
 					timestamp: Math.floor(Temporal.Now.instant().epochMilliseconds / 1000).toString(),
 					type: "text",
 					text: { body: "🚰 Emergency plumber needed! 🔧💧 ASAP!" }
@@ -77,7 +78,7 @@ export const textMessagePayloads = {
 				contacts: [{ wa_id: from }],
 				messages: [{
 					from,
-					id: "wamid.max_length",
+					id: `wamid.${randomUUID()}`,
 					timestamp: Math.floor(Temporal.Now.instant().epochMilliseconds / 1000).toString(),
 					type: "text",
 					text: { body: "A".repeat(4096) } // Max WhatsApp text length

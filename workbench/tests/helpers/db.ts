@@ -50,28 +50,61 @@ export const db = createClient<Database>(
 )
 
 /**
+ * ⚠️ DANGEROUS: Ensure test organization exists for testing
+ * 
+ * MODIFIES DATABASE: UPSERTS to organizations table
+ * Only use with WB_ALLOW_DB=1 and verified dev environment
+ */
+export async function ensureTestOrg(orgId: string): Promise<void> {
+  const { data } = await db.from('organizations').select('id').eq('id', orgId).maybeSingle();
+  if (!data) {
+    await db.from('organizations').insert({
+      id: orgId,
+      name: 'Test Org',
+      owner_user_id: 'test_user',
+    });
+  }
+}
+
+/**
  * ⚠️ DANGEROUS: Ensure phone number mappings exist for testing
  * 
  * MODIFIES DATABASE: UPSERTS to wa_numbers table
  * Only use with WB_ALLOW_DB=1 and verified dev environment
  */
-export async function ensureMappings(orgId: string, phoneNumberId: string, controlPhoneId: string): Promise<void> {
+export async function ensureMappings(orgId: string, businessId: string, controlId: string): Promise<void> {
   console.warn(`🔥 MODIFYING DATABASE: Upserting wa_numbers for org ${orgId}`)
   
-  // Insert or update phone number mapping
-  // Primary key is phone_number_id, so use that for conflict resolution
-  const { error } = await db
+  // Ensure org exists first
+  await ensureTestOrg(orgId);
+  
+  // Upsert two rows into wa_numbers
+  const { error: businessError } = await db
     .from('wa_numbers')
     .upsert({
       org_id: orgId,
-      phone_number_id: phoneNumberId,
-      label: 'business'  // Must be 'business' or 'control' per check constraint
+      phone_number_id: businessId,
+      label: 'business'
     }, {
       onConflict: 'phone_number_id'
     })
   
-  if (error) {
-    console.warn('Failed to ensure phone mappings:', error)
+  if (businessError) {
+    console.warn('Failed to ensure business phone mapping:', businessError)
+  }
+
+  const { error: controlError } = await db
+    .from('wa_numbers')
+    .upsert({
+      org_id: orgId,
+      phone_number_id: controlId,
+      label: 'control'
+    }, {
+      onConflict: 'phone_number_id'
+    })
+  
+  if (controlError) {
+    console.warn('Failed to ensure control phone mapping:', controlError)
   }
 }
 
