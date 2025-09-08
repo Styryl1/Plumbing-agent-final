@@ -29,7 +29,9 @@ export const providersRouter = createTRPCRouter({
 
 				// For API key providers, we store the key as access_token
 				// and set a far future expiry date since API keys don't expire
-				const farFutureExpiry = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")
+				const farFutureExpiry = Temporal.Now.zonedDateTimeISO(
+					"Europe/Amsterdam",
+				)
 					.add({ years: 10 })
 					.toString();
 
@@ -74,7 +76,8 @@ export const providersRouter = createTRPCRouter({
 
 		for (const provider of providers) {
 			try {
-				const hasCredentials = await credentialsService.hasCredentials(provider);
+				const hasCredentials =
+					await credentialsService.hasCredentials(provider);
 				health[provider] = {
 					connected: hasCredentials,
 					message: hasCredentials ? "Connected" : "Not configured",

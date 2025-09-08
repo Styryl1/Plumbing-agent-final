@@ -233,5 +233,4 @@ export class WeFactProvider implements InvoiceProvider {
 				invoice.InvoiceCode.length > 0 ? invoice.InvoiceCode : null,
 		};
 	}
-
 }

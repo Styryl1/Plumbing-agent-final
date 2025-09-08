@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Key, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { JSX } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -138,14 +139,15 @@ export default function WeFactSetupPage(): JSX.Element {
 										: tForm("actions.connect")}
 								</Button>
 								<Button asChild variant="outline">
-									<Link href="/settings/providers">{tForm("actions.cancel")}</Link>
+									<Link href="/settings/providers">
+										{tForm("actions.cancel")}
+									</Link>
 								</Button>
 							</div>
 
 							{connectMutation.error && (
 								<div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
-									{tForm("errors.connection")}:{" "}
-									{connectMutation.error.message}
+									{tForm("errors.connection")}: {connectMutation.error.message}
 								</div>
 							)}
 						</form>
