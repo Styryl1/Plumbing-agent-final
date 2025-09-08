@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { api } from "~/lib/trpc/client";
 
 type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";
 
@@ -9,44 +9,33 @@ export interface ProviderHealth {
 
 /**
  * Hook to fetch provider health status
- * For pilot-ready state, this checks basic connectivity and auth state
+ * Checks actual credentials and connectivity for each provider
  */
 export function useProviderHealth(id: InvoiceProviderId): ProviderHealth {
-	const { data } = useQuery({
-		queryKey: ["providerHealth", id],
-		queryFn: (): ProviderHealth => {
-			// For now, return a simple stub based on provider type
-			// In production, this would call actual health endpoints
-			try {
-				switch (id) {
-					case "moneybird":
-						// Check if OAuth token exists and is valid
-						// This would typically call /api/providers/moneybird/health
-						return { ok: true, message: "Connected and ready" };
-
-					case "wefact":
-						// Check API key validity
-						return { ok: false, message: "API key required" };
-
-					case "eboekhouden":
-						// Check API credentials
-						return { ok: false, message: "Not configured" };
-
-					case "peppol":
-						// Check Access Point connectivity
-						return { ok: false, message: "Not implemented yet" };
-
-					default:
-						return { ok: false, message: "Unknown provider" };
-				}
-			} catch {
-				return { ok: false, message: "Connection failed" };
-			}
+	const { data, isLoading, error } = api.providers.getHealthStatus.useQuery(
+		undefined,
+		{
+			staleTime: 5 * 60 * 1000, // 5 minutes
+			refetchInterval: 10 * 60 * 1000, // 10 minutes
+			refetchIntervalInBackground: false,
 		},
-		staleTime: 5 * 60 * 1000, // 5 minutes
-		refetchInterval: 10 * 60 * 1000, // 10 minutes
-		refetchIntervalInBackground: false,
-	});
+	);
 
-	return data ?? { ok: false, message: "Checking..." };
+	if (isLoading) {
+		return { ok: false, message: "Checking..." };
+	}
+
+	if (error) {
+		return { ok: false, message: "Connection check failed" };
+	}
+
+	if (!data?.[id]) {
+		return { ok: false, message: "Status unknown" };
+	}
+
+	const providerHealth = data[id];
+	return {
+		ok: providerHealth.connected,
+		message: providerHealth.message,
+	};
 }

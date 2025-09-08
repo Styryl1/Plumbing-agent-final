@@ -40,9 +40,17 @@ async function constructWithCredentials(
 			return new MoneybirdProvider(client, credentials);
 		}
 		case "wefact": {
-			// WeFact uses API key authentication (no OAuth credentials in database)
-			// API key is configured via environment variables
-			return new WeFactProvider();
+			const credentials = await credentialsService.getCredentials("wefact");
+			if (!credentials) {
+				throw new Error(
+					"WeFact not configured. Please connect your WeFact account first.",
+				);
+			}
+
+			return new WeFactProvider(
+				credentials.access_token,
+				credentials.administration_id ?? undefined,
+			);
 		}
 		case "eboekhouden": {
 			// e-Boekhouden uses server-only API token authentication (no OAuth credentials in database)

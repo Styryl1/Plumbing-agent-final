@@ -5,6 +5,7 @@ import { invoiceFlowRouter } from "./routers/invoiceFlow";
 import { invoicesRouter } from "./routers/invoices";
 import { jobsRouter } from "./routers/jobs";
 import { orgSettingsRouter } from "./routers/orgSettings";
+import { providersRouter } from "./routers/providers";
 import { reportingRouter } from "./routers/reporting";
 import { timelineRouter } from "./routers/timeline";
 import { waAdminRouter } from "./routers/waAdmin";
@@ -20,6 +21,7 @@ export const appRouter = router({
 	timeline: timelineRouter,
 	reporting: reportingRouter,
 	orgSettings: orgSettingsRouter,
+	providers: providersRouter,
 	ai: aiRouter,
 	whatsapp: whatsappRouter,
 	waAdmin: waAdminRouter,

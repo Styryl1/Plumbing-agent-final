@@ -2,6 +2,7 @@
 // Orchestrates invoice creation, provider issuance, and WhatsApp payment link delivery
 
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { parseZdt, zdtToISO } from "~/lib/time";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
@@ -294,5 +295,124 @@ export const invoiceFlowRouter = createTRPCRouter({
 							: "Failed to send WhatsApp message",
 				});
 			}
+		}),
+
+	/**
+	 * Create drafts from completed jobs since a specified date
+	 * Prevents duplicate invoicing by checking existing invoices
+	 */
+	createDraftsFromCompletedJobsSince: protectedProcedure
+		.input(
+			z.object({
+				sinceISO: z.string(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const { orgId } = auth;
+
+			if (orgId === "") {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "No organization selected",
+				});
+			}
+
+			// Get completed jobs since the specified date
+			// Note: We'll check for existing invoices separately since relationship is invoice.job_id
+			const { data: jobs, error: jobsError } = await db
+				.from("jobs")
+				.select(`
+					id,
+					title,
+					description,
+					starts_at,
+					ends_at,
+					customer_id,
+					customers!inner (
+						id,
+						name,
+						email,
+						phone
+					)
+				`)
+				.eq("status", "completed")
+				.gte("completed_at", input.sinceISO)
+				.order("completed_at", { ascending: false });
+
+			if (jobsError) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to fetch completed jobs",
+					cause: jobsError,
+				});
+			}
+
+			const createdInvoiceIds: string[] = [];
+			const errors: Array<{ jobId: string; error: string }> = [];
+
+			for (const job of jobs) {
+				try {
+					// Check if job already has an invoice
+					const { data: existingInvoice } = await db
+						.from("invoices")
+						.select("id")
+						.eq("job_id", job.id)
+						.maybeSingle();
+
+					if (existingInvoice) {
+						// Skip jobs that already have invoices
+						continue;
+					}
+					// Use the existing draft creation logic
+					const invoiceData = {
+						job_id: job.id,
+						customer_id: job.customer_id,
+						org_id: orgId,
+						status: "draft" as const,
+						is_legacy: false,
+						number: `DRAFT-${job.id.slice(0, 8)}`, // Temporary number for drafts
+						subtotal_ex_vat: 100, // Default placeholder - will be updated by provider
+						vat_total: 21, // 21% Dutch VAT
+						total_inc_vat: 121,
+						subtotal_cents: 10000, // €100 in cents
+						vat_amount_cents: 2100, // €21 in cents
+						total_cents: 12100, // €121 in cents
+						payment_terms: "30_days" as const,
+						created_at: now().toString(),
+						updated_at: now().toString(),
+					};
+
+					const { data: invoice, error: invoiceError } = await db
+						.from("invoices")
+						.insert(invoiceData)
+						.select("id")
+						.single();
+
+					if (invoiceError !== null) {
+						errors.push({
+							jobId: job.id,
+							error: "Failed to create invoice draft",
+						});
+						continue;
+					}
+
+					// Note: Job-to-invoice relationship is handled via invoice.job_id
+					// No need to update jobs table as invoice already has job_id
+
+					createdInvoiceIds.push(invoice.id);
+				} catch (error) {
+					errors.push({
+						jobId: job.id,
+						error: error instanceof Error ? error.message : "Unknown error",
+					});
+				}
+			}
+
+			return {
+				created: createdInvoiceIds.length,
+				invoiceIds: createdInvoiceIds,
+				errors,
+			};
 		}),
 });
