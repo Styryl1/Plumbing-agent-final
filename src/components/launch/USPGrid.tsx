@@ -39,6 +39,25 @@ const uspKeys = [
 export function USPGrid(): React.ReactElement {
 	const t = useTranslations();
 
+	// Map USP keys to i18n keys to avoid dynamic template literals
+	const uspTitleKeys: Record<(typeof uspKeys)[number], string> = {
+		whatsapp: "launch.usp.whatsapp.title",
+		ai: "launch.usp.ai.title",
+		schedule: "launch.usp.schedule.title",
+		jobcards: "launch.usp.jobcards.title",
+		invoicing: "launch.usp.invoicing.title",
+		compliance: "launch.usp.compliance.title",
+	};
+
+	const uspDescKeys: Record<(typeof uspKeys)[number], string> = {
+		whatsapp: "launch.usp.whatsapp.desc",
+		ai: "launch.usp.ai.desc",
+		schedule: "launch.usp.schedule.desc",
+		jobcards: "launch.usp.jobcards.desc",
+		invoicing: "launch.usp.invoicing.desc",
+		compliance: "launch.usp.compliance.desc",
+	};
+
 	return (
 		<section className="py-16 sm:py-24">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -64,13 +83,13 @@ export function USPGrid(): React.ReactElement {
 											<IconComponent className="h-6 w-6 text-emerald-600" />
 										</div>
 										<CardTitle className="text-xl">
-											{t(`launch.usp.${uspKey}.title`)}
+											{t(uspTitleKeys[uspKey])}
 										</CardTitle>
 									</div>
 								</CardHeader>
 								<CardContent>
 									<CardDescription className="text-base">
-										{t(`launch.usp.${uspKey}.desc`)}
+										{t(uspDescKeys[uspKey])}
 									</CardDescription>
 								</CardContent>
 							</Card>

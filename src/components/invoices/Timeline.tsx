@@ -37,6 +37,17 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 	const locale = useLocale();
 	const currentLocale = locale === "nl" ? nl : enUS;
 
+	// Map event kinds to i18n keys to avoid dynamic template literals
+	const eventKindKeys: Record<string, string> = {
+		created: "invoice.timeline.created",
+		sent: "invoice.timeline.sent",
+		paid: "invoice.timeline.paid",
+		reminder_sent: "invoice.timeline.reminder_sent",
+		reminder_error: "invoice.timeline.reminder_error",
+		reminder_skipped: "invoice.timeline.reminder_skipped",
+		manual_follow_up: "invoice.timeline.manual_follow_up",
+	};
+
 	const {
 		data: timelineEvents,
 		isLoading,
@@ -153,7 +164,10 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 								<div className="flex-1 min-w-0">
 									<div className="flex items-center gap-2">
 										<span className="text-sm font-medium text-foreground">
-											{t(`invoice.timeline.${event.kind}`)}
+											{t(
+												eventKindKeys[event.kind] ??
+													`invoice.timeline.${event.kind}`,
+											)}
 										</span>
 										<span className="text-xs text-muted-foreground">
 											{relativeTime}

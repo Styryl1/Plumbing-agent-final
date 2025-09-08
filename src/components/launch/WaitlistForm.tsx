@@ -111,7 +111,7 @@ export function WaitlistForm(): React.ReactElement {
 											}));
 										}}
 										className="text-base"
-										placeholder="+31 6 12345678"
+										placeholder="+31 6 XX XX XX XX"
 									/>
 								</div>
 

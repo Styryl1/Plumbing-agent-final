@@ -30,6 +30,16 @@ const trustItems = [
 export function TrustStrip(): React.ReactElement {
 	const t = useTranslations();
 
+	// Map trust keys to i18n keys to avoid dynamic template literals
+	const trustKeys: Record<
+		"dutch_compliance" | "ideal_payments" | "whatsapp_business",
+		string
+	> = {
+		dutch_compliance: "launch.trust.dutch_compliance",
+		ideal_payments: "launch.trust.ideal_payments",
+		whatsapp_business: "launch.trust.whatsapp_business",
+	};
+
 	return (
 		<section className="border-y bg-gray-50 py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -41,7 +51,7 @@ export function TrustStrip(): React.ReactElement {
 							className={`${color} px-4 py-2 text-sm font-medium rounded-full flex items-center space-x-2`}
 						>
 							<IconComponent className="h-4 w-4" />
-							<span>{t(`launch.trust.${key}`)}</span>
+							<span>{t(trustKeys[key])}</span>
 						</Badge>
 					))}
 				</div>

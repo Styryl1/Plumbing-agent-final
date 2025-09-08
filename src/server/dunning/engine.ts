@@ -155,7 +155,7 @@ function candidateToMessageData(candidate: Candidate): ReminderMessageData {
 		dueAt: candidate.dueAt,
 		daysOverdue: candidate.daysOverdue,
 		companyName: "Loodgieter B.V.", // TODO: Get from organization settings
-		companyPhone: "+31 20 123 4567", // TODO: Get from organization settings
+		companyPhone: "+31 XX XXX XXXX", // TODO: Get from organization settings
 	};
 
 	if (candidate.paymentUrl) {

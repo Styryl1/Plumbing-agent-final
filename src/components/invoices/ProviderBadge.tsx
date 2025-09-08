@@ -49,6 +49,14 @@ export default function ProviderBadge({
 	const t = useTranslations("invoices");
 	const isLocked = isInvoiceLocked(issuedAt, providerStatus);
 
+	// Map provider names to i18n keys to avoid dynamic template literals
+	const providerKeys: Record<InvoiceProvider, string> = {
+		moneybird: "providers.moneybird",
+		wefact: "providers.wefact",
+		eboekhouden: "providers.eboekhouden",
+		peppol: "providers.peppol",
+	};
+
 	if (isLegacy) {
 		return (
 			<Badge variant="outline" className={className ?? ""}>
@@ -58,7 +66,7 @@ export default function ProviderBadge({
 	}
 
 	const providerLabel =
-		provider != null ? t(`providers.${provider}`) : t("status.draft");
+		provider != null ? t(providerKeys[provider]) : t("status.draft");
 	// Allowed variants only; color nuance via className
 	const variant: React.ComponentProps<typeof Badge>["variant"] =
 		providerStatus === "paid" ? "secondary" : "default";

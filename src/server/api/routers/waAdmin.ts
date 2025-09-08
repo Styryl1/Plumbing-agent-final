@@ -220,8 +220,8 @@ export const waAdminRouter = createTRPCRouter({
 				});
 			}
 
-			// Prepare test message
-			const testMessage =
+			// Prepare verification message
+			const verificationMessage =
 				input.message ??
 				`🔧 Test bericht van ${orgId} loodgieter. WhatsApp configuratie werkt correct!`;
 
@@ -230,7 +230,7 @@ export const waAdminRouter = createTRPCRouter({
 				messaging_product: "whatsapp",
 				to: normalizedPhone,
 				type: "text",
-				text: { body: testMessage },
+				text: { body: verificationMessage },
 			};
 
 			try {

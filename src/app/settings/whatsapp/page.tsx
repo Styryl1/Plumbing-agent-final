@@ -41,6 +41,12 @@ import { api } from "~/lib/trpc/client";
 export default function WhatsAppSettingsPage(): JSX.Element {
 	const t = useT("settings.whatsapp");
 
+	// Map labels to i18n keys to avoid dynamic template literals
+	const labelKeys: Record<"business" | "control", string> = {
+		business: "mappings.label.business",
+		control: "mappings.label.control",
+	};
+
 	// Fetch current numbers and health
 	const { data: numbers, refetch: refetchNumbers } =
 		api.waAdmin.listNumbers.useQuery();
@@ -195,7 +201,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 												num.label === "business" ? "default" : "secondary"
 											}
 										>
-											{t(`mappings.label.${num.label}`)}
+											{t(labelKeys[num.label])}
 										</Badge>
 										<code className="text-sm">{num.phoneNumberId}</code>
 									</div>

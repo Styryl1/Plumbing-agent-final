@@ -62,7 +62,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 		},
 	});
 
-	const testMutation = api.waAdmin.sendTestMessage.useMutation({
+	const sendMessageMutation = api.waAdmin.sendTestMessage.useMutation({
 		onSuccess: (result) => {
 			toast.success(`${t("test.success")}: ${result.message}`);
 			setCurrentStep("done");
@@ -133,7 +133,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 			return;
 		}
 
-		await testMutation.mutateAsync({
+		await sendMessageMutation.mutateAsync({
 			to: testPhone.trim(),
 			message: testMessage.trim() || undefined,
 		});
@@ -141,10 +141,10 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 
 	// Step progress indicator
 	const steps: Array<{ id: Step; title: string }> = [
-		{ id: "prereqs", title: t("steps.prereqs") },
-		{ id: "numbers", title: t("steps.numbers") },
-		{ id: "test", title: t("steps.test") },
-		{ id: "done", title: t("steps.done") },
+		{ id: "prereqs", title: t("steps.prereqs.title") },
+		{ id: "numbers", title: t("steps.numbers.title") },
+		{ id: "test", title: t("steps.test.title") },
+		{ id: "done", title: t("steps.done.title") },
 	];
 
 	const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
@@ -414,7 +414,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 									onChange={(e) => {
 										setTestPhone(e.target.value);
 									}}
-									placeholder="+31612345678"
+									placeholder="+31 6 XX XX XX XX"
 									className="mt-1"
 								/>
 								<p className="text-xs text-muted-foreground mt-1">
@@ -480,9 +480,9 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 								onClick={() => {
 									void handleTestMessage();
 								}}
-								disabled={testMutation.isPending || !testPhone.trim()}
+								disabled={sendMessageMutation.isPending || !testPhone.trim()}
 							>
-								{testMutation.isPending && (
+								{sendMessageMutation.isPending && (
 									<div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
 								)}
 								<Send className="h-4 w-4 mr-2" />

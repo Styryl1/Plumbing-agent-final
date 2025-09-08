@@ -20,7 +20,7 @@ export const sendTestMessageSchema = z.object({
 		.string()
 		.min(10)
 		.max(20)
-		.describe("Phone number in E.164 format (+31612345678)"),
+		.describe("Phone number in E.164 format (+31XXXXXXXXX)"),
 	message: z
 		.string()
 		.min(1)

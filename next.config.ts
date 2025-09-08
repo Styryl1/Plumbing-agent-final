@@ -25,12 +25,14 @@ const nextConfig: NextConfig = {
 			'lucide-react',
 			'date-fns'
 		],
-		turbo: {
-			rules: {
-				'*.svg': {
-					loaders: ['@svgr/webpack'],
-					as: '*.js',
-				},
+	},
+	
+	// Turbopack configuration (moved from experimental.turbo)
+	turbopack: {
+		rules: {
+			'*.svg': {
+				loaders: ['@svgr/webpack'],
+				as: '*.js',
 			},
 		},
 	},

@@ -1,0 +1,4 @@
+schedule.assigned_to
+schedule.start_time
+schedule.end_time
+schedule.auto_assigned

@@ -408,7 +408,7 @@ export default function JobDrawer({
 										<Receipt className="h-4 w-4 mr-1" />
 										{createDraftMutation.isPending
 											? t("actions.creating")
-											: t("jobs.invoice.createDraft")}
+											: t("jobs.invoice.createDraft.label")}
 									</Button>
 								)}
 

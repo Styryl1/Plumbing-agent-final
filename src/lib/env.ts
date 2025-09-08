@@ -116,18 +116,18 @@ const parsed = schema.safeParse({
 
 if (!parsed.success) {
 	// Show exactly what failed
-	console.error(
-		"❌ Invalid environment variables:",
-		z.treeifyError(parsed.error),
-	);
-	// Only exit on server - client can't call process.exit
-	if (typeof window === "undefined") {
-		process.exit(1);
-	}
+	const errorMessage = `❌ Invalid environment variables:\n${JSON.stringify(z.treeifyError(parsed.error), null, 2)}`;
+	
+	// Log the error for debugging
+	console.error(errorMessage);
+	
+	// Throw an error to prevent the app from running with invalid config
+	// This works in both Node.js and Edge Runtime
+	throw new Error(errorMessage);
 }
 
-// Export a readonly object - we know this is safe because process.exit(1) was called above on failure
-export const env = Object.freeze(parsed.data!);
+// Export a readonly object - we know this is safe because an error was thrown above on failure
+export const env = Object.freeze(parsed.data);
 
 // Guard: block accidental import in client bundles
 export const serverOnlyEnv = (() => {

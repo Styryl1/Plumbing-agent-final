@@ -87,6 +87,13 @@ export default function ProviderConnectCard({
 
 	const { state, icon, actionText } = getConnectionState();
 
+	// Map state values to i18n keys to avoid dynamic template literals
+	const stateKeys: Record<"connected" | "needs_action" | "error", string> = {
+		connected: "states.connected",
+		needs_action: "states.needs_action",
+		error: "states.error",
+	};
+
 	return (
 		<Card className="transition-all hover:shadow-md">
 			<CardHeader className="pb-3">
@@ -104,7 +111,7 @@ export default function ProviderConnectCard({
 				<div className="space-y-3">
 					{/* Health status */}
 					<div className="text-sm">
-						<span className="font-medium">{t(`states.${state}`)}:</span>{" "}
+						<span className="font-medium">{t(stateKeys[state])}:</span>{" "}
 						<span className="text-muted-foreground">{health.message}</span>
 					</div>
 

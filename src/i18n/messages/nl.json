@@ -424,7 +424,11 @@
       "tooLong": "Te lang (max {max})",
       "required": "Verplicht"
     },
-    "deleting": "Bezig met verwijderen…"
+    "deleting": "Bezig met verwijderen…",
+    "due_date": "Due Date",
+    "alternative_payment": "Alternative Payment",
+    "email": "Email",
+    "step_data_unavailable": "Step Data Unavailable"
   },
   "action.edit": "Bewerken",
   "action.delete": "Verwijderen",
@@ -488,7 +492,6 @@
   "invoices.draft.safeMode.addLineHint": "Voeg regelitems één voor één toe",
   "invoices.actions.saveDraft": "Concept Opslaan",
   "invoices.draft.safeMode.info": "Veilige modus zorgt voor nauwkeurigheid",
-  "invoices.voiceMode.steps.${voiceState.currentStep}": "Stap {currentStep}",
   "invoices.autosave.saving": "Opslaan...",
   "invoices.autosave.saved": "Opgeslagen",
   "invoices.autosave.error": "Fout bij opslaan",
@@ -606,6 +609,14 @@
         "tokenError": "Kon toegangstoken niet ophalen",
         "adminError": "Kon administraties niet ophalen van provider",
         "callbackError": "Onbekende fout tijdens verbindingsproces"
+      }
+    },
+    "voiceMode": {
+      "steps": {
+        "review": "Review",
+        "confirm": "Confirm",
+        "changes": "Changes",
+        "final": "Final"
       }
     }
   },
@@ -742,7 +753,11 @@
     }
   },
   "actions": {
-    "sending": "Versturen..."
+    "sending": "Versturen...",
+    "back": "Back",
+    "configure": "Configure",
+    "connect": "Connect",
+    "fix": "Fix"
   },
   "notifications": {
     "paymentLink": {
@@ -753,5 +768,349 @@
     "paymentLink": {
       "sendFailed": "Versturen betaallink mislukt"
     }
+  },
+  "back": "Back",
+  "title": "Title",
+  "cta": {
+    "button": "Button",
+    "headline": "Headline",
+    "subtitle": "Subtitle"
+  },
+  "headline": "Headline",
+  "subtitle": "Subtitle",
+  "benefits": {
+    "faster": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "smarter": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "better_paid": {
+      "title": "Title",
+      "description": "Description"
+    }
+  },
+  "launch": {
+    "meta": {
+      "title": "Title",
+      "description": "Description",
+      "keywords": "Keywords"
+    },
+    "demo": {
+      "content": {
+        "common": {
+          "loading": "Loading"
+        }
+      },
+      "page": {
+        "nav": {
+          "previous": "Previous",
+          "next": "Next"
+        }
+      }
+    },
+    "usp": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "whatsapp": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "ai": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "schedule": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "jobcards": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "invoicing": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "compliance": {
+        "title": "Title",
+        "desc": "Desc"
+      }
+    },
+    "trust": {
+      "dutch_compliance": "Dutch Compliance",
+      "ideal_payments": "Ideal Payments",
+      "whatsapp_business": "Whatsapp Business"
+    },
+    "waitlist": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "email": "Email",
+      "phone": "Phone",
+      "org": "Org",
+      "success": "Success",
+      "error": "Error",
+      "submit": "Submit",
+      "gdpr": "Gdpr"
+    }
+  },
+  "controls": {
+    "title": "Title",
+    "description": "Description",
+    "sinceDate": "SinceDate",
+    "creating": "Creating",
+    "createDrafts": "CreateDrafts"
+  },
+  "bulkActions": {
+    "title": "Title",
+    "description": "Description",
+    "alsoWhatsApp": "AlsoWhatsApp",
+    "sending": "Sending"
+  },
+  "list": {
+    "title": "Title",
+    "loading": "Loading"
+  },
+  "results": {
+    "title": "Title",
+    "total": "Total",
+    "sent": "Sent",
+    "skipped": "Skipped",
+    "withPaymentLinks": "WithPaymentLinks",
+    "errors": "Errors"
+  },
+  "jobNumber": "JobNumber",
+  "phone": "Phone",
+  "jobStatus": "JobStatus",
+  "active": "Active",
+  "lastResponse": "LastResponse",
+  "approved": "Approved",
+  "urgency": "Urgency",
+  "schedule": "Schedule",
+  "schedule.assigned_to": "Toegewezen aan",
+  "schedule.start_time": "Starttijd",
+  "schedule.end_time": "Eindtijd",
+  "schedule.auto_assigned": "Automatisch toegewezen",
+  "draftInvoice": "DraftInvoice",
+  "tokenExpires": "TokenExpires",
+  "numbers": {
+    "success": "Success",
+    "error": "Error",
+    "validation": "Validation",
+    "title": "Title",
+    "description": "Description",
+    "businessLabel": "BusinessLabel",
+    "businessHelp": "BusinessHelp",
+    "controlLabel": "ControlLabel",
+    "controlHelp": "ControlHelp",
+    "save": "Save"
+  },
+  "test": {
+    "success": "Success",
+    "error": "Error",
+    "validation": "Validation",
+    "title": "Title",
+    "description": "Description",
+    "phoneLabel": "PhoneLabel",
+    "phoneHelp": "PhoneHelp",
+    "messageLabel": "MessageLabel",
+    "messagePlaceholder": "MessagePlaceholder",
+    "messageHelp": "MessageHelp",
+    "configured": "Configured",
+    "send": "Send"
+  },
+  "steps": {
+    "prereqs": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "numbers": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "test": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "done": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "whatsapp": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "ai_suggestion": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "schedule": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "job_card": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "voice_draft": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "send_pay": {
+      "title": "Title",
+      "description": "Description"
+    },
+    "reminders": {
+      "title": "Title",
+      "description": "Description"
+    }
+  },
+  "description": "Description",
+  "prereqs": {
+    "title": "Title",
+    "description": "Description",
+    "webhookUrl": "WebhookUrl",
+    "webhookHelp": "WebhookHelp",
+    "verifyToken": "VerifyToken",
+    "tokenHelp": "TokenHelp"
+  },
+  "next": "Next",
+  "done": {
+    "title": "Title",
+    "description": "Description",
+    "success": "Success",
+    "successDescription": "SuccessDescription",
+    "healthSummary": "HealthSummary",
+    "environment": "Environment",
+    "webhook": "Webhook",
+    "security": "Security",
+    "goToSettings": "GoToSettings"
+  },
+  "upsert": {
+    "success": "Success",
+    "error": "Error",
+    "validation": "Validation",
+    "title": "Title",
+    "phoneNumberId": "PhoneNumberId",
+    "label": "Label",
+    "submit": "Submit"
+  },
+  "seed": {
+    "success": "Success",
+    "error": "Error",
+    "validation": "Validation",
+    "title": "Title",
+    "description": "Description",
+    "businessId": "BusinessId",
+    "controlId": "ControlId",
+    "submit": "Submit"
+  },
+  "onboard": {
+    "title": "Title",
+    "quickTitle": "QuickTitle",
+    "quickDescription": "QuickDescription",
+    "start": "Start"
+  },
+  "mappings": {
+    "title": "Title",
+    "description": "Description",
+    "empty": "Empty",
+    "label": {
+      "business": "Business",
+      "control": "Control"
+    }
+  },
+  "health": {
+    "title": "Title",
+    "description": "Description",
+    "env": "Env",
+    "ok": "Ok",
+    "missing": "Missing",
+    "webhook": "Webhook",
+    "unreachable": "Unreachable",
+    "secret": "Secret",
+    "refresh": "Refresh"
+  },
+  "moneybird": {
+    "description": "Description"
+  },
+  "wefact": {
+    "description": "Description"
+  },
+  "eboekhouden": {
+    "description": "Description"
+  },
+  "peppol": {
+    "description": "Description"
+  },
+  "states": {
+    "connected": "Connected",
+    "needs_action": "Needs Action",
+    "error": "Error"
+  },
+  "connected": {
+    "description": "Description"
+  },
+  "note": "Note",
+  "selectAll": "SelectAll",
+  "selected": "Selected",
+  "select": "Select",
+  "customer": "Customer",
+  "job": "Job",
+  "total": "Total",
+  "provider": "Provider",
+  "created": "Created",
+  "noInvoices": "NoInvoices",
+  "noJob": "NoJob",
+  "noProvider": "NoProvider",
+  "whatsapp": {
+    "photo_attached": "Photo Attached",
+    "ai_analyzing": "Ai Analyzing"
+  },
+  "ai_suggestion": {
+    "diagnosis": "Diagnosis",
+    "reliable": "Reliable",
+    "urgency": "Urgency",
+    "emergency": "Emergency",
+    "estimated_time": "Estimated Time",
+    "minutes": "Minutes",
+    "required_materials": "Required Materials"
+  },
+  "job_card": {
+    "address": "Address",
+    "phone": "Phone",
+    "notes": "Notes"
+  },
+  "voice_draft": {
+    "voice_transcript": "Voice Transcript",
+    "invoice_lines": "Invoice Lines",
+    "subtotal_ex_vat": "Subtotal Ex Vat",
+    "vat_total": "Vat Total",
+    "total": "Total"
+  },
+  "send_pay": {
+    "invoice_sent": "Invoice Sent",
+    "invoice_id": "Invoice Id",
+    "payment_status": "Payment Status",
+    "awaiting_payment": "Awaiting Payment",
+    "click_pay": "Click Pay",
+    "pdf": "Pdf",
+    "whatsapp_message": "Whatsapp Message"
+  },
+  "reminders": {
+    "title": "Title",
+    "whatsapp_series": "Whatsapp Series",
+    "scheduled": "Scheduled",
+    "automation_active": "Automation Active",
+    "opt_out_respected": "Opt Out Respected",
+    "email_escalation": "Email Escalation"
+  },
+  "providers": {
+    "moneybird": "Moneybird",
+    "wefact": "Wefact",
+    "eboekhouden": "Eboekhouden",
+    "peppol": "Peppol"
   }
 }

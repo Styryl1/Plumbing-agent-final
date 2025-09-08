@@ -490,6 +490,27 @@ export function DemoStepper(): React.ReactElement {
 		"right",
 	);
 
+	// Map step IDs to i18n keys to avoid dynamic template literals
+	const stepTitleKeys: Record<string, string> = {
+		whatsapp: "steps.whatsapp.title",
+		ai_suggestion: "steps.ai_suggestion.title",
+		schedule: "steps.schedule.title",
+		job_card: "steps.job_card.title",
+		voice_draft: "steps.voice_draft.title",
+		send_pay: "steps.send_pay.title",
+		reminders: "steps.reminders.title",
+	};
+
+	const stepDescriptionKeys: Record<string, string> = {
+		whatsapp: "steps.whatsapp.description",
+		ai_suggestion: "steps.ai_suggestion.description",
+		schedule: "steps.schedule.description",
+		job_card: "steps.job_card.description",
+		voice_draft: "steps.voice_draft.description",
+		send_pay: "steps.send_pay.description",
+		reminders: "steps.reminders.description",
+	};
+
 	// Track scroll depth for engagement
 	useScrollDepth();
 
@@ -682,7 +703,7 @@ export function DemoStepper(): React.ReactElement {
 
 								{/* Tooltip */}
 								<div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-									{t(`steps.${step.id}.title`)}
+									{t(stepTitleKeys[step.id] ?? `steps.${step.id}.title`)}
 								</div>
 							</button>
 						);
@@ -700,7 +721,10 @@ export function DemoStepper(): React.ReactElement {
 						<div className="flex-1">
 							<div className="flex items-center gap-3 mb-1">
 								<CardTitle className="text-xl animate-fade-in">
-									{t(`steps.${currentStep.id}.title`)}
+									{t(
+										stepTitleKeys[currentStep.id] ??
+											`steps.${currentStep.id}.title`,
+									)}
 								</CardTitle>
 								<Badge variant="secondary" className="text-xs">
 									{tDemo("step_counter", {
@@ -710,7 +734,10 @@ export function DemoStepper(): React.ReactElement {
 								</Badge>
 							</div>
 							<CardDescription className="animate-fade-in delay-100">
-								{t(`steps.${currentStep.id}.description`)}
+								{t(
+									stepDescriptionKeys[currentStep.id] ??
+										`steps.${currentStep.id}.description`,
+								)}
 							</CardDescription>
 						</div>
 						{/* Estimated time indicator */}

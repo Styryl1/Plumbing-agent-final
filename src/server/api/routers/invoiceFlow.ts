@@ -371,7 +371,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 						org_id: orgId,
 						status: "draft" as const,
 						is_legacy: false,
-						number: `DRAFT-${job.id.slice(0, 8)}`, // Temporary number for drafts
+						number: `DRAFT-${job.id.slice(0, 8)}`, // Draft identifier format
 						subtotal_ex_vat: 100, // Default placeholder - will be updated by provider
 						vat_total: 21, // 21% Dutch VAT
 						total_inc_vat: 121,

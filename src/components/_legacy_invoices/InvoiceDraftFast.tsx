@@ -231,6 +231,14 @@ export function InvoiceDraftFast({
 		}
 	};
 
+	// Map voice steps to i18n keys to avoid dynamic template literals
+	const voiceStepKeys: Record<VoiceConfirmationState["currentStep"], string> = {
+		review: "invoices.voiceMode.steps.review",
+		confirm: "invoices.voiceMode.steps.confirm",
+		changes: "invoices.voiceMode.steps.changes",
+		final: "invoices.voiceMode.steps.final",
+	};
+
 	const getProgressPercentage = (): number => {
 		switch (voiceState.currentStep) {
 			case "review":
@@ -296,7 +304,7 @@ export function InvoiceDraftFast({
 								{t("invoices.voiceMode.active")}
 							</CardTitle>
 							<Badge variant="outline">
-								{t(`invoices.voiceMode.steps.${voiceState.currentStep}`)}
+								{t(voiceStepKeys[voiceState.currentStep])}
 							</Badge>
 						</div>
 						<Progress value={getProgressPercentage()} className="w-full" />

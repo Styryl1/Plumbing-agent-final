@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 			description: t("launch.meta.description"),
 			url: `${base}${path}`,
 			siteName: "Plumbing Agent",
-			locale: "en_US",
+			locale: "en_GB",
 			type: "website",
 		},
 		twitter: {

@@ -21,8 +21,19 @@ const compat = new FlatCompat({
 // Next.js core-web-vitals ruleset (detection-friendly)
 const nextCore = nextPlugin.configs["core-web-vitals"] || nextPlugin.configs.recommended;
 
+// Ensure Next.js plugin is available at the top level
+const nextEslintPlugin = nextPlugin;
+
 /** @type {import("eslint").Linter.Config[]} */
 export default [
+  // Next.js plugin registration - MUST be first for detection
+  {
+    name: "next/core-web-vitals",
+    plugins: {
+      "@next/eslint-plugin-next": nextEslintPlugin
+    }
+  },
+  
   // Base ignores
   { 
     ignores: [
@@ -58,7 +69,7 @@ export default [
   // Include as a top-level config (no files filter), so Next detects it
   {
     plugins: { 
-      "@next/next": nextPlugin 
+      "@next/eslint-plugin-next": nextPlugin 
     },
     rules: { 
       ...nextCore.rules 
@@ -87,7 +98,7 @@ export default [
   {
     files: ["**/*.{ts,tsx}", "middleware.ts"],
     plugins: { 
-      "@next/next": nextPlugin 
+      "@next/eslint-plugin-next": nextPlugin 
     },
     rules: { 
       ...nextCore.rules 

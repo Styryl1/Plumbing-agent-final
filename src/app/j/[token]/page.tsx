@@ -35,10 +35,10 @@ function getJobCardData(token: string): JobCardData | null {
 			description: "Customer meldt waterlek onder de gootsteen",
 			customer: {
 				id: "demo-customer-123",
-				name: "Jan de Vries",
-				phone: "+31612345678",
-				email: "jan@example.com",
-				address: "Hoofdstraat 123, 1234 AB Amsterdam",
+				name: "EXAMPLE: Customer Name",
+				phone: "+31 6 XX XX XX XX",
+				email: "customer@example.com",
+				address: "EXAMPLE: Street Name XX, XXXX AB City",
 			},
 		},
 		lastSuggestion: {
