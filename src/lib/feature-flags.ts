@@ -1,45 +1,108 @@
-/**
- * Centralized feature flags for WhatsApp AI Receptionist
- * S0-S2: Foundation, Infrastructure, AI Brain
- *
- * These flags control the progressive rollout of WhatsApp features
- */
-
+import "server-only";
 import { env } from "~/lib/env";
 
-// Helper for explicit boolean parsing (no truthiness)
-const asBool = (v: string | undefined): boolean => v === "true";
+/**
+ * Centralized feature flags with PILOT_MODE cascade
+ * PILOT_MODE=true enables all MVP features for pilot testing
+ */
 
-export const featureFlags = {
-	// Master switch for WhatsApp functionality
-	WHATSAPP_ENABLED: true,
+export type FeatureFlags = {
+	whatsappUi: boolean;
+	canIssueInvoices: boolean;
+	showMollieLinks: boolean;
+	calendarEnabled: boolean;
+	dunningMinimal: boolean;
+	pilotMode: boolean;
+};
 
-	// Two-number architecture (business + control chat)
-	DUAL_NUMBER_MODE: true,
+/**
+ * Compute base feature flags from environment
+ */
+function computeBaseFlags(): FeatureFlags {
+	const pilotMode = env.PILOT_MODE === "true";
 
-	// Media download functionality (S1 - flag-gated)
-	WA_MEDIA_DOWNLOAD: asBool(env.WA_MEDIA_DOWNLOAD),
+	// Base flags (defaults when pilot mode is off)
+	const baseFlags: FeatureFlags = {
+		whatsappUi: env.WHATSAPP_VERIFY_TOKEN.length > 0, // Enable if WhatsApp configured
+		canIssueInvoices:
+			env.INVOICING_MONEYBIRD === "true" ||
+			env.INVOICING_WEFACT === "true" ||
+			env.INVOICING_EB === "true",
+		showMollieLinks: env.MOLLIE_API_KEY ? env.MOLLIE_API_KEY.length > 0 : false,
+		calendarEnabled: true, // Calendar is generally available
+		dunningMinimal: env.EMAIL_PROVIDER !== "disabled",
+		pilotMode,
+	};
 
-	// AI analysis mode (S2)
-	AI_MODE: env.AI_MODE.length > 0 ? env.AI_MODE : "rule",
+	return baseFlags;
+}
 
-	// AI analysis of messages (S2) - legacy compatibility
-	AI_ANALYSIS_ENABLED: true,
+/**
+ * Apply PILOT_MODE cascade to enable MVP features
+ */
+export function getFlags(): FeatureFlags {
+	const base = computeBaseFlags();
 
-	// Job Cards mobile interface (S6)
-	JOB_CARDS_ENABLED: false,
+	if (base.pilotMode) {
+		// Override all flags when in pilot mode
+		return {
+			...base,
+			whatsappUi: true,
+			canIssueInvoices: true,
+			showMollieLinks: true,
+			calendarEnabled: true,
+			dunningMinimal: true,
+		};
+	}
 
-	// External accounting provider
-	ACCOUNTING_PROVIDER: "none" as
-		| "none"
-		| "moneybird"
-		| "eboekhouden"
-		| "wefact",
-} as const;
+	return base;
+}
 
-export type FeatureFlags = typeof featureFlags;
+/**
+ * Get public flags safe for client-side exposure
+ * Never exposes sensitive environment configuration
+ */
+export function getPublicFlags(): Pick<
+	FeatureFlags,
+	| "whatsappUi"
+	| "canIssueInvoices"
+	| "showMollieLinks"
+	| "calendarEnabled"
+	| "pilotMode"
+> {
+	const flags = getFlags();
+	return {
+		whatsappUi: flags.whatsappUi,
+		canIssueInvoices: flags.canIssueInvoices,
+		showMollieLinks: flags.showMollieLinks,
+		calendarEnabled: flags.calendarEnabled,
+		pilotMode: flags.pilotMode,
+	};
+}
 
-// Helper function for typed flag access
-export function flag<K extends keyof FeatureFlags>(key: K): FeatureFlags[K] {
-	return featureFlags[key];
+/**
+ * Pure computation function for testing (no env dependency)
+ */
+export function computeFlags(config: { pilotMode: boolean }): FeatureFlags {
+	const baseFlags: FeatureFlags = {
+		whatsappUi: false,
+		canIssueInvoices: false,
+		showMollieLinks: false,
+		calendarEnabled: true,
+		dunningMinimal: false,
+		pilotMode: config.pilotMode,
+	};
+
+	if (config.pilotMode) {
+		return {
+			...baseFlags,
+			whatsappUi: true,
+			canIssueInvoices: true,
+			showMollieLinks: true,
+			calendarEnabled: true,
+			dunningMinimal: true,
+		};
+	}
+
+	return baseFlags;
 }

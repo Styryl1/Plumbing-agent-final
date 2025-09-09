@@ -1,80 +1,93 @@
 import { describe, it, expect } from "vitest";
-import "~/lib/time"; // Load Temporal polyfill
-import { toSessionInfoDTO } from "~/server/dto/whatsapp";
+import { withAmsterdamNow, amsterdamTime } from "../../setup/vitest.temporal";
+import { isWithin24h } from "~/server/services/whatsapp/session";
 
 describe("WhatsApp Session Window Logic", () => {
-	it("should return active session within 24-hour window", () => {
-		// Given: inbound message received 1 hour ago
-		const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-		
-		// When: calculating session info
-		const sessionInfo = toSessionInfoDTO(oneHourAgo);
-		
-		// Then: session should be active
-		expect(sessionInfo.active).toBe(true);
-		expect(sessionInfo.expiresAt).toBeDefined();
-		
-		// And: session should expire in approximately 23 hours
-		const expiryTime = new Date(sessionInfo.expiresAt!);
-		const hoursUntilExpiry = (expiryTime.getTime() - Date.now()) / (1000 * 60 * 60);
-		expect(hoursUntilExpiry).toBeGreaterThan(22);
-		expect(hoursUntilExpiry).toBeLessThan(24);
-	});
+	describe("isWithin24h", () => {
+		it("returns true when message is exactly 24 hours minus 1 minute", async () => {
+			const lastMessageAt = amsterdamTime("2025-09-01T10:00:00");
+			const nowTime = amsterdamTime("2025-09-02T09:59:00");
 
-	it("should return inactive session after 24-hour window", () => {
-		// Given: inbound message received 25 hours ago
-		const twentyFiveHoursAgo = new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString();
-		
-		// When: calculating session info
-		const sessionInfo = toSessionInfoDTO(twentyFiveHoursAgo);
-		
-		// Then: session should be inactive
-		expect(sessionInfo.active).toBe(false);
-		expect(sessionInfo.expiresAt).toBeUndefined();
-	});
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(true);
+			});
+		});
 
-	it("should return inactive session when no inbound message exists", () => {
-		// Given: no last inbound message
-		const sessionInfo = toSessionInfoDTO(null);
-		
-		// Then: session should be inactive
-		expect(sessionInfo.active).toBe(false);
-		expect(sessionInfo.expiresAt).toBeUndefined();
-	});
+		it("returns false when message is exactly 24 hours plus 1 minute", async () => {
+			const lastMessageAt = amsterdamTime("2025-09-01T10:00:00");
+			const nowTime = amsterdamTime("2025-09-02T10:01:00");
 
-	it("should calculate exact 24-hour expiry boundary", () => {
-		// Given: inbound message received exactly 24 hours ago minus 1 second
-		const almostTwentyFourHours = new Date(Date.now() - (24 * 60 * 60 * 1000) + 1000).toISOString();
-		
-		// When: calculating session info
-		const sessionInfo = toSessionInfoDTO(almostTwentyFourHours);
-		
-		// Then: session should still be active
-		expect(sessionInfo.active).toBe(true);
-		
-		// Given: inbound message received exactly 24 hours ago plus 1 second
-		const justOverTwentyFourHours = new Date(Date.now() - (24 * 60 * 60 * 1000) - 1000).toISOString();
-		
-		// When: calculating session info
-		const sessionInfoExpired = toSessionInfoDTO(justOverTwentyFourHours);
-		
-		// Then: session should be inactive
-		expect(sessionInfoExpired.active).toBe(false);
-	});
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(false);
+			});
+		});
 
-	it("should handle edge case of very recent message", () => {
-		// Given: inbound message received 30 seconds ago
-		const thirtySecondsAgo = new Date(Date.now() - 30 * 1000).toISOString();
-		
-		// When: calculating session info
-		const sessionInfo = toSessionInfoDTO(thirtySecondsAgo);
-		
-		// Then: session should be active with almost full window remaining
-		expect(sessionInfo.active).toBe(true);
-		
-		const expiryTime = new Date(sessionInfo.expiresAt!);
-		const hoursUntilExpiry = (expiryTime.getTime() - Date.now()) / (1000 * 60 * 60);
-		expect(hoursUntilExpiry).toBeGreaterThan(23.9);
-		expect(hoursUntilExpiry).toBeLessThan(24.1);
+		it("returns true when message is exactly 24 hours", async () => {
+			const lastMessageAt = amsterdamTime("2025-09-01T10:00:00");
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(true);
+			});
+		});
+
+		it("returns true when message is within 1 hour", async () => {
+			const lastMessageAt = amsterdamTime("2025-09-02T09:00:00");
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(true);
+			});
+		});
+
+		it("returns false when message is 25 hours old", async () => {
+			const lastMessageAt = amsterdamTime("2025-09-01T09:00:00");
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(false);
+			});
+		});
+
+		it("returns false when lastInboundIso is null", async () => {
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(null)).toBe(false);
+			});
+		});
+
+		it("returns false when lastInboundIso is undefined", async () => {
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(undefined)).toBe(false);
+			});
+		});
+
+		it("returns false when lastInboundIso is empty string", async () => {
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h("")).toBe(false);
+			});
+		});
+
+		it("returns false when lastInboundIso is invalid format", async () => {
+			const nowTime = amsterdamTime("2025-09-02T10:00:00");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h("invalid-date")).toBe(false);
+			});
+		});
+
+		it("handles edge case with microseconds precision", async () => {
+			const lastMessageAt = "2025-09-01T10:00:00.123456+02:00[Europe/Amsterdam]";
+			const nowTime = amsterdamTime("2025-09-02T09:59:59");
+
+			await withAmsterdamNow(nowTime, () => {
+				expect(isWithin24h(lastMessageAt)).toBe(true);
+			});
+		});
 	});
 });

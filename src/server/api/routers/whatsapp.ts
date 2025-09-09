@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { logAuditEvent } from "~/lib/audit";
-import { featureFlags } from "~/lib/feature-flags";
+import { getFlags } from "~/lib/feature-flags";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
 	GetMessagesInput,
@@ -43,8 +43,8 @@ export const whatsappRouter = createTRPCRouter({
 		]);
 
 		return {
-			enabled: featureFlags.WHATSAPP_ENABLED,
-			dualNumberMode: featureFlags.DUAL_NUMBER_MODE,
+			enabled: getFlags().whatsappUi,
+			dualNumberMode: true, // Always enabled for now
 			conversationCount: conversationsResult.count ?? 0,
 			messageCount: messagesResult.count ?? 0,
 		};

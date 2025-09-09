@@ -6,7 +6,7 @@
 
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
-import { featureFlags } from "~/lib/feature-flags";
+// Media download functionality controlled by WA_MEDIA_DOWNLOAD env var
 
 export type MediaFetchResult =
 	| {
@@ -36,7 +36,7 @@ export async function fetchAndStoreMedia(
 	const { mediaId, orgId, messageId } = params;
 
 	// Feature flag guard - return early if media download is disabled
-	if (!featureFlags.WA_MEDIA_DOWNLOAD) {
+	if (env.WA_MEDIA_DOWNLOAD !== "true") {
 		return {
 			success: false,
 			error: "Media download disabled by feature flag",
@@ -125,5 +125,5 @@ export async function fetchAndStoreMedia(
  * Helper to check if media download is enabled
  */
 export function isMediaDownloadEnabled(): boolean {
-	return featureFlags.WA_MEDIA_DOWNLOAD;
+	return env.WA_MEDIA_DOWNLOAD === "true";
 }

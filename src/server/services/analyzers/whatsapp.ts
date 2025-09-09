@@ -6,7 +6,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 // Temporal imported for future use in timestamping analysis runs
 import { env } from "~/lib/env";
-import { featureFlags } from "~/lib/feature-flags";
+// WhatsApp AI analyzer service for message processing
 import { mustSingle } from "~/server/db/unwrap";
 import type { Database } from "~/types/supabase";
 
@@ -42,7 +42,7 @@ export type AnalyzeInboundParams = {
 export async function analyzeInbound(
 	params: AnalyzeInboundParams,
 ): Promise<AnalyzerResult> {
-	const { text, aiMode = featureFlags.AI_MODE } = params;
+	const { text, aiMode = env.AI_MODE } = params;
 
 	// Default to rule-based analysis
 	if (aiMode === "rule" || !env.OPENAI_API_KEY) {

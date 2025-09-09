@@ -1,9 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm check:*)"
+      "Bash(pnpm check:*)",
+      "Bash(mkdir:*)",
+      "Bash(pnpm vitest run:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm guard:*)",
+      "Bash(next build)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase",
+    "shadcn"
+  ]
 }

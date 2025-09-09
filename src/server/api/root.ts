@@ -7,6 +7,7 @@ import { jobsRouter } from "./routers/jobs";
 import { orgSettingsRouter } from "./routers/orgSettings";
 import { providersRouter } from "./routers/providers";
 import { reportingRouter } from "./routers/reporting";
+import { settingsRouter } from "./routers/settings";
 import { timelineRouter } from "./routers/timeline";
 import { waAdminRouter } from "./routers/waAdmin";
 import { whatsappRouter } from "./routers/whatsapp";
@@ -22,6 +23,7 @@ export const appRouter = router({
 	reporting: reportingRouter,
 	orgSettings: orgSettingsRouter,
 	providers: providersRouter,
+	settings: settingsRouter,
 	ai: aiRouter,
 	whatsapp: whatsappRouter,
 	waAdmin: waAdminRouter,

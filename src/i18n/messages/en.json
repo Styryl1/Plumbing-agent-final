@@ -2,6 +2,8 @@
 	"postalCode": "Postal code",
 	"houseNumber": "House number",
 	"app.title": "Plumbing Agent",
+	"pilot.banner.title": "Pilot Mode",
+	"pilot.banner.subtitle": "Certain features are enabled for testing.",
 	"nav.dashboard": "Dashboard",
 	"nav.jobs": "Jobs",
 	"nav.customers": "Customers",
