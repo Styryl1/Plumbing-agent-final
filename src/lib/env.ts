@@ -61,6 +61,8 @@ const schema = z.object({
 	AIRTABLE_WEBHOOK_URL: z.url().optional(), // Optional Airtable webhook for waitlist mirroring
 	NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(), // Google Analytics measurement ID
 	NEXT_PUBLIC_ANALYTICS_ENABLED: z.enum(["true", "false"]).default("false"), // Analytics enabled flag
+	// Pilot mode - master feature switch
+	PILOT_MODE: z.enum(["true", "false"]).default("false"), // Enables all MVP features for pilot testing
 });
 
 const parsed = schema.safeParse({
@@ -112,15 +114,16 @@ const parsed = schema.safeParse({
 	AIRTABLE_WEBHOOK_URL: process.env.AIRTABLE_WEBHOOK_URL,
 	NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
 	NEXT_PUBLIC_ANALYTICS_ENABLED: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED,
+	PILOT_MODE: process.env.PILOT_MODE,
 });
 
 if (!parsed.success) {
 	// Show exactly what failed
 	const errorMessage = `❌ Invalid environment variables:\n${JSON.stringify(z.treeifyError(parsed.error), null, 2)}`;
-	
+
 	// Log the error for debugging
 	console.error(errorMessage);
-	
+
 	// Throw an error to prevent the app from running with invalid config
 	// This works in both Node.js and Edge Runtime
 	throw new Error(errorMessage);

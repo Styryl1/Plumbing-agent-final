@@ -11,6 +11,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import type { JSX } from "react";
 import { Temporal } from "temporal-polyfill";
 import { TrpcProvider } from "~/components/providers/TrpcProvider";
+import PilotModeBanner from "~/components/system/PilotModeBanner";
 import { Toaster } from "~/components/ui/sonner";
 import type { Locale } from "~/i18n";
 import SafeNextIntlClientProvider from "~/lib/i18n/SafeNextIntlClientProvider";
@@ -82,6 +83,7 @@ export default async function RootLayout({
 					>
 						<TrpcProvider>
 							<div className="min-h-screen bg-background">
+								<PilotModeBanner />
 								<DashboardHeader initialLocale={locale as Locale} />
 								<main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 									{children}
