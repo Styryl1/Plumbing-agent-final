@@ -1108,9 +1108,80 @@
     "email_escalation": "Email Escalation"
   },
   "providers": {
-    "moneybird": "Moneybird",
-    "wefact": "Wefact",
-    "eboekhouden": "Eboekhouden",
-    "peppol": "Peppol"
+    "moneybird": {
+      "title": "Moneybird",
+      "description": "Professionele Nederlandse boekhouding met API integratie",
+      "connect": "Koppelen",
+      "reconnect": "Opnieuw koppelen",
+      "disconnect": "Ontkoppelen",
+      "connected": "Gekoppeld",
+      "openDashboard": "Dashboard Openen",
+      "reconnectHelper": "Uw token is verlopen. Koppel opnieuw om door te gaan.",
+      "health": {
+        "ok": "Gekoppeld",
+        "invalid_token": "Token Verlopen",
+        "not_connected": "Niet Gekoppeld"
+      }
+    },
+    "wefact": {
+      "title": "WeFact",
+      "description": "Eenvoudige facturatie met betalingsverwerking"
+    },
+    "eboekhouden": {
+      "title": "e-Boekhouden",
+      "description": "Populaire keuze voor Nederlandse kleine ondernemers"
+    },
+    "peppol": {
+      "title": "Peppol",
+      "description": "Europese B2B elektronische facturatie standaard"
+    },
+    "panel": {
+      "title": "Factuur Providers",
+      "description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
+      "note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance."
+    },
+    "states": {
+      "connected": "Gekoppeld",
+      "needs_action": "Instelling vereist",
+      "error": "Fout"
+    },
+    "comingSoon": "Binnenkort beschikbaar"
+  },
+  "approvals": {
+    "title": "Dagelijkse Factuur Goedkeuring",
+    "subtitle": "Beoordeel en verstuur vandaag aangemaakte conceptfacturen",
+    "selectAll": "Alles selecteren",
+    "selected": "geselecteerd",
+    "select": "Selecteren",
+    "number": "Nummer",
+    "customer": "Klant",
+    "total": "Totaal",
+    "created": "Gemaakt",
+    "empty": "Geen conceptfacturen gevonden voor deze datum",
+    "dateFilter": {
+      "title": "Datum Filter",
+      "description": "Selecteer de datum om conceptfacturen te bekijken",
+      "label": "Doeldatum"
+    },
+    "actions": {
+      "title": "Bulk Acties",
+      "description": "Selecteer facturen om in bulk te versturen",
+      "selectedCount": "{count} facturen geselecteerd",
+      "sendSelected": "{count} geselecteerde versturen",
+      "sending": "Facturen versturen..."
+    },
+    "list": {
+      "title": "Conceptfacturen",
+      "loading": "Concepten laden...",
+      "count": "{count} conceptfacturen"
+    },
+    "results": {
+      "title": "Verzendresultaten",
+      "total": "Totaal",
+      "sent": "Verstuurd",
+      "skipped": "Overgeslagen",
+      "withPaymentLinks": "Met Betaallinks",
+      "errors": "Fouten"
+    }
   }
 }

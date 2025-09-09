@@ -1108,9 +1108,80 @@
 		"email_escalation": "Email Escalation"
 	},
 	"providers": {
-		"moneybird": "Moneybird",
-		"wefact": "Wefact",
-		"eboekhouden": "Eboekhouden",
-		"peppol": "Peppol"
+		"moneybird": {
+			"title": "Moneybird",
+			"description": "Professional Dutch accounting with API integration",
+			"connect": "Connect",
+			"reconnect": "Reconnect",
+			"disconnect": "Disconnect",
+			"connected": "Connected",
+			"openDashboard": "Open Dashboard",
+			"reconnectHelper": "Your token has expired. Please reconnect to continue.",
+			"health": {
+				"ok": "Connected",
+				"invalid_token": "Token Expired",
+				"not_connected": "Not Connected"
+			}
+		},
+		"wefact": {
+			"title": "WeFact",
+			"description": "Simple invoicing with payment processing"
+		},
+		"eboekhouden": {
+			"title": "e-Boekhouden",
+			"description": "Popular choice for Dutch small businesses"
+		},
+		"peppol": {
+			"title": "Peppol",
+			"description": "European B2B electronic invoicing standard"
+		},
+		"panel": {
+			"title": "Invoice Providers",
+			"description": "Connect accounting packages to issue professional invoices",
+			"note": "Connect at least one provider to issue invoices. Each provider handles numbering, PDFs and compliance."
+		},
+		"states": {
+			"connected": "Connected",
+			"needs_action": "Setup Required",
+			"error": "Error"
+		},
+		"comingSoon": "Coming soon"
+	},
+	"approvals": {
+		"title": "Daily Invoice Approvals",
+		"subtitle": "Review and send draft invoices created today",
+		"selectAll": "Select all",
+		"selected": "selected",
+		"select": "Select",
+		"number": "Number",
+		"customer": "Customer", 
+		"total": "Total",
+		"created": "Created",
+		"empty": "No draft invoices found for this date",
+		"dateFilter": {
+			"title": "Date Filter",
+			"description": "Select the date to view draft invoices",
+			"label": "Target date"
+		},
+		"actions": {
+			"title": "Batch Actions",
+			"description": "Select invoices to send in batch",
+			"selectedCount": "{count} invoices selected",
+			"sendSelected": "Send {count} selected",
+			"sending": "Sending invoices..."
+		},
+		"list": {
+			"title": "Draft Invoices",
+			"loading": "Loading drafts...",
+			"count": "{count} draft invoices"
+		},
+		"results": {
+			"title": "Send Results",
+			"total": "Total",
+			"sent": "Sent",
+			"skipped": "Skipped", 
+			"withPaymentLinks": "With Payment Links",
+			"errors": "Errors"
+		}
 	}
 }
