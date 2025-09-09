@@ -1124,6 +1124,171 @@ export const invoicesRouter = createTRPCRouter({
 
 			return results;
 		}),
+
+	/**
+	 * List draft invoices for daily approval workflow
+	 * Returns minimal data needed for batch selection
+	 */
+	listDraftsForApproval: protectedProcedure
+		.input(
+			z.object({
+				date: z.string().optional(), // ISO date string (YYYY-MM-DD)
+			}),
+		)
+		.query(async ({ ctx, input }) => {
+			// Default to today if no date provided
+			const targetDate =
+				input.date ??
+				Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")
+					.toPlainDate()
+					.toString();
+
+			// Convert to full ISO datetime for the start of the day
+			const startOfDay = Temporal.PlainDate.from(targetDate)
+				.toZonedDateTime("Europe/Amsterdam")
+				.toString();
+
+			const endOfDay = Temporal.PlainDate.from(targetDate)
+				.toZonedDateTime("Europe/Amsterdam")
+				.with({ hour: 23, minute: 59, second: 59 })
+				.toString();
+
+			const { data: invoices, error } = await ctx.db
+				.from("invoices")
+				.select(`
+					id,
+					number,
+					total_cents,
+					total_inc_vat,
+					created_at,
+					customers!inner (
+						id,
+						name
+					)
+				`)
+				.eq("status", "draft")
+				.eq("is_legacy", false)
+				.gte("created_at", startOfDay)
+				.lte("created_at", endOfDay)
+				.order("created_at", { ascending: false });
+
+			if (error) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to fetch drafts for approval",
+					cause: error,
+				});
+			}
+
+			return invoices.map((invoice) => ({
+				id: invoice.id,
+				number: invoice.number,
+				customerName: invoice.customers.name,
+				totalCents:
+					invoice.total_cents ?? Math.round(invoice.total_inc_vat * 100),
+				createdAt: invoice.created_at!,
+			}));
+		}),
+
+	/**
+	 * Send multiple draft invoices in batch
+	 * Simplified interface for daily approvals
+	 */
+	sendMany: protectedProcedure
+		.input(
+			z.object({
+				invoiceIds: z.array(z.uuid()),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			// Use the same logic as bulkSend but with simplified interface
+			const results = {
+				total: input.invoiceIds.length,
+				sent: 0,
+				skipped: 0,
+				withPaymentLinks: 0,
+				errors: [] as Array<{ id: string; error: string }>,
+			};
+
+			for (const invoiceId of input.invoiceIds) {
+				try {
+					// Fetch invoice with lock check
+					const { data: invoice, error: fetchError } = await ctx.db
+						.from("invoices")
+						.select(
+							"id, provider, external_id, issued_at, provider_status, status",
+						)
+						.eq("id", invoiceId)
+						.single();
+
+					if (fetchError !== null) {
+						results.errors.push({
+							id: invoiceId,
+							error: "Invoice not found",
+						});
+						continue;
+					}
+
+					// Skip if locked (already sent)
+					if (isInvoiceLocked(invoice)) {
+						results.skipped++;
+						continue;
+					}
+
+					// Skip if not a draft or missing provider
+					if (invoice.status !== "draft" || !invoice.provider) {
+						results.skipped++;
+						continue;
+					}
+
+					// Get provider instance
+					const provider = await getProvider(
+						invoice.provider as InvoiceProviderId,
+						ctx.db,
+						ctx.auth.orgId,
+						ctx.auth.userId,
+					);
+
+					// Finalize and send via provider
+					const sendResult = await provider.finalizeAndSend(
+						invoice.external_id!,
+					);
+
+					// Update invoice with provider response
+					const nowISO =
+						Temporal.Now.zonedDateTimeISO("Europe/Amsterdam").toString();
+					const { error: updateError } = await ctx.db
+						.from("invoices")
+						.update({
+							provider_status: sendResult.status,
+							payment_url: sendResult.paymentUrl ?? null,
+							pdf_url: sendResult.pdfUrl ?? null,
+							ubl_url: sendResult.ublUrl ?? null,
+							provider_number: sendResult.providerNumber ?? null,
+							issued_at: nowISO,
+							updated_at: nowISO,
+						})
+						.eq("id", invoiceId);
+
+					if (updateError) {
+						results.errors.push({
+							id: invoiceId,
+							error: "Failed to update invoice",
+						});
+						continue;
+					}
+
+					results.sent++;
+				} catch (error) {
+					results.errors.push({
+						id: invoiceId,
+						error: error instanceof Error ? error.message : "Unknown error",
+					});
+				}
+			}
+
+			return results;
+		}),
 });
 
 /**

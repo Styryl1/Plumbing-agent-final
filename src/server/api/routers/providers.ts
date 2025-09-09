@@ -1,6 +1,7 @@
 import "server-only";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { env } from "~/lib/env";
 import "~/lib/time";
 import { createProviderCredentialsService } from "~/server/db/provider-credentials";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -63,6 +64,60 @@ export const providersRouter = createTRPCRouter({
 		}),
 
 	/**
+	 * Get health status for a specific provider
+	 */
+	getHealth: protectedProcedure
+		.input(
+			z.object({
+				provider: z.enum(["moneybird", "wefact", "eboekhouden"]),
+			}),
+		)
+		.query(async ({ ctx, input }) => {
+			const credentialsService = createProviderCredentialsService(
+				ctx.db,
+				ctx.auth.orgId,
+			);
+
+			try {
+				const credentials = await credentialsService.getCredentials(
+					input.provider,
+				);
+
+				if (!credentials) {
+					return {
+						provider: input.provider,
+						status: "not_connected" as const,
+						details: "Provider not connected",
+					};
+				}
+
+				// Check if token is expired
+				const now = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam");
+				const expiresAt = Temporal.Instant.from(credentials.expires_at);
+
+				if (now.toInstant().epochNanoseconds > expiresAt.epochNanoseconds) {
+					return {
+						provider: input.provider,
+						status: "invalid_token" as const,
+						details: "Token expired",
+					};
+				}
+
+				return {
+					provider: input.provider,
+					status: "ok" as const,
+					details: "Connected and valid",
+				};
+			} catch {
+				return {
+					provider: input.provider,
+					status: "not_connected" as const,
+					details: "Error checking credentials",
+				};
+			}
+		}),
+
+	/**
 	 * Get health status for all configured providers
 	 */
 	getHealthStatus: protectedProcedure.query(async ({ ctx }) => {
@@ -92,6 +147,42 @@ export const providersRouter = createTRPCRouter({
 
 		return health;
 	}),
+
+	/**
+	 * Get OAuth authorization URL for Moneybird
+	 */
+	getAuthUrl: protectedProcedure
+		.input(
+			z.object({
+				provider: z.literal("moneybird"),
+			}),
+		)
+		.query(({ ctx, input }) => {
+			// For Moneybird OAuth, we'll use the existing OAuth callback endpoint
+			// This would typically generate a state parameter for CSRF protection
+			const baseUrl = env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+			const timestamp =
+				Temporal.Now.zonedDateTimeISO("Europe/Amsterdam").epochMilliseconds;
+			const state = `${ctx.auth.orgId}-${ctx.auth.userId}-${timestamp}`;
+
+			// Moneybird OAuth parameters
+			const params = new URLSearchParams({
+				client_id: env.MONEYBIRD_CLIENT_ID ?? "",
+				response_type: "code",
+				redirect_uri: `${baseUrl}/api/providers/moneybird/callback`,
+				scope: "sales_invoices",
+				state,
+			});
+
+			const authUrl = `https://moneybird.com/oauth/authorize?${params.toString()}`;
+
+			// Store state in session/db for validation (simplified for now)
+			return {
+				provider: input.provider,
+				authUrl,
+				state,
+			};
+		}),
 
 	/**
 	 * Disconnect a provider by removing its credentials
