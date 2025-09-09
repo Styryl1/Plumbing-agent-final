@@ -1,11 +1,13 @@
 // src/i18n/normalize.ts
+import type { AbstractIntlMessages } from "next-intl";
+
 type AnyRecord = Record<string, unknown>;
 
 /**
  * Convert { "a.b.c": "v", "x": "y" } into { a: { b: { c: "v" } }, x: "y" }.
  * If the input is already nested, it passes through.
  */
-export function normalizeMessages(input: AnyRecord): AnyRecord {
+export function normalizeMessages(input: AnyRecord): AbstractIntlMessages {
 	const out: AnyRecord = {};
 
 	const setDeep = (obj: AnyRecord, path: string, value: unknown): void => {
@@ -35,5 +37,5 @@ export function normalizeMessages(input: AnyRecord): AnyRecord {
 	}
 
 	// If there were no dotted keys, assume already nested; return original input.
-	return hasDotKey ? out : input;
+	return (hasDotKey ? out : input) as AbstractIntlMessages;
 }

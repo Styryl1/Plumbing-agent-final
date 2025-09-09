@@ -117,10 +117,10 @@ const parsed = schema.safeParse({
 if (!parsed.success) {
 	// Show exactly what failed
 	const errorMessage = `❌ Invalid environment variables:\n${JSON.stringify(z.treeifyError(parsed.error), null, 2)}`;
-	
+
 	// Log the error for debugging
 	console.error(errorMessage);
-	
+
 	// Throw an error to prevent the app from running with invalid config
 	// This works in both Node.js and Edge Runtime
 	throw new Error(errorMessage);
