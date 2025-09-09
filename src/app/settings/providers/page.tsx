@@ -93,7 +93,9 @@ export default function ProvidersSettingsPage(): JSX.Element {
 					onConnect={handleConnect}
 					onReconnect={handleReconnect}
 					onDisconnect={handleDisconnect}
-					{...(moneybirdHealth?.details && { details: moneybirdHealth.details })}
+					{...(moneybirdHealth?.details && {
+						details: moneybirdHealth.details,
+					})}
 				/>
 
 				{/* Future provider tiles */}
@@ -108,9 +110,7 @@ export default function ProvidersSettingsPage(): JSX.Element {
 						<CardDescription>{t("wefact.description")}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<p className="text-sm text-muted-foreground">
-							{t("comingSoon")}
-						</p>
+						<p className="text-sm text-muted-foreground">{t("comingSoon")}</p>
 					</CardContent>
 				</Card>
 
@@ -125,9 +125,7 @@ export default function ProvidersSettingsPage(): JSX.Element {
 						<CardDescription>{t("eboekhouden.description")}</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<p className="text-sm text-muted-foreground">
-							{t("comingSoon")}
-						</p>
+						<p className="text-sm text-muted-foreground">{t("comingSoon")}</p>
 					</CardContent>
 				</Card>
 			</div>

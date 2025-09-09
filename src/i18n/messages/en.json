@@ -1154,7 +1154,7 @@
 		"selected": "selected",
 		"select": "Select",
 		"number": "Number",
-		"customer": "Customer", 
+		"customer": "Customer",
 		"total": "Total",
 		"created": "Created",
 		"empty": "No draft invoices found for this date",
@@ -1179,7 +1179,7 @@
 			"title": "Send Results",
 			"total": "Total",
 			"sent": "Sent",
-			"skipped": "Skipped", 
+			"skipped": "Skipped",
 			"withPaymentLinks": "With Payment Links",
 			"errors": "Errors"
 		}

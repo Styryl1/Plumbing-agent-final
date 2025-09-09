@@ -224,10 +224,14 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 													/>
 												</TableCell>
 												<TableCell>
-													<div className="font-mono text-sm">{draft.number}</div>
+													<div className="font-mono text-sm">
+														{draft.number}
+													</div>
 												</TableCell>
 												<TableCell>
-													<div className="font-medium">{draft.customerName}</div>
+													<div className="font-medium">
+														{draft.customerName}
+													</div>
 												</TableCell>
 												<TableCell className="text-right font-mono">
 													{formatCurrency(draft.totalCents)}

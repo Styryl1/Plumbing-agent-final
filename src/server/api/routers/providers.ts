@@ -161,7 +161,8 @@ export const providersRouter = createTRPCRouter({
 			// For Moneybird OAuth, we'll use the existing OAuth callback endpoint
 			// This would typically generate a state parameter for CSRF protection
 			const baseUrl = env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-			const timestamp = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam").epochMilliseconds;
+			const timestamp =
+				Temporal.Now.zonedDateTimeISO("Europe/Amsterdam").epochMilliseconds;
 			const state = `${ctx.auth.orgId}-${ctx.auth.userId}-${timestamp}`;
 
 			// Moneybird OAuth parameters

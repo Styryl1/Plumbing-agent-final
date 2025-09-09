@@ -46,12 +46,8 @@ export function MoneybirdTile({
 	const renderStatusBadge = (): JSX.Element => {
 		const variant = getStatusBadgeVariant(status);
 		const statusKey = `health.${status}` as const;
-		
-		return (
-			<Badge variant={variant}>
-				{t(statusKey)}
-			</Badge>
-		);
+
+		return <Badge variant={variant}>{t(statusKey)}</Badge>;
 	};
 
 	const renderActions = (): JSX.Element => {
@@ -66,7 +62,11 @@ export function MoneybirdTile({
 			case "invalid_token":
 				return (
 					<div className="space-y-2">
-						<Button onClick={onReconnect} variant="destructive" className="flex items-center gap-2">
+						<Button
+							onClick={onReconnect}
+							variant="destructive"
+							className="flex items-center gap-2"
+						>
 							<ExternalLink className="h-4 w-4" />
 							{t("reconnect")}
 						</Button>
@@ -88,11 +88,7 @@ export function MoneybirdTile({
 								{t("openDashboard")}
 							</Button>
 							{onDisconnect && (
-								<Button
-									variant="ghost" 
-									onClick={onDisconnect}
-									size="sm"
-								>
+								<Button variant="ghost" onClick={onDisconnect} size="sm">
 									{t("disconnect")}
 								</Button>
 							)}
@@ -116,9 +112,7 @@ export function MoneybirdTile({
 					<CardDescription>{t("description")}</CardDescription>
 				</div>
 			</CardHeader>
-			<CardContent>
-				{renderActions()}
-			</CardContent>
+			<CardContent>{renderActions()}</CardContent>
 		</Card>
 	);
 }

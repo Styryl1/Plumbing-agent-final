@@ -41,13 +41,15 @@ export function IssueActions({
 	const utils = api.useUtils();
 
 	// Get provider health status
-	const {
-		data: providerHealth,
-		isLoading: isLoadingHealth,
-	} = api.providers.getHealth.useQuery(
-		{ provider: provider as "moneybird" | "wefact" | "eboekhouden" },
-		{ enabled: !!provider && ["moneybird", "wefact", "eboekhouden"].includes(provider) }
-	);
+	const { data: providerHealth, isLoading: isLoadingHealth } =
+		api.providers.getHealth.useQuery(
+			{ provider: provider as "moneybird" | "wefact" | "eboekhouden" },
+			{
+				enabled:
+					!!provider &&
+					["moneybird", "wefact", "eboekhouden"].includes(provider),
+			},
+		);
 
 	// Use existing send mutation
 	const sendMutation = api.invoices.send.useMutation({
@@ -130,18 +132,23 @@ export function IssueActions({
 							<AlertTriangle className="h-4 w-4 text-orange-600" />
 							{t("invoice.issueActions")}
 						</CardTitle>
-						<Badge variant="outline" className="border-orange-200 text-orange-700">
-							{isInvalidToken ? t("providers.moneybird.health.invalid_token") : 
-							 isNotConnected ? t("providers.moneybird.health.not_connected") :
-							 t("providers.states.error")}
+						<Badge
+							variant="outline"
+							className="border-orange-200 text-orange-700"
+						>
+							{isInvalidToken
+								? t("providers.moneybird.health.invalid_token")
+								: isNotConnected
+									? t("providers.moneybird.health.not_connected")
+									: t("providers.states.error")}
 						</Badge>
 					</div>
 					<CardDescription>
-						{isInvalidToken 
+						{isInvalidToken
 							? "Provider token has expired. Please reconnect to continue."
-							: isNotConnected 
-							? "Provider is not connected. Please connect to continue."
-							: "Provider connection issue. Please check settings."}
+							: isNotConnected
+								? "Provider is not connected. Please connect to continue."
+								: "Provider connection issue. Please check settings."}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="pt-0">
@@ -174,11 +181,9 @@ export function IssueActions({
 						</CardDescription>
 					</div>
 					{providerHealth && provider && (
-						<Badge 
-							variant="default"
-							className="ml-2"
-						>
-							{provider.charAt(0).toUpperCase() + provider.slice(1)} {t("providers.states.connected")}
+						<Badge variant="default" className="ml-2">
+							{provider.charAt(0).toUpperCase() + provider.slice(1)}{" "}
+							{t("providers.states.connected")}
 						</Badge>
 					)}
 				</div>
@@ -186,7 +191,9 @@ export function IssueActions({
 			<CardContent>
 				<Button
 					onClick={handleIssue}
-					disabled={isIssuing || isLoadingHealth || (providerHealth?.status !== "ok")}
+					disabled={
+						isIssuing || isLoadingHealth || providerHealth?.status !== "ok"
+					}
 					className="w-full"
 					size="lg"
 				>
