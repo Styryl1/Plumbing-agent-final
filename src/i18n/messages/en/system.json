@@ -1,0 +1,35 @@
+{
+	"app.title": "Plumbing Agent",
+	"errors": {
+		"paymentLink": {
+			"sendFailed": "Failed to send payment link"
+		}
+	},
+	"locale": "en",
+	"meta.created": "Created:",
+	"notifications": {
+		"paymentLink": {
+			"sent": "Payment link sent via WhatsApp"
+		}
+	},
+	"payment": {
+		"links": "Payment & Documents",
+		"linksDescription": "Payment links and official documents",
+		"noLinksDescription": "Payment links will appear after the invoice is sent",
+		"noLinksAvailable": "No payment links available",
+		"payOnline": "Pay Online",
+		"providerPayment": "Official payment link from provider",
+		"openMollieCheckout": "Create iDEAL Payment",
+		"creatingMollie": "Creating payment link...",
+		"molliePayment": "Backup payment via iDEAL",
+		"mollieCreated": "Payment link created and opened",
+		"mollieFailed": "Failed to create payment link",
+		"downloadPdf": "Download PDF",
+		"viewPdf": "View PDF",
+		"pdfDescription": "Official invoice document",
+		"officialInvoice": "Official invoice document",
+		"paymentCopied": "Payment link copied to clipboard",
+		"pdfCopied": "PDF link copied to clipboard",
+		"copyFailed": "Failed to copy to clipboard"
+	}
+}

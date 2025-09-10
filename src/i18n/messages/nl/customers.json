@@ -1,0 +1,151 @@
+{
+	"customers": {
+		"selectCustomer": "Klant selecteren",
+		"recent": "Recent",
+		"allOthers": "Alle anderen",
+		"title": "Klanten",
+		"description": "Beheer klantinformatie en contactgegevens",
+		"errors": {
+			"name": {
+				"required": "Naam is verplicht"
+			},
+			"phone": {
+				"required": "Telefoon is verplicht",
+				"invalid": "Voer een geldig telefoonnummer in"
+			},
+			"email": {
+				"invalid": "Voer een geldig e-mailadres in"
+			},
+			"postalCode": {
+				"invalid": "Ongeldige postcode (bijv. 1234 AB)"
+			},
+			"houseNumber": {
+				"required": "Huisnummer verplicht"
+			},
+			"address": {
+				"required": "Adres is verplicht"
+			},
+			"notFoundOrNoPermission": "Klant niet gevonden of geen permissie",
+			"serverError": "Server fout opgetreden",
+			"emailAlreadyExists": "Klant met dit e-mailadres bestaat al"
+		},
+		"searchPlaceholder": "Zoek klanten...",
+		"noCustomersFound": "Geen klanten gevonden",
+		"addNew": "Nieuwe klant",
+		"archived": {
+			"title": "Gearchiveerde klanten",
+			"description": "Bekijk gearchiveerde klanten",
+			"badge": "Gearchiveerde klant",
+			"noArchivedFound": "Geen gearchiveerde klanten gevonden",
+			"tab": "Gearchiveerd"
+		},
+		"unarchive": {
+			"action": "Herstellen",
+			"tooltip": "Klant herstellen",
+			"success": "Klant succesvol hersteld",
+			"error": "Fout bij herstellen klant"
+		},
+		"create": {
+			"title": "Nieuwe klant aanmaken",
+			"description": "Voeg een nieuwe klant toe aan het systeem"
+		},
+		"edit": {
+			"title": "Klant bewerken",
+			"description": "Wijzig klantinformatie"
+		},
+		"form": {
+			"name": {
+				"label": "Naam",
+				"placeholder": "Volledige naam"
+			},
+			"email": {
+				"label": "E-mailadres",
+				"placeholder": "naam@voorbeeld.nl"
+			},
+			"phone": {
+				"label": "Telefoonnummer",
+				"placeholder": "06 12345678"
+			},
+			"address": {
+				"label": "Adres",
+				"placeholder": "Straat 123",
+				"autoFill": {
+					"title": "Nederlandse Adres Opzoeken"
+				}
+			},
+			"postalCode": {
+				"label": "Postcode",
+				"placeholder": "1234 AB"
+			},
+			"houseNumber": {
+				"label": "Huisnummer",
+				"placeholder": "123"
+			},
+			"street": {
+				"label": "Straat",
+				"placeholder": "Straatnaam"
+			},
+			"city": {
+				"label": "Plaats",
+				"placeholder": "Plaatsnaam"
+			},
+			"language": {
+				"label": "Taal"
+			},
+			"validation": {
+				"nameRequired": "Naam is verplicht",
+				"nameTooLong": "Naam te lang",
+				"emailInvalid": "Voer een geldig e-mailadres in",
+				"emailTooLong": "E-mailadres te lang",
+				"phoneRequired": "Telefoonnummer is verplicht",
+				"phoneTooLong": "Telefoonnummer te lang",
+				"addressTooLong": "Adres te lang",
+				"postalCodeRequired": "Postcode is verplicht",
+				"postalCodeInvalid": "Ongeldige Nederlandse postcode (bijv. 1234 AB)",
+				"postalCodeTooLong": "Postcode te lang"
+			},
+			"requiredSymbol": "*"
+		},
+		"table": {
+			"columns": {
+				"name": "Naam",
+				"contact": "Contact",
+				"address": "Adres",
+				"created": "Aangemaakt",
+				"actions": "Acties"
+			}
+		},
+		"stats": {
+			"total": "Totaal aantal",
+			"thisMonth": "Deze maand",
+			"active": "Actieve klanten",
+			"archived": "Gearchiveerde klanten"
+		},
+		"delete": {
+			"title": "Klant verwijderen",
+			"description": "Weet je zeker dat je deze klant wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"archive": {
+				"title": "Klant archiveren",
+				"cannotDelete": "Kan klant niet verwijderen: er zijn nog klussen of facturen gekoppeld.",
+				"linkedData": "Gekoppelde gegevens:",
+				"jobs": "klus(sen)",
+				"invoices": "factuur/facturen",
+				"archiveInstead": "Wil je de klant {name} archiveren in plaats daarvan?"
+			}
+		},
+		"error": {
+			"load": "Kan klanten niet laden",
+			"create": "Kan klant niet aanmaken",
+			"update": "Kan klant niet bijwerken",
+			"delete": "Kan klant niet verwijderen",
+			"deleteLinked": "Klant heeft gekoppelde klussen/facturen. Je kunt archiveren.",
+			"archive": "Kon klant niet archiveren"
+		},
+		"success": {
+			"created": "Klant succesvol aangemaakt",
+			"updated": "Klant succesvol bijgewerkt",
+			"deleted": "Klant succesvol verwijderd",
+			"archived": "Klant succesvol gearchiveerd"
+		}
+	}
+}

@@ -1,0 +1,81 @@
+{
+	"whatsapp": {
+		"leads": {
+			"title": "WhatsApp Leads",
+			"description": "Beheer inkomende WhatsApp gesprekken",
+			"count": "leads",
+			"table": {
+				"contact": "Contact",
+				"lastMessage": "Laatste Bericht",
+				"unread": "Ongelezen",
+				"session": "Sessie",
+				"lastActivity": "Laatste Activiteit"
+			},
+			"empty": {
+				"title": "Geen actieve leads",
+				"description": "Nieuwe WhatsApp gesprekken verschijnen hier"
+			}
+		},
+		"session": {
+			"active": "Actief",
+			"expired": "Verlopen",
+			"expiresAt": "Verloopt om"
+		},
+		"conversation": {
+			"title": "Berichten",
+			"empty": {
+				"title": "Nog geen berichten",
+				"description": "Start een gesprek om berichten hier te zien"
+			}
+		},
+		"message": {
+			"media": "Media bijlage"
+		},
+		"composer": {
+			"placeholder": "Typ een bericht...",
+			"templatePlaceholder": "Typ een sjabloonbericht...",
+			"send": "Verstuur",
+			"useTemplate": "Verstuur Sjabloon",
+			"sending": "Versturen...",
+			"sent": "Bericht verstuurd",
+			"templateSent": "Sjabloon verstuurd",
+			"error": "Versturen mislukt",
+			"templateError": "Sjabloon versturen mislukt",
+			"sessionExpiredWarning": "24-uurs sessie verlopen. Gebruik sjabloonberichten om het gesprek voort te zetten."
+		},
+		"actions": {
+			"title": "Acties",
+			"createJob": "Klus Aanmaken",
+			"sendPaylink": "Betaallink Versturen",
+			"close": "Gesprek Sluiten",
+			"jobCreated": "Klus succesvol aangemaakt",
+			"jobError": "Klus aanmaken mislukt",
+			"paylinkNotImplemented": "Betaallink functie komt binnenkort",
+			"paylinkError": "Betaallink versturen mislukt",
+			"conversationClosed": "Gesprek gesloten",
+			"closeError": "Gesprek sluiten mislukt"
+		},
+		"control": {
+			"title": "Controle Chat",
+			"description": "Snelle goedkeuringsacties",
+			"approve": "Goedkeuren",
+			"close": "Sluiten",
+			"approved": "Gesprek goedgekeurd",
+			"approveError": "Goedkeuren mislukt"
+		},
+		"info": {
+			"title": "Info",
+			"status": "Status",
+			"created": "Aangemaakt",
+			"linkedCustomer": "Klant"
+		},
+		"photo_attached": "Photo Attached",
+		"ai_analyzing": "Ai Analyzing"
+	},
+	"whatsapp.ai_analyzing": "AI analyseert...",
+	"whatsapp.createJob": "Klus aanmaken",
+	"whatsapp.lastActivity": "Laatste activiteit",
+	"whatsapp.messages": "berichten",
+	"whatsapp.noMessages": "Geen WhatsApp-berichten beschikbaar",
+	"whatsapp.photo_attached": "Foto bijgevoegd"
+}

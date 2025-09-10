@@ -1,0 +1,28 @@
+{
+	"actions": {
+		"sending": "Versturen...",
+		"back": "Back",
+		"configure": "Configure",
+		"connect": "Connect",
+		"fix": "Fix"
+	},
+	"actions.cancel": "Annuleren",
+	"actions.create": "Aanmaken",
+	"actions.creating": "Bezig...",
+	"actions.delete": "Verwijderen",
+	"actions.deleting": "Verwijderen...",
+	"actions.edit": "Bewerken",
+	"actions.openActions": "Acties openen",
+	"actions.pay": "Betalen",
+	"actions.saving": "Opslaan...",
+	"actions.update": "Bijwerken",
+	"cta": {
+		"button": "Button",
+		"headline": "Headline",
+		"subtitle": "Subtitle"
+	},
+	"cta.applySuggestion": "Voorstel toepassen",
+	"cta.createInvoice": "Factuur maken",
+	"cta.finalizeVoiceInvoice": "Afronden → Voice-factuur",
+	"cta.newJob": "Nieuwe klus"
+}

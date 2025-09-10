@@ -1,0 +1,24 @@
+{
+	"common": {
+		"unnamed": "Unnamed",
+		"unknown": "Unknown",
+		"due_date": "Due date",
+		"alternative_payment": "Alternative payment",
+		"email": "Email",
+		"step_data_unavailable": "Step data unavailable",
+		"yes": "Yes",
+		"no": "No"
+	},
+	"common.cancel": "Cancel",
+	"common.error": "Error",
+	"common.loading": "Loading...",
+	"common.unknown": "Unknown",
+	"priority.emergency": "Emergency",
+	"priority.normal": "Normal",
+	"priority.urgent": "Urgent",
+	"status.cancelled": "Cancelled",
+	"status.done": "Completed",
+	"status.draft": "Draft",
+	"status.in_progress": "In Progress",
+	"status.planned": "Planned"
+}

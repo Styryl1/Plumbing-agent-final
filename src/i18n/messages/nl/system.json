@@ -1,0 +1,35 @@
+{
+	"app.title": "Loodgieter Agent",
+	"errors": {
+		"paymentLink": {
+			"sendFailed": "Versturen betaallink mislukt"
+		}
+	},
+	"locale": "nl",
+	"meta.created": "Gemaakt:",
+	"notifications": {
+		"paymentLink": {
+			"sent": "Betaallink verstuurd via WhatsApp"
+		}
+	},
+	"payment": {
+		"links": "Betaling & Documenten",
+		"linksDescription": "Betaallinks en officiële documenten",
+		"noLinksDescription": "Betaallinks verschijnen nadat de factuur is verzonden",
+		"noLinksAvailable": "Geen betaallinks beschikbaar",
+		"payOnline": "Online Betalen",
+		"providerPayment": "Officiële betaallink van provider",
+		"openMollieCheckout": "iDEAL Betaling Aanmaken",
+		"creatingMollie": "Betaallink aanmaken...",
+		"molliePayment": "Backup betaling via iDEAL",
+		"mollieCreated": "Betaallink aangemaakt en geopend",
+		"mollieFailed": "Kon geen betaallink aanmaken",
+		"downloadPdf": "PDF Downloaden",
+		"viewPdf": "PDF Bekijken",
+		"pdfDescription": "Officieel factuur document",
+		"officialInvoice": "Officieel factuur document",
+		"paymentCopied": "Betaallink gekopieerd naar klembord",
+		"pdfCopied": "PDF link gekopieerd naar klembord",
+		"copyFailed": "Kopiëren naar klembord mislukt"
+	}
+}

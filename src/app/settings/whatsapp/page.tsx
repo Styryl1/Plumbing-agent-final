@@ -341,7 +341,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 															: "secondary"
 													}
 												>
-													{t(`numbers.labels.${number.label}`)}
+													{t("numbers.labels.select", { label: number.label })}
 												</Badge>
 												<code className="text-sm">{number.phoneNumberId}</code>
 											</div>

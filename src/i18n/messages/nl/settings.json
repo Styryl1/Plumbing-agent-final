@@ -1,0 +1,135 @@
+{
+	"settings": {
+		"whatsapp": {
+			"title": "WhatsApp Configuratie",
+			"mappings": {
+				"label": {}
+			},
+			"upsert": {},
+			"health": {},
+			"seed": {},
+			"onboard": {
+				"steps": {},
+				"prereqs": {},
+				"numbers": {},
+				"test": {},
+				"done": {}
+			},
+			"subtitle": "Configure your WhatsApp Business integration",
+			"wizard": {
+				"step": "Step {current} of {total}",
+				"next": "Continue",
+				"previous": "Back",
+				"finish": "Complete Setup",
+				"skip": "Skip for now"
+			},
+			"prereqs": {
+				"title": "Prerequisites",
+				"description": "Verify your WhatsApp Business account configuration",
+				"webhookUrls": {
+					"title": "Webhook URLs",
+					"description": "Configure these URLs in your Meta App webhook settings",
+					"customer": "Customer webhook",
+					"control": "Control webhook",
+					"copy": "Copy URL",
+					"copied": "Copied!"
+				},
+				"credentials": {
+					"title": "API Credentials",
+					"description": "Server-side credentials configured via environment variables",
+					"verifyToken": "Verify Token",
+					"hmacSecret": "HMAC Secret",
+					"configured": "✅ Configured",
+					"missing": "❌ Missing",
+					"note": "These are managed by your system administrator and are not visible for security reasons."
+				}
+			},
+			"numbers": {
+				"title": "Phone Numbers",
+				"description": "Map your WhatsApp Business phone number IDs to customer and control channels",
+				"table": {
+					"phoneNumberId": "Phone Number ID",
+					"label": "Type",
+					"createdAt": "Added",
+					"actions": "Actions"
+				},
+				"labels": {
+					"customer": "Customer",
+					"control": "Control"
+				},
+				"empty": {
+					"title": "No numbers configured",
+					"description": "Add your WhatsApp Business phone number IDs to get started"
+				},
+				"add": {
+					"title": "Add Phone Number",
+					"phoneNumberId": {
+						"label": "Phone Number ID",
+						"placeholder": "Enter WhatsApp Business phone number ID",
+						"helper": "Found in your Meta Business account"
+					},
+					"label": {
+						"label": "Channel Type",
+						"helper": "Customer for public inquiries, Control for internal management"
+					},
+					"submit": "Add Number",
+					"submitting": "Adding...",
+					"success": "Phone number added successfully",
+					"error": "Failed to add phone number"
+				},
+				"remove": {
+					"confirm": "Remove this phone number mapping?",
+					"success": "Phone number removed successfully",
+					"error": "Failed to remove phone number"
+				}
+			},
+			"test": {
+				"title": "Test Connection",
+				"description": "Send a test message to verify your control channel is working",
+				"button": "Send Test Message",
+				"sending": "Sending...",
+				"success": {
+					"title": "Test Successful!",
+					"message": "Test message sent to control channel",
+					"nextSteps": "Your WhatsApp integration is now ready to use."
+				},
+				"error": {
+					"noControl": "Control number not configured",
+					"noConversation": "No control conversation found. Please send a message from your control phone first.",
+					"apiError": "WhatsApp API error",
+					"unknown": "An error occurred while sending the test message"
+				},
+				"requirements": {
+					"title": "Requirements for testing",
+					"items": {
+						"0": "Control phone number must be mapped",
+						"1": "Send at least one message from control phone to establish conversation",
+						"2": "Valid API credentials must be configured"
+					}
+				}
+			},
+			"completion": {
+				"title": "Setup Complete!",
+				"description": "Your WhatsApp Business integration is configured and ready to use.",
+				"summary": {
+					"webhooks": "Webhook URLs configured",
+					"credentials": "API credentials verified",
+					"numbers": "{count} phone numbers mapped",
+					"test": "Connection test passed"
+				},
+				"nextSteps": {
+					"title": "What's next?",
+					"items": {
+						"0": "Visit the WhatsApp dashboard to manage conversations",
+						"1": "Configure automated responses and templates",
+						"2": "Train your team on the control channel commands"
+					}
+				},
+				"actions": {
+					"dashboard": "Go to WhatsApp Dashboard",
+					"settings": "Manage Settings"
+				}
+			}
+		}
+	}
+}

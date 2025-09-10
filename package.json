@@ -4,7 +4,9 @@
 	"private": true,
 	"scripts": {
 		"preinstall": "node scripts/check-node-version.cjs",
+		"predev": "pnpm i18n:aggregate",
 		"dev": "next dev",
+		"prebuild": "pnpm i18n:aggregate && pnpm i18n:sync",
 		"build": "next build",
 		"start": "next start",
 		"check": "node scripts/pretypecheck.mjs && tsc --noEmit",
@@ -19,6 +21,7 @@
 		"context": "node scripts/create-gpt5-bundle.mjs",
 		"i18n:sync": "node scripts/i18n-sync.mjs",
 		"i18n:fix": "node scripts/i18n-fix-literals.mjs",
+		"i18n:aggregate": "node scripts/i18n-aggregate.mjs",
 		"i18n:prune": "node --import tsx scripts/i18n-prune.ts",
 		"i18n:check": "node --import tsx scripts/i18n-check.ts",
 		"clean": "rimraf .next .turbo node_modules/.cache .eslintcache",

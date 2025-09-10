@@ -1,0 +1,81 @@
+{
+	"providers": {
+		"moneybird": {
+			"title": "Moneybird",
+			"description": "Professional Dutch accounting with API integration",
+			"connect": "Connect",
+			"reconnect": "Reconnect",
+			"disconnect": "Disconnect",
+			"connected": "Connected",
+			"openDashboard": "Open Dashboard",
+			"reconnectHelper": "Your token has expired. Please reconnect to continue.",
+			"health": {
+				"ok": "Connected",
+				"invalid_token": "Token Expired",
+				"not_connected": "Not Connected"
+			}
+		},
+		"wefact": {
+			"title": "WeFact",
+			"description": "Simple invoicing with payment processing"
+		},
+		"eboekhouden": {
+			"title": "e-Boekhouden",
+			"description": "Popular choice for Dutch small businesses"
+		},
+		"peppol": {
+			"title": "Peppol",
+			"description": "European B2B electronic invoicing standard"
+		},
+		"panel": {
+			"title": "Invoice Providers",
+			"description": "Connect accounting packages to issue professional invoices",
+			"note": "Connect at least one provider to issue invoices. Each provider handles numbering, PDFs and compliance."
+		},
+		"states": {
+			"connected": "Connected",
+			"needs_action": "Setup Required",
+			"error": "Error"
+		},
+		"comingSoon": "Coming soon"
+	},
+	"providers.actions.configure": "Configure",
+	"providers.actions.connect": "Connect",
+	"providers.actions.fix": "Fix connection",
+	"providers.connected.description": "Provider is ready for issuing invoices",
+	"providers.eboekhouden.description": "Popular choice for Dutch small businesses",
+	"providers.moneybird.description": "Professional Dutch accounting with API integration",
+	"providers.oauth.adminError": "Could not retrieve administrations",
+	"providers.oauth.authError": "Authorization denied or failed",
+	"providers.oauth.callbackError": "Unknown error during connection process",
+	"providers.oauth.csrfError": "Security error: invalid session state",
+	"providers.oauth.error": "Connection Error",
+	"providers.oauth.genericError": "Something went wrong during connection",
+	"providers.oauth.moneybirdConnected": "Moneybird connected successfully",
+	"providers.oauth.selectAdmin": "Select administration",
+	"providers.oauth.stateError": "Invalid connection state",
+	"providers.oauth.stateExpired": "Connection session has expired",
+	"providers.oauth.success": "Connection Successful",
+	"providers.oauth.tokenError": "Could not retrieve access token",
+	"providers.oauth.userMismatch": "User does not match expected account",
+	"providers.panel.description": "Connect accounting providers to issue professional invoices",
+	"providers.panel.note": "Connect at least one provider to start issuing invoices. Each provider handles numbering, PDFs, and compliance.",
+	"providers.panel.title": "Invoice Providers",
+	"providers.peppol.description": "European B2B electronic invoicing standard",
+	"providers.setup.actions.back": "Back to providers",
+	"providers.setup.actions.cancel": "Cancel",
+	"providers.setup.actions.connect": "Connect WeFact",
+	"providers.setup.actions.connecting": "Connecting...",
+	"providers.setup.apiKey.help": "You can find your API key in your WeFact account settings under API access",
+	"providers.setup.apiKey.label": "API Key",
+	"providers.setup.apiKey.placeholder": "Enter your WeFact API key",
+	"providers.setup.baseUrl.help": "Leave default unless using custom WeFact installation",
+	"providers.setup.baseUrl.label": "API Base URL",
+	"providers.setup.errors.connection": "Connection failed",
+	"providers.setup.wefact.description": "Configure your WeFact account for automated invoice processing",
+	"providers.setup.wefact.title": "Connect WeFact",
+	"providers.states.connected": "Connected",
+	"providers.states.error": "Error",
+	"providers.states.needs_action": "Setup required",
+	"providers.wefact.description": "Simple invoicing with payment processing"
+}

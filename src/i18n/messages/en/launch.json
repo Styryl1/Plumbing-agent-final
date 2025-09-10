@@ -1,0 +1,101 @@
+{
+	"benefits": {
+		"faster": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"smarter": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"better_paid": {
+			"title": "Title",
+			"description": "Description"
+		}
+	},
+	"controls": {
+		"title": "Title",
+		"description": "Description",
+		"sinceDate": "SinceDate",
+		"creating": "Creating",
+		"createDrafts": "CreateDrafts"
+	},
+	"launch": {
+		"meta": {
+			"title": "Title",
+			"description": "Description",
+			"keywords": "Keywords"
+		},
+		"demo": {
+			"content": {
+				"common": {
+					"loading": "Loading"
+				}
+			},
+			"page": {
+				"nav": {
+					"previous": "Previous",
+					"next": "Next"
+				}
+			}
+		},
+		"usp": {
+			"title": "Title",
+			"subtitle": "Subtitle",
+			"whatsapp": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"ai": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"schedule": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"jobcards": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"invoicing": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"compliance": {
+				"title": "Title",
+				"desc": "Desc"
+			}
+		},
+		"trust": {
+			"dutch_compliance": "Dutch Compliance",
+			"ideal_payments": "Ideal Payments",
+			"whatsapp_business": "Whatsapp Business"
+		},
+		"waitlist": {
+			"title": "Title",
+			"subtitle": "Subtitle",
+			"email": "Email",
+			"phone": "Phone",
+			"org": "Org",
+			"success": "Success",
+			"error": "Error",
+			"submit": "Submit",
+			"gdpr": "Gdpr"
+		}
+	},
+	"list": {
+		"title": "Title",
+		"loading": "Loading"
+	},
+	"pilot.banner.subtitle": "Certain features are enabled for testing.",
+	"pilot.banner.title": "Pilot Mode",
+	"results": {
+		"title": "Title",
+		"total": "Total",
+		"sent": "Sent",
+		"skipped": "Skipped",
+		"withPaymentLinks": "WithPaymentLinks",
+		"errors": "Errors"
+	}
+}

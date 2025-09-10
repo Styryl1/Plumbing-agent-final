@@ -1,0 +1,24 @@
+{
+	"common": {
+		"unnamed": "Naamloos",
+		"unknown": "Onbekend",
+		"due_date": "Vervaldatum",
+		"alternative_payment": "Alternatieve betaling",
+		"email": "E-mail",
+		"step_data_unavailable": "Stap gegevens niet beschikbaar",
+		"yes": "Ja",
+		"no": "Nee"
+	},
+	"common.cancel": "Annuleren",
+	"common.error": "Fout",
+	"common.loading": "Laden...",
+	"common.unknown": "Onbekend",
+	"priority.emergency": "Spoed",
+	"priority.normal": "Normaal",
+	"priority.urgent": "Urgent",
+	"status.cancelled": "Geannuleerd",
+	"status.done": "Voltooid",
+	"status.draft": "Concept",
+	"status.in_progress": "Bezig",
+	"status.planned": "Ingepland"
+}

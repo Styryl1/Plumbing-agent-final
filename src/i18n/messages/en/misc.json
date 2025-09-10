@@ -1,0 +1,324 @@
+{
+	"__": "__TODO__",
+	"action.delete": "Delete",
+	"action.edit": "Edit",
+	"active": "Active",
+	"ai_suggestion": {
+		"diagnosis": "Diagnosis",
+		"reliable": "Reliable",
+		"urgency": "Urgency",
+		"emergency": "Emergency",
+		"estimated_time": "Estimated Time",
+		"minutes": "Minutes",
+		"required_materials": "Required Materials"
+	},
+	"approvals": {
+		"title": "Daily Invoice Approvals",
+		"subtitle": "Review and send draft invoices created today",
+		"selectAll": "Select all",
+		"selected": "selected",
+		"select": "Select",
+		"number": "Number",
+		"customer": "Customer",
+		"total": "Total",
+		"created": "Created",
+		"empty": "No draft invoices found for this date",
+		"dateFilter": {
+			"title": "Date Filter",
+			"description": "Select the date to view draft invoices",
+			"label": "Target date"
+		},
+		"actions": {
+			"title": "Batch Actions",
+			"description": "Select invoices to send in batch",
+			"selectedCount": "{count} invoices selected",
+			"sendSelected": "Send {count} selected",
+			"sending": "Sending invoices..."
+		},
+		"list": {
+			"title": "Draft Invoices",
+			"loading": "Loading drafts...",
+			"count": "{count} draft invoices"
+		},
+		"results": {
+			"title": "Send Results",
+			"total": "Total",
+			"sent": "Sent",
+			"skipped": "Skipped",
+			"withPaymentLinks": "With Payment Links",
+			"errors": "Errors"
+		}
+	},
+	"approved": "Approved",
+	"back": "Back",
+	"badge.accepted": "Accepted",
+	"bulkActions": {
+		"title": "Title",
+		"description": "Description",
+		"alsoWhatsApp": "AlsoWhatsApp",
+		"sending": "Sending"
+	},
+	"connected": {
+		"description": "Description"
+	},
+	"created": "Created",
+	"customer": "Customer",
+	"dashboard.welcome": "Welcome to your plumber management platform",
+	"description": "Description",
+	"done": {
+		"title": "Title",
+		"description": "Description",
+		"success": "Success",
+		"successDescription": "SuccessDescription",
+		"healthSummary": "HealthSummary",
+		"environment": "Environment",
+		"webhook": "Webhook",
+		"security": "Security",
+		"goToSettings": "GoToSettings"
+	},
+	"draftInvoice": "DraftInvoice",
+	"eboekhouden": {
+		"description": "Description"
+	},
+	"employees.filter.all": "All",
+	"employees.filter.clearAll": "Clear all",
+	"headline": "Headline",
+	"health": {
+		"title": "Title",
+		"description": "Description",
+		"env": "Env",
+		"ok": "Ok",
+		"missing": "Missing",
+		"webhook": "Webhook",
+		"unreachable": "Unreachable",
+		"secret": "Secret",
+		"refresh": "Refresh"
+	},
+	"houseNumber": "House number",
+	"id": "ID",
+	"job_card": {
+		"address": "Address",
+		"phone": "Phone",
+		"notes": "Notes"
+	},
+	"job_card_mobile": {
+		"title": "Job Details",
+		"when": "When",
+		"where": "Where",
+		"customer": "Customer",
+		"issue": "Issue",
+		"status": {
+			"planned": "Planned",
+			"scheduled": "Scheduled",
+			"in_progress": "In Progress",
+			"done": "Done",
+			"cancelled": "Cancelled",
+			"unknown": "Unknown"
+		},
+		"openCalendar": "📅 Open in calendar",
+		"backToJobs": "← Back to jobs",
+		"readOnlyNotice": "Read-only view for mobile",
+		"phoneUnknown": "Phone unknown",
+		"addressUnknown": "Address unknown",
+		"dateUnknown": "Date unknown",
+		"timeUnknown": "Time unknown"
+	},
+	"jobCard": {
+		"title": "Job Card",
+		"phone": "Phone",
+		"jobStatus": "Job Status",
+		"jobNumber": "Job",
+		"active": "Active",
+		"scheduled": "Scheduled",
+		"lastResponse": "Last AI Response",
+		"approved": "Approved",
+		"urgency": "Urgency",
+		"schedule": "Schedule",
+		"draftInvoice": "Draft Invoice",
+		"tokenExpires": "Access expires"
+	},
+	"jobNumber": "JobNumber",
+	"jobStatus": "JobStatus",
+	"label.durationMinutes": "{minutes} minutes",
+	"lastResponse": "LastResponse",
+	"mappings": {
+		"title": "Title",
+		"description": "Description",
+		"empty": "Empty",
+		"label": {
+			"business": "Business",
+			"control": "Control"
+		}
+	},
+	"money.euro": "€",
+	"moneybird": {
+		"description": "Description"
+	},
+	"next": "Next",
+	"noInvoices": "NoInvoices",
+	"noJob": "NoJob",
+	"noProvider": "NoProvider",
+	"note": "Note",
+	"numbers": {
+		"success": "Success",
+		"error": "Error",
+		"validation": "Validation",
+		"title": "Title",
+		"description": "Description",
+		"businessLabel": "BusinessLabel",
+		"businessHelp": "BusinessHelp",
+		"controlLabel": "ControlLabel",
+		"controlHelp": "ControlHelp",
+		"save": "Save",
+		"labels": {
+			"select": "{label, select, customer {Customer number} control {Control number} other {label}}"
+		}
+	},
+	"onboard": {
+		"title": "Title",
+		"quickTitle": "QuickTitle",
+		"quickDescription": "QuickDescription",
+		"start": "Start"
+	},
+	"peppol": {
+		"description": "Description"
+	},
+	"phone": "Phone",
+	"postalCode": "Postal code",
+	"prereqs": {
+		"title": "Title",
+		"description": "Description",
+		"webhookUrl": "WebhookUrl",
+		"webhookHelp": "WebhookHelp",
+		"verifyToken": "VerifyToken",
+		"tokenHelp": "TokenHelp"
+	},
+	"provider": "Provider",
+	"reminders": {
+		"title": "Title",
+		"whatsapp_series": "Whatsapp Series",
+		"scheduled": "Scheduled",
+		"automation_active": "Automation Active",
+		"opt_out_respected": "Opt Out Respected",
+		"email_escalation": "Email Escalation"
+	},
+	"schedule": "Schedule",
+	"schedule.assigned_to": "Assigned to",
+	"schedule.auto_assigned": "Auto assigned",
+	"schedule.end_time": "End time",
+	"schedule.start_time": "Start time",
+	"seed": {
+		"success": "Success",
+		"error": "Error",
+		"validation": "Validation",
+		"title": "Title",
+		"description": "Description",
+		"businessId": "BusinessId",
+		"controlId": "ControlId",
+		"submit": "Submit"
+	},
+	"select": "Select",
+	"selectAll": "SelectAll",
+	"selected": "Selected",
+	"send_pay": {
+		"invoice_sent": "Invoice Sent",
+		"invoice_id": "Invoice Id",
+		"payment_status": "Payment Status",
+		"awaiting_payment": "Awaiting Payment",
+		"click_pay": "Click Pay",
+		"pdf": "Pdf",
+		"whatsapp_message": "Whatsapp Message"
+	},
+	"states": {
+		"connected": "Connected",
+		"needs_action": "Needs Action",
+		"error": "Error"
+	},
+	"steps": {
+		"prereqs": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"numbers": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"test": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"done": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"whatsapp": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"ai_suggestion": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"schedule": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"job_card": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"voice_draft": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"send_pay": {
+			"title": "Title",
+			"description": "Description"
+		},
+		"reminders": {
+			"title": "Title",
+			"description": "Description"
+		}
+	},
+	"subtitle": "Subtitle",
+	"test": {
+		"success": "Success",
+		"error": "Error",
+		"validation": "Validation",
+		"title": "Title",
+		"description": "Description",
+		"phoneLabel": "PhoneLabel",
+		"phoneHelp": "PhoneHelp",
+		"messageLabel": "MessageLabel",
+		"messagePlaceholder": "MessagePlaceholder",
+		"messageHelp": "MessageHelp",
+		"configured": "Configured",
+		"send": "Send"
+	},
+	"title": "Title",
+	"toast.deleteError": "Cannot delete job:",
+	"toast.jobDeleted": "Job successfully deleted",
+	"tokenExpires": "TokenExpires",
+	"total": "Total",
+	"ui.tip": "Tip",
+	"upsert": {
+		"success": "Success",
+		"error": "Error",
+		"validation": "Validation",
+		"title": "Title",
+		"phoneNumberId": "PhoneNumberId",
+		"label": "Label",
+		"submit": "Submit"
+	},
+	"urgency": "Urgency",
+	"voice_draft": {
+		"voice_transcript": "Voice Transcript",
+		"invoice_lines": "Invoice Lines",
+		"subtotal_ex_vat": "Subtotal Ex Vat",
+		"vat_total": "Vat Total",
+		"total": "Total"
+	},
+	"wefact": {
+		"description": "Description"
+	}
+}
