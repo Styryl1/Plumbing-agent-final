@@ -11,6 +11,7 @@ import { settingsRouter } from "./routers/settings";
 import { timelineRouter } from "./routers/timeline";
 import { waAdminRouter } from "./routers/waAdmin";
 import { whatsappRouter } from "./routers/whatsapp";
+import { whatsappSettingsRouter } from "./routers/whatsappSettings";
 import { createCallerFactory, router } from "./trpc";
 
 export const appRouter = router({
@@ -26,6 +27,7 @@ export const appRouter = router({
 	settings: settingsRouter,
 	ai: aiRouter,
 	whatsapp: whatsappRouter,
+	whatsappSettings: whatsappSettingsRouter,
 	waAdmin: waAdminRouter,
 });
 
