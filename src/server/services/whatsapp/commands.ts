@@ -6,7 +6,7 @@
 import { z } from "zod";
 
 export type ControlAction =
-	| { kind: "approve"; msgId: string }
+	| { kind: "approve"; msgId: string; createJob?: boolean }
 	| { kind: "reject"; msgId: string; reason: string }
 	| { kind: "send"; msgId: string }
 	| { kind: "quote"; msgId: string };
@@ -17,13 +17,6 @@ export interface ControlCommandInput {
 	phone: string;
 }
 
-const COMMAND_PATTERNS = {
-	approve: /^#approve\s+([a-zA-Z0-9_-]+)/i,
-	reject: /^#reject\s+([a-zA-Z0-9_-]+)\s+(.+)/i,
-	send: /^#send\s+([a-zA-Z0-9_-]+)/i,
-	quote: /^#quote\s+([a-zA-Z0-9_-]+)/i,
-} as const;
-
 /**
  * Parse control command from text input
  * Returns null if no valid command is found
@@ -32,40 +25,51 @@ export function handleControlCommand(
 	input: ControlCommandInput,
 ): ControlAction | null {
 	const { text } = input;
-	const trimmed = text.trim();
+	const trimmed = text.trim().toLowerCase();
+	const parts = trimmed.split(/\s+/);
 
-	// Check approve command
-	const approveMatch = trimmed.match(COMMAND_PATTERNS.approve);
-	if (approveMatch) {
-		const msgId = approveMatch[1];
+	if (parts.length < 2 || !parts[0]?.startsWith("#")) {
+		return null;
+	}
+
+	const command = parts[0];
+
+	// Check approve job command first (more specific)
+	if (command === "#approve" && parts.length >= 3 && parts[1] === "job") {
+		const msgId = parts[2];
 		if (msgId) {
-			return { kind: "approve", msgId };
+			return { kind: "approve", msgId, createJob: true };
+		}
+	}
+
+	// Check regular approve command
+	if (command === "#approve" && parts.length >= 2 && parts[1] !== "job") {
+		const msgId = parts[1];
+		if (msgId) {
+			return { kind: "approve", msgId, createJob: false };
 		}
 	}
 
 	// Check reject command
-	const rejectMatch = trimmed.match(COMMAND_PATTERNS.reject);
-	if (rejectMatch) {
-		const msgId = rejectMatch[1];
-		const reason = rejectMatch[2];
-		if (msgId && reason) {
+	if (command === "#reject" && parts.length >= 3) {
+		const msgId = parts[1];
+		const reason = parts.slice(2).join(" ");
+		if (msgId && reason.length > 0) {
 			return { kind: "reject", msgId, reason };
 		}
 	}
 
-	// Check send command (fallback without analyzer)
-	const sendMatch = trimmed.match(COMMAND_PATTERNS.send);
-	if (sendMatch) {
-		const msgId = sendMatch[1];
+	// Check send command
+	if (command === "#send" && parts.length >= 2) {
+		const msgId = parts[1];
 		if (msgId) {
 			return { kind: "send", msgId };
 		}
 	}
 
 	// Check quote command
-	const quoteMatch = trimmed.match(COMMAND_PATTERNS.quote);
-	if (quoteMatch) {
-		const msgId = quoteMatch[1];
+	if (command === "#quote" && parts.length >= 2) {
+		const msgId = parts[1];
 		if (msgId) {
 			return { kind: "quote", msgId };
 		}
@@ -90,11 +94,12 @@ export function getCommandHelp(): string {
 📋 Control Chat Commands:
 
 #approve <msgId> → Relay analyzed suggestion to customer
+#approve job <msgId> → Same as above + create Job from suggestion  
 #reject <msgId> <reason> → Mark suggestion as rejected  
 #send <msgId> → Send original message without analyzer
 #quote <msgId> → Create draft quote/invoice and reply with link
 
-Example: #approve wam_ABcd123XYZ
+Example: #approve job wam_ABcd123XYZ
 	`.trim();
 }
 

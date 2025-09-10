@@ -109,7 +109,8 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 			expect(result).toEqual({
 				kind: "approve",
-				msgId: "wam_ABcd123XYZ",
+				msgId: "wam_abcd123xyz",
+				createJob: false,
 			});
 		});
 
@@ -122,7 +123,7 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 			expect(result).toEqual({
 				kind: "reject",
-				msgId: "wam_ABcd123XYZ",
+				msgId: "wam_abcd123xyz",
 				reason: "wrong diagnosis",
 			});
 		});
@@ -136,7 +137,7 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 			expect(result).toEqual({
 				kind: "send",
-				msgId: "wam_ABcd123XYZ",
+				msgId: "wam_abcd123xyz",
 			});
 		});
 
@@ -149,7 +150,7 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 			expect(result).toEqual({
 				kind: "quote",
-				msgId: "wam_ABcd123XYZ",
+				msgId: "wam_abcd123xyz",
 			});
 		});
 
@@ -182,7 +183,22 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 			expect(result).toEqual({
 				kind: "approve",
-				msgId: "wam_Test123",
+				msgId: "wam_test123",
+				createJob: false,
+			});
+		});
+
+		test("handleControlCommand parses approve job command", () => {
+			const result = handleControlCommand({
+				text: "#approve job wam_ABcd123XYZ",
+				orgId: testOrgId,
+				phone: testPhone,
+			});
+
+			expect(result).toEqual({
+				kind: "approve",
+				msgId: "wam_abcd123xyz",
+				createJob: true,
 			});
 		});
 	});
@@ -269,6 +285,7 @@ describe("WhatsApp S2 + S4 Integration", () => {
 			expect(command).toEqual({
 				kind: "approve",
 				msgId: "e2e_test_123",
+				createJob: false,
 			});
 
 			// Step 3: Execute approval (would need database for full test)
@@ -286,6 +303,7 @@ describe("WhatsApp S2 + S4 Integration", () => {
 			expect(command).toEqual({
 				kind: "approve",
 				msgId: "nonexistent_msg_123",
+				createJob: false,
 			});
 
 			// Approval should fail gracefully for nonexistent message
