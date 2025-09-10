@@ -1087,6 +1087,29 @@
 		"phone": "Phone",
 		"notes": "Notes"
 	},
+	"job_card_mobile": {
+		"title": "Job Details",
+		"when": "When",
+		"where": "Where",
+		"customer": "Customer",
+		"issue": "Issue",
+		"status": "Status",
+		"openCalendar": "📅 Open in calendar",
+		"backToJobs": "← Back to jobs",
+		"readOnlyNotice": "Read-only view for mobile",
+		"phoneUnknown": "Phone unknown",
+		"addressUnknown": "Address unknown",
+		"dateUnknown": "Date unknown",
+		"timeUnknown": "Time unknown",
+		"status": {
+			"planned": "Planned",
+			"scheduled": "Scheduled",
+			"in_progress": "In Progress",
+			"done": "Done",
+			"cancelled": "Cancelled",
+			"unknown": "Unknown"
+		}
+	},
 	"voice_draft": {
 		"voice_transcript": "Voice Transcript",
 		"invoice_lines": "Invoice Lines",

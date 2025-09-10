@@ -49,10 +49,19 @@ async function executeControlCommand(
 	try {
 		switch (command.kind) {
 			case "approve": {
-				const result = await approveSuggestion(db, command.msgId, context);
-				responseText = result.success
-					? `✅ Approved and sent suggestion for message ${command.msgId}`
-					: `❌ Failed to approve: ${result.error}`;
+				const result = await approveSuggestion(db, command.msgId, context, {
+					createJob: command.createJob ?? false,
+				});
+
+				if (result.success) {
+					if (result.jobId && result.jobCardUrl) {
+						responseText = `✅ Approved & sent suggestion for message ${command.msgId}\n🗓️ Job created: ${result.jobId.substring(0, 8)}...\n📱 ${result.jobCardUrl}`;
+					} else {
+						responseText = `✅ Approved and sent suggestion for message ${command.msgId}`;
+					}
+				} else {
+					responseText = `❌ Failed to approve: ${result.error}`;
+				}
 				break;
 			}
 			case "reject": {

@@ -8,7 +8,8 @@
       "Bash(npx tsc:*)",
       "Bash(pnpm guard:*)",
       "Bash(next build)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(pnpm test:*)"
     ],
     "deny": [],
     "ask": []

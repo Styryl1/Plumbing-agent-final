@@ -1151,6 +1151,28 @@
     "phone": "Phone",
     "notes": "Notes"
   },
+  "job_card_mobile": {
+    "title": "Klus Details",
+    "when": "Wanneer",
+    "where": "Waar",
+    "customer": "Klant",
+    "issue": "Probleem",
+    "status": {
+      "planned": "Gepland",
+      "scheduled": "Ingepland",
+      "in_progress": "Bezig",
+      "done": "Klaar",
+      "cancelled": "Geannuleerd",
+      "unknown": "Onbekend"
+    },
+    "openCalendar": "📅 Open in kalender",
+    "backToJobs": "← Terug naar klussen",
+    "readOnlyNotice": "Alleen-lezen weergave voor mobiel",
+    "phoneUnknown": "Telefoon onbekend",
+    "addressUnknown": "Adres niet bekend",
+    "dateUnknown": "Datum onbekend",
+    "timeUnknown": "Tijd onbekend"
+  },
   "voice_draft": {
     "voice_transcript": "Voice Transcript",
     "invoice_lines": "Invoice Lines",
@@ -1176,9 +1198,49 @@
     "email_escalation": "Email Escalation"
   },
   "providers": {
-    "moneybird": "Moneybird",
-    "wefact": "Wefact",
-    "eboekhouden": "Eboekhouden",
-    "peppol": "Peppol"
+    "comingSoon": "Coming soon"
+  },
+  "pilot": {
+    "banner": {
+      "title": "__TODO__",
+      "subtitle": "__TODO__"
+    }
+  },
+  "approvals": {
+    "title": "Daily Invoice Approvals",
+    "subtitle": "Review and send draft invoices created today",
+    "selectAll": "Select all",
+    "selected": "selected",
+    "select": "Select",
+    "number": "Number",
+    "customer": "Customer",
+    "total": "Total",
+    "created": "Created",
+    "empty": "No draft invoices found for this date",
+    "dateFilter": {
+      "title": "Date Filter",
+      "description": "Select the date to view draft invoices",
+      "label": "Target date"
+    },
+    "actions": {
+      "title": "Batch Actions",
+      "description": "Select invoices to send in batch",
+      "selectedCount": "{count} invoices selected",
+      "sendSelected": "Send {count} selected",
+      "sending": "Sending invoices..."
+    },
+    "list": {
+      "title": "Draft Invoices",
+      "loading": "Loading drafts...",
+      "count": "{count} draft invoices"
+    },
+    "results": {
+      "title": "Send Results",
+      "total": "Total",
+      "sent": "Sent",
+      "skipped": "Skipped",
+      "withPaymentLinks": "With Payment Links",
+      "errors": "Errors"
+    }
   }
 }
