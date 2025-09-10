@@ -19,7 +19,8 @@
 		"session": {
 			"active": "Actief",
 			"expired": "Verlopen",
-			"expiresAt": "Verloopt om"
+			"expiresAt": "Verloopt om",
+			"expiresIn": "Verloopt over"
 		},
 		"conversation": {
 			"title": "Berichten",

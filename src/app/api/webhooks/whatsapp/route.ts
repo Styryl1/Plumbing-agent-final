@@ -85,10 +85,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 		try {
 			const messageData = parseWhatsAppWebhook(payload);
 			if (messageData.messages.length > 0) {
-				// For MVP, we'll use a global organization context since we don't have
-				// phone number to org mapping in the webhook yet
-				// In production, you'd map phoneNumberId to orgId via wa_numbers table
-				const orgId = "default"; // TODO: Implement proper org resolution
+				// Resolve org via wa_numbers (phone_number_id → org_id)
+				const { data: numRow, error: numErr } = await db
+					.from("wa_numbers")
+					.select("org_id")
+					.eq("phone_number_id", messageData.phoneNumberId)
+					.single();
+				if (numErr !== null) {
+					return NextResponse.json(
+						{ error: "Unknown phone_number_id (no org mapping)" },
+						{ status: 400 },
+					);
+				}
+				const orgId = numRow.org_id;
 
 				await persistWhatsAppMessages({
 					messages: messageData.messages,

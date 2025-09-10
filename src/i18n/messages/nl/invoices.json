@@ -94,6 +94,10 @@
 	"invoice.totalOutstanding": "Totaal Openstaand",
 	"invoice.unknown": "Onbekend",
 	"invoice.viewPdf": "PDF Bekijken",
+	"invoice.approvals": "Goedkeuringen",
+	"invoice.empty.title": "Nog geen facturen",
+	"invoice.empty.description": "Maak uw eerste factuur van een voltooide klus",
+	"invoice.empty.getStarted": "Zodra u een klus voltooit, kunt u een factuur voor uw klant maken",
 	"invoices": {
 		"actions": {
 			"pay": "Betalen"

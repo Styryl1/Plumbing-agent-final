@@ -242,18 +242,28 @@ describe("WhatsApp S2 + S4 Integration", () => {
 	});
 
 	describe("RLS Security Tests", () => {
-		test("cross-org access should be prevented", async () => {
-			// Test that suggestions from different orgs cannot be accessed
-			// This would require database setup to fully test
-			const wrongOrgContext = {
-				orgId: "wrong-org-456",
-				userId: testUserId,
-				phone: testPhone,
-			};
-
-			// Attempting to approve suggestion from different org should fail
-			// (This would be tested with real database setup)
-			expect(true).toBe(true); // Placeholder for now
+		test("control whitelist denies non-matching org/phone_number_id", async () => {
+			const db = await getServiceDbForWebhook();
+			// Seed control number for the *correct* org only
+			await db.from("wa_numbers").upsert({
+				phone_number_id: "pnid_control_A",
+				org_id: testOrgId,
+				label: "control",
+			});
+			// Wrong org should not be whitelisted for the same pnid
+			const denied = await isControlNumberWhitelisted(
+				db,
+				"wrong-org-456",
+				"pnid_control_A",
+			);
+			expect(denied).toBe(false);
+			// Correct org should be allowed
+			const allowed = await isControlNumberWhitelisted(
+				db,
+				testOrgId,
+				"pnid_control_A",
+			);
+			expect(allowed).toBe(true);
 		});
 	});
 

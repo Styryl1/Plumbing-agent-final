@@ -249,40 +249,70 @@ export default function JobsPage(): JSX.Element {
 				</Card>
 			</div>
 
-			{/* Schedule-X Calendar */}
-			<Card>
-				<CardHeader>
-					<div className="flex items-center justify-between">
-						<div>
-							<CardTitle>{t("jobs.calendar.title")}</CardTitle>
-							<CardDescription>{t("jobs.calendar.desc")}</CardDescription>
-						</div>
-						<Legend employees={employees} />
-					</div>
-				</CardHeader>
-				<CardContent className="p-0">
-					{isLoading ? (
-						<div className="flex h-96 items-center justify-center">
-							<div className="text-center">
-								<div className="text-lg font-medium text-muted-foreground">
-									Kalender laden...
+			{/* Empty State */}
+			{!isLoading && jobs.length === 0 ? (
+				<Card>
+					<CardHeader>
+						<CardTitle>{t("jobs.empty.title")}</CardTitle>
+						<CardDescription>{t("jobs.empty.description")}</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<div className="flex flex-col items-center text-center py-8">
+							<div className="mb-4">
+								<div className="h-12 w-12 bg-muted rounded-lg flex items-center justify-center">
+									<Plus className="h-6 w-6 text-muted-foreground" />
 								</div>
 							</div>
+							<p className="text-muted-foreground mb-6">
+								{t("jobs.empty.description")}
+							</p>
+							<Button
+								onClick={() => {
+									setIsCreateDialogOpen(true);
+								}}
+							>
+								<Plus className="mr-2 h-4 w-4" />
+								{t("cta.newJob")}
+							</Button>
 						</div>
-					) : (
-						<JobsCalendar
-							onEditJob={(jobId) => {
-								setSelectedJobId(jobId);
-								setIsJobDrawerOpen(true);
-							}}
-							onCreateJob={() => {
-								// TODO: Open dialog with prefilled start time
-								setIsCreateDialogOpen(true);
-							}}
-						/>
-					)}
-				</CardContent>
-			</Card>
+					</CardContent>
+				</Card>
+			) : (
+				/* Schedule-X Calendar */
+				<Card>
+					<CardHeader>
+						<div className="flex items-center justify-between">
+							<div>
+								<CardTitle>{t("jobs.calendar.title")}</CardTitle>
+								<CardDescription>{t("jobs.calendar.desc")}</CardDescription>
+							</div>
+							<Legend employees={employees} />
+						</div>
+					</CardHeader>
+					<CardContent className="p-0">
+						{isLoading ? (
+							<div className="flex h-96 items-center justify-center">
+								<div className="text-center">
+									<div className="text-lg font-medium text-muted-foreground">
+										Kalender laden...
+									</div>
+								</div>
+							</div>
+						) : (
+							<JobsCalendar
+								onEditJob={(jobId) => {
+									setSelectedJobId(jobId);
+									setIsJobDrawerOpen(true);
+								}}
+								onCreateJob={() => {
+									// TODO: Open dialog with prefilled start time
+									setIsCreateDialogOpen(true);
+								}}
+							/>
+						)}
+					</CardContent>
+				</Card>
+			)}
 
 			{/* Create/Edit Dialog */}
 			<JobEditorDialog

@@ -4,7 +4,7 @@ import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -121,15 +121,7 @@ export default function WhatsAppConversationPage({
 								: tWhatsApp("session.expired")}
 						</Badge>
 						{sessionInfo.active && sessionInfo.expiresAt && (
-							<div className="text-xs text-muted-foreground">
-								{tWhatsApp("session.expiresAt")}{" "}
-								{globalThis.Temporal.Instant.from(sessionInfo.expiresAt)
-									.toZonedDateTimeISO("Europe/Amsterdam")
-									.toLocaleString("nl-NL", {
-										hour: "2-digit",
-										minute: "2-digit",
-									})}
-							</div>
+							<ExpiryCountdown iso={sessionInfo.expiresAt} />
 						)}
 					</div>
 				</div>
@@ -218,5 +210,31 @@ export default function WhatsAppConversationPage({
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function ExpiryCountdown({ iso }: { iso: string }): JSX.Element {
+	const t = useTranslations("whatsapp");
+	const [remain, setRemain] = useState<string>("00:00");
+
+	useEffect(() => {
+		const id = setInterval(() => {
+			const now = globalThis.Temporal.Now.instant();
+			const end = globalThis.Temporal.Instant.from(iso);
+			const ms = Math.max(0, end.epochMilliseconds - now.epochMilliseconds);
+			const totalSec = Math.floor(ms / 1000);
+			const mm = String(Math.floor(totalSec / 60)).padStart(2, "0");
+			const ss = String(totalSec % 60).padStart(2, "0");
+			setRemain(`${mm}:${ss}`);
+		}, 1000);
+		return () => {
+			clearInterval(id);
+		};
+	}, [iso]);
+
+	return (
+		<Badge variant="secondary" className="text-xs">
+			{t("session.expiresIn")} {remain}
+		</Badge>
 	);
 }

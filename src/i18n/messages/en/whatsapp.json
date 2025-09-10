@@ -19,7 +19,8 @@
 		"session": {
 			"active": "Active",
 			"expired": "Expired",
-			"expiresAt": "Expires at"
+			"expiresAt": "Expires at",
+			"expiresIn": "Expires in"
 		},
 		"conversation": {
 			"title": "Messages",

@@ -27,6 +27,8 @@
 	"jobs.delete.success": "Job deleted",
 	"jobs.delete.title": "Delete Job",
 	"jobs.description": "Manage all plumbing jobs and scheduling",
+	"jobs.empty.title": "No jobs scheduled",
+	"jobs.empty.description": "Create your first job to get started",
 	"jobs.details": "Job details",
 	"jobs.error.load": "Failed to load jobs",
 	"jobs.errors.notFoundOrNoPermission": "Job not found or no permission",

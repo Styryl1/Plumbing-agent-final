@@ -1105,14 +1105,43 @@ export const invoicesRouter = createTRPCRouter({
 
 					results.sent++;
 
-					// TODO: Record timeline event for send action
-					// TODO: Queue status refresh job
+					// Timeline is derived from invoices.issued_at via invoice_timeline view.
+					// Queue provider status refresh (safety polling / reconciliation)
+					if (invoice.external_id !== null) {
+						await ctx.db.from("invoice_status_refresh_queue").insert({
+							invoice_id: invoiceId,
+							provider: invoice.provider,
+							external_id: invoice.external_id,
+						});
+					}
 
 					// Optional WhatsApp payment link
 					if (input.alsoWhatsApp && sendResult.paymentUrl) {
-						// TODO: Call existing sendPaymentLink service
-						// This would integrate with the WhatsApp payment sender
-						results.withPaymentLinks++;
+						// Fetch customer contact for this invoice
+						const { data: withCustomer } = await ctx.db
+							.from("invoices")
+							.select("customer_id, org_id")
+							.eq("id", invoiceId)
+							.single();
+						if (withCustomer) {
+							const { data: customer } = await ctx.db
+								.from("customers")
+								.select("phone, language")
+								.eq("id", withCustomer.customer_id)
+								.eq("org_id", withCustomer.org_id)
+								.single();
+							if (customer?.phone) {
+								const { sendPaymentLink } = await import(
+									"~/server/services/whatsapp/paymentLinkSender"
+								);
+								await sendPaymentLink(ctx.db, withCustomer.org_id, {
+									phoneE164: customer.phone,
+									url: sendResult.paymentUrl,
+									locale: customer.language as "nl" | "en",
+								});
+								results.withPaymentLinks++;
+							}
+						}
 					}
 				} catch (error) {
 					results.errors.push({

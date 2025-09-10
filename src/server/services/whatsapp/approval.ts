@@ -343,19 +343,13 @@ export async function isControlNumberWhitelisted(
 	// Check if phone number is registered as control number for org
 	const controlNumber = await db
 		.from("wa_numbers")
-		.select("id")
+		.select("phone_number_id")
 		.eq("org_id", orgId)
 		.eq("label", "control")
-		.single();
+		.eq("phone_number_id", phoneNumber) // NormalizedMessage.phoneNumber is Meta phone_number_id
+		.maybeSingle();
 
-	if (!controlNumber.data) {
-		return false;
-	}
-
-	// For MVP, always return true for control numbers
-	// In production, this would check against a whitelist table
-	// TODO: Implement proper control number whitelist
-	return phoneNumber.length > 10; // Basic validation for now
+	return controlNumber.data != null;
 }
 
 /**

@@ -122,7 +122,7 @@ export const whatsappSettingsRouter = createTRPCRouter({
 			.eq("phone_number", controlMapping.phone_number_id)
 			.order("last_message_at", { ascending: false })
 			.limit(1)
-			.single();
+			.maybeSingle();
 
 		if (!existingConvo) {
 			// No control conversation exists - need to send template message

@@ -27,6 +27,8 @@
 	"jobs.delete.success": "Klus verwijderd",
 	"jobs.delete.title": "Klus verwijderen",
 	"jobs.description": "Beheer alle loodgieter opdrachten en planning",
+	"jobs.empty.title": "Geen klussen ingepland",
+	"jobs.empty.description": "Maak uw eerste klus om te beginnen",
 	"jobs.details": "Klus details",
 	"jobs.error.load": "Fout bij laden van klussen",
 	"jobs.errors.notFoundOrNoPermission": "Klus niet gevonden of geen permissie",

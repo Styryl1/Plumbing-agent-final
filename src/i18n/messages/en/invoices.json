@@ -94,6 +94,10 @@
 	"invoice.totalOutstanding": "Total Outstanding",
 	"invoice.unknown": "Unknown",
 	"invoice.viewPdf": "View PDF",
+	"invoice.approvals": "Approvals",
+	"invoice.empty.title": "No invoices yet",
+	"invoice.empty.description": "Create your first invoice from a completed job",
+	"invoice.empty.getStarted": "Once you complete a job, you can create an invoice for your customer",
 	"invoices": {
 		"actions": {
 			"pay": "Pay"
