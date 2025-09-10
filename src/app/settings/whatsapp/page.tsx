@@ -10,8 +10,8 @@ import {
 	Shield,
 	XCircle,
 } from "lucide-react";
-import type { JSX } from "react";
 import { useTranslations } from "next-intl";
+import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "~/components/ui/badge";
@@ -92,7 +92,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 		await navigator.clipboard.writeText(url);
 		setCopiedUrl(label);
 		toast.success(t("prereqs.webhookUrls.copied"));
-		setTimeout(() => { setCopiedUrl(null); }, 2000);
+		setTimeout(() => {
+			setCopiedUrl(null);
+		}, 2000);
 	};
 
 	const handleAddNumber = async (): Promise<void> => {
@@ -367,7 +369,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 									<Input
 										id="phoneNumberId"
 										value={phoneNumberId}
-										onChange={(e) => { setPhoneNumberId(e.target.value); }}
+										onChange={(e) => {
+											setPhoneNumberId(e.target.value);
+										}}
 										placeholder={t("numbers.add.phoneNumberId.placeholder")}
 										className="mt-1"
 									/>
@@ -379,9 +383,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 									<Label htmlFor="label">{t("numbers.add.label.label")}</Label>
 									<Select
 										value={label}
-										onValueChange={(value) =>
-											{ setLabel(value as "customer" | "control"); }
-										}
+										onValueChange={(value) => {
+											setLabel(value as "customer" | "control");
+										}}
 									>
 										<SelectTrigger className="mt-1">
 											<SelectValue />
@@ -472,7 +476,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 			<div className="flex justify-between">
 				<Button
 					variant="outline"
-					onClick={() => { setCurrentStep(Math.max(1, currentStep - 1)); }}
+					onClick={() => {
+						setCurrentStep(Math.max(1, currentStep - 1));
+					}}
 					disabled={currentStep === 1}
 				>
 					{t("wizard.previous")}

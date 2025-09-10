@@ -107,13 +107,12 @@ export const whatsappSettingsRouter = createTRPCRouter({
 			.single();
 
 		if (controlMappingResult.error) {
-			throw new Error(`Control number mapping error: ${controlMappingResult.error.message}`);
+			throw new Error(
+				`Control number mapping error: ${controlMappingResult.error.message}`,
+			);
 		}
-		
+
 		const controlMapping = controlMappingResult.data;
-		if (!controlMapping) {
-			throw new Error("Control number not mapped yet");
-		}
 
 		// Look for existing control conversation
 		const { data: existingConvo } = await ctx.db
@@ -157,7 +156,10 @@ export const whatsappSettingsRouter = createTRPCRouter({
 			body: JSON.stringify(body),
 		});
 
-		const result = await response.json() as { messages?: { id?: string }[]; error?: { message?: string } };
+		const result = (await response.json()) as {
+			messages?: { id?: string }[];
+			error?: { message?: string };
+		};
 
 		if (!response.ok) {
 			throw new Error(
@@ -170,7 +172,9 @@ export const whatsappSettingsRouter = createTRPCRouter({
 		await ctx.db.from("wa_messages").insert({
 			org_id: ctx.auth.orgId,
 			conversation_id: existingConvo.id,
-			wa_message_id: result.messages?.[0]?.id ?? `test_${Temporal.Now.instant().epochMilliseconds}`,
+			wa_message_id:
+				result.messages?.[0]?.id ??
+				`test_${Temporal.Now.instant().epochMilliseconds}`,
 			direction: "out",
 			message_type: "text",
 			content: testMessage,
