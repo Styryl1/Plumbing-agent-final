@@ -16,7 +16,7 @@
 		"test:watch": "vitest",
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest run --coverage",
-		"guard": "biome format --write . && biome check --write . && pnpm lint && node scripts/pretypecheck.mjs && tsc --noEmit && node scripts/check-imports.mjs && node scripts/check-routes.mjs && node scripts/check-encoding.mjs && node scripts/check-placeholders.mjs && cross-env WB_ALLOW_DB=1 pnpm test && cross-env WB_ALLOW_DB=1 npx vitest run --config workbench/vitest.config.ts && pnpm i18n:prune && pnpm i18n:check && node scripts/audit-production-rules.mjs && next build",
+		"guard": "biome format --write . && biome check --write . && pnpm lint && node scripts/pretypecheck.mjs && tsc --noEmit && node scripts/check-imports.mjs && node scripts/check-routes.mjs && node scripts/check-encoding.mjs && node scripts/check-placeholders.mjs && cross-env WB_ALLOW_DB=1 pnpm test && cross-env WB_ALLOW_DB=1 npx vitest run --config workbench/vitest.config.ts && pnpm i18n:aggregate && pnpm i18n:prune && pnpm i18n:check && pnpm i18n:coverage-report && node scripts/audit-production-rules.mjs && next build",
 		"guard-safe": "node scripts/guard-safe.mjs",
 		"context": "node scripts/create-gpt5-bundle.mjs",
 		"i18n:sync": "node scripts/i18n-sync.mjs",
