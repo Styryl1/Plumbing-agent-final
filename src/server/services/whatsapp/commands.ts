@@ -6,8 +6,8 @@
 import { z } from "zod";
 
 export type ControlAction =
-	| { kind: "approve"; msgId: string; createJob?: boolean }
-	| { kind: "reject"; msgId: string; reason: string }
+	| { kind: "approve"; suggestionId: string; createJob?: boolean }
+	| { kind: "reject"; suggestionId: string; reason: string }
 	| { kind: "send"; msgId: string }
 	| { kind: "quote"; msgId: string };
 
@@ -36,26 +36,26 @@ export function handleControlCommand(
 
 	// Check approve job command first (more specific)
 	if (command === "#approve" && parts.length >= 3 && parts[1] === "job") {
-		const msgId = parts[2];
-		if (msgId) {
-			return { kind: "approve", msgId, createJob: true };
+		const suggestionId = parts[2];
+		if (suggestionId && isValidUuid(suggestionId)) {
+			return { kind: "approve", suggestionId, createJob: true };
 		}
 	}
 
 	// Check regular approve command
 	if (command === "#approve" && parts.length >= 2 && parts[1] !== "job") {
-		const msgId = parts[1];
-		if (msgId) {
-			return { kind: "approve", msgId, createJob: false };
+		const suggestionId = parts[1];
+		if (suggestionId && isValidUuid(suggestionId)) {
+			return { kind: "approve", suggestionId, createJob: false };
 		}
 	}
 
 	// Check reject command
 	if (command === "#reject" && parts.length >= 3) {
-		const msgId = parts[1];
+		const suggestionId = parts[1];
 		const reason = parts.slice(2).join(" ");
-		if (msgId && reason.length > 0) {
-			return { kind: "reject", msgId, reason };
+		if (suggestionId && isValidUuid(suggestionId) && reason.length > 0) {
+			return { kind: "reject", suggestionId, reason };
 		}
 	}
 
@@ -87,19 +87,28 @@ export function isValidMessageId(msgId: string): boolean {
 }
 
 /**
+ * Validate UUID format for suggestion IDs
+ */
+export function isValidUuid(id: string): boolean {
+	return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+		id,
+	);
+}
+
+/**
  * Get help text for control commands
  */
 export function getCommandHelp(): string {
 	return `
 📋 Control Chat Commands:
 
-#approve <msgId> → Relay analyzed suggestion to customer
-#approve job <msgId> → Same as above + create Job from suggestion  
-#reject <msgId> <reason> → Mark suggestion as rejected  
+#approve <suggestionId> → Relay analyzed suggestion to customer
+#approve job <suggestionId> → Same as above + create Job from suggestion  
+#reject <suggestionId> <reason> → Mark suggestion as rejected  
 #send <msgId> → Send original message without analyzer
 #quote <msgId> → Create draft quote/invoice and reply with link
 
-Example: #approve job wam_ABcd123XYZ
+Example: #approve job 123e4567-e89b-12d3-a456-426614174000
 	`.trim();
 }
 

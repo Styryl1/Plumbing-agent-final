@@ -926,6 +926,36 @@ export type Database = {
 					},
 				];
 			};
+			marketing_waitlist: {
+				Row: {
+					created_at: string | null;
+					email: string;
+					id: string;
+					locale: string;
+					org_name: string | null;
+					phone: string | null;
+					source: string | null;
+				};
+				Insert: {
+					created_at?: string | null;
+					email: string;
+					id?: string;
+					locale?: string;
+					org_name?: string | null;
+					phone?: string | null;
+					source?: string | null;
+				};
+				Update: {
+					created_at?: string | null;
+					email?: string;
+					id?: string;
+					locale?: string;
+					org_name?: string | null;
+					phone?: string | null;
+					source?: string | null;
+				};
+				Relationships: [];
+			};
 			org_settings: {
 				Row: {
 					created_at: string | null;
@@ -1222,40 +1252,61 @@ export type Database = {
 			};
 			wa_suggestions: {
 				Row: {
+					approved_at: string | null;
+					approved_by: string | null;
 					confidence: number;
 					conversation_id: string;
 					created_at: string;
 					id: string;
+					job_id: string | null;
 					message_id: string;
 					org_id: string;
 					proposed_text: string;
+					rejected_at: string | null;
+					rejected_by: string | null;
+					rejection_reason: string | null;
 					source: string;
+					status: string | null;
 					tags: string[];
 					time_estimate_min: number | null;
 					urgency: string;
 				};
 				Insert: {
+					approved_at?: string | null;
+					approved_by?: string | null;
 					confidence: number;
 					conversation_id: string;
 					created_at?: string;
 					id?: string;
+					job_id?: string | null;
 					message_id: string;
 					org_id: string;
 					proposed_text: string;
+					rejected_at?: string | null;
+					rejected_by?: string | null;
+					rejection_reason?: string | null;
 					source?: string;
+					status?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
 					urgency: string;
 				};
 				Update: {
+					approved_at?: string | null;
+					approved_by?: string | null;
 					confidence?: number;
 					conversation_id?: string;
 					created_at?: string;
 					id?: string;
+					job_id?: string | null;
 					message_id?: string;
 					org_id?: string;
 					proposed_text?: string;
+					rejected_at?: string | null;
+					rejected_by?: string | null;
+					rejection_reason?: string | null;
 					source?: string;
+					status?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
 					urgency?: string;
@@ -1273,6 +1324,13 @@ export type Database = {
 						columns: ["conversation_id"];
 						isOneToOne: false;
 						referencedRelation: "wa_conversations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "wa_suggestions_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
 						referencedColumns: ["id"];
 					},
 					{

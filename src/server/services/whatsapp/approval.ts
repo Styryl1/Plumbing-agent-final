@@ -8,6 +8,7 @@ import { logAuditEvent } from "~/lib/audit";
 import { toISO } from "~/lib/calendar-temporal";
 import { env } from "~/lib/env";
 import { toDbStatus } from "~/lib/job-status";
+import { parseZdt, zdtToISO } from "~/lib/time";
 import type { Database } from "~/types/supabase";
 import { sendTextMessage } from "./send";
 
@@ -40,10 +41,11 @@ interface SuggestionData {
 
 /**
  * Approve suggestion and relay to customer, optionally creating a job
+ * Uses suggestionId for idempotency (not message_id)
  */
 export async function approveSuggestion(
 	db: DB,
-	msgId: string,
+	suggestionId: string,
 	context: ApprovalContext,
 	options: { createJob?: boolean } = {},
 ): Promise<{
@@ -65,7 +67,7 @@ export async function approveSuggestion(
 					customer:customers(id, name, phone, address, postal_code)
 				)
 			`)
-			.eq("message_id", msgId)
+			.eq("id", suggestionId)
 			.eq("org_id", context.orgId)
 			.single();
 
@@ -73,10 +75,14 @@ export async function approveSuggestion(
 			return { success: false, error: "Suggestion not found" };
 		}
 
-		// TODO: Add status field to schema
-		// if (suggestion.data.status === "approved") {
-		// 	return { success: false, error: "Already approved" };
-		// }
+		// Idempotency check: if already approved with job, return existing
+		if (suggestion.data.status === "approved") {
+			if (suggestion.data.job_id) {
+				const jobCardUrl = `${env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/jobs/${suggestion.data.job_id}/card`;
+				return { success: true, jobId: suggestion.data.job_id, jobCardUrl };
+			}
+			return { success: true };
+		}
 
 		// Send message to customer via conversation
 		const sendResult = await sendTextMessage(db, context.orgId, {
@@ -105,15 +111,18 @@ export async function approveSuggestion(
 			}
 		}
 
-		// TODO: Mark suggestion as approved (add status fields to schema)
-		// await db
-		// 	.from("wa_suggestions")
-		// 	.update({
-		// 		status: "approved",
-		// 		approved_at: Temporal.Now.instant().toString(),
-		// 		approved_by: context.userId,
-		// 	})
-		// 	.eq("id", suggestion.data.id);
+		// Mark suggestion as approved with status tracking
+		const approvedAt = zdtToISO(parseZdt("Europe/Amsterdam"));
+		await db
+			.from("wa_suggestions")
+			.update({
+				status: "approved",
+				approved_at: approvedAt,
+				approved_by: context.userId ?? null,
+				job_id: jobId ?? null,
+			})
+			.eq("id", suggestion.data.id)
+			.eq("org_id", context.orgId);
 
 		// Write audit event
 		await logAuditEvent(db, {
@@ -124,7 +133,8 @@ export async function approveSuggestion(
 			resourceId: suggestion.data.id,
 			metadata: {
 				action: "approve_suggestion",
-				messageId: msgId,
+				suggestionId: suggestionId,
+				messageId: suggestion.data.message_id,
 				controlPhone: context.phone,
 				sentMode: sendResult.mode,
 				jobCreated: Boolean(jobId),
@@ -145,10 +155,11 @@ export async function approveSuggestion(
 
 /**
  * Reject suggestion with reason
+ * Uses suggestionId for idempotency (not message_id)
  */
 export async function rejectSuggestion(
 	db: DB,
-	msgId: string,
+	suggestionId: string,
 	reason: string,
 	context: ApprovalContext,
 ): Promise<{ success: boolean; error?: string }> {
@@ -157,7 +168,7 @@ export async function rejectSuggestion(
 		const suggestion = await db
 			.from("wa_suggestions")
 			.select("*")
-			.eq("message_id", msgId)
+			.eq("id", suggestionId)
 			.eq("org_id", context.orgId)
 			.single();
 
@@ -165,21 +176,23 @@ export async function rejectSuggestion(
 			return { success: false, error: "Suggestion not found" };
 		}
 
-		// TODO: Add status fields to schema
-		// if (suggestion.data.status === "rejected") {
-		// 	return { success: false, error: "Already rejected" };
-		// }
+		// Idempotency check: if already rejected, return success
+		if (suggestion.data.status === "rejected") {
+			return { success: true };
+		}
 
-		// TODO: Mark suggestion as rejected (add status fields to schema)
-		// await db
-		// 	.from("wa_suggestions")
-		// 	.update({
-		// 		status: "rejected",
-		// 		rejected_at: Temporal.Now.instant().toString(),
-		// 		rejected_by: context.userId,
-		// 		rejection_reason: reason,
-		// 	})
-		// 	.eq("id", suggestion.data.id);
+		// Mark suggestion as rejected with status tracking
+		const rejectedAt = zdtToISO(parseZdt("Europe/Amsterdam"));
+		await db
+			.from("wa_suggestions")
+			.update({
+				status: "rejected",
+				rejected_at: rejectedAt,
+				rejected_by: context.userId ?? null,
+				rejection_reason: reason,
+			})
+			.eq("id", suggestion.data.id)
+			.eq("org_id", context.orgId);
 
 		// Write audit event
 		await logAuditEvent(db, {
@@ -190,7 +203,8 @@ export async function rejectSuggestion(
 			resourceId: suggestion.data.id,
 			metadata: {
 				action: "reject_suggestion",
-				messageId: msgId,
+				suggestionId: suggestionId,
+				messageId: suggestion.data.message_id,
 				reason: reason,
 				controlPhone: context.phone,
 			},
@@ -349,7 +363,7 @@ export async function isControlNumberWhitelisted(
 		.eq("phone_number_id", phoneNumber) // NormalizedMessage.phoneNumber is Meta phone_number_id
 		.maybeSingle();
 
-	return controlNumber.data != null;
+	return controlNumber.data !== null && controlNumber.data !== undefined;
 }
 
 /**

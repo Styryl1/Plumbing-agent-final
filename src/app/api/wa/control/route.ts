@@ -49,15 +49,20 @@ async function executeControlCommand(
 	try {
 		switch (command.kind) {
 			case "approve": {
-				const result = await approveSuggestion(db, command.msgId, context, {
-					createJob: command.createJob ?? false,
-				});
+				const result = await approveSuggestion(
+					db,
+					command.suggestionId,
+					context,
+					{
+						createJob: command.createJob ?? false,
+					},
+				);
 
 				if (result.success) {
 					if (result.jobId && result.jobCardUrl) {
-						responseText = `✅ Approved & sent suggestion for message ${command.msgId}\n🗓️ Job created: ${result.jobId.substring(0, 8)}...\n📱 ${result.jobCardUrl}`;
+						responseText = `✅ Approved & sent suggestion ${command.suggestionId.substring(0, 8)}...\n🗓️ Job created: ${result.jobId.substring(0, 8)}...\n📱 ${result.jobCardUrl}`;
 					} else {
-						responseText = `✅ Approved and sent suggestion for message ${command.msgId}`;
+						responseText = `✅ Approved and sent suggestion ${command.suggestionId.substring(0, 8)}...`;
 					}
 				} else {
 					responseText = `❌ Failed to approve: ${result.error}`;
@@ -67,12 +72,12 @@ async function executeControlCommand(
 			case "reject": {
 				const result = await rejectSuggestion(
 					db,
-					command.msgId,
+					command.suggestionId,
 					command.reason,
 					context,
 				);
 				responseText = result.success
-					? `🚫 Rejected suggestion for message ${command.msgId}\nReason: ${command.reason}`
+					? `🚫 Rejected suggestion ${command.suggestionId.substring(0, 8)}...\nReason: ${command.reason}`
 					: `❌ Failed to reject: ${result.error}`;
 				break;
 			}
