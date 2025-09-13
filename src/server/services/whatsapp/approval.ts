@@ -118,7 +118,7 @@ export async function approveSuggestion(
 			.update({
 				status: "approved",
 				approved_at: approvedAt,
-				approved_by: context.userId ?? null,
+				approved_by: context.userId,
 				job_id: jobId ?? null,
 			})
 			.eq("id", suggestion.data.id)
@@ -188,7 +188,7 @@ export async function rejectSuggestion(
 			.update({
 				status: "rejected",
 				rejected_at: rejectedAt,
-				rejected_by: context.userId ?? null,
+				rejected_by: context.userId,
 				rejection_reason: reason,
 			})
 			.eq("id", suggestion.data.id)
@@ -363,7 +363,7 @@ export async function isControlNumberWhitelisted(
 		.eq("phone_number_id", phoneNumber) // NormalizedMessage.phoneNumber is Meta phone_number_id
 		.maybeSingle();
 
-	return controlNumber.data !== null && controlNumber.data !== undefined;
+	return controlNumber.data != null;
 }
 
 /**

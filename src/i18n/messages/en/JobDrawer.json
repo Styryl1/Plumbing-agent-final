@@ -1,0 +1,49 @@
+{
+	"details": "Job Details",
+	"edit": "Edit",
+	"delete": "Delete",
+	"cancel": "Cancel",
+	"save": "Save",
+	"saving": "Saving...",
+	"creating": "Creating...",
+	"deleting": "Deleting...",
+	"title": "Title",
+	"description": "Description",
+	"priority": "Priority",
+	"status": "Status",
+	"customer": "Customer",
+	"startTime": "Start time: {time}",
+	"endTime": "End time",
+	"duration": "{minutes} minutes",
+	"primaryEmployee": "Primary employee",
+	"secondaryEmployees": "Secondary employees",
+	"assignments": "Assignments",
+	"calendar": "Schedule",
+	"requiredSymbol": "*",
+	"selectEmployee": "Select employee",
+	"selectCustomer": "Select customer",
+	"selectStatus": "Select status",
+	"priorities": {
+		"normal": "Normal",
+		"urgent": "Urgent",
+		"emergency": "Emergency"
+	},
+	"statuses": {
+		"planned": "Planned",
+		"in_progress": "In Progress",
+		"done": "Done",
+		"cancelled": "Cancelled"
+	},
+	"invoice": {
+		"create": "Create Invoice",
+		"creating": "Creating invoice...",
+		"success": "Invoice draft created successfully",
+		"error": "Failed to create invoice draft"
+	},
+	"delete": {
+		"title": "Delete Job",
+		"description": "Are you sure you want to delete this job? This action cannot be undone.",
+		"success": "Job deleted successfully",
+		"failed": "Failed to delete job"
+	}
+}

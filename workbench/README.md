@@ -43,14 +43,14 @@ This folder is for experimental code, prototypes, and development utilities that
 ```bash
 # Basic Supabase setup
 SUPABASE_URL=https://your-project-dev.supabase.co
-SUPABASE_ANON_KEY=eyJ...
-SUPABASE_SERVICE_ROLE_KEY=eyJ...
+SUPABASE_ANON_KEY=REDACTED
+SUPABASE_SERVICE_ROLE_KEY=REDACTED
 
 # WhatsApp testing (if running wa_basic.test.ts)
 TEST_ORG_ID=org_test
 WHATSAPP_BUSINESS_PHONE_ID=test_phone_id
 WHATSAPP_CONTROL_PHONE_ID=test_control_phone
-WHATSAPP_APP_SECRET=test_secret
+WHATSAPP_APP_SECRET=REDACTED
 
 # Database testing enabler
 WB_ALLOW_DB=1

@@ -15,7 +15,7 @@ interface JobCardPageProps {
 export default async function JobCardPage({
 	params,
 }: JobCardPageProps): Promise<JSX.Element> {
-	const t = await getTranslations("job_card_mobile");
+	const t = await getTranslations("misc.job_card_mobile");
 	const jobId = params.id;
 
 	try {
@@ -125,12 +125,12 @@ export default async function JobCardPage({
 									}`}
 								>
 									{job.status === "planned"
-										? t("status.planned")
+										? t("statusValues.planned")
 										: job.status === "in_progress"
-											? t("status.in_progress")
+											? t("statusValues.in_progress")
 											: job.status === "done"
-												? t("status.done")
-												: t("status.unknown")}
+												? t("statusValues.done")
+												: t("statusValues.unknown")}
 								</span>
 							</div>
 						</CardContent>

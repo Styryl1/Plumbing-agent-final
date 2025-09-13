@@ -119,6 +119,7 @@ export default [
       "local-rules": {
         rules: {
           "no-banned-strings": require("./tools/eslint-rules/no-banned-strings.js"),
+          "i18n-root-hook-only": require("./tools/eslint-rules/i18n-root-hook-only.js"),
         },
       }
     },
@@ -248,6 +249,9 @@ export default [
       // ANTI-PLACEHOLDER PROTECTION: Advanced pattern detection (custom rule)
       "local-rules/no-banned-strings": "error",
 
+      // i18n ROOT HOOK ENFORCEMENT: Forbid namespaced useTranslations
+      "local-rules/i18n-root-hook-only": "error",
+
       // Enhanced async/promise safety
       "@typescript-eslint/promise-function-async": "error",
       "@typescript-eslint/no-misused-promises": ["error", { 
@@ -320,6 +324,7 @@ export default [
       "local-rules": {
         rules: {
           "no-banned-strings": require("./tools/eslint-rules/no-banned-strings.js"),
+          "i18n-root-hook-only": require("./tools/eslint-rules/i18n-root-hook-only.js"),
         },
       }
     },
@@ -352,6 +357,9 @@ export default [
 
       // ANTI-PLACEHOLDER PROTECTION: Advanced pattern detection (custom rule)
       "local-rules/no-banned-strings": "error",
+
+      // i18n ROOT HOOK ENFORCEMENT: Forbid namespaced useTranslations
+      "local-rules/i18n-root-hook-only": "error",
     },
   },
 
@@ -565,5 +573,13 @@ export default [
     rules: {
       "@typescript-eslint/no-deprecated": "off"
     }
+  },
+
+  // Declaration file overrides
+  {
+    files: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
   },
 ];

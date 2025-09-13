@@ -16,14 +16,14 @@ import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 
 export function Hero(): React.ReactElement {
-	const tHero = useTranslations("launch.hero");
-	const tTrust = useTranslations("launch.trust");
+	const t = useTranslations();
+	const t = useTranslations();
 	const pathname = usePathname();
 	const locale = pathname.includes("/en/") ? "en" : "nl";
 
 	const handleDemoClick = (): void => {
 		analytics.trackButtonClick(
-			tHero("cta_demo"),
+			t("launch.hero.cta_demo"),
 			"hero_section",
 			`/${locale}/launch/demo`,
 		);
@@ -32,7 +32,7 @@ export function Hero(): React.ReactElement {
 
 	const handleWaitlistClick = (): void => {
 		analytics.trackButtonClick(
-			tHero("cta_waitlist"),
+			t("launch.hero.cta_waitlist"),
 			"hero_section",
 			"#waitlist",
 		);
@@ -54,14 +54,14 @@ export function Hero(): React.ReactElement {
 						className="mb-4 bg-orange-100 text-orange-700 hover:bg-orange-200 animate-bounce"
 					>
 						<StarIcon className="mr-1 h-3 w-3 animate-spin" />
-						{tHero("urgency")}
+						{t("launch.hero.urgency")}
 					</Badge>
 
 					<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl animate-fade-in-up">
-						{tHero("h1")}
+						{t("launch.hero.h1")}
 					</h1>
 					<p className="mt-6 text-lg leading-8 text-gray-600 animate-fade-in-up delay-150">
-						{tHero("subhead")}
+						{t("launch.hero.subhead")}
 					</p>
 
 					{/* Social Proof Counter with staggered animation */}
@@ -78,7 +78,7 @@ export function Hero(): React.ReactElement {
 							))}
 						</div>
 						<span className="animate-fade-in-up delay-700">
-							{tHero("social_proof")}
+							{t("launch.hero.social_proof")}
 						</span>
 					</div>
 
@@ -86,15 +86,15 @@ export function Hero(): React.ReactElement {
 					<div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 animate-fade-in-up delay-500">
 						<div className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
 							<ShieldCheckIcon className="h-4 w-4 text-emerald-500" />
-							<span>{tTrust("avg_compliant")}</span>
+							<span>{t("launch.trust.avg_compliant")}</span>
 						</div>
 						<div className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
 							<CheckCircleIcon className="h-4 w-4 text-emerald-500" />
-							<span>{tTrust("ideal_certified")}</span>
+							<span>{t("launch.trust.ideal_certified")}</span>
 						</div>
 						<div className="flex items-center gap-1 hover:text-emerald-600 transition-colors">
 							<CheckCircleIcon className="h-4 w-4 text-emerald-500" />
-							<span>{tTrust("kvk_registered")}</span>
+							<span>{t("launch.trust.kvk_registered")}</span>
 						</div>
 					</div>
 
@@ -107,7 +107,7 @@ export function Hero(): React.ReactElement {
 						>
 							<Link href={`/${locale}/launch/demo`}>
 								<PlayIcon className="mr-2 h-4 w-4 group-hover:animate-pulse" />
-								{tHero("cta_demo")}
+								{t("launch.hero.cta_demo")}
 							</Link>
 						</Button>
 						<Button
@@ -118,7 +118,7 @@ export function Hero(): React.ReactElement {
 							onClick={handleWaitlistClick}
 						>
 							<Link href="#waitlist">
-								{tHero("cta_waitlist")}
+								{t("launch.hero.cta_waitlist")}
 								<ArrowRightIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
 							</Link>
 						</Button>

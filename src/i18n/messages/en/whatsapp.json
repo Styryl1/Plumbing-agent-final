@@ -1,82 +1,78 @@
 {
-	"whatsapp": {
-		"leads": {
-			"title": "WhatsApp Leads",
-			"description": "Manage incoming WhatsApp conversations",
-			"count": "leads",
-			"table": {
-				"contact": "Contact",
-				"lastMessage": "Last Message",
-				"unread": "Unread",
-				"session": "Session",
-				"lastActivity": "Last Activity"
-			},
-			"empty": {
-				"title": "No active leads",
-				"description": "New WhatsApp conversations will appear here"
-			}
+	"leads": {
+		"title": "WhatsApp Leads",
+		"description": "Manage incoming WhatsApp conversations",
+		"count": "leads",
+		"table": {
+			"contact": "Contact",
+			"lastMessage": "Last Message",
+			"unread": "Unread",
+			"session": "Session",
+			"lastActivity": "Last Activity"
 		},
-		"session": {
-			"active": "Active",
-			"expired": "Expired",
-			"expiresAt": "Expires at",
-			"expiresIn": "Expires in"
-		},
-		"conversation": {
-			"title": "Messages",
-			"empty": {
-				"title": "No messages yet",
-				"description": "Start a conversation to see messages here"
-			}
-		},
-		"message": {
-			"media": "Media attachment"
-		},
-		"composer": {
-			"placeholder": "Type a message...",
-			"templatePlaceholder": "Type a template message...",
-			"send": "Send",
-			"useTemplate": "Send Template",
-			"sending": "Sending...",
-			"sent": "Message sent",
-			"templateSent": "Template sent",
-			"error": "Failed to send message",
-			"templateError": "Failed to send template",
-			"sessionExpiredWarning": "24-hour session expired. Use template messages to continue conversation."
-		},
-		"actions": {
-			"title": "Actions",
-			"createJob": "Create Job",
-			"sendPaylink": "Send Paylink",
-			"close": "Close Conversation",
-			"jobCreated": "Job created successfully",
-			"jobError": "Failed to create job",
-			"paylinkNotImplemented": "Paylink feature coming soon",
-			"paylinkError": "Failed to send paylink",
-			"conversationClosed": "Conversation closed",
-			"closeError": "Failed to close conversation"
-		},
-		"control": {
-			"title": "Control Chat",
-			"description": "Quick approval actions",
-			"approve": "Approve",
-			"close": "Close",
-			"approved": "Conversation approved",
-			"approveError": "Failed to approve"
-		},
-		"info": {
-			"title": "Info",
-			"status": "Status",
-			"created": "Created",
-			"linkedCustomer": "Customer"
-		},
-		"photo_attached": "Photo Attached",
-		"ai_analyzing": "Ai Analyzing"
+		"empty": {
+			"title": "No active leads",
+			"description": "New WhatsApp conversations will appear here"
+		}
 	},
-	"whatsapp.ai_analyzing": "AI analyzing...",
-	"whatsapp.createJob": "Create job",
-	"whatsapp.lastActivity": "Last activity",
-	"whatsapp.messages": "messages",
-	"whatsapp.noMessages": "No WhatsApp messages available",
-	"whatsapp.photo_attached": "Photo attached"
+	"session": {
+		"active": "Active",
+		"expired": "Expired",
+		"expiresAt": "Expires at",
+		"expiresIn": "Expires in"
+	},
+	"conversation": {
+		"title": "Messages",
+		"empty": {
+			"title": "No messages yet",
+			"description": "Start a conversation to see messages here"
+		}
+	},
+	"message": {
+		"media": "Media attachment"
+	},
+	"composer": {
+		"placeholder": "Type a message...",
+		"templatePlaceholder": "Type a template message...",
+		"send": "Send",
+		"useTemplate": "Send Template",
+		"sending": "Sending...",
+		"sent": "Message sent",
+		"templateSent": "Template sent",
+		"error": "Failed to send message",
+		"templateError": "Failed to send template",
+		"sessionExpiredWarning": "24-hour session expired. Use template messages to continue conversation."
+	},
+	"actions": {
+		"title": "Actions",
+		"createJob": "Create Job",
+		"sendPaylink": "Send Paylink",
+		"close": "Close Conversation",
+		"jobCreated": "Job created successfully",
+		"jobError": "Failed to create job",
+		"paylinkNotImplemented": "Paylink feature coming soon",
+		"paylinkError": "Failed to send paylink",
+		"conversationClosed": "Conversation closed",
+		"closeError": "Failed to close conversation"
+	},
+	"control": {
+		"title": "Control Chat",
+		"description": "Quick approval actions",
+		"approve": "Approve",
+		"close": "Close",
+		"approved": "Conversation approved",
+		"approveError": "Failed to approve"
+	},
+	"info": {
+		"title": "Info",
+		"status": "Status",
+		"created": "Created",
+		"linkedCustomer": "Customer"
+	},
+	"photo_attached": "Photo Attached",
+	"ai_analyzing": "AI analyzing...",
+	"createJob": "Create job",
+	"lastActivity": "Last activity",
+	"messages": "messages",
+	"noMessages": "No WhatsApp messages available"
 }

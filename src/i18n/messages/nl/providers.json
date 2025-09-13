@@ -1,67 +1,82 @@
 {
-	"providers": {
-		"comingSoon": "Coming soon",
-		"moneybird": {
-			"title": "Moneybird",
-			"connect": "Connect",
-			"reconnect": "Reconnect",
-			"disconnect": "Disconnect",
-			"connected": "Connected",
-			"openDashboard": "Open Dashboard",
-			"reconnectHelper": "Your token has expired. Please reconnect to continue.",
-			"health": {
-				"ok": "Connected",
-				"invalid_token": "Token Expired",
-				"not_connected": "Not Connected"
-			}
-		},
-		"wefact": {
-			"title": "WeFact"
-		},
-		"eboekhouden": {
-			"title": "e-Boekhouden"
-		},
-		"peppol": {
-			"title": "Peppol"
+	"actions": {
+		"back": "Terug"
+	},
+	"comingSoon": "Binnenkort beschikbaar",
+	"moneybird": {
+		"title": "Moneybird",
+		"description": "Professionele Nederlandse boekhouding met API integratie",
+		"connect": "Koppelen",
+		"reconnect": "Opnieuw koppelen",
+		"disconnect": "Ontkoppelen",
+		"connected": "Verbonden",
+		"openDashboard": "Dashboard openen",
+		"reconnectHelper": "Uw token is verlopen. Koppel opnieuw om door te gaan.",
+		"health": {
+			"ok": "Verbonden",
+			"invalid_token": "Token verlopen",
+			"not_connected": "Niet verbonden"
 		}
 	},
-	"providers.actions.configure": "Configureren",
-	"providers.actions.connect": "Koppelen",
-	"providers.actions.fix": "Verbinding herstellen",
-	"providers.connected.description": "Provider is klaar voor het uitgeven van facturen",
-	"providers.eboekhouden.description": "Populaire keuze voor Nederlandse kleine ondernemers",
-	"providers.moneybird.description": "Professionele Nederlandse boekhouding met API integratie",
-	"providers.oauth.adminError": "Kon administraties niet ophalen",
-	"providers.oauth.authError": "Autorisatie geweigerd of mislukt",
-	"providers.oauth.callbackError": "Onbekende fout tijdens verbindingsproces",
-	"providers.oauth.csrfError": "Beveiligingsfout: ongeldige sessiestatus",
-	"providers.oauth.error": "Verbindingsfout",
-	"providers.oauth.genericError": "Er is iets misgegaan tijdens het verbinden",
-	"providers.oauth.moneybirdConnected": "Moneybird succesvol verbonden",
-	"providers.oauth.selectAdmin": "Selecteer administratie",
-	"providers.oauth.stateError": "Ongeldige verbindingsstatus",
-	"providers.oauth.stateExpired": "Verbindingssessie is verlopen",
-	"providers.oauth.success": "Verbinding geslaagd",
-	"providers.oauth.tokenError": "Kon toegangstoken niet ophalen",
-	"providers.oauth.userMismatch": "Gebruiker komt niet overeen met verwachte account",
-	"providers.panel.description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
-	"providers.panel.note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance.",
-	"providers.panel.title": "Factuur Providers",
-	"providers.peppol.description": "Europese B2B elektronische facturatie standaard",
-	"providers.setup.actions.back": "Terug naar providers",
-	"providers.setup.actions.cancel": "Annuleren",
-	"providers.setup.actions.connect": "WeFact verbinden",
-	"providers.setup.actions.connecting": "Verbinden...",
-	"providers.setup.apiKey.help": "U kunt uw API sleutel vinden in uw WeFact account instellingen onder API toegang",
-	"providers.setup.apiKey.label": "API Sleutel",
-	"providers.setup.apiKey.placeholder": "Voer uw WeFact API sleutel in",
-	"providers.setup.baseUrl.help": "Laat standaard tenzij u een aangepaste WeFact installatie gebruikt",
-	"providers.setup.baseUrl.label": "API Basis URL",
-	"providers.setup.errors.connection": "Verbinding mislukt",
-	"providers.setup.wefact.description": "Configureer uw WeFact account voor geautomatiseerde factuurverwerking",
-	"providers.setup.wefact.title": "WeFact koppelen",
-	"providers.states.connected": "Verbonden",
-	"providers.states.error": "Fout",
-	"providers.states.needs_action": "Instelling vereist",
-	"providers.wefact.description": "Eenvoudige facturatie met betalingsverwerking"
+	"wefact": {
+		"title": "WeFact",
+		"description": "Eenvoudige facturatie met betalingsverwerking"
+	},
+	"eboekhouden": {
+		"title": "e-Boekhouden",
+		"description": "Populaire keuze voor Nederlandse kleine ondernemers"
+	},
+	"peppol": {
+		"title": "Peppol",
+		"description": "Europese B2B elektronische facturatie standaard"
+	},
+	"panel": {
+		"title": "Factuur Providers",
+		"description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
+		"note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance."
+	},
+	"states": {
+		"connected": "Verbonden",
+		"needs_action": "Instelling vereist",
+		"error": "Fout"
+	},
+	"actions.configure": "Configureren",
+	"actions.connect": "Koppelen",
+	"actions.fix": "Verbinding herstellen",
+	"connected.description": "Provider is klaar voor het uitgeven van facturen",
+	"eboekhouden.description": "Populaire keuze voor Nederlandse kleine ondernemers",
+	"moneybird.description": "Professionele Nederlandse boekhouding met API integratie",
+	"oauth.adminError": "Kon administraties niet ophalen",
+	"oauth.authError": "Autorisatie geweigerd of mislukt",
+	"oauth.callbackError": "Onbekende fout tijdens verbindingsproces",
+	"oauth.csrfError": "Beveiligingsfout: ongeldige sessiestatus",
+	"oauth.error": "Verbindingsfout",
+	"oauth.genericError": "Er is iets misgegaan tijdens het verbinden",
+	"oauth.moneybirdConnected": "Moneybird succesvol verbonden",
+	"oauth.selectAdmin": "Selecteer administratie",
+	"oauth.stateError": "Ongeldige verbindingsstatus",
+	"oauth.stateExpired": "Verbindingssessie is verlopen",
+	"oauth.success": "Verbinding geslaagd",
+	"oauth.tokenError": "Kon toegangstoken niet ophalen",
+	"oauth.userMismatch": "Gebruiker komt niet overeen met verwachte account",
+	"panel.description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
+	"panel.note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance.",
+	"panel.title": "Factuur Providers",
+	"peppol.description": "Europese B2B elektronische facturatie standaard",
+	"setup.actions.back": "Terug naar providers",
+	"setup.actions.cancel": "Annuleren",
+	"setup.actions.connect": "WeFact verbinden",
+	"setup.actions.connecting": "Verbinden...",
+	"setup.apiKey.help": "U kunt uw API sleutel vinden in uw WeFact account instellingen onder API toegang",
+	"setup.apiKey.label": "API Sleutel",
+	"setup.apiKey.placeholder": "Voer uw WeFact API sleutel in",
+	"setup.baseUrl.help": "Laat standaard tenzij u een aangepaste WeFact installatie gebruikt",
+	"setup.baseUrl.label": "API Basis URL",
+	"setup.errors.connection": "Verbinding mislukt",
+	"setup.wefact.description": "Configureer uw WeFact account voor geautomatiseerde factuurverwerking",
+	"setup.wefact.title": "WeFact koppelen",
+	"states.connected": "Verbonden",
+	"states.error": "Fout",
+	"states.needs_action": "Instelling vereist",
+	"wefact.description": "Eenvoudige facturatie met betalingsverwerking"
 }

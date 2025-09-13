@@ -9,7 +9,7 @@ import { api } from "~/lib/trpc/client";
  * Shows only when pilotMode flag is true from server
  */
 export default function PilotModeBanner(): JSX.Element | null {
-	const tPilot = useTranslations("pilot.banner");
+	const t = useTranslations();
 	const { data: flags, isLoading } = api.settings.getPublicFlags.useQuery();
 
 	// Don't render until flags are loaded or if pilot mode is not active
@@ -19,7 +19,8 @@ export default function PilotModeBanner(): JSX.Element | null {
 
 	return (
 		<div className="w-full bg-amber-100 border-b border-amber-200 text-amber-800 text-center py-2 px-4 text-sm">
-			<strong>{tPilot("title")}</strong> — {tPilot("subtitle")}
+			<strong>{t("launch.pilot.banner.title")}</strong> —{" "}
+			{t("launch.pilot.banner.subtitle")}
 		</div>
 	);
 }

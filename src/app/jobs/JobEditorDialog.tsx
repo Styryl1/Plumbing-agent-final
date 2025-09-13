@@ -45,7 +45,6 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { useAutoFillAddress } from "~/hooks/useAutoFillAddress";
-import { useT } from "~/i18n/client";
 import {
 	dateToPlainDate,
 	formatZDT,
@@ -108,7 +107,8 @@ export default function JobEditorDialog({
 }: JobEditorDialogProps): JSX.Element {
 	const isEdit = !!job;
 	const utils = api.useUtils();
-	const t = useT();
+	// Translation hook - root hook with full paths
+	const t = useTranslations();
 
 	// Fetch employees
 	const { data: employees = [] } = api.employees.list.useQuery({});
@@ -131,9 +131,6 @@ export default function JobEditorDialog({
 			notes: "",
 		},
 	});
-
-	// Job translations
-	const tJobs = useTranslations("jobs");
 
 	// Auto-fill address hook
 	const { isLooking } = useAutoFillAddress(form, {
@@ -179,25 +176,25 @@ export default function JobEditorDialog({
 
 	const createMutation = api.jobs.create.useMutation({
 		onSuccess: () => {
-			toast.success(tJobs("create.success"));
+			toast.success(t("jobs.create.success"));
 			void utils.jobs.list.invalidate();
 			onOpenChange(false);
 			form.reset();
 		},
 		onError: () => {
-			toast.error(tJobs("create.failed"));
+			toast.error(t("jobs.create.failed"));
 		},
 	});
 
 	const updateMutation = api.jobs.update.useMutation({
 		onSuccess: () => {
-			toast.success(tJobs("update.success"));
+			toast.success(t("jobs.update.success"));
 			void utils.jobs.list.invalidate();
 			onOpenChange(false);
 			form.reset();
 		},
 		onError: () => {
-			toast.error(tJobs("update.failed"));
+			toast.error(t("jobs.update.failed"));
 		},
 	});
 
@@ -351,10 +348,12 @@ export default function JobEditorDialog({
 			<DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden flex flex-col">
 				<DialogHeader>
 					<DialogTitle>
-						{isEdit ? t("job.editJob") : t("job.newJob")}
+						{isEdit ? t("jobs.job.editJob") : t("jobs.job.newJob")}
 					</DialogTitle>
 					<DialogDescription>
-						{isEdit ? t("job.editDescription") : t("job.createDescription")}
+						{isEdit
+							? t("jobs.job.editDescription")
+							: t("jobs.job.createDescription")}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -370,7 +369,7 @@ export default function JobEditorDialog({
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>
-											{t("form.title")} {t("form.required")}
+											{t("ui.form.title")} {t("ui.form.required")}
 										</FormLabel>
 										<FormControl>
 											<Input placeholder="Lekkage repareren..." {...field} />
@@ -387,7 +386,7 @@ export default function JobEditorDialog({
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
 											<FormLabel>
-												{t("form.startDate")} {t("form.required")}
+												{t("ui.form.startDate")} {t("ui.form.required")}
 											</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -424,7 +423,7 @@ export default function JobEditorDialog({
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>
-												{t("form.startTime")} {t("form.required")}
+												{t("ui.form.startTime")} {t("ui.form.required")}
 											</FormLabel>
 											<FormControl>
 												<Input type="time" {...field} />
@@ -442,7 +441,7 @@ export default function JobEditorDialog({
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
 											<FormLabel>
-												{t("form.endDate")} {t("form.required")}
+												{t("ui.form.endDate")} {t("ui.form.required")}
 											</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -479,7 +478,7 @@ export default function JobEditorDialog({
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>
-												{t("form.endTime")} {t("form.required")}
+												{t("ui.form.endTime")} {t("ui.form.required")}
 											</FormLabel>
 											<FormControl>
 												<Input type="time" {...field} />
@@ -496,7 +495,7 @@ export default function JobEditorDialog({
 								name="employeeId"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t("form.employee")}</FormLabel>
+										<FormLabel>{t("ui.form.employee")}</FormLabel>
 										<Select
 											onValueChange={field.onChange}
 											value={field.value ?? ""}
@@ -508,7 +507,7 @@ export default function JobEditorDialog({
 											</FormControl>
 											<SelectContent>
 												<SelectItem value="none">
-													{t("form.noEmployee")}
+													{t("ui.form.noEmployee")}
 												</SelectItem>
 												{employees.map((employee) => (
 													<SelectItem key={employee.id} value={employee.id}>
@@ -528,7 +527,7 @@ export default function JobEditorDialog({
 								name="customerId"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t("form.customer")}</FormLabel>
+										<FormLabel>{t("ui.form.customer")}</FormLabel>
 										<FormControl>
 											<CustomerPicker
 												value={field.value}
@@ -553,7 +552,7 @@ export default function JobEditorDialog({
 											<FormItem>
 												<FormLabel>
 													{t("customers.form.postalCode.label")}{" "}
-													{t("form.required")}
+													{t("ui.form.required")}
 												</FormLabel>
 												<FormControl>
 													<Input
@@ -575,7 +574,7 @@ export default function JobEditorDialog({
 											<FormItem>
 												<FormLabel>
 													{t("customers.form.houseNumber.label")}{" "}
-													{t("form.required")}
+													{t("ui.form.required")}
 												</FormLabel>
 												<FormControl>
 													<Input
@@ -661,7 +660,7 @@ export default function JobEditorDialog({
 								name="status"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t("form.status")}</FormLabel>
+										<FormLabel>{t("ui.form.status")}</FormLabel>
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}
@@ -689,7 +688,7 @@ export default function JobEditorDialog({
 								name="notes"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t("form.notes")}</FormLabel>
+										<FormLabel>{t("ui.form.notes")}</FormLabel>
 										<FormControl>
 											<Textarea
 												placeholder="Extra informatie over de klus..."

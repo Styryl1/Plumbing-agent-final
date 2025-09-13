@@ -2,9 +2,9 @@
 
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { useT } from "~/i18n/client";
 
 interface OAuthFeedbackProps {
 	className?: string;
@@ -18,7 +18,7 @@ export default function OAuthFeedbackHandler({
 	className = "",
 }: OAuthFeedbackProps): React.JSX.Element | null {
 	const searchParams = useSearchParams();
-	const t = useT();
+	const t = useTranslations();
 	const [message, setMessage] = useState<{
 		type: "success" | "error";
 		title: string;

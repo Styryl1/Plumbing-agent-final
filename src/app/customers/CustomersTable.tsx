@@ -53,10 +53,7 @@ export default function CustomersTable({
 	onDelete,
 	showArchived = false,
 }: CustomersTableProps): JSX.Element {
-	const tCustomers = useTranslations("customers");
-	const tTable = useTranslations("customers.table");
-	const tCommon = useTranslations("common");
-	const tAction = useTranslations("action");
+	const t = useTranslations();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [deletingCustomer, setDeletingCustomer] = useState<CustomerDTO | null>(
 		null,
@@ -115,16 +112,16 @@ export default function CustomersTable({
 				error.data?.code === "CONFLICT"
 			) {
 				// Keep dialog open - UI will show archive option
-				toast.error(tCustomers("error.deleteLinked"));
+				toast.error(t("customers.error.deleteLinked"));
 			} else {
 				// Other errors
-				toast.error(tCustomers("error.delete"));
+				toast.error(t("customers.error.delete"));
 			}
 		},
 		onSuccess: () => {
 			// Customer was successfully deleted (hard delete)
 			setDeletingCustomer(null);
-			toast.success(tCustomers("success.deleted"));
+			toast.success(t("customers.success.deleted"));
 			onDelete();
 		},
 		onSettled: () => {
@@ -140,7 +137,7 @@ export default function CustomersTable({
 	const archiveCustomerMutation = api.customers.archive.useMutation({
 		onSuccess: () => {
 			setDeletingCustomer(null);
-			toast.success(tCustomers("success.archived"));
+			toast.success(t("customers.success.archived"));
 			// Invalidate all customer queries to ensure immediate UI update
 			void utils.customers.list.invalidate();
 			void utils.customers.listArchived.invalidate();
@@ -153,7 +150,7 @@ export default function CustomersTable({
 			// Only log actual failures, not "customer not found" after successful operation
 			if (error.message !== "Klant niet gevonden of geen permissie") {
 				console.error("Failed to archive customer:", error);
-				toast.error(tCustomers("error.archive"));
+				toast.error(t("customers.error.archive"));
 			}
 		},
 	});
@@ -183,11 +180,11 @@ export default function CustomersTable({
 		onSuccess: () => {
 			setEditingCustomer(null);
 			void utils.customers.list.invalidate();
-			toast.success(tCustomers("success.updated"));
+			toast.success(t("customers.success.updated"));
 		},
 		onError: (error) => {
 			console.error("Failed to update customer:", error);
-			toast.error(tCustomers("error.update"));
+			toast.error(t("customers.error.update"));
 		},
 	});
 
@@ -284,7 +281,7 @@ export default function CustomersTable({
 			{/* Search */}
 			<div className="w-full max-w-sm">
 				<Input
-					placeholder={tCustomers("searchPlaceholder")}
+					placeholder={t("customers.searchPlaceholder")}
 					value={searchQuery}
 					onChange={(e) => {
 						setSearchQuery(e.target.value);
@@ -298,12 +295,12 @@ export default function CustomersTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>{tTable("columns.name")}</TableHead>
-							<TableHead>{tTable("columns.contact")}</TableHead>
-							<TableHead>{tTable("columns.address")}</TableHead>
-							<TableHead>{tTable("columns.created")}</TableHead>
+							<TableHead>{t("customers.table.columns.name")}</TableHead>
+							<TableHead>{t("customers.table.columns.contact")}</TableHead>
+							<TableHead>{t("customers.table.columns.address")}</TableHead>
+							<TableHead>{t("customers.table.columns.created")}</TableHead>
 							<TableHead className="w-[100px]">
-								{tTable("columns.actions")}
+								{t("customers.table.columns.actions")}
 							</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -315,10 +312,10 @@ export default function CustomersTable({
 									className="text-center text-muted-foreground py-8"
 								>
 									{searchQuery !== ""
-										? tCustomers("noCustomersFound")
+										? t("customers.noCustomersFound")
 										: showArchived
-											? tCustomers("archived.noArchivedFound")
-											: tCustomers("noCustomersFound")}
+											? t("customers.archived.noArchivedFound")
+											: t("customers.noCustomersFound")}
 								</TableCell>
 							</TableRow>
 						) : (
@@ -333,7 +330,7 @@ export default function CustomersTable({
 												</Badge>
 												{customer.isArchived && (
 													<Badge variant="secondary" className="text-xs">
-														{tCustomers("archived.badge")}
+														{t("customers.archived.badge")}
 													</Badge>
 												)}
 											</div>
@@ -526,7 +523,7 @@ export default function CustomersTable({
 														handleUnarchive(customer);
 													}}
 													disabled={unarchiveCustomerMutation.isPending}
-													title={tCustomers("unarchive.tooltip")}
+													title={t("customers.unarchive.tooltip")}
 												>
 													<Archive className="h-3 w-3" />
 												</Button>
@@ -573,48 +570,48 @@ export default function CustomersTable({
 					<AlertDialogHeader>
 						<AlertDialogTitle>
 							{isLoadingLinkedCounts
-								? tCommon("loading")
+								? t("common.loading")
 								: hasLinkedData
-									? tCustomers("delete.archive.title")
-									: tCustomers("delete.title")}
+									? t("customers.delete.archive.title")
+									: t("customers.delete.title")}
 						</AlertDialogTitle>
 						<AlertDialogDescription asChild>
 							<div className="text-muted-foreground text-sm">
 								{isLoadingLinkedCounts ? (
 									<div className="flex items-center gap-2">
-										<div className="text-sm">{tCommon("loading")}...</div>
+										<div className="text-sm">{t("common.loading")}...</div>
 									</div>
 								) : hasLinkedData ? (
 									<div className="space-y-2">
 										<div className="font-medium text-orange-600">
-											{tCustomers("delete.archive.cannotDelete")}
+											{t("customers.delete.archive.cannotDelete")}
 										</div>
 										<div className="text-sm text-muted-foreground">
-											<div>{tCustomers("delete.archive.linkedData")}</div>
+											<div>{t("customers.delete.archive.linkedData")}</div>
 											<ul className="list-disc list-inside ml-2">
 												{linkedCounts.jobs > 0 && (
 													<li>
 														{linkedCounts.jobs}{" "}
-														{tCustomers("delete.archive.jobs")}
+														{t("customers.delete.archive.jobs")}
 													</li>
 												)}
 												{linkedCounts.invoices > 0 && (
 													<li>
 														{linkedCounts.invoices}{" "}
-														{tCustomers("delete.archive.invoices")}
+														{t("customers.delete.archive.invoices")}
 													</li>
 												)}
 											</ul>
 										</div>
 										<div className="text-sm">
-											{tCustomers("delete.archive.archiveInstead", {
+											{t("customers.delete.archive.archiveInstead", {
 												name: deletingCustomer?.name ?? "",
 											})}
 										</div>
 									</div>
 								) : (
 									<div>
-										{tCustomers("delete.description")}
+										{t("customers.delete.description")}
 										{deletingCustomer !== null && (
 											<span className="font-medium">
 												{" "}
@@ -627,10 +624,10 @@ export default function CustomersTable({
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+						<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
 						{isLoadingLinkedCounts ? (
 							<AlertDialogAction disabled>
-								{tCommon("loading")}
+								{t("common.loading")}
 							</AlertDialogAction>
 						) : hasLinkedData ? (
 							<AlertDialogAction
@@ -638,7 +635,7 @@ export default function CustomersTable({
 								disabled={archiveCustomerMutation.isPending}
 							>
 								{archiveCustomerMutation.isPending
-									? tCommon("loading")
+									? t("common.loading")
 									: "Archiveren"}
 							</AlertDialogAction>
 						) : (
@@ -647,8 +644,8 @@ export default function CustomersTable({
 								disabled={deleteCustomerMutation.isPending}
 							>
 								{deleteCustomerMutation.isPending
-									? tCommon("deleting")
-									: tAction("delete")}
+									? t("actions.deleting")
+									: t("actions.delete")}
 							</AlertDialogAction>
 						)}
 					</AlertDialogFooter>

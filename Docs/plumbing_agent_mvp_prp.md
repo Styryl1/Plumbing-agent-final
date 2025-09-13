@@ -435,7 +435,7 @@ security_patterns:
         // Webhook signature verification
         import { createHmac } from 'crypto';
         
-        export function verifyWhatsAppWebhook(payload: string, signature: string, secret: string): boolean {
+        export function verifyWhatsAppWebhook(payload: string, signature: string, secret: REDACTED
           const expectedSignature = createHmac('sha256', secret)
             .update(payload, 'utf8')
             .digest('hex');
@@ -2459,7 +2459,7 @@ Bridge Mode enables organizations to optionally connect via WhatsApp Web session
 ```env
 # Bridge Mode Configuration (Optional)
 BRIDGE_MODE_ENABLED=false                    # Master feature flag
-BRIDGE_WEBHOOK_SECRET=supersecretstring32+   # HMAC signature secret (32+ chars)
+BRIDGE_WEBHOOK_SECRET=REDACTED
 BRIDGE_SESSION_TTL_DAYS=14                   # Session expiry (1-30 days)
 BRIDGE_RATE_LIMIT_PER_MIN=120               # Rate limit per org per minute
 BRIDGE_RATE_LIMIT_PER_HOUR=1800             # Rate limit per org per hour
@@ -2569,7 +2569,7 @@ export const bridgeRouter = createTRPCRouter({
     }),
 
   // Rotate Bridge webhook secret
-  rotateSecret: protectedProcedure
+  rotateSecret: REDACTED
     .mutation(async ({ ctx }) => {
       return await rotateBridgeSecret(ctx.orgId);
     })
@@ -2667,7 +2667,7 @@ import { env } from '~/lib/env';
 export function verifyBridgeSignature(
   rawBody: string,
   signature: string,
-  secret: string
+  secret: REDACTED
 ): boolean {
   const expectedSignature = createHmac('sha256', secret)
     .update(rawBody, 'utf8')

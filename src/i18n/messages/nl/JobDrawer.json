@@ -1,0 +1,49 @@
+{
+	"details": "Klus Details",
+	"edit": "Bewerken",
+	"delete": "Verwijderen",
+	"cancel": "Annuleren",
+	"save": "Opslaan",
+	"saving": "Bezig met opslaan...",
+	"creating": "Bezig met aanmaken...",
+	"deleting": "Bezig met verwijderen...",
+	"title": "Titel",
+	"description": "Beschrijving",
+	"priority": "Prioriteit",
+	"status": "Status",
+	"customer": "Klant",
+	"startTime": "Starttijd: {time}",
+	"endTime": "Eindtijd",
+	"duration": "{minutes} minuten",
+	"primaryEmployee": "Hoofdmonteur",
+	"secondaryEmployees": "Extra monteurs",
+	"assignments": "Toewijzingen",
+	"calendar": "Planning",
+	"requiredSymbol": "*",
+	"selectEmployee": "Selecteer monteur",
+	"selectCustomer": "Selecteer klant",
+	"selectStatus": "Selecteer status",
+	"priorities": {
+		"normal": "Normaal",
+		"urgent": "Urgent",
+		"emergency": "Spoed"
+	},
+	"statuses": {
+		"planned": "Gepland",
+		"in_progress": "Bezig",
+		"done": "Voltooid",
+		"cancelled": "Geannuleerd"
+	},
+	"invoice": {
+		"create": "Factuur Aanmaken",
+		"creating": "Factuur aanmaken...",
+		"success": "Factuurconcept succesvol aangemaakt",
+		"error": "Fout bij aanmaken factuurconcept"
+	},
+	"delete": {
+		"title": "Klus Verwijderen",
+		"description": "Weet je zeker dat je deze klus wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+		"success": "Klus succesvol verwijderd",
+		"failed": "Fout bij verwijderen klus"
+	}
+}

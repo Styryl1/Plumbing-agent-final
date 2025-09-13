@@ -5,7 +5,6 @@ Transform "oh fuck, I need a plumber" → "let me book one in 30 seconds"
 **Target Market**: Netherlands (Amsterdam → Rotterdam → Utrecht)  
 **Stack**: T3 + Supabase + Clerk + Mollie + Playwright + Expert Agents  
 
-> 📊 **Status & Progress**: [PROJECT_STATUS.md](./Docs/PROJECT_STATUS.md)  
 > 🛠 **Development Guide**: [CLAUDE.md](./CLAUDE.md) 
 
 ---

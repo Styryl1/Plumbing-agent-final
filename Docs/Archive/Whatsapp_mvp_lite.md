@@ -335,7 +335,7 @@ Task 8: Reminders & reschedule
 // distance.ts (pseudo)
 export async function eta(origin, dest, depart): Promise<number> {
   const bucket = roundTo5Min(depart);
-  const key = cacheKey(origin, dest, bucket);
+  const key = REDACTED
   const cached = await cache.get(key);
   if (cached) return cached;
   const res = await fetchMatrix(origin, dest, bucket);

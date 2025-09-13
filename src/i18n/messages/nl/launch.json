@@ -1,18 +1,4 @@
 {
-	"benefits": {
-		"faster": {
-			"title": "Title",
-			"description": "Description"
-		},
-		"smarter": {
-			"title": "Title",
-			"description": "Description"
-		},
-		"better_paid": {
-			"title": "Title",
-			"description": "Description"
-		}
-	},
 	"controls": {
 		"title": "Title",
 		"description": "Description",
@@ -22,21 +8,101 @@
 	},
 	"launch": {
 		"meta": {
-			"title": "Title",
-			"description": "Description",
-			"keywords": "Keywords"
+			"title": "Plumbing Agent - Noodloodgieter Platform",
+			"description": "Transformeer spoed loodgieterswerk met WhatsApp intake, AI diagnose, en directe facturatie",
+			"keywords": "noodloodgieter, loodgieter software, WhatsApp business, Nederlandse loodgieter, emergency plumber"
 		},
 		"demo": {
-			"content": {
-				"common": {
-					"loading": "Loading"
-				}
-			},
 			"page": {
+				"title": "Productdemo",
+				"headline": "Bekijk Plumbing Agent in actie",
+				"subtitle": "Van WhatsApp-intake naar betaalde factuur in minuten",
+				"benefits": {
+					"faster": {
+						"title": "Snellere Reactietijden",
+						"description": "WhatsApp intake en AI-analyse verkorten reactietijd van uren naar minuten"
+					},
+					"smarter": {
+						"title": "Slimmere Diagnose",
+						"description": "AI-gestuurde probleemanalyse helpt je beter voorbereiden en efficiënter werken"
+					},
+					"better_paid": {
+						"title": "Sneller Betaald",
+						"description": "Directe facturatie en geautomatiseerde betalingsherinneringen verbeteren cashflow"
+					}
+				},
+				"cta": {
+					"headline": "Klaar om te proberen?",
+					"subtitle": "Doe mee aan de pilot en krijg vroege toegang",
+					"button": "Aanmelden"
+				},
 				"nav": {
-					"previous": "Previous",
-					"next": "Next"
-				}
+					"previous": "Vorige",
+					"next": "Volgende",
+					"step_counter": "Stap {current} van {total}"
+				},
+				"back": "Terug"
+			},
+			"content": {
+				"whatsapp": {
+					"photo_attached": "Foto toegevoegd",
+					"ai_analyzing": "Bericht analyseren."
+				},
+				"ai_suggestion": {
+					"diagnosis": "Diagnose",
+					"reliable": "Betrouwbaar",
+					"urgency": "Urgentie",
+					"emergency": "Spoed",
+					"estimated_time": "Geschatte tijd",
+					"minutes": "min",
+					"required_materials": "Benodigde materialen",
+					"quantity_format": "{qty}×"
+				},
+				"schedule": {
+					"assigned_to": "Toegewezen aan",
+					"start_time": "Starttijd",
+					"end_time": "Eindtijd",
+					"auto_assigned": "Automatisch toegewezen"
+				},
+				"job_card": {
+					"address": "Adres",
+					"phone": "Telefoon"
+				},
+				"voice_draft": {
+					"voice_transcript": "Spraaktranscript",
+					"invoice_lines": "Factuurregels",
+					"line_format": "{qty}× {item}",
+					"subtotal_ex_vat": "Subtotaal (excl. btw)",
+					"vat_total": "Btw-totaal",
+					"total": "Totaal"
+				},
+				"send_pay": {
+					"invoice_id": "Factuurnummer",
+					"invoice_sent": "Factuur verzonden",
+					"payment_status": "Betaalstatus",
+					"pdf": "PDF",
+					"whatsapp_message": "WhatsApp-bericht"
+				},
+				"reminders": {
+					"after_days": "Na {days} dagen",
+					"scheduled": "Ingepland",
+					"automation_active": "Automatisering actief",
+					"opt_out_respected": "Uitschrijven gerespecteerd",
+					"email_escalation": "E-mail-escalatie",
+					"title": "Betaalherinneringen"
+				},
+				"common": {
+					"loading": "Demogegevens laden.",
+					"alternative_payment": "Alternatieve betaling",
+					"due_date": "Vervaldatum",
+					"email": "E-mail",
+					"step_data_unavailable": "Stapgegevens niet beschikbaar"
+				},
+				"step_previous": "Vorige",
+				"step_next": "Volgende",
+				"step_jump": "Ga naar stap",
+				"demo_started": "Demo gestart",
+				"demo_completed": "Demo voltooid"
 			}
 		},
 		"usp": {
@@ -67,21 +133,30 @@
 				"desc": "Desc"
 			}
 		},
+		"cookie_consent": {
+			"title": "We gebruiken cookies",
+			"description": "We gebruiken essentiële cookies en analytics om je ervaring te verbeteren.",
+			"accept_all": "Alles accepteren",
+			"reject_all": "Alles weigeren",
+			"essential_only": "Alleen essentieel",
+			"privacy_policy": "Privacybeleid",
+			"close": "Sluiten"
+		},
 		"trust": {
 			"dutch_compliance": "Dutch Compliance",
 			"ideal_payments": "Ideal Payments",
 			"whatsapp_business": "Whatsapp Business"
 		},
 		"waitlist": {
-			"title": "Title",
-			"subtitle": "Subtitle",
-			"email": "Email",
-			"phone": "Phone",
-			"org": "Org",
-			"success": "Success",
-			"error": "Error",
-			"submit": "Submit",
-			"gdpr": "Gdpr"
+			"title": "Word Pilot Deelnemer",
+			"subtitle": "Krijg vroege toegang tot Plumbing Agent en transformeer uw spoedloodgieter bedrijf",
+			"email": "E-mailadres",
+			"phone": "Telefoonnummer (optioneel)",
+			"org": "Organisatienaam (optioneel)",
+			"success": "Dank je wel! We nemen binnenkort contact op met toegangsgegevens voor de pilot.",
+			"error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
+			"submit": "Meld je aan",
+			"gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
 		}
 	},
 	"list": {

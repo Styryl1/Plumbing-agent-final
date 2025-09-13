@@ -12,6 +12,7 @@ import {
 	isControlNumberWhitelisted 
 } from "~/server/services/whatsapp/approval";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";
+import { ensureTestOrg } from "./tests/helpers/db";
 
 describe("WhatsApp S2 + S4 Integration", () => {
 	const testOrgId = "test-org-123";
@@ -243,6 +244,8 @@ describe("WhatsApp S2 + S4 Integration", () => {
 
 	describe("RLS Security Tests", () => {
 		test("control whitelist denies non-matching org/phone_number_id", async () => {
+			// Ensure organization exists for FK on wa_numbers
+			await ensureTestOrg(testOrgId);
 			const db = await getServiceDbForWebhook();
 			// Seed control number for the *correct* org only
 			await db.from("wa_numbers").upsert({

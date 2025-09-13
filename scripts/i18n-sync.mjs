@@ -15,7 +15,7 @@ const nl = JSON.parse(fs.readFileSync(nlPath, "utf8"));
 function collectLeafKeys(obj, prefix = "") {
   const keys = [];
   for (const [key, value] of Object.entries(obj)) {
-    const fullKey = prefix ? `${prefix}.${key}` : key;
+    const fullKey = REDACTED
     
     if (typeof value === "string") {
       keys.push(fullKey);

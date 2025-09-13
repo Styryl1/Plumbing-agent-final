@@ -1,28 +1,24 @@
 {
-	"actions": {
-		"sending": "Sending...",
-		"back": "Back",
-		"configure": "Configure",
-		"connect": "Connect",
-		"fix": "Fix"
-	},
-	"actions.cancel": "Cancel",
-	"actions.create": "Create",
-	"actions.creating": "Creating...",
-	"actions.delete": "Delete",
-	"actions.deleting": "Deleting...",
-	"actions.edit": "Edit",
-	"actions.openActions": "Open actions",
-	"actions.pay": "Pay",
-	"actions.saving": "Saving...",
-	"actions.update": "Update",
-	"cta": {
-		"button": "Button",
-		"headline": "Headline",
-		"subtitle": "Subtitle"
-	},
+	"back": "Back",
+	"cancel": "Cancel",
+	"configure": "Configure",
+	"connect": "Connect",
+	"create": "Create",
+	"creating": "Creating...",
+	"delete": "Delete",
+	"deleting": "Deleting...",
+	"edit": "Edit",
+	"fix": "Fix",
+	"openActions": "Open actions",
+	"pay": "Pay",
+	"saving": "Saving...",
+	"sending": "Sending...",
+	"update": "Update",
 	"cta.applySuggestion": "Apply suggestion",
+	"cta.button": "Button",
 	"cta.createInvoice": "Create Invoice",
 	"cta.finalizeVoiceInvoice": "Finalize → Voice invoice",
-	"cta.newJob": "New job"
+	"cta.headline": "Headline",
+	"cta.newJob": "New job",
+	"cta.subtitle": "Subtitle"
 }

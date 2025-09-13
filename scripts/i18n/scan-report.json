@@ -1,0 +1,6421 @@
+[
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/lib/env.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "https://api.mijnwefact",
+      "https://api.e-boekhouden",
+      "noreply@loodgieter"
+    ],
+    "crossCalls": [
+      {
+        "callee": "z.url().default",
+        "key": "https://api.mijnwefact.nl/v2/",
+        "ns": "https://api.mijnwefact",
+        "leaf": "mijnwefact.nl/v2/"
+      },
+      {
+        "callee": "z.url().default",
+        "key": "https://api.e-boekhouden.nl",
+        "ns": "https://api.e-boekhouden",
+        "leaf": "e-boekhouden.nl"
+      },
+      {
+        "callee": "z.email().default",
+        "key": "noreply@loodgieter.nl",
+        "ns": "noreply@loodgieter",
+        "leaf": "nl"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/lib/zodError.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      ""
+    ],
+    "crossCalls": [
+      {
+        "callee": "issue.path.join",
+        "key": ".",
+        "ns": "",
+        "leaf": ""
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/(dashboard)/DashboardHeader.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "system": "tSys",
+      "ui": "tUi"
+    },
+    "neededNamespaces": [
+      "app",
+      "nav"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tSys",
+        "key": "app.title",
+        "ns": "app",
+        "leaf": "title"
+      },
+      {
+        "callee": "tUi",
+        "key": "nav.dashboard",
+        "ns": "nav",
+        "leaf": "dashboard"
+      },
+      {
+        "callee": "tUi",
+        "key": "nav.dashboard",
+        "ns": "nav",
+        "leaf": "dashboard"
+      },
+      {
+        "callee": "tUi",
+        "key": "nav.jobs",
+        "ns": "nav",
+        "leaf": "jobs"
+      },
+      {
+        "callee": "tUi",
+        "key": "nav.customers",
+        "ns": "nav",
+        "leaf": "customers"
+      },
+      {
+        "callee": "tUi",
+        "key": "nav.invoices",
+        "ns": "nav",
+        "leaf": "invoices"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/(dashboard)/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "ui": "tUi",
+      "misc": "tMisc",
+      "auth": "tAuth"
+    },
+    "neededNamespaces": [
+      "nav",
+      "dashboard",
+      "auth.context",
+      "auth",
+      "ui",
+      "stats",
+      "money"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tUi",
+        "key": "nav.dashboard",
+        "ns": "nav",
+        "leaf": "dashboard"
+      },
+      {
+        "callee": "tMisc",
+        "key": "dashboard.welcome",
+        "ns": "dashboard",
+        "leaf": "welcome"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.context.title",
+        "ns": "auth.context",
+        "leaf": "context.title"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.context.description",
+        "ns": "auth.context",
+        "leaf": "context.description"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.userId",
+        "ns": "auth",
+        "leaf": "userId"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.notSignedIn",
+        "ns": "auth",
+        "leaf": "notSignedIn"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.orgId",
+        "ns": "auth",
+        "leaf": "orgId"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.noOrganization",
+        "ns": "auth",
+        "leaf": "noOrganization"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.role",
+        "ns": "auth",
+        "leaf": "role"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.noRole",
+        "ns": "auth",
+        "leaf": "noRole"
+      },
+      {
+        "callee": "tMisc",
+        "key": "ui.tip",
+        "ns": "ui",
+        "leaf": "tip"
+      },
+      {
+        "callee": "tAuth",
+        "key": "auth.tip",
+        "ns": "auth",
+        "leaf": "tip"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.activeJobs",
+        "ns": "stats",
+        "leaf": "activeJobs"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.today",
+        "ns": "stats",
+        "leaf": "today"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.newCustomers",
+        "ns": "stats",
+        "leaf": "newCustomers"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.thisWeek",
+        "ns": "stats",
+        "leaf": "thisWeek"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.outstandingInvoices",
+        "ns": "stats",
+        "leaf": "outstandingInvoices"
+      },
+      {
+        "callee": "tMisc",
+        "key": "money.euro",
+        "ns": "money",
+        "leaf": "euro"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.toCollect",
+        "ns": "stats",
+        "leaf": "toCollect"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.revenue",
+        "ns": "stats",
+        "leaf": "revenue"
+      },
+      {
+        "callee": "tMisc",
+        "key": "money.euro",
+        "ns": "money",
+        "leaf": "euro"
+      },
+      {
+        "callee": "tUi",
+        "key": "stats.thisMonth",
+        "ns": "stats",
+        "leaf": "thisMonth"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/customers/CustomerCreateDialog.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "customers": "tCustomers",
+      "customers.form": "tForm",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "customers",
+      "create",
+      "name",
+      "email",
+      "phone",
+      "address",
+      "address.autoFill",
+      "postalCode",
+      "houseNumber",
+      "street",
+      "city",
+      "language"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "customers.form",
+        "ns": "customers",
+        "leaf": "form"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "create.title",
+        "ns": "create",
+        "leaf": "title"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "create.description",
+        "ns": "create",
+        "leaf": "description"
+      },
+      {
+        "callee": "tForm",
+        "key": "name.label",
+        "ns": "name",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "name.placeholder",
+        "ns": "name",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "email.label",
+        "ns": "email",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "email.placeholder",
+        "ns": "email",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "phone.label",
+        "ns": "phone",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "phone.placeholder",
+        "ns": "phone",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.label",
+        "ns": "address",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.placeholder",
+        "ns": "address",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.autoFill.title",
+        "ns": "address.autoFill",
+        "leaf": "autoFill.title"
+      },
+      {
+        "callee": "tForm",
+        "key": "postalCode.label",
+        "ns": "postalCode",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "postalCode.placeholder",
+        "ns": "postalCode",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "houseNumber.label",
+        "ns": "houseNumber",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "houseNumber.placeholder",
+        "ns": "houseNumber",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "street.label",
+        "ns": "street",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "street.placeholder",
+        "ns": "street",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "city.label",
+        "ns": "city",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "city.placeholder",
+        "ns": "city",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "language.label",
+        "ns": "language",
+        "leaf": "label"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/customers/CustomerEditDialog.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "customers": "tCustomers",
+      "customers.form": "tForm",
+      "common": "tCommon",
+      "actions": "tActions"
+    },
+    "neededNamespaces": [
+      "customers",
+      "success",
+      "error",
+      "edit",
+      "name",
+      "email",
+      "phone",
+      "address",
+      "address.autoFill",
+      "postalCode",
+      "houseNumber",
+      "street",
+      "city",
+      "language",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "customers.form",
+        "ns": "customers",
+        "leaf": "form"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "success.updated",
+        "ns": "success",
+        "leaf": "updated"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "error.update",
+        "ns": "error",
+        "leaf": "update"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "edit.title",
+        "ns": "edit",
+        "leaf": "title"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "edit.description",
+        "ns": "edit",
+        "leaf": "description"
+      },
+      {
+        "callee": "tForm",
+        "key": "name.label",
+        "ns": "name",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "name.placeholder",
+        "ns": "name",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "email.label",
+        "ns": "email",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "email.placeholder",
+        "ns": "email",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "phone.label",
+        "ns": "phone",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "phone.placeholder",
+        "ns": "phone",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.label",
+        "ns": "address",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.placeholder",
+        "ns": "address",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.autoFill.title",
+        "ns": "address.autoFill",
+        "leaf": "autoFill.title"
+      },
+      {
+        "callee": "tForm",
+        "key": "postalCode.label",
+        "ns": "postalCode",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "postalCode.placeholder",
+        "ns": "postalCode",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "houseNumber.label",
+        "ns": "houseNumber",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "houseNumber.placeholder",
+        "ns": "houseNumber",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "street.label",
+        "ns": "street",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "street.placeholder",
+        "ns": "street",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "city.label",
+        "ns": "city",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "city.placeholder",
+        "ns": "city",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "address.autoFill.loading",
+        "ns": "address.autoFill",
+        "leaf": "autoFill.loading"
+      },
+      {
+        "callee": "tForm",
+        "key": "language.label",
+        "ns": "language",
+        "leaf": "label"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.edit",
+        "ns": "actions",
+        "leaf": "edit"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/customers/CustomersTable.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "customers": "tCustomers",
+      "customers.table": "tTable",
+      "common": "tCommon",
+      "actions": "tActions"
+    },
+    "neededNamespaces": [
+      "customers",
+      "error",
+      "success",
+      "columns",
+      "archived",
+      "unarchive",
+      "delete.archive",
+      "delete",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "customers.table",
+        "ns": "customers",
+        "leaf": "table"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "error.deleteLinked",
+        "ns": "error",
+        "leaf": "deleteLinked"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "error.delete",
+        "ns": "error",
+        "leaf": "delete"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "success.deleted",
+        "ns": "success",
+        "leaf": "deleted"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "success.archived",
+        "ns": "success",
+        "leaf": "archived"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "error.archive",
+        "ns": "error",
+        "leaf": "archive"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "success.updated",
+        "ns": "success",
+        "leaf": "updated"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "error.update",
+        "ns": "error",
+        "leaf": "update"
+      },
+      {
+        "callee": "tTable",
+        "key": "columns.name",
+        "ns": "columns",
+        "leaf": "name"
+      },
+      {
+        "callee": "tTable",
+        "key": "columns.contact",
+        "ns": "columns",
+        "leaf": "contact"
+      },
+      {
+        "callee": "tTable",
+        "key": "columns.address",
+        "ns": "columns",
+        "leaf": "address"
+      },
+      {
+        "callee": "tTable",
+        "key": "columns.created",
+        "ns": "columns",
+        "leaf": "created"
+      },
+      {
+        "callee": "tTable",
+        "key": "columns.actions",
+        "ns": "columns",
+        "leaf": "actions"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "archived.noArchivedFound",
+        "ns": "archived",
+        "leaf": "noArchivedFound"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "archived.badge",
+        "ns": "archived",
+        "leaf": "badge"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "unarchive.tooltip",
+        "ns": "unarchive",
+        "leaf": "tooltip"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.title",
+        "ns": "delete.archive",
+        "leaf": "archive.title"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.title",
+        "ns": "delete",
+        "leaf": "title"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.cannotDelete",
+        "ns": "delete.archive",
+        "leaf": "archive.cannotDelete"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.linkedData",
+        "ns": "delete.archive",
+        "leaf": "archive.linkedData"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.jobs",
+        "ns": "delete.archive",
+        "leaf": "archive.jobs"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.invoices",
+        "ns": "delete.archive",
+        "leaf": "archive.invoices"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.archive.archiveInstead",
+        "ns": "delete.archive",
+        "leaf": "archive.archiveInstead"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "delete.description",
+        "ns": "delete",
+        "leaf": "description"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.deleting",
+        "ns": "actions",
+        "leaf": "deleting"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.delete",
+        "ns": "actions",
+        "leaf": "delete"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/customers/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "customers": "t",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "error",
+      "stats",
+      "archived"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "error.load",
+        "ns": "error",
+        "leaf": "load"
+      },
+      {
+        "callee": "t",
+        "key": "stats.total",
+        "ns": "stats",
+        "leaf": "total"
+      },
+      {
+        "callee": "t",
+        "key": "stats.total",
+        "ns": "stats",
+        "leaf": "total"
+      },
+      {
+        "callee": "t",
+        "key": "stats.thisMonth",
+        "ns": "stats",
+        "leaf": "thisMonth"
+      },
+      {
+        "callee": "t",
+        "key": "stats.thisMonth",
+        "ns": "stats",
+        "leaf": "thisMonth"
+      },
+      {
+        "callee": "t",
+        "key": "stats.active",
+        "ns": "stats",
+        "leaf": "active"
+      },
+      {
+        "callee": "t",
+        "key": "stats.active",
+        "ns": "stats",
+        "leaf": "active"
+      },
+      {
+        "callee": "t",
+        "key": "stats.archived",
+        "ns": "stats",
+        "leaf": "archived"
+      },
+      {
+        "callee": "t",
+        "key": "stats.archived",
+        "ns": "stats",
+        "leaf": "archived"
+      },
+      {
+        "callee": "t",
+        "key": "archived.tab",
+        "ns": "archived",
+        "leaf": "tab"
+      },
+      {
+        "callee": "t",
+        "key": "archived.title",
+        "ns": "archived",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "archived.description",
+        "ns": "archived",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "error.load",
+        "ns": "error",
+        "leaf": "load"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/invoices/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInv",
+      "ui.table": "tTable",
+      "actions": "tActions"
+    },
+    "neededNamespaces": [
+      "ui",
+      "invoice",
+      "invoice.empty",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "ui.table",
+        "ns": "ui",
+        "leaf": "table"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.title",
+        "ns": "invoice",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.manage",
+        "ns": "invoice",
+        "leaf": "manage"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.approvals",
+        "ns": "invoice",
+        "leaf": "approvals"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.totalOutstanding",
+        "ns": "invoice",
+        "leaf": "totalOutstanding"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.totalInvoices",
+        "ns": "invoice",
+        "leaf": "totalInvoices"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.thisMonth",
+        "ns": "invoice",
+        "leaf": "thisMonth"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.draftsReady",
+        "ns": "invoice",
+        "leaf": "draftsReady"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.noPendingDrafts",
+        "ns": "invoice",
+        "leaf": "noPendingDrafts"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.overdue",
+        "ns": "invoice",
+        "leaf": "overdue"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.requiresAttention",
+        "ns": "invoice",
+        "leaf": "requiresAttention"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.noOverdue",
+        "ns": "invoice",
+        "leaf": "noOverdue"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.average",
+        "ns": "invoice",
+        "leaf": "average"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.perInvoiceYear",
+        "ns": "invoice",
+        "leaf": "perInvoiceYear"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.connectProvider",
+        "ns": "invoice",
+        "leaf": "connectProvider"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.connectProviderDesc",
+        "ns": "invoice",
+        "leaf": "connectProviderDesc"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.connectMoneybird",
+        "ns": "invoice",
+        "leaf": "connectMoneybird"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.moreProvidersComingSoon",
+        "ns": "invoice",
+        "leaf": "moreProvidersComingSoon"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.empty.title",
+        "ns": "invoice.empty",
+        "leaf": "empty.title"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.empty.description",
+        "ns": "invoice.empty",
+        "leaf": "empty.description"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.empty.getStarted",
+        "ns": "invoice.empty",
+        "leaf": "empty.getStarted"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.createFromJob",
+        "ns": "invoice",
+        "leaf": "createFromJob"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.overview",
+        "ns": "invoice",
+        "leaf": "overview"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.managePending",
+        "ns": "invoice",
+        "leaf": "managePending"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.drafts",
+        "ns": "invoice",
+        "leaf": "drafts"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.issued",
+        "ns": "invoice",
+        "leaf": "issued"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.draftLabel",
+        "ns": "invoice",
+        "leaf": "draftLabel"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.edit",
+        "ns": "actions",
+        "leaf": "edit"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.noDrafts",
+        "ns": "invoice",
+        "leaf": "noDrafts"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.createFromJob",
+        "ns": "invoice",
+        "leaf": "createFromJob"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.paid",
+        "ns": "invoice",
+        "leaf": "paid"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.sent",
+        "ns": "invoice",
+        "leaf": "sent"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.unknown",
+        "ns": "invoice",
+        "leaf": "unknown"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.viewPdf",
+        "ns": "invoice",
+        "leaf": "viewPdf"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.payOnline",
+        "ns": "invoice",
+        "leaf": "payOnline"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.noSentInvoices",
+        "ns": "invoice",
+        "leaf": "noSentInvoices"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/jobs/JobEditorDialog.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "jobs": "tJobs",
+      "misc": "tJob",
+      "ui.form": "tForm",
+      "customers": "tCustomers",
+      "actions": "tActions"
+    },
+    "neededNamespaces": [
+      "ui",
+      "address",
+      "create",
+      "update",
+      "Je plant deze klus in het verleden",
+      "job",
+      "form.postalCode",
+      "form.houseNumber",
+      "form.street",
+      "form.city",
+      "form.address.autoFill",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "ui.form",
+        "ns": "ui",
+        "leaf": "form"
+      },
+      {
+        "callee": "form.setValue",
+        "key": "address.postalCode",
+        "ns": "address",
+        "leaf": "postalCode"
+      },
+      {
+        "callee": "form.setValue",
+        "key": "address.houseNumber",
+        "ns": "address",
+        "leaf": "houseNumber"
+      },
+      {
+        "callee": "form.setValue",
+        "key": "address.street",
+        "ns": "address",
+        "leaf": "street"
+      },
+      {
+        "callee": "form.setValue",
+        "key": "address.city",
+        "ns": "address",
+        "leaf": "city"
+      },
+      {
+        "callee": "tJobs",
+        "key": "create.success",
+        "ns": "create",
+        "leaf": "success"
+      },
+      {
+        "callee": "tJobs",
+        "key": "create.failed",
+        "ns": "create",
+        "leaf": "failed"
+      },
+      {
+        "callee": "tJobs",
+        "key": "update.success",
+        "ns": "update",
+        "leaf": "success"
+      },
+      {
+        "callee": "tJobs",
+        "key": "update.failed",
+        "ns": "update",
+        "leaf": "failed"
+      },
+      {
+        "callee": "window.confirm",
+        "key": "Je plant deze klus in het verleden. Weet je zeker dat je door wilt gaan?",
+        "ns": "Je plant deze klus in het verleden",
+        "leaf": " Weet je zeker dat je door wilt gaan?"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.editJob",
+        "ns": "job",
+        "leaf": "editJob"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.newJob",
+        "ns": "job",
+        "leaf": "newJob"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.editDescription",
+        "ns": "job",
+        "leaf": "editDescription"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.createDescription",
+        "ns": "job",
+        "leaf": "createDescription"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.postalCode.label",
+        "ns": "form.postalCode",
+        "leaf": "postalCode.label"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.postalCode.placeholder",
+        "ns": "form.postalCode",
+        "leaf": "postalCode.placeholder"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.houseNumber.label",
+        "ns": "form.houseNumber",
+        "leaf": "houseNumber.label"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.houseNumber.placeholder",
+        "ns": "form.houseNumber",
+        "leaf": "houseNumber.placeholder"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.street.label",
+        "ns": "form.street",
+        "leaf": "street.label"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.street.placeholder",
+        "ns": "form.street",
+        "leaf": "street.placeholder"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.city.label",
+        "ns": "form.city",
+        "leaf": "city.label"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.city.placeholder",
+        "ns": "form.city",
+        "leaf": "city.placeholder"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "form.address.autoFill.title",
+        "ns": "form.address.autoFill",
+        "leaf": "address.autoFill.title"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.saving",
+        "ns": "actions",
+        "leaf": "saving"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.update",
+        "ns": "actions",
+        "leaf": "update"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.create",
+        "ns": "actions",
+        "leaf": "create"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/jobs/JobsTable.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "jobs": "tJobs",
+      "ui.table": "tTable",
+      "ui.form": "tForm",
+      "actions": "tActions",
+      "misc": "tJob",
+      "customers": "tCustomers"
+    },
+    "neededNamespaces": [
+      "ui",
+      "delete",
+      "archived",
+      "actions",
+      "job"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "ui.table",
+        "ns": "ui",
+        "leaf": "table"
+      },
+      {
+        "callee": "useT",
+        "key": "ui.form",
+        "ns": "ui",
+        "leaf": "form"
+      },
+      {
+        "callee": "tJobs",
+        "key": "delete.success",
+        "ns": "delete",
+        "leaf": "success"
+      },
+      {
+        "callee": "tJobs",
+        "key": "delete.failed",
+        "ns": "delete",
+        "leaf": "failed"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "archived.badge",
+        "ns": "archived",
+        "leaf": "badge"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.openActions",
+        "ns": "actions",
+        "leaf": "openActions"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.edit",
+        "ns": "actions",
+        "leaf": "edit"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.delete",
+        "ns": "actions",
+        "leaf": "delete"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.deleteTitle",
+        "ns": "job",
+        "leaf": "deleteTitle"
+      },
+      {
+        "callee": "tJob",
+        "key": "job.deleteDescription",
+        "ns": "job",
+        "leaf": "deleteDescription"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.deleting",
+        "ns": "actions",
+        "leaf": "deleting"
+      },
+      {
+        "callee": "tActions",
+        "key": "actions.delete",
+        "ns": "actions",
+        "leaf": "delete"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/jobs/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "jobs": "t",
+      "misc": "tStatus",
+      "actions": "tCta"
+    },
+    "neededNamespaces": [
+      "error",
+      "filter.status",
+      "status",
+      "cta",
+      "stats.today",
+      "stats.week",
+      "stats.monthCompleted",
+      "stats.emergency",
+      "empty",
+      "calendar"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "error.load",
+        "ns": "error",
+        "leaf": "load"
+      },
+      {
+        "callee": "t",
+        "key": "filter.status.all",
+        "ns": "filter.status",
+        "leaf": "status.all"
+      },
+      {
+        "callee": "tStatus",
+        "key": "status.planned",
+        "ns": "status",
+        "leaf": "planned"
+      },
+      {
+        "callee": "tStatus",
+        "key": "status.in_progress",
+        "ns": "status",
+        "leaf": "in_progress"
+      },
+      {
+        "callee": "tStatus",
+        "key": "status.done",
+        "ns": "status",
+        "leaf": "done"
+      },
+      {
+        "callee": "tStatus",
+        "key": "status.cancelled",
+        "ns": "status",
+        "leaf": "cancelled"
+      },
+      {
+        "callee": "tCta",
+        "key": "cta.newJob",
+        "ns": "cta",
+        "leaf": "newJob"
+      },
+      {
+        "callee": "t",
+        "key": "stats.today.title",
+        "ns": "stats.today",
+        "leaf": "today.title"
+      },
+      {
+        "callee": "t",
+        "key": "stats.today.desc",
+        "ns": "stats.today",
+        "leaf": "today.desc"
+      },
+      {
+        "callee": "t",
+        "key": "stats.week.title",
+        "ns": "stats.week",
+        "leaf": "week.title"
+      },
+      {
+        "callee": "t",
+        "key": "stats.week.desc",
+        "ns": "stats.week",
+        "leaf": "week.desc"
+      },
+      {
+        "callee": "t",
+        "key": "stats.monthCompleted.title",
+        "ns": "stats.monthCompleted",
+        "leaf": "monthCompleted.title"
+      },
+      {
+        "callee": "t",
+        "key": "stats.monthCompleted.desc",
+        "ns": "stats.monthCompleted",
+        "leaf": "monthCompleted.desc"
+      },
+      {
+        "callee": "t",
+        "key": "stats.emergency.title",
+        "ns": "stats.emergency",
+        "leaf": "emergency.title"
+      },
+      {
+        "callee": "t",
+        "key": "stats.emergency.desc",
+        "ns": "stats.emergency",
+        "leaf": "emergency.desc"
+      },
+      {
+        "callee": "t",
+        "key": "empty.title",
+        "ns": "empty",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "empty.description",
+        "ns": "empty",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "empty.description",
+        "ns": "empty",
+        "leaf": "description"
+      },
+      {
+        "callee": "tCta",
+        "key": "cta.newJob",
+        "ns": "cta",
+        "leaf": "newJob"
+      },
+      {
+        "callee": "t",
+        "key": "calendar.title",
+        "ns": "calendar",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "calendar.desc",
+        "ns": "calendar",
+        "leaf": "desc"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/whatsapp/page.tsx",
+    "bareHooks": [
+      "tRoot"
+    ],
+    "existingHooks": {
+      "whatsapp": "tWhatsApp"
+    },
+    "neededNamespaces": [
+      "leads",
+      "leads.empty",
+      "leads.table",
+      "session"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.title",
+        "ns": "leads",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.description",
+        "ns": "leads",
+        "leaf": "description"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.title",
+        "ns": "leads",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.description",
+        "ns": "leads",
+        "leaf": "description"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.count",
+        "ns": "leads",
+        "leaf": "count"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.empty.title",
+        "ns": "leads.empty",
+        "leaf": "empty.title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.empty.description",
+        "ns": "leads.empty",
+        "leaf": "empty.description"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.table.contact",
+        "ns": "leads.table",
+        "leaf": "table.contact"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.table.lastMessage",
+        "ns": "leads.table",
+        "leaf": "table.lastMessage"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.table.unread",
+        "ns": "leads.table",
+        "leaf": "table.unread"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.table.session",
+        "ns": "leads.table",
+        "leaf": "table.session"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "leads.table.lastActivity",
+        "ns": "leads.table",
+        "leaf": "table.lastActivity"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "session.active",
+        "ns": "session",
+        "leaf": "active"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "session.expired",
+        "ns": "session",
+        "leaf": "expired"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/_legacy_invoices/InvoiceDraftEditor.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInvoices",
+      "invoices.form": "tForm"
+    },
+    "neededNamespaces": [
+      "invoices",
+      "customer",
+      "lineItems",
+      "draft",
+      "paymentTerms",
+      "discount",
+      "totals",
+      "notes",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "invoices.form",
+        "ns": "invoices",
+        "leaf": "form"
+      },
+      {
+        "callee": "tForm",
+        "key": "customer.required",
+        "ns": "customer",
+        "leaf": "required"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.required",
+        "ns": "lineItems",
+        "leaf": "required"
+      },
+      {
+        "callee": "tInvoices",
+        "key": "draft.title",
+        "ns": "draft",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "customer.title",
+        "ns": "customer",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "customer.label",
+        "ns": "customer",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "customer.placeholder",
+        "ns": "customer",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "paymentTerms.title",
+        "ns": "paymentTerms",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "paymentTerms.label",
+        "ns": "paymentTerms",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.title",
+        "ns": "lineItems",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.add",
+        "ns": "lineItems",
+        "leaf": "add"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.empty",
+        "ns": "lineItems",
+        "leaf": "empty"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.description",
+        "ns": "lineItems",
+        "leaf": "description"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.quantity",
+        "ns": "lineItems",
+        "leaf": "quantity"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.unitPrice",
+        "ns": "lineItems",
+        "leaf": "unitPrice"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.vatRate",
+        "ns": "lineItems",
+        "leaf": "vatRate"
+      },
+      {
+        "callee": "tForm",
+        "key": "lineItems.lineTotal",
+        "ns": "lineItems",
+        "leaf": "lineTotal"
+      },
+      {
+        "callee": "tForm",
+        "key": "discount.title",
+        "ns": "discount",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "discount.percentage",
+        "ns": "discount",
+        "leaf": "percentage"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.title",
+        "ns": "totals",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.subtotal",
+        "ns": "totals",
+        "leaf": "subtotal"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.discount",
+        "ns": "totals",
+        "leaf": "discount"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.subtotalAfterDiscount",
+        "ns": "totals",
+        "leaf": "subtotalAfterDiscount"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.vat",
+        "ns": "totals",
+        "leaf": "vat"
+      },
+      {
+        "callee": "tForm",
+        "key": "totals.total",
+        "ns": "totals",
+        "leaf": "total"
+      },
+      {
+        "callee": "tForm",
+        "key": "notes.title",
+        "ns": "notes",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "notes.public",
+        "ns": "notes",
+        "leaf": "public"
+      },
+      {
+        "callee": "tForm",
+        "key": "notes.publicPlaceholder",
+        "ns": "notes",
+        "leaf": "publicPlaceholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "notes.internal",
+        "ns": "notes",
+        "leaf": "internal"
+      },
+      {
+        "callee": "tForm",
+        "key": "notes.internalPlaceholder",
+        "ns": "notes",
+        "leaf": "internalPlaceholder"
+      },
+      {
+        "callee": "tInvoices",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tInvoices",
+        "key": "actions.saveDraft",
+        "ns": "actions",
+        "leaf": "saveDraft"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/_legacy_invoices/InvoiceDraftFast.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInvoice",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "errors",
+      "draft.fastMode",
+      "draft",
+      "voiceMode",
+      "actions",
+      "summary",
+      "lineItems",
+      "totals",
+      "notes"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tInvoice",
+        "key": "errors.loadFailed",
+        "ns": "errors",
+        "leaf": "loadFailed"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.fastMode.title",
+        "ns": "draft.fastMode",
+        "leaf": "fastMode.title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.fastMode.badge",
+        "ns": "draft.fastMode",
+        "leaf": "fastMode.badge"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.fastMode.description",
+        "ns": "draft.fastMode",
+        "leaf": "fastMode.description"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.switchToSafe",
+        "ns": "draft",
+        "leaf": "switchToSafe"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.toggle",
+        "ns": "voiceMode",
+        "leaf": "toggle"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.active",
+        "ns": "voiceMode",
+        "leaf": "active"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.reviewing",
+        "ns": "voiceMode",
+        "leaf": "reviewing"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.confirmPrompt",
+        "ns": "voiceMode",
+        "leaf": "confirmPrompt"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.approve",
+        "ns": "voiceMode",
+        "leaf": "approve"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.requestChanges",
+        "ns": "voiceMode",
+        "leaf": "requestChanges"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.changesRequested",
+        "ns": "voiceMode",
+        "leaf": "changesRequested"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.changesNotes",
+        "ns": "voiceMode",
+        "leaf": "changesNotes"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.changesPlaceholder",
+        "ns": "voiceMode",
+        "leaf": "changesPlaceholder"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.submitChanges",
+        "ns": "voiceMode",
+        "leaf": "submitChanges"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.switchToSafe",
+        "ns": "draft",
+        "leaf": "switchToSafe"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.approved",
+        "ns": "voiceMode",
+        "leaf": "approved"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "actions.send",
+        "ns": "actions",
+        "leaf": "send"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "summary.title",
+        "ns": "summary",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "summary.lineItems",
+        "ns": "summary",
+        "leaf": "lineItems"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "summary.totalAmount",
+        "ns": "summary",
+        "leaf": "totalAmount"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "summary.paymentTerms",
+        "ns": "summary",
+        "leaf": "paymentTerms"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.summary",
+        "ns": "lineItems",
+        "leaf": "summary"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.multiplier",
+        "ns": "lineItems",
+        "leaf": "multiplier"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.breakdown",
+        "ns": "totals",
+        "leaf": "breakdown"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.subtotal",
+        "ns": "totals",
+        "leaf": "subtotal"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.vat",
+        "ns": "totals",
+        "leaf": "vat"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.total",
+        "ns": "totals",
+        "leaf": "total"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "notes.title",
+        "ns": "notes",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "actions.markReviewed",
+        "ns": "actions",
+        "leaf": "markReviewed"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "actions.send",
+        "ns": "actions",
+        "leaf": "send"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.fastMode.warning",
+        "ns": "draft.fastMode",
+        "leaf": "fastMode.warning"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/_legacy_invoices/InvoiceDraftSafe.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInvoice",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "errors",
+      "draft.safeMode",
+      "status",
+      "autosave",
+      "draft",
+      "voiceMode",
+      "lineItems",
+      "totals",
+      "summary",
+      "notes",
+      "compliance",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tInvoice",
+        "key": "errors.loadFailed",
+        "ns": "errors",
+        "leaf": "loadFailed"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.safeMode.title",
+        "ns": "draft.safeMode",
+        "leaf": "safeMode.title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.safeMode.badge",
+        "ns": "draft.safeMode",
+        "leaf": "safeMode.badge"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "status.draftUnsent",
+        "ns": "status",
+        "leaf": "draftUnsent"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "autosave.saving",
+        "ns": "autosave",
+        "leaf": "saving"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "autosave.saved",
+        "ns": "autosave",
+        "leaf": "saved"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "autosave.error",
+        "ns": "autosave",
+        "leaf": "error"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.safeMode.description",
+        "ns": "draft.safeMode",
+        "leaf": "safeMode.description"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.switchToFast",
+        "ns": "draft",
+        "leaf": "switchToFast"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.toggle",
+        "ns": "voiceMode",
+        "leaf": "toggle"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.safeActive",
+        "ns": "voiceMode",
+        "leaf": "safeActive"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "voiceMode.safeInstructions",
+        "ns": "voiceMode",
+        "leaf": "safeInstructions"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.title",
+        "ns": "lineItems",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.description",
+        "ns": "lineItems",
+        "leaf": "description"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.type",
+        "ns": "lineItems",
+        "leaf": "type"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.quantity",
+        "ns": "lineItems",
+        "leaf": "quantity"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.unitPrice",
+        "ns": "lineItems",
+        "leaf": "unitPrice"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.vatRate",
+        "ns": "lineItems",
+        "leaf": "vatRate"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.includingVat",
+        "ns": "totals",
+        "leaf": "includingVat"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "lineItems.addNew",
+        "ns": "lineItems",
+        "leaf": "addNew"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.safeMode.addLineHint",
+        "ns": "draft.safeMode",
+        "leaf": "safeMode.addLineHint"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "summary.title",
+        "ns": "summary",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.subtotal",
+        "ns": "totals",
+        "leaf": "subtotal"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.vat",
+        "ns": "totals",
+        "leaf": "vat"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "totals.total",
+        "ns": "totals",
+        "leaf": "total"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "notes.title",
+        "ns": "notes",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.title",
+        "ns": "compliance",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.kvkNumber",
+        "ns": "compliance",
+        "leaf": "kvkNumber"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.verified",
+        "ns": "compliance",
+        "leaf": "verified"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.btwId",
+        "ns": "compliance",
+        "leaf": "btwId"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.verified",
+        "ns": "compliance",
+        "leaf": "verified"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.customerAddress",
+        "ns": "compliance",
+        "leaf": "customerAddress"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.complete",
+        "ns": "compliance",
+        "leaf": "complete"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.incomplete",
+        "ns": "compliance",
+        "leaf": "incomplete"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.dutchVat",
+        "ns": "compliance",
+        "leaf": "dutchVat"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "compliance.applied",
+        "ns": "compliance",
+        "leaf": "applied"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "actions.saveDraft",
+        "ns": "actions",
+        "leaf": "saveDraft"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "actions.send",
+        "ns": "actions",
+        "leaf": "send"
+      },
+      {
+        "callee": "tInvoice",
+        "key": "draft.safeMode.info",
+        "ns": "draft.safeMode",
+        "leaf": "safeMode.info"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/_legacy_invoices/JobToInvoiceImport.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInvoices",
+      "invoices.import": "tForm",
+      "invoices.import.jobDetails": "tJobDetails",
+      "invoices.import.estimate": "tEstimate"
+    },
+    "neededNamespaces": [
+      "invoices",
+      "invoices.import",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "invoices.import",
+        "ns": "invoices",
+        "leaf": "import"
+      },
+      {
+        "callee": "useTranslations",
+        "key": "invoices.import.jobDetails",
+        "ns": "invoices.import",
+        "leaf": "import.jobDetails"
+      },
+      {
+        "callee": "useTranslations",
+        "key": "invoices.import.estimate",
+        "ns": "invoices.import",
+        "leaf": "import.estimate"
+      },
+      {
+        "callee": "tInvoices",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/analytics/CookieConsent.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.cookie_consent": "tCookies"
+    },
+    "neededNamespaces": [
+      "launch"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.cookie_consent",
+        "ns": "launch",
+        "leaf": "cookie_consent"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/InvoiceStatusCell.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "t"
+    },
+    "neededNamespaces": [
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "actions.pay",
+        "ns": "actions",
+        "leaf": "pay"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/IssueActions.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInv",
+      "providers": "tProv"
+    },
+    "neededNamespaces": [
+      "moneybird.health",
+      "states"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tProv",
+        "key": "moneybird.health.invalid_token",
+        "ns": "moneybird.health",
+        "leaf": "health.invalid_token"
+      },
+      {
+        "callee": "tProv",
+        "key": "moneybird.health.not_connected",
+        "ns": "moneybird.health",
+        "leaf": "health.not_connected"
+      },
+      {
+        "callee": "tProv",
+        "key": "states.error",
+        "ns": "states",
+        "leaf": "error"
+      },
+      {
+        "callee": "tProv",
+        "key": "states.connected",
+        "ns": "states",
+        "leaf": "connected"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/PaymentLinks.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "payment": "tPay",
+      "notifications": "tNote",
+      "errors": "tErr",
+      "actions": "tAct",
+      "invoice": "tInv"
+    },
+    "neededNamespaces": [
+      "paymentLink",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tNote",
+        "key": "paymentLink.sent",
+        "ns": "paymentLink",
+        "leaf": "sent"
+      },
+      {
+        "callee": "tErr",
+        "key": "paymentLink.sendFailed",
+        "ns": "paymentLink",
+        "leaf": "sendFailed"
+      },
+      {
+        "callee": "tInv",
+        "key": "actions.sendWhatsApp",
+        "ns": "actions",
+        "leaf": "sendWhatsApp"
+      },
+      {
+        "callee": "tInv",
+        "key": "actions.sendWhatsAppDescription",
+        "ns": "actions",
+        "leaf": "sendWhatsAppDescription"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/ProviderBadge.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "t"
+    },
+    "neededNamespaces": [
+      "badges",
+      "status"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "badges.legacy",
+        "ns": "badges",
+        "leaf": "legacy"
+      },
+      {
+        "callee": "t",
+        "key": "status.draft",
+        "ns": "status",
+        "leaf": "draft"
+      },
+      {
+        "callee": "t",
+        "key": "badges.locked_tooltip",
+        "ns": "badges",
+        "leaf": "locked_tooltip"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/ProviderConnectCard.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers": "t"
+    },
+    "neededNamespaces": [
+      "moneybird",
+      "wefact",
+      "eboekhouden",
+      "peppol",
+      "actions",
+      "connected"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "moneybird.description",
+        "ns": "moneybird",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "wefact.description",
+        "ns": "wefact",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "eboekhouden.description",
+        "ns": "eboekhouden",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "peppol.description",
+        "ns": "peppol",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "actions.configure",
+        "ns": "actions",
+        "leaf": "configure"
+      },
+      {
+        "callee": "t",
+        "key": "actions.connect",
+        "ns": "actions",
+        "leaf": "connect"
+      },
+      {
+        "callee": "t",
+        "key": "actions.fix",
+        "ns": "actions",
+        "leaf": "fix"
+      },
+      {
+        "callee": "t",
+        "key": "connected.description",
+        "ns": "connected",
+        "leaf": "description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/ProvidersPanel.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers.panel": "t"
+    },
+    "neededNamespaces": [
+      "providers"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "providers.panel",
+        "ns": "providers",
+        "leaf": "panel"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/ReviewList.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices.review": "t"
+    },
+    "neededNamespaces": [
+      "invoices"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "invoices.review",
+        "ns": "invoices",
+        "leaf": "review"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/invoices/Timeline.tsx",
+    "bareHooks": [
+      "t"
+    ],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "invoice.timeline"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "invoice.timeline.heading",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.heading"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.heading",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.heading"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.loadError",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.loadError"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.loadErrorDescription",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.loadErrorDescription"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.heading",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.heading"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.noEvents",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.noEvents"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.noEventsDescription",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.noEventsDescription"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.heading",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.heading"
+      },
+      {
+        "callee": "t",
+        "key": "invoice.timeline.description",
+        "ns": "invoice.timeline",
+        "leaf": "timeline.description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/jobs/JobDrawer.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "ui": "tUi",
+      "customers.form": "tForm",
+      "customers": "tCustomers",
+      "jobs": "tJobs",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "customers",
+      "delete",
+      "jobs.invoice.createDraft",
+      "jobs",
+      "action",
+      "actions",
+      "form",
+      "field",
+      "priority",
+      "jobs.calendar",
+      "label",
+      "archived",
+      "jobs.assignments",
+      "jobs.delete"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "customers.form",
+        "ns": "customers",
+        "leaf": "form"
+      },
+      {
+        "callee": "tJobs",
+        "key": "delete.success",
+        "ns": "delete",
+        "leaf": "success"
+      },
+      {
+        "callee": "tJobs",
+        "key": "delete.failed",
+        "ns": "delete",
+        "leaf": "failed"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.success",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.success"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.error",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.error"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.details",
+        "ns": "jobs",
+        "leaf": "details"
+      },
+      {
+        "callee": "t",
+        "key": "action.edit",
+        "ns": "action",
+        "leaf": "edit"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.success",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.success"
+      },
+      {
+        "callee": "t",
+        "key": "actions.creating",
+        "ns": "actions",
+        "leaf": "creating"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.label",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.label"
+      },
+      {
+        "callee": "t",
+        "key": "action.delete",
+        "ns": "action",
+        "leaf": "delete"
+      },
+      {
+        "callee": "t",
+        "key": "form.title",
+        "ns": "form",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "field.description",
+        "ns": "field",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "field.priority",
+        "ns": "field",
+        "leaf": "priority"
+      },
+      {
+        "callee": "t",
+        "key": "priority.normal",
+        "ns": "priority",
+        "leaf": "normal"
+      },
+      {
+        "callee": "t",
+        "key": "priority.urgent",
+        "ns": "priority",
+        "leaf": "urgent"
+      },
+      {
+        "callee": "t",
+        "key": "priority.emergency",
+        "ns": "priority",
+        "leaf": "emergency"
+      },
+      {
+        "callee": "t",
+        "key": "field.status",
+        "ns": "field",
+        "leaf": "status"
+      },
+      {
+        "callee": "t",
+        "key": "field.status",
+        "ns": "field",
+        "leaf": "status"
+      },
+      {
+        "callee": "t",
+        "key": "form.requiredSymbol",
+        "ns": "form",
+        "leaf": "requiredSymbol"
+      },
+      {
+        "callee": "t",
+        "key": "field.description",
+        "ns": "field",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.calendar.title",
+        "ns": "jobs.calendar",
+        "leaf": "calendar.title"
+      },
+      {
+        "callee": "t",
+        "key": "field.start",
+        "ns": "field",
+        "leaf": "start"
+      },
+      {
+        "callee": "t",
+        "key": "label.durationMinutes",
+        "ns": "label",
+        "leaf": "durationMinutes"
+      },
+      {
+        "callee": "t",
+        "key": "field.customer",
+        "ns": "field",
+        "leaf": "customer"
+      },
+      {
+        "callee": "tCustomers",
+        "key": "archived.badge",
+        "ns": "archived",
+        "leaf": "badge"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.assignments.title",
+        "ns": "jobs.assignments",
+        "leaf": "assignments.title"
+      },
+      {
+        "callee": "t",
+        "key": "field.primaryEmployee",
+        "ns": "field",
+        "leaf": "primaryEmployee"
+      },
+      {
+        "callee": "t",
+        "key": "field.secondaryEmployees",
+        "ns": "field",
+        "leaf": "secondaryEmployees"
+      },
+      {
+        "callee": "t",
+        "key": "field.primaryEmployee",
+        "ns": "field",
+        "leaf": "primaryEmployee"
+      },
+      {
+        "callee": "t",
+        "key": "field.secondaryEmployees",
+        "ns": "field",
+        "leaf": "secondaryEmployees"
+      },
+      {
+        "callee": "t",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.creating",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.creating"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.invoice.createDraft.label",
+        "ns": "jobs.invoice.createDraft",
+        "leaf": "invoice.createDraft.label"
+      },
+      {
+        "callee": "tJobs",
+        "key": "jobs.delete.title",
+        "ns": "jobs.delete",
+        "leaf": "delete.title"
+      },
+      {
+        "callee": "tJobs",
+        "key": "jobs.delete.description",
+        "ns": "jobs.delete",
+        "leaf": "delete.description"
+      },
+      {
+        "callee": "t",
+        "key": "action.delete",
+        "ns": "action",
+        "leaf": "delete"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/jobs/Unscheduled.tsx",
+    "bareHooks": [
+      "t"
+    ],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "whatsapp",
+      "cta",
+      "jobs.unscheduled.ai",
+      "tabs",
+      "priority",
+      "form",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "whatsapp.messages",
+        "ns": "whatsapp",
+        "leaf": "messages"
+      },
+      {
+        "callee": "t",
+        "key": "cta.newJob",
+        "ns": "cta",
+        "leaf": "newJob"
+      },
+      {
+        "callee": "t",
+        "key": "cta.newJob",
+        "ns": "cta",
+        "leaf": "newJob"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.unscheduled.ai.title",
+        "ns": "jobs.unscheduled.ai",
+        "leaf": "unscheduled.ai.title"
+      },
+      {
+        "callee": "t",
+        "key": "tabs.whatsapp",
+        "ns": "tabs",
+        "leaf": "whatsapp"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.unscheduled.ai.empty",
+        "ns": "jobs.unscheduled.ai",
+        "leaf": "unscheduled.ai.empty"
+      },
+      {
+        "callee": "t",
+        "key": "priority.urgent",
+        "ns": "priority",
+        "leaf": "urgent"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.unscheduled.ai.minutes",
+        "ns": "jobs.unscheduled.ai",
+        "leaf": "unscheduled.ai.minutes"
+      },
+      {
+        "callee": "t",
+        "key": "jobs.unscheduled.ai.assign",
+        "ns": "jobs.unscheduled.ai",
+        "leaf": "unscheduled.ai.assign"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.noMessages",
+        "ns": "whatsapp",
+        "leaf": "noMessages"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.messages",
+        "ns": "whatsapp",
+        "leaf": "messages"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.lastActivity",
+        "ns": "whatsapp",
+        "leaf": "lastActivity"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.createJob",
+        "ns": "whatsapp",
+        "leaf": "createJob"
+      },
+      {
+        "callee": "t",
+        "key": "form.title",
+        "ns": "form",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "form.required",
+        "ns": "form",
+        "leaf": "required"
+      },
+      {
+        "callee": "t",
+        "key": "form.priority",
+        "ns": "form",
+        "leaf": "priority"
+      },
+      {
+        "callee": "t",
+        "key": "priority.normal",
+        "ns": "priority",
+        "leaf": "normal"
+      },
+      {
+        "callee": "t",
+        "key": "priority.urgent",
+        "ns": "priority",
+        "leaf": "urgent"
+      },
+      {
+        "callee": "t",
+        "key": "priority.emergency",
+        "ns": "priority",
+        "leaf": "emergency"
+      },
+      {
+        "callee": "t",
+        "key": "form.description",
+        "ns": "form",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "form.startTime",
+        "ns": "form",
+        "leaf": "startTime"
+      },
+      {
+        "callee": "t",
+        "key": "form.required",
+        "ns": "form",
+        "leaf": "required"
+      },
+      {
+        "callee": "t",
+        "key": "form.duration",
+        "ns": "form",
+        "leaf": "duration"
+      },
+      {
+        "callee": "t",
+        "key": "form.primaryEmployee",
+        "ns": "form",
+        "leaf": "primaryEmployee"
+      },
+      {
+        "callee": "t",
+        "key": "form.required",
+        "ns": "form",
+        "leaf": "required"
+      },
+      {
+        "callee": "t",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "t",
+        "key": "actions.creating",
+        "ns": "actions",
+        "leaf": "creating"
+      },
+      {
+        "callee": "t",
+        "key": "actions.create",
+        "ns": "actions",
+        "leaf": "create"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/DemoStepper.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.demo.content": "t",
+      "launch.demo_stepper": "tDemo",
+      "launch.demo.content.common": "tCommon",
+      "launch.demo.page": "tPage"
+    },
+    "neededNamespaces": [
+      "launch.demo",
+      "whatsapp",
+      "ai_suggestion",
+      "schedule",
+      "job_card",
+      "voice_draft",
+      "send_pay",
+      "common",
+      "reminders",
+      "launch",
+      "launch.demo.content",
+      "nav"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo.content",
+        "ns": "launch.demo",
+        "leaf": "demo.content"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.photo_attached",
+        "ns": "whatsapp",
+        "leaf": "photo_attached"
+      },
+      {
+        "callee": "t",
+        "key": "whatsapp.ai_analyzing",
+        "ns": "whatsapp",
+        "leaf": "ai_analyzing"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.diagnosis",
+        "ns": "ai_suggestion",
+        "leaf": "diagnosis"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.reliable",
+        "ns": "ai_suggestion",
+        "leaf": "reliable"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.urgency",
+        "ns": "ai_suggestion",
+        "leaf": "urgency"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.emergency",
+        "ns": "ai_suggestion",
+        "leaf": "emergency"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.estimated_time",
+        "ns": "ai_suggestion",
+        "leaf": "estimated_time"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.minutes",
+        "ns": "ai_suggestion",
+        "leaf": "minutes"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.required_materials",
+        "ns": "ai_suggestion",
+        "leaf": "required_materials"
+      },
+      {
+        "callee": "t",
+        "key": "ai_suggestion.quantity_format",
+        "ns": "ai_suggestion",
+        "leaf": "quantity_format"
+      },
+      {
+        "callee": "t",
+        "key": "schedule.assigned_to",
+        "ns": "schedule",
+        "leaf": "assigned_to"
+      },
+      {
+        "callee": "t",
+        "key": "schedule.start_time",
+        "ns": "schedule",
+        "leaf": "start_time"
+      },
+      {
+        "callee": "t",
+        "key": "schedule.end_time",
+        "ns": "schedule",
+        "leaf": "end_time"
+      },
+      {
+        "callee": "t",
+        "key": "schedule.auto_assigned",
+        "ns": "schedule",
+        "leaf": "auto_assigned"
+      },
+      {
+        "callee": "t",
+        "key": "job_card.address",
+        "ns": "job_card",
+        "leaf": "address"
+      },
+      {
+        "callee": "t",
+        "key": "job_card.phone",
+        "ns": "job_card",
+        "leaf": "phone"
+      },
+      {
+        "callee": "t",
+        "key": "job_card.notes",
+        "ns": "job_card",
+        "leaf": "notes"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.voice_transcript",
+        "ns": "voice_draft",
+        "leaf": "voice_transcript"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.invoice_lines",
+        "ns": "voice_draft",
+        "leaf": "invoice_lines"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.line_format",
+        "ns": "voice_draft",
+        "leaf": "line_format"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.subtotal_ex_vat",
+        "ns": "voice_draft",
+        "leaf": "subtotal_ex_vat"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.vat_total",
+        "ns": "voice_draft",
+        "leaf": "vat_total"
+      },
+      {
+        "callee": "t",
+        "key": "voice_draft.total",
+        "ns": "voice_draft",
+        "leaf": "total"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.invoice_sent",
+        "ns": "send_pay",
+        "leaf": "invoice_sent"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.invoice_id",
+        "ns": "send_pay",
+        "leaf": "invoice_id"
+      },
+      {
+        "callee": "t",
+        "key": "common.due_date",
+        "ns": "common",
+        "leaf": "due_date"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.payment_status",
+        "ns": "send_pay",
+        "leaf": "payment_status"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.awaiting_payment",
+        "ns": "send_pay",
+        "leaf": "awaiting_payment"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.click_pay",
+        "ns": "send_pay",
+        "leaf": "click_pay"
+      },
+      {
+        "callee": "t",
+        "key": "common.alternative_payment",
+        "ns": "common",
+        "leaf": "alternative_payment"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.pdf",
+        "ns": "send_pay",
+        "leaf": "pdf"
+      },
+      {
+        "callee": "t",
+        "key": "common.email",
+        "ns": "common",
+        "leaf": "email"
+      },
+      {
+        "callee": "t",
+        "key": "send_pay.whatsapp_message",
+        "ns": "send_pay",
+        "leaf": "whatsapp_message"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.title",
+        "ns": "reminders",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.whatsapp_series",
+        "ns": "reminders",
+        "leaf": "whatsapp_series"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.after_days",
+        "ns": "reminders",
+        "leaf": "after_days"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.scheduled",
+        "ns": "reminders",
+        "leaf": "scheduled"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.automation_active",
+        "ns": "reminders",
+        "leaf": "automation_active"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.opt_out_respected",
+        "ns": "reminders",
+        "leaf": "opt_out_respected"
+      },
+      {
+        "callee": "t",
+        "key": "reminders.email_escalation",
+        "ns": "reminders",
+        "leaf": "email_escalation"
+      },
+      {
+        "callee": "t",
+        "key": "common.step_data_unavailable",
+        "ns": "common",
+        "leaf": "step_data_unavailable"
+      },
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo_stepper",
+        "ns": "launch",
+        "leaf": "demo_stepper"
+      },
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo.content.common",
+        "ns": "launch.demo.content",
+        "leaf": "demo.content.common"
+      },
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo.page",
+        "ns": "launch.demo",
+        "leaf": "demo.page"
+      },
+      {
+        "callee": "tPage",
+        "key": "nav.previous",
+        "ns": "nav",
+        "leaf": "previous"
+      },
+      {
+        "callee": "tPage",
+        "key": "nav.step_counter",
+        "ns": "nav",
+        "leaf": "step_counter"
+      },
+      {
+        "callee": "tPage",
+        "key": "nav.next",
+        "ns": "nav",
+        "leaf": "next"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/Hero.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch": "tHero"
+    },
+    "neededNamespaces": [
+      "hero",
+      "trust"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tHero",
+        "key": "hero.cta_demo",
+        "ns": "hero",
+        "leaf": "cta_demo"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.cta_waitlist",
+        "ns": "hero",
+        "leaf": "cta_waitlist"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.urgency",
+        "ns": "hero",
+        "leaf": "urgency"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.h1",
+        "ns": "hero",
+        "leaf": "h1"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.subhead",
+        "ns": "hero",
+        "leaf": "subhead"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.social_proof",
+        "ns": "hero",
+        "leaf": "social_proof"
+      },
+      {
+        "callee": "tHero",
+        "key": "trust.avg_compliant",
+        "ns": "trust",
+        "leaf": "avg_compliant"
+      },
+      {
+        "callee": "tHero",
+        "key": "trust.ideal_certified",
+        "ns": "trust",
+        "leaf": "ideal_certified"
+      },
+      {
+        "callee": "tHero",
+        "key": "trust.kvk_registered",
+        "ns": "trust",
+        "leaf": "kvk_registered"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.cta_demo",
+        "ns": "hero",
+        "leaf": "cta_demo"
+      },
+      {
+        "callee": "tHero",
+        "key": "hero.cta_waitlist",
+        "ns": "hero",
+        "leaf": "cta_waitlist"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/LazyRoiCalculator.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      ""
+    ],
+    "crossCalls": [
+      {
+        "callee": "import",
+        "key": "./RoiCalculator",
+        "ns": "",
+        "leaf": "/RoiCalculator"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/RoiCalculator.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch": "tLaunch"
+    },
+    "neededNamespaces": [
+      "roi_calculator",
+      "roi_calculator.results"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.title",
+        "ns": "roi_calculator",
+        "leaf": "title"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.subtitle",
+        "ns": "roi_calculator",
+        "leaf": "subtitle"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.input_label",
+        "ns": "roi_calculator",
+        "leaf": "input_label"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.rate_per_hour",
+        "ns": "roi_calculator",
+        "leaf": "rate_per_hour"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.input_label",
+        "ns": "roi_calculator",
+        "leaf": "input_label"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.calculate_button",
+        "ns": "roi_calculator",
+        "leaf": "calculate_button"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.admin_reduced",
+        "ns": "roi_calculator",
+        "leaf": "admin_reduced"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.current_hours",
+        "ns": "roi_calculator",
+        "leaf": "current_hours"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.time_saved",
+        "ns": "roi_calculator",
+        "leaf": "time_saved"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.hours_per_week",
+        "ns": "roi_calculator",
+        "leaf": "hours_per_week"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.extra_revenue",
+        "ns": "roi_calculator",
+        "leaf": "extra_revenue"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.yearly_savings",
+        "ns": "roi_calculator",
+        "leaf": "yearly_savings"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.results.total_value",
+        "ns": "roi_calculator.results",
+        "leaf": "results.total_value"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.cta_start_saving",
+        "ns": "roi_calculator",
+        "leaf": "cta_start_saving"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "roi_calculator.placeholder_text",
+        "ns": "roi_calculator",
+        "leaf": "placeholder_text"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/TrustStrip.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.trust": "t"
+    },
+    "neededNamespaces": [
+      "launch"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.trust",
+        "ns": "launch",
+        "leaf": "trust"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/USPGrid.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch": "tLaunch"
+    },
+    "neededNamespaces": [
+      "usp"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tLaunch",
+        "key": "usp.title",
+        "ns": "usp",
+        "leaf": "title"
+      },
+      {
+        "callee": "tLaunch",
+        "key": "usp.subtitle",
+        "ns": "usp",
+        "leaf": "subtitle"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/launch/WaitlistForm.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.waitlist": "t"
+    },
+    "neededNamespaces": [
+      "launch"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.waitlist",
+        "ns": "launch",
+        "leaf": "waitlist"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/providers/MoneybirdTile.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers.moneybird": "t"
+    },
+    "neededNamespaces": [
+      "providers",
+      "https://moneybird"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "providers.moneybird",
+        "ns": "providers",
+        "leaf": "moneybird"
+      },
+      {
+        "callee": "window.open",
+        "key": "https://moneybird.com",
+        "ns": "https://moneybird",
+        "leaf": "com"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/providers/OAuthFeedbackHandler.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers": "tProviders"
+    },
+    "neededNamespaces": [
+      "providers.oauth"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.success",
+        "ns": "providers.oauth",
+        "leaf": "oauth.success"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.selectAdmin",
+        "ns": "providers.oauth",
+        "leaf": "oauth.selectAdmin"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.moneybirdConnected",
+        "ns": "providers.oauth",
+        "leaf": "oauth.moneybirdConnected"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.error",
+        "ns": "providers.oauth",
+        "leaf": "oauth.error"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.genericError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.genericError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.authError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.authError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.csrfError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.csrfError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.stateError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.stateError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.userMismatch",
+        "ns": "providers.oauth",
+        "leaf": "oauth.userMismatch"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.stateExpired",
+        "ns": "providers.oauth",
+        "leaf": "oauth.stateExpired"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.tokenError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.tokenError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.adminError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.adminError"
+      },
+      {
+        "callee": "tProviders",
+        "key": "providers.oauth.callbackError",
+        "ns": "providers.oauth",
+        "leaf": "oauth.callbackError"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/system/PilotModeBanner.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch": "tPilot"
+    },
+    "neededNamespaces": [
+      "pilot.banner"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tPilot",
+        "key": "pilot.banner.title",
+        "ns": "pilot.banner",
+        "leaf": "banner.title"
+      },
+      {
+        "callee": "tPilot",
+        "key": "pilot.banner.subtitle",
+        "ns": "pilot.banner",
+        "leaf": "banner.subtitle"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/alert.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cva",
+        "key": "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
+        "ns": "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0",
+        "leaf": "5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/badge.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "inline-flex items-center justify-center rounded-md border px-2 py-0"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cva",
+        "key": "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+        "ns": "inline-flex items-center justify-center rounded-md border px-2 py-0",
+        "leaf": "5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/calendar.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1",
+      "text-muted-foreground rounded-md flex-1 font-normal text-[0",
+      "text-[0"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1.5",
+        "ns": "w-full flex items-center text-sm font-medium justify-center h-(--cell-size) gap-1",
+        "leaf": "5"
+      },
+      {
+        "callee": "cn",
+        "key": "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
+        "ns": "text-muted-foreground rounded-md flex-1 font-normal text-[0",
+        "leaf": "8rem] select-none"
+      },
+      {
+        "callee": "cn",
+        "key": "text-[0.8rem] select-none text-muted-foreground",
+        "ns": "text-[0",
+        "leaf": "8rem] select-none text-muted-foreground"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/card.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [",
+      "flex items-center px-6 ["
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
+        "ns": "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [",
+        "leaf": "5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6"
+      },
+      {
+        "callee": "cn",
+        "key": "flex items-center px-6 [.border-t]:pt-6",
+        "ns": "flex items-center px-6 [",
+        "leaf": "border-t]:pt-6"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/command.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1",
+      "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium",
+        "ns": "text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1",
+        "leaf": "5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
+      },
+      {
+        "callee": "cn",
+        "key": "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "ns": "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1",
+        "leaf": "5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/customer-picker.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "customers": "t"
+    },
+    "neededNamespaces": [
+      "success",
+      "error",
+      "errors.name",
+      "create",
+      "form.name",
+      "form.phone",
+      "form.email",
+      "actions"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "success.created",
+        "ns": "success",
+        "leaf": "created"
+      },
+      {
+        "callee": "t",
+        "key": "error.create",
+        "ns": "error",
+        "leaf": "create"
+      },
+      {
+        "callee": "t",
+        "key": "errors.name.required",
+        "ns": "errors.name",
+        "leaf": "name.required"
+      },
+      {
+        "callee": "t",
+        "key": "create.title",
+        "ns": "create",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "form.name.label",
+        "ns": "form.name",
+        "leaf": "name.label"
+      },
+      {
+        "callee": "t",
+        "key": "form.name.placeholder",
+        "ns": "form.name",
+        "leaf": "name.placeholder"
+      },
+      {
+        "callee": "t",
+        "key": "form.phone.label",
+        "ns": "form.phone",
+        "leaf": "phone.label"
+      },
+      {
+        "callee": "t",
+        "key": "form.phone.placeholder",
+        "ns": "form.phone",
+        "leaf": "phone.placeholder"
+      },
+      {
+        "callee": "t",
+        "key": "form.email.label",
+        "ns": "form.email",
+        "leaf": "email.label"
+      },
+      {
+        "callee": "t",
+        "key": "form.email.placeholder",
+        "ns": "form.email",
+        "leaf": "email.placeholder"
+      },
+      {
+        "callee": "t",
+        "key": "actions.creating",
+        "ns": "actions",
+        "leaf": "creating"
+      },
+      {
+        "callee": "t",
+        "key": "actions.create",
+        "ns": "actions",
+        "leaf": "create"
+      },
+      {
+        "callee": "t",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/drawer.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "flex flex-col gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "flex flex-col gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1.5 md:text-left",
+        "ns": "flex flex-col gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1",
+        "leaf": "5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1.5 md:text-left"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/dropdown-menu.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1",
+      "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1",
+      "px-2 py-1",
+      "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "ns": "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1",
+        "leaf": "5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+      },
+      {
+        "callee": "cn",
+        "key": "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "ns": "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1",
+        "leaf": "5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+      },
+      {
+        "callee": "cn",
+        "key": "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "ns": "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1",
+        "leaf": "5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+      },
+      {
+        "callee": "cn",
+        "key": "px-2 py-1.5 text-sm font-medium data-[inset]:pl-8",
+        "ns": "px-2 py-1",
+        "leaf": "5 text-sm font-medium data-[inset]:pl-8"
+      },
+      {
+        "callee": "cn",
+        "key": "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8",
+        "ns": "focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default items-center rounded-sm px-2 py-1",
+        "leaf": "5 text-sm outline-hidden select-none data-[inset]:pl-8"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/select.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "text-muted-foreground px-2 py-1",
+      "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "text-muted-foreground px-2 py-1.5 text-xs",
+        "ns": "text-muted-foreground px-2 py-1",
+        "leaf": "5 text-xs"
+      },
+      {
+        "callee": "cn",
+        "key": "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "ns": "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1",
+        "leaf": "5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/sheet.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "flex flex-col gap-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "flex flex-col gap-1.5 p-4",
+        "ns": "flex flex-col gap-1",
+        "leaf": "5 p-4"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/switch.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        "ns": "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1",
+        "leaf": "15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/tabs.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "ns": "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1",
+        "leaf": "5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/ui/tooltip.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1"
+    ],
+    "crossCalls": [
+      {
+        "callee": "cn",
+        "key": "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
+        "ns": "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1",
+        "leaf": "5 text-xs text-balance"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/whatsapp/ActionsRail.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "whatsapp": "tWhatsApp",
+      "common": "tCommon"
+    },
+    "neededNamespaces": [
+      "actions",
+      "control",
+      "info"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.jobCreated",
+        "ns": "actions",
+        "leaf": "jobCreated"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.jobError",
+        "ns": "actions",
+        "leaf": "jobError"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.paylinkNotImplemented",
+        "ns": "actions",
+        "leaf": "paylinkNotImplemented"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.paylinkError",
+        "ns": "actions",
+        "leaf": "paylinkError"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.conversationClosed",
+        "ns": "actions",
+        "leaf": "conversationClosed"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.closeError",
+        "ns": "actions",
+        "leaf": "closeError"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.approved",
+        "ns": "control",
+        "leaf": "approved"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.approveError",
+        "ns": "control",
+        "leaf": "approveError"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.title",
+        "ns": "actions",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.createJob",
+        "ns": "actions",
+        "leaf": "createJob"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.sendPaylink",
+        "ns": "actions",
+        "leaf": "sendPaylink"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "actions.close",
+        "ns": "actions",
+        "leaf": "close"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.title",
+        "ns": "control",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.description",
+        "ns": "control",
+        "leaf": "description"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.approve",
+        "ns": "control",
+        "leaf": "approve"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "control.close",
+        "ns": "control",
+        "leaf": "close"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "info.title",
+        "ns": "info",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "info.status",
+        "ns": "info",
+        "leaf": "status"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "info.created",
+        "ns": "info",
+        "leaf": "created"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/components/whatsapp/Composer.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "whatsapp": "tWhatsApp"
+    },
+    "neededNamespaces": [
+      "composer"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.sent",
+        "ns": "composer",
+        "leaf": "sent"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.error",
+        "ns": "composer",
+        "leaf": "error"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.templateSent",
+        "ns": "composer",
+        "leaf": "templateSent"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.templateError",
+        "ns": "composer",
+        "leaf": "templateError"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.sessionExpiredWarning",
+        "ns": "composer",
+        "leaf": "sessionExpiredWarning"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.placeholder",
+        "ns": "composer",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.templatePlaceholder",
+        "ns": "composer",
+        "leaf": "templatePlaceholder"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.sending",
+        "ns": "composer",
+        "leaf": "sending"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.send",
+        "ns": "composer",
+        "leaf": "send"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.sending",
+        "ns": "composer",
+        "leaf": "sending"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "composer.useTemplate",
+        "ns": "composer",
+        "leaf": "useTemplate"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/lib/i18n/SafeNextIntlClientProvider.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      ""
+    ],
+    "crossCalls": [
+      {
+        "callee": "[namespace, key].filter(Boolean).join",
+        "key": ".",
+        "ns": "",
+        "leaf": ""
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/dto/waAdmin.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "Phone number in E"
+    ],
+    "crossCalls": [
+      {
+        "callee": "z\n\t\t.string()\n\t\t.min(10)\n\t\t.max(20)\n\t\t.describe",
+        "key": "Phone number in E.164 format (+31XXXXXXXXX)",
+        "ns": "Phone number in E",
+        "leaf": "164 format (+31XXXXXXXXX)"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/en/launch/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "meta"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "meta.keywords",
+        "ns": "meta",
+        "leaf": "keywords"
+      },
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/invoices/[id]/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "tInv"
+    },
+    "neededNamespaces": [
+      "invoice",
+      "status"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tInv",
+        "key": "invoice.notFound",
+        "ns": "invoice",
+        "leaf": "notFound"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.notFoundDescription",
+        "ns": "invoice",
+        "leaf": "notFoundDescription"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.title",
+        "ns": "invoice",
+        "leaf": "title"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.draftLabel",
+        "ns": "invoice",
+        "leaf": "draftLabel"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.customer",
+        "ns": "invoice",
+        "leaf": "customer"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.details",
+        "ns": "invoice",
+        "leaf": "details"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.detailsDescription",
+        "ns": "invoice",
+        "leaf": "detailsDescription"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.customer",
+        "ns": "invoice",
+        "leaf": "customer"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.job",
+        "ns": "invoice",
+        "leaf": "job"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.amounts",
+        "ns": "invoice",
+        "leaf": "amounts"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.subtotalExVat",
+        "ns": "invoice",
+        "leaf": "subtotalExVat"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.vatAmount",
+        "ns": "invoice",
+        "leaf": "vatAmount"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.totalIncVat",
+        "ns": "invoice",
+        "leaf": "totalIncVat"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.notes",
+        "ns": "invoice",
+        "leaf": "notes"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.status",
+        "ns": "invoice",
+        "leaf": "status"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.status",
+        "ns": "invoice",
+        "leaf": "status"
+      },
+      {
+        "callee": "tInv",
+        "key": "status.draft",
+        "ns": "status",
+        "leaf": "draft"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.sent",
+        "ns": "invoice",
+        "leaf": "sent"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.paid",
+        "ns": "invoice",
+        "leaf": "paid"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.provider",
+        "ns": "invoice",
+        "leaf": "provider"
+      },
+      {
+        "callee": "tInv",
+        "key": "invoice.issuedOn",
+        "ns": "invoice",
+        "leaf": "issuedOn"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/invoices/approvals/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "misc": "t"
+    },
+    "neededNamespaces": [
+      "approvals",
+      "approvals.dateFilter",
+      "approvals.actions",
+      "approvals.list",
+      "approvals.results"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "approvals.title",
+        "ns": "approvals",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.subtitle",
+        "ns": "approvals",
+        "leaf": "subtitle"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.dateFilter.title",
+        "ns": "approvals.dateFilter",
+        "leaf": "dateFilter.title"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.dateFilter.description",
+        "ns": "approvals.dateFilter",
+        "leaf": "dateFilter.description"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.dateFilter.label",
+        "ns": "approvals.dateFilter",
+        "leaf": "dateFilter.label"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.actions.title",
+        "ns": "approvals.actions",
+        "leaf": "actions.title"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.actions.selectedCount",
+        "ns": "approvals.actions",
+        "leaf": "actions.selectedCount"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.actions.description",
+        "ns": "approvals.actions",
+        "leaf": "actions.description"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.actions.sending",
+        "ns": "approvals.actions",
+        "leaf": "actions.sending"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.actions.sendSelected",
+        "ns": "approvals.actions",
+        "leaf": "actions.sendSelected"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.list.title",
+        "ns": "approvals.list",
+        "leaf": "list.title"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.list.loading",
+        "ns": "approvals.list",
+        "leaf": "list.loading"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.list.count",
+        "ns": "approvals.list",
+        "leaf": "list.count"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.select",
+        "ns": "approvals",
+        "leaf": "select"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.number",
+        "ns": "approvals",
+        "leaf": "number"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.customer",
+        "ns": "approvals",
+        "leaf": "customer"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.total",
+        "ns": "approvals",
+        "leaf": "total"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.created",
+        "ns": "approvals",
+        "leaf": "created"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.list.loading",
+        "ns": "approvals.list",
+        "leaf": "list.loading"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.empty",
+        "ns": "approvals",
+        "leaf": "empty"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.select",
+        "ns": "approvals",
+        "leaf": "select"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.title",
+        "ns": "approvals.results",
+        "leaf": "results.title"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.total",
+        "ns": "approvals.results",
+        "leaf": "results.total"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.sent",
+        "ns": "approvals.results",
+        "leaf": "results.sent"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.skipped",
+        "ns": "approvals.results",
+        "leaf": "results.skipped"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.withPaymentLinks",
+        "ns": "approvals.results",
+        "leaf": "results.withPaymentLinks"
+      },
+      {
+        "callee": "t",
+        "key": "approvals.results.errors",
+        "ns": "approvals.results",
+        "leaf": "results.errors"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/invoices/review/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "invoices": "t"
+    },
+    "neededNamespaces": [
+      "invoices.review",
+      "invoices.review.controls",
+      "review.controls",
+      "invoices.review.bulkActions",
+      "invoices.review.list",
+      "invoices.review.results"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "invoices.review.title",
+        "ns": "invoices.review",
+        "leaf": "review.title"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.subtitle",
+        "ns": "invoices.review",
+        "leaf": "review.subtitle"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.controls.title",
+        "ns": "invoices.review.controls",
+        "leaf": "review.controls.title"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.controls.description",
+        "ns": "invoices.review.controls",
+        "leaf": "review.controls.description"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.controls.sinceDate",
+        "ns": "invoices.review.controls",
+        "leaf": "review.controls.sinceDate"
+      },
+      {
+        "callee": "t",
+        "key": "review.controls.creating",
+        "ns": "review.controls",
+        "leaf": "controls.creating"
+      },
+      {
+        "callee": "t",
+        "key": "review.controls.createDrafts",
+        "ns": "review.controls",
+        "leaf": "controls.createDrafts"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.bulkActions.title",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.title"
+      },
+      {
+        "callee": "tU",
+        "key": "invoices.review.bulkActions.selectedCount",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.selectedCount"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.bulkActions.description",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.description"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.bulkActions.alsoWhatsApp",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.alsoWhatsApp"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.bulkActions.sending",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.sending"
+      },
+      {
+        "callee": "tU",
+        "key": "invoices.review.bulkActions.send",
+        "ns": "invoices.review.bulkActions",
+        "leaf": "review.bulkActions.send"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.list.title",
+        "ns": "invoices.review.list",
+        "leaf": "review.list.title"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.list.loading",
+        "ns": "invoices.review.list",
+        "leaf": "review.list.loading"
+      },
+      {
+        "callee": "tU",
+        "key": "invoices.review.list.count",
+        "ns": "invoices.review.list",
+        "leaf": "review.list.count"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.title",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.title"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.total",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.total"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.sent",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.sent"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.skipped",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.skipped"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.withPaymentLinks",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.withPaymentLinks"
+      },
+      {
+        "callee": "t",
+        "key": "invoices.review.results.errors",
+        "ns": "invoices.review.results",
+        "leaf": "review.results.errors"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/j/[token]/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "jobCard"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "jobCard.title",
+        "ns": "jobCard",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.jobNumber",
+        "ns": "jobCard",
+        "leaf": "jobNumber"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.phone",
+        "ns": "jobCard",
+        "leaf": "phone"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.jobStatus",
+        "ns": "jobCard",
+        "leaf": "jobStatus"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.active",
+        "ns": "jobCard",
+        "leaf": "active"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.lastResponse",
+        "ns": "jobCard",
+        "leaf": "lastResponse"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.approved",
+        "ns": "jobCard",
+        "leaf": "approved"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.urgency",
+        "ns": "jobCard",
+        "leaf": "urgency"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.schedule",
+        "ns": "jobCard",
+        "leaf": "schedule"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.draftInvoice",
+        "ns": "jobCard",
+        "leaf": "draftInvoice"
+      },
+      {
+        "callee": "t",
+        "key": "jobCard.tokenExpires",
+        "ns": "jobCard",
+        "leaf": "tokenExpires"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/jobs/calendar/Legend.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "jobs": "t"
+    },
+    "neededNamespaces": [
+      "legend"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "legend.none",
+        "ns": "legend",
+        "leaf": "none"
+      },
+      {
+        "callee": "t",
+        "key": "legend.header",
+        "ns": "legend",
+        "leaf": "header"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/nl/launch/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "meta"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "meta.keywords",
+        "ns": "meta",
+        "leaf": "keywords"
+      },
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "meta.title",
+        "ns": "meta",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "meta.description",
+        "ns": "meta",
+        "leaf": "description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/settings/providers/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers": "t"
+    },
+    "neededNamespaces": [
+      "panel",
+      "wefact",
+      "states",
+      "eboekhouden"
+    ],
+    "crossCalls": [
+      {
+        "callee": "t",
+        "key": "panel.title",
+        "ns": "panel",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "panel.description",
+        "ns": "panel",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "panel.title",
+        "ns": "panel",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "panel.note",
+        "ns": "panel",
+        "leaf": "note"
+      },
+      {
+        "callee": "t",
+        "key": "wefact.title",
+        "ns": "wefact",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "states.needs_action",
+        "ns": "states",
+        "leaf": "needs_action"
+      },
+      {
+        "callee": "t",
+        "key": "wefact.description",
+        "ns": "wefact",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "eboekhouden.title",
+        "ns": "eboekhouden",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "states.needs_action",
+        "ns": "states",
+        "leaf": "needs_action"
+      },
+      {
+        "callee": "t",
+        "key": "eboekhouden.description",
+        "ns": "eboekhouden",
+        "leaf": "description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/settings/whatsapp/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "settings.whatsapp": "t",
+      "misc": "tMisc"
+    },
+    "neededNamespaces": [
+      "settings",
+      "numbers.add",
+      "numbers.remove",
+      "test.success",
+      "prereqs.webhookUrls",
+      "wizard",
+      "prereqs",
+      "prereqs.credentials",
+      "numbers",
+      "numbers.empty",
+      "numbers.labels",
+      "numbers.table",
+      "numbers.add.phoneNumberId",
+      "numbers.add.label",
+      "test",
+      "test.requirements",
+      "completion"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "settings.whatsapp",
+        "ns": "settings",
+        "leaf": "whatsapp"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.success",
+        "ns": "numbers.add",
+        "leaf": "add.success"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.error",
+        "ns": "numbers.add",
+        "leaf": "add.error"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.remove.success",
+        "ns": "numbers.remove",
+        "leaf": "remove.success"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.remove.error",
+        "ns": "numbers.remove",
+        "leaf": "remove.error"
+      },
+      {
+        "callee": "t",
+        "key": "test.success.message",
+        "ns": "test.success",
+        "leaf": "success.message"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrls.copied",
+        "ns": "prereqs.webhookUrls",
+        "leaf": "webhookUrls.copied"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.remove.confirm",
+        "ns": "numbers.remove",
+        "leaf": "remove.confirm"
+      },
+      {
+        "callee": "t",
+        "key": "wizard.step",
+        "ns": "wizard",
+        "leaf": "step"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.title",
+        "ns": "prereqs",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.description",
+        "ns": "prereqs",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrls.title",
+        "ns": "prereqs.webhookUrls",
+        "leaf": "webhookUrls.title"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrls.description",
+        "ns": "prereqs.webhookUrls",
+        "leaf": "webhookUrls.description"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrls.customer",
+        "ns": "prereqs.webhookUrls",
+        "leaf": "webhookUrls.customer"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrls.control",
+        "ns": "prereqs.webhookUrls",
+        "leaf": "webhookUrls.control"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.title",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.title"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.description",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.description"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.verifyToken",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.verifyToken"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.configured",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.configured"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.missing",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.missing"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.hmacSecret",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.hmacSecret"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.configured",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.configured"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.missing",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.missing"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.credentials.note",
+        "ns": "prereqs.credentials",
+        "leaf": "credentials.note"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.title",
+        "ns": "numbers",
+        "leaf": "title"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.description",
+        "ns": "numbers",
+        "leaf": "description"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.title",
+        "ns": "numbers",
+        "leaf": "title"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.empty.title",
+        "ns": "numbers.empty",
+        "leaf": "empty.title"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.empty.description",
+        "ns": "numbers.empty",
+        "leaf": "empty.description"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.labels.select",
+        "ns": "numbers.labels",
+        "leaf": "labels.select"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.table.actions",
+        "ns": "numbers.table",
+        "leaf": "table.actions"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.title",
+        "ns": "numbers.add",
+        "leaf": "add.title"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.phoneNumberId.label",
+        "ns": "numbers.add.phoneNumberId",
+        "leaf": "add.phoneNumberId.label"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.phoneNumberId.placeholder",
+        "ns": "numbers.add.phoneNumberId",
+        "leaf": "add.phoneNumberId.placeholder"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.phoneNumberId.helper",
+        "ns": "numbers.add.phoneNumberId",
+        "leaf": "add.phoneNumberId.helper"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.label.label",
+        "ns": "numbers.add.label",
+        "leaf": "add.label.label"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.labels.customer",
+        "ns": "numbers.labels",
+        "leaf": "labels.customer"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.labels.control",
+        "ns": "numbers.labels",
+        "leaf": "labels.control"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.label.helper",
+        "ns": "numbers.add.label",
+        "leaf": "add.label.helper"
+      },
+      {
+        "callee": "tMisc",
+        "key": "numbers.add.submit",
+        "ns": "numbers.add",
+        "leaf": "add.submit"
+      },
+      {
+        "callee": "t",
+        "key": "test.title",
+        "ns": "test",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "test.description",
+        "ns": "test",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "test.requirements.title",
+        "ns": "test.requirements",
+        "leaf": "requirements.title"
+      },
+      {
+        "callee": "t.raw",
+        "key": "test.requirements.items",
+        "ns": "test.requirements",
+        "leaf": "requirements.items"
+      },
+      {
+        "callee": "t",
+        "key": "test.button",
+        "ns": "test",
+        "leaf": "button"
+      },
+      {
+        "callee": "t",
+        "key": "wizard.previous",
+        "ns": "wizard",
+        "leaf": "previous"
+      },
+      {
+        "callee": "t",
+        "key": "completion.description",
+        "ns": "completion",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "wizard.finish",
+        "ns": "wizard",
+        "leaf": "finish"
+      },
+      {
+        "callee": "t",
+        "key": "wizard.next",
+        "ns": "wizard",
+        "leaf": "next"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/sign-in/[[...sign-in]]/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "system": "tSys",
+      "auth": "tAuth"
+    },
+    "neededNamespaces": [
+      "app"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tSys",
+        "key": "app.title",
+        "ns": "app",
+        "leaf": "title"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/sign-up/[[...sign-up]]/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "system": "tSys",
+      "auth": "tAuth"
+    },
+    "neededNamespaces": [
+      "app"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tSys",
+        "key": "app.title",
+        "ns": "app",
+        "leaf": "title"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/whatsapp/[conversationId]/page.tsx",
+    "bareHooks": [
+      "tCommon"
+    ],
+    "existingHooks": {
+      "whatsapp": "t"
+    },
+    "neededNamespaces": [
+      "common",
+      "session",
+      "conversation",
+      "conversation.empty",
+      "message"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tCommon",
+        "key": "common.unnamed",
+        "ns": "common",
+        "leaf": "unnamed"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "session.active",
+        "ns": "session",
+        "leaf": "active"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "session.expired",
+        "ns": "session",
+        "leaf": "expired"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "conversation.title",
+        "ns": "conversation",
+        "leaf": "title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "conversation.empty.title",
+        "ns": "conversation.empty",
+        "leaf": "empty.title"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "conversation.empty.description",
+        "ns": "conversation.empty",
+        "leaf": "empty.description"
+      },
+      {
+        "callee": "tWhatsApp",
+        "key": "message.media",
+        "ns": "message",
+        "leaf": "media"
+      },
+      {
+        "callee": "t",
+        "key": "session.expiresIn",
+        "ns": "session",
+        "leaf": "expiresIn"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/api/routers/customers.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "customers"
+    ],
+    "crossCalls": [
+      {
+        "callee": "logger.warn",
+        "key": "customers.create attempting to create customer",
+        "ns": "customers",
+        "leaf": "create attempting to create customer"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/api/routers/employees.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "Supabase employees"
+    ],
+    "crossCalls": [
+      {
+        "callee": "console.error",
+        "key": "Supabase employees.list error:",
+        "ns": "Supabase employees",
+        "leaf": "list error:"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/api/routers/invoices.legacy.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "invoice"
+    ],
+    "crossCalls": [
+      {
+        "callee": "logger.warn",
+        "key": "invoice.createFromJob looking for job",
+        "ns": "invoice",
+        "leaf": "createFromJob looking for job"
+      },
+      {
+        "callee": "logger.warn",
+        "key": "invoice.createFromJob job query result",
+        "ns": "invoice",
+        "leaf": "createFromJob job query result"
+      },
+      {
+        "callee": "logger.warn",
+        "key": "invoice.createFromJob about to insert draft",
+        "ns": "invoice",
+        "leaf": "createFromJob about to insert draft"
+      },
+      {
+        "callee": "logger.warn",
+        "key": "invoice.createFromJob insert result",
+        "ns": "invoice",
+        "leaf": "createFromJob insert result"
+      },
+      {
+        "callee": "logger.error",
+        "key": "invoice.createFromJob insert error",
+        "ns": "invoice",
+        "leaf": "createFromJob insert error"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/dunning/senders/email.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "https://api.resend",
+      "https://api.sendgrid"
+    ],
+    "crossCalls": [
+      {
+        "callee": "fetch",
+        "key": "https://api.resend.com/emails",
+        "ns": "https://api.resend",
+        "leaf": "resend.com/emails"
+      },
+      {
+        "callee": "fetch",
+        "key": "https://api.sendgrid.com/v3/mail/send",
+        "ns": "https://api.sendgrid",
+        "leaf": "sendgrid.com/v3/mail/send"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/providers/moneybird/client.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "https://moneybird"
+    ],
+    "crossCalls": [
+      {
+        "callee": "fetch",
+        "key": "https://moneybird.com/oauth/token",
+        "ns": "https://moneybird",
+        "leaf": "com/oauth/token"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/providers/wefact/adapter.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      " B.V"
+    ],
+    "crossCalls": [
+      {
+        "callee": "customer.name.includes",
+        "key": " B.V.",
+        "ns": " B.V",
+        "leaf": "V."
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/server/services/analyzers/whatsapp.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "https://api.openai"
+    ],
+    "crossCalls": [
+      {
+        "callee": "fetch",
+        "key": "https://api.openai.com/v1/chat/completions",
+        "ns": "https://api.openai",
+        "leaf": "openai.com/v1/chat/completions"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/api/wa/control/route.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "hub"
+    ],
+    "crossCalls": [
+      {
+        "callee": "sp.get",
+        "key": "hub.mode",
+        "ns": "hub",
+        "leaf": "mode"
+      },
+      {
+        "callee": "sp.get",
+        "key": "hub.verify_token",
+        "ns": "hub",
+        "leaf": "verify_token"
+      },
+      {
+        "callee": "sp.get",
+        "key": "hub.challenge",
+        "ns": "hub",
+        "leaf": "challenge"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/api/wa/customer/route.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "hub"
+    ],
+    "crossCalls": [
+      {
+        "callee": "sp.get",
+        "key": "hub.mode",
+        "ns": "hub",
+        "leaf": "mode"
+      },
+      {
+        "callee": "sp.get",
+        "key": "hub.verify_token",
+        "ns": "hub",
+        "leaf": "verify_token"
+      },
+      {
+        "callee": "sp.get",
+        "key": "hub.challenge",
+        "ns": "hub",
+        "leaf": "challenge"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/api/webhooks/clerk/route.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "hub"
+    ],
+    "crossCalls": [
+      {
+        "callee": "searchParams.get",
+        "key": "hub.challenge",
+        "ns": "hub",
+        "leaf": "challenge"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/api/webhooks/whatsapp/route.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "hub"
+    ],
+    "crossCalls": [
+      {
+        "callee": "searchParams.get",
+        "key": "hub.mode",
+        "ns": "hub",
+        "leaf": "mode"
+      },
+      {
+        "callee": "searchParams.get",
+        "key": "hub.verify_token",
+        "ns": "hub",
+        "leaf": "verify_token"
+      },
+      {
+        "callee": "searchParams.get",
+        "key": "hub.challenge",
+        "ns": "hub",
+        "leaf": "challenge"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/en/launch/demo/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.demo.page": "t"
+    },
+    "neededNamespaces": [
+      "launch.demo",
+      "cta",
+      "benefits.faster",
+      "benefits.smarter",
+      "benefits.better_paid"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo.page",
+        "ns": "launch.demo",
+        "leaf": "demo.page"
+      },
+      {
+        "callee": "t",
+        "key": "cta.button",
+        "ns": "cta",
+        "leaf": "button"
+      },
+      {
+        "callee": "t",
+        "key": "cta.headline",
+        "ns": "cta",
+        "leaf": "headline"
+      },
+      {
+        "callee": "t",
+        "key": "cta.subtitle",
+        "ns": "cta",
+        "leaf": "subtitle"
+      },
+      {
+        "callee": "t",
+        "key": "cta.button",
+        "ns": "cta",
+        "leaf": "button"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.faster.title",
+        "ns": "benefits.faster",
+        "leaf": "faster.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.faster.description",
+        "ns": "benefits.faster",
+        "leaf": "faster.description"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.smarter.title",
+        "ns": "benefits.smarter",
+        "leaf": "smarter.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.smarter.description",
+        "ns": "benefits.smarter",
+        "leaf": "smarter.description"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.better_paid.title",
+        "ns": "benefits.better_paid",
+        "leaf": "better_paid.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.better_paid.description",
+        "ns": "benefits.better_paid",
+        "leaf": "better_paid.description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/jobs/[id]/card/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "statusValues"
+    ],
+    "crossCalls": [
+      {
+        "callee": "tMobile",
+        "key": "statusValues.planned",
+        "ns": "statusValues",
+        "leaf": "planned"
+      },
+      {
+        "callee": "tMobile",
+        "key": "statusValues.in_progress",
+        "ns": "statusValues",
+        "leaf": "in_progress"
+      },
+      {
+        "callee": "tMobile",
+        "key": "statusValues.done",
+        "ns": "statusValues",
+        "leaf": "done"
+      },
+      {
+        "callee": "tMobile",
+        "key": "statusValues.unknown",
+        "ns": "statusValues",
+        "leaf": "unknown"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/nl/launch/demo/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "launch.demo.page": "t"
+    },
+    "neededNamespaces": [
+      "launch.demo",
+      "cta",
+      "benefits.faster",
+      "benefits.smarter",
+      "benefits.better_paid"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useTranslations",
+        "key": "launch.demo.page",
+        "ns": "launch.demo",
+        "leaf": "demo.page"
+      },
+      {
+        "callee": "t",
+        "key": "cta.button",
+        "ns": "cta",
+        "leaf": "button"
+      },
+      {
+        "callee": "t",
+        "key": "cta.headline",
+        "ns": "cta",
+        "leaf": "headline"
+      },
+      {
+        "callee": "t",
+        "key": "cta.subtitle",
+        "ns": "cta",
+        "leaf": "subtitle"
+      },
+      {
+        "callee": "t",
+        "key": "cta.button",
+        "ns": "cta",
+        "leaf": "button"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.faster.title",
+        "ns": "benefits.faster",
+        "leaf": "faster.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.faster.description",
+        "ns": "benefits.faster",
+        "leaf": "faster.description"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.smarter.title",
+        "ns": "benefits.smarter",
+        "leaf": "smarter.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.smarter.description",
+        "ns": "benefits.smarter",
+        "leaf": "smarter.description"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.better_paid.title",
+        "ns": "benefits.better_paid",
+        "leaf": "better_paid.title"
+      },
+      {
+        "callee": "t",
+        "key": "benefits.better_paid.description",
+        "ns": "benefits.better_paid",
+        "leaf": "better_paid.description"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/providers/wefact/setup/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "providers": "t",
+      "providers.setup": "tForm"
+    },
+    "neededNamespaces": [
+      "providers",
+      "actions",
+      "wefact",
+      "apiKey",
+      "baseUrl",
+      "errors"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "providers.setup",
+        "ns": "providers",
+        "leaf": "setup"
+      },
+      {
+        "callee": "t",
+        "key": "actions.back",
+        "ns": "actions",
+        "leaf": "back"
+      },
+      {
+        "callee": "tForm",
+        "key": "wefact.title",
+        "ns": "wefact",
+        "leaf": "title"
+      },
+      {
+        "callee": "tForm",
+        "key": "wefact.description",
+        "ns": "wefact",
+        "leaf": "description"
+      },
+      {
+        "callee": "tForm",
+        "key": "apiKey.label",
+        "ns": "apiKey",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "apiKey.placeholder",
+        "ns": "apiKey",
+        "leaf": "placeholder"
+      },
+      {
+        "callee": "tForm",
+        "key": "apiKey.help",
+        "ns": "apiKey",
+        "leaf": "help"
+      },
+      {
+        "callee": "tForm",
+        "key": "baseUrl.label",
+        "ns": "baseUrl",
+        "leaf": "label"
+      },
+      {
+        "callee": "tForm",
+        "key": "baseUrl.help",
+        "ns": "baseUrl",
+        "leaf": "help"
+      },
+      {
+        "callee": "tForm",
+        "key": "actions.connecting",
+        "ns": "actions",
+        "leaf": "connecting"
+      },
+      {
+        "callee": "tForm",
+        "key": "actions.connect",
+        "ns": "actions",
+        "leaf": "connect"
+      },
+      {
+        "callee": "tForm",
+        "key": "actions.cancel",
+        "ns": "actions",
+        "leaf": "cancel"
+      },
+      {
+        "callee": "tForm",
+        "key": "errors.connection",
+        "ns": "errors",
+        "leaf": "connection"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/settings/whatsapp/onboard/page.tsx",
+    "bareHooks": [],
+    "existingHooks": {
+      "settings.whatsapp.onboard": "t",
+      "settings.whatsapp.health": "tHealth"
+    },
+    "neededNamespaces": [
+      "settings.whatsapp",
+      "numbers",
+      "test",
+      "steps.prereqs",
+      "steps.numbers",
+      "steps.test",
+      "steps.done",
+      "prereqs",
+      "done"
+    ],
+    "crossCalls": [
+      {
+        "callee": "useT",
+        "key": "settings.whatsapp.onboard",
+        "ns": "settings.whatsapp",
+        "leaf": "whatsapp.onboard"
+      },
+      {
+        "callee": "useT",
+        "key": "settings.whatsapp.health",
+        "ns": "settings.whatsapp",
+        "leaf": "whatsapp.health"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.success",
+        "ns": "numbers",
+        "leaf": "success"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.error",
+        "ns": "numbers",
+        "leaf": "error"
+      },
+      {
+        "callee": "t",
+        "key": "test.success",
+        "ns": "test",
+        "leaf": "success"
+      },
+      {
+        "callee": "t",
+        "key": "test.error",
+        "ns": "test",
+        "leaf": "error"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.validation",
+        "ns": "numbers",
+        "leaf": "validation"
+      },
+      {
+        "callee": "t",
+        "key": "test.validation",
+        "ns": "test",
+        "leaf": "validation"
+      },
+      {
+        "callee": "t",
+        "key": "steps.prereqs.title",
+        "ns": "steps.prereqs",
+        "leaf": "prereqs.title"
+      },
+      {
+        "callee": "t",
+        "key": "steps.numbers.title",
+        "ns": "steps.numbers",
+        "leaf": "numbers.title"
+      },
+      {
+        "callee": "t",
+        "key": "steps.test.title",
+        "ns": "steps.test",
+        "leaf": "test.title"
+      },
+      {
+        "callee": "t",
+        "key": "steps.done.title",
+        "ns": "steps.done",
+        "leaf": "done.title"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.title",
+        "ns": "prereqs",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.description",
+        "ns": "prereqs",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookUrl",
+        "ns": "prereqs",
+        "leaf": "webhookUrl"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.webhookHelp",
+        "ns": "prereqs",
+        "leaf": "webhookHelp"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.verifyToken",
+        "ns": "prereqs",
+        "leaf": "verifyToken"
+      },
+      {
+        "callee": "t",
+        "key": "prereqs.tokenHelp",
+        "ns": "prereqs",
+        "leaf": "tokenHelp"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.title",
+        "ns": "numbers",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.description",
+        "ns": "numbers",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.businessLabel",
+        "ns": "numbers",
+        "leaf": "businessLabel"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.businessHelp",
+        "ns": "numbers",
+        "leaf": "businessHelp"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.controlLabel",
+        "ns": "numbers",
+        "leaf": "controlLabel"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.controlHelp",
+        "ns": "numbers",
+        "leaf": "controlHelp"
+      },
+      {
+        "callee": "t",
+        "key": "numbers.save",
+        "ns": "numbers",
+        "leaf": "save"
+      },
+      {
+        "callee": "t",
+        "key": "test.title",
+        "ns": "test",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "test.description",
+        "ns": "test",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "test.phoneLabel",
+        "ns": "test",
+        "leaf": "phoneLabel"
+      },
+      {
+        "callee": "t",
+        "key": "test.phoneHelp",
+        "ns": "test",
+        "leaf": "phoneHelp"
+      },
+      {
+        "callee": "t",
+        "key": "test.messageLabel",
+        "ns": "test",
+        "leaf": "messageLabel"
+      },
+      {
+        "callee": "t",
+        "key": "test.messagePlaceholder",
+        "ns": "test",
+        "leaf": "messagePlaceholder"
+      },
+      {
+        "callee": "t",
+        "key": "test.messageHelp",
+        "ns": "test",
+        "leaf": "messageHelp"
+      },
+      {
+        "callee": "t",
+        "key": "test.configured",
+        "ns": "test",
+        "leaf": "configured"
+      },
+      {
+        "callee": "t",
+        "key": "test.send",
+        "ns": "test",
+        "leaf": "send"
+      },
+      {
+        "callee": "t",
+        "key": "done.title",
+        "ns": "done",
+        "leaf": "title"
+      },
+      {
+        "callee": "t",
+        "key": "done.description",
+        "ns": "done",
+        "leaf": "description"
+      },
+      {
+        "callee": "t",
+        "key": "done.success",
+        "ns": "done",
+        "leaf": "success"
+      },
+      {
+        "callee": "t",
+        "key": "done.successDescription",
+        "ns": "done",
+        "leaf": "successDescription"
+      },
+      {
+        "callee": "t",
+        "key": "done.healthSummary",
+        "ns": "done",
+        "leaf": "healthSummary"
+      },
+      {
+        "callee": "t",
+        "key": "done.environment",
+        "ns": "done",
+        "leaf": "environment"
+      },
+      {
+        "callee": "t",
+        "key": "done.webhook",
+        "ns": "done",
+        "leaf": "webhook"
+      },
+      {
+        "callee": "t",
+        "key": "done.security",
+        "ns": "done",
+        "leaf": "security"
+      },
+      {
+        "callee": "t",
+        "key": "done.goToSettings",
+        "ns": "done",
+        "leaf": "goToSettings"
+      }
+    ]
+  },
+  {
+    "file": "C:/Users/styry/plumbing-agent/src/app/api/providers/moneybird/oauth/callback/route.ts",
+    "bareHooks": [],
+    "existingHooks": {},
+    "neededNamespaces": [
+      "https://moneybird"
+    ],
+    "crossCalls": [
+      {
+        "callee": "fetch",
+        "key": "https://moneybird.com/oauth/token",
+        "ns": "https://moneybird",
+        "leaf": "com/oauth/token"
+      },
+      {
+        "callee": "fetch",
+        "key": "https://moneybird.com/api/v2/administrations",
+        "ns": "https://moneybird",
+        "leaf": "com/api/v2/administrations"
+      }
+    ]
+  }
+]

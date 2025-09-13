@@ -48,7 +48,7 @@ function calculateROI(currentAdminHours: number): ROIResults {
 }
 
 export function RoiCalculator(): React.ReactElement {
-	const tROI = useTranslations("launch.roi_calculator");
+	const t = useTranslations();
 	const [adminHours, setAdminHours] = useState<number>(20);
 	const [showResults, setShowResults] = useState<boolean>(false);
 	const [results, setResults] = useState<ROIResults | null>(null);
@@ -92,9 +92,11 @@ export function RoiCalculator(): React.ReactElement {
 						<CalculatorIcon className="h-8 w-8 text-emerald-600" />
 					</div>
 					<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-						{tROI("title")}
+						{t("launch.roi_calculator.title")}
 					</h2>
-					<p className="mt-4 text-lg text-gray-600">{tROI("subtitle")}</p>
+					<p className="mt-4 text-lg text-gray-600">
+						{t("launch.roi_calculator.subtitle")}
+					</p>
 				</div>
 
 				<div className="grid md:grid-cols-2 gap-8 items-start">
@@ -103,14 +105,16 @@ export function RoiCalculator(): React.ReactElement {
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<CalculatorIcon className="h-5 w-5" />
-								{tROI("input_label")}
+								{t("launch.roi_calculator.input_label")}
 							</CardTitle>
-							<CardDescription>{tROI("rate_per_hour")}</CardDescription>
+							<CardDescription>
+								{t("launch.roi_calculator.rate_per_hour")}
+							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-6">
 							<div>
 								<Label htmlFor="admin-hours" className="text-base font-medium">
-									{tROI("input_label")}
+									{t("launch.roi_calculator.input_label")}
 								</Label>
 								<Input
 									id="admin-hours"
@@ -135,7 +139,7 @@ export function RoiCalculator(): React.ReactElement {
 								disabled={adminHours <= 0}
 							>
 								<CalculatorIcon className="mr-2 h-4 w-4" />
-								{tROI("calculate_button")}
+								{t("launch.roi_calculator.calculate_button")}
 							</Button>
 						</CardContent>
 					</Card>
@@ -147,10 +151,10 @@ export function RoiCalculator(): React.ReactElement {
 						<CardHeader>
 							<CardTitle className="text-emerald-700">
 								{showResults && results
-									? tROI("admin_reduced", {
+									? t("launch.roi_calculator.admin_reduced", {
 											hours: results.adminReduced.toFixed(1),
 										})
-									: tROI("current_hours")}
+									: t("launch.current_hours")}
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
@@ -159,17 +163,18 @@ export function RoiCalculator(): React.ReactElement {
 									{/* Time Savings */}
 									<div className="bg-emerald-50 p-4 rounded-lg">
 										<div className="text-sm font-medium text-emerald-700 mb-1">
-											{tROI("time_saved")}
+											{t("launch.roi_calculator.time_saved")}
 										</div>
 										<div className="text-2xl font-bold text-emerald-900">
-											{results.timeSaved.toFixed(1)} {tROI("hours_per_week")}
+											{results.timeSaved.toFixed(1)}{" "}
+											{t("launch.roi_calculator.hours_per_week")}
 										</div>
 									</div>
 
 									{/* Monthly Revenue */}
 									<div className="bg-blue-50 p-4 rounded-lg">
 										<div className="text-sm font-medium text-blue-700 mb-1">
-											{tROI("extra_revenue")}
+											{t("launch.roi_calculator.extra_revenue")}
 										</div>
 										<div className="text-2xl font-bold text-blue-900">
 											{formatCurrency(results.extraRevenue)}
@@ -179,7 +184,7 @@ export function RoiCalculator(): React.ReactElement {
 									{/* Yearly Value */}
 									<div className="bg-purple-50 p-4 rounded-lg">
 										<div className="text-sm font-medium text-purple-700 mb-1">
-											{tROI("yearly_savings")}
+											{t("launch.roi_calculator.yearly_savings")}
 										</div>
 										<div className="text-3xl font-bold text-purple-900">
 											{formatCurrency(results.yearlyValue)}
@@ -189,7 +194,7 @@ export function RoiCalculator(): React.ReactElement {
 									{/* Call to action */}
 									<div className="pt-4 text-center">
 										<p className="text-sm text-gray-600 mb-3">
-											{tROI("results.total_value", {
+											{t("launch.roi_calculator.results.total_value", {
 												amount: formatCurrency(results.yearlyValue).replace(
 													"€",
 													"",
@@ -201,14 +206,16 @@ export function RoiCalculator(): React.ReactElement {
 											variant="outline"
 											className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
 										>
-											<a href="#waitlist">{tROI("cta_start_saving")}</a>
+											<a href="#waitlist">
+												{t("launch.roi_calculator.cta_start_saving")}
+											</a>
 										</Button>
 									</div>
 								</div>
 							) : (
 								<div className="text-center py-8 text-gray-400">
 									<CalculatorIcon className="mx-auto h-12 w-12 mb-3" />
-									<p>{tROI("placeholder_text")}</p>
+									<p>{t("launch.roi_calculator.placeholder_text")}</p>
 								</div>
 							)}
 						</CardContent>

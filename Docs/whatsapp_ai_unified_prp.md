@@ -341,7 +341,7 @@ export const waConversations = pgTable("wa_conversations", {
 export const jobCards = pgTable("job_cards", {
   id: uuid("id").primaryKey().defaultRandom(),
   jobId: uuid("job_id").notNull().references(() => jobs.id),
-  accessToken: varchar("access_token", { length: 64 }).unique(),
+  accessToken: REDACTED
   expiresAt: timestamp("expires_at").notNull(),
   timerStartedAt: timestamp("timer_started_at"),
   actualMinutes: integer("actual_minutes"),
@@ -356,8 +356,8 @@ export const accountingConnections = pgTable("accounting_connections", {
   id: uuid("id").primaryKey().defaultRandom(),
   orgId: uuid("org_id").notNull().references(() => organizations.id),
   provider: varchar("provider", { length: 20 }).notNull(), // moneybird, eboekhouden, wefact
-  accessToken: text("access_token").notNull(),
-  refreshToken: text("refresh_token"),
+  accessToken: REDACTED
+  refreshToken: REDACTED
   externalOrgId: varchar("external_org_id", { length: 100 }),
   settings: jsonb("settings"),
   healthStatus: varchar("health_status", { length: 20 }), // ok, token_invalid, admin_missing

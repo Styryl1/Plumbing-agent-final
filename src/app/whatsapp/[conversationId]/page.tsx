@@ -22,8 +22,8 @@ interface WhatsAppConversationPageProps {
 export default function WhatsAppConversationPage({
 	params,
 }: WhatsAppConversationPageProps): JSX.Element {
-	const tWhatsApp = useTranslations("whatsapp");
-	const tCommon = useTranslations("");
+	const t = useTranslations();
+	const t = useTranslations();
 	const router = useRouter();
 	const { conversationId } = params;
 
@@ -103,7 +103,7 @@ export default function WhatsAppConversationPage({
 						<div className="space-y-1">
 							<h1 className="text-xl font-semibold flex items-center gap-2">
 								<MessageCircle className="h-5 w-5" />
-								{conversation?.phone_number ?? tCommon("common.unnamed")}
+								{conversation?.phone_number ?? t(".common.unnamed")}
 							</h1>
 							<p className="text-sm text-muted-foreground">
 								{conversation?.phone_number && `+${conversation.phone_number}`}
@@ -117,8 +117,8 @@ export default function WhatsAppConversationPage({
 						>
 							<Clock className="h-3 w-3 mr-1" />
 							{sessionInfo.active
-								? tWhatsApp("session.active")
-								: tWhatsApp("session.expired")}
+								? t("whatsapp.session.active")
+								: t("whatsapp.session.expired")}
 						</Badge>
 						{sessionInfo.active && sessionInfo.expiresAt && (
 							<ExpiryCountdown iso={sessionInfo.expiresAt} />
@@ -132,7 +132,7 @@ export default function WhatsAppConversationPage({
 						<Card className="h-[600px] flex flex-col">
 							<CardHeader className="flex-shrink-0">
 								<CardTitle className="text-base">
-									{tWhatsApp("conversation.title")}
+									{t("whatsapp.conversation.title")}
 								</CardTitle>
 							</CardHeader>
 
@@ -143,10 +143,10 @@ export default function WhatsAppConversationPage({
 										<div>
 											<MessageCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
 											<h3 className="text-lg font-semibold mb-2">
-												{tWhatsApp("conversation.empty.title")}
+												{t("whatsapp.conversation.empty.title")}
 											</h3>
 											<p className="text-muted-foreground">
-												{tWhatsApp("conversation.empty.description")}
+												{t("whatsapp.conversation.empty.description")}
 											</p>
 										</div>
 									</div>
@@ -170,7 +170,7 @@ export default function WhatsAppConversationPage({
 												)}
 												{message.mediaUrl && (
 													<div className="text-xs opacity-75 mt-1">
-														{tWhatsApp("message.media")}
+														{t("whatsapp.message.media")}
 													</div>
 												)}
 												<div
@@ -214,7 +214,7 @@ export default function WhatsAppConversationPage({
 }
 
 function ExpiryCountdown({ iso }: { iso: string }): JSX.Element {
-	const t = useTranslations("whatsapp");
+	const t = useTranslations();
 	const [remain, setRemain] = useState<string>("00:00");
 
 	useEffect(() => {
@@ -234,7 +234,7 @@ function ExpiryCountdown({ iso }: { iso: string }): JSX.Element {
 
 	return (
 		<Badge variant="secondary" className="text-xs">
-			{t("session.expiresIn")} {remain}
+			{t("whatsapp.session.expiresIn")} {remain}
 		</Badge>
 	);
 }

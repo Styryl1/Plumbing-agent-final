@@ -1,28 +1,24 @@
 {
-	"actions": {
-		"sending": "Versturen...",
-		"back": "Back",
-		"configure": "Configure",
-		"connect": "Connect",
-		"fix": "Fix"
-	},
-	"actions.cancel": "Annuleren",
-	"actions.create": "Aanmaken",
-	"actions.creating": "Bezig...",
-	"actions.delete": "Verwijderen",
-	"actions.deleting": "Verwijderen...",
-	"actions.edit": "Bewerken",
-	"actions.openActions": "Acties openen",
-	"actions.pay": "Betalen",
-	"actions.saving": "Opslaan...",
-	"actions.update": "Bijwerken",
-	"cta": {
-		"button": "Button",
-		"headline": "Headline",
-		"subtitle": "Subtitle"
-	},
+	"back": "Terug",
+	"cancel": "Annuleren",
+	"configure": "Configureren",
+	"connect": "Verbinden",
+	"create": "Aanmaken",
+	"creating": "Bezig...",
+	"delete": "Verwijderen",
+	"deleting": "Verwijderen...",
+	"edit": "Bewerken",
+	"fix": "Repareren",
+	"openActions": "Acties openen",
+	"pay": "Betalen",
+	"saving": "Opslaan...",
+	"sending": "Versturen...",
+	"update": "Bijwerken",
 	"cta.applySuggestion": "Voorstel toepassen",
+	"cta.button": "Knop",
 	"cta.createInvoice": "Factuur maken",
 	"cta.finalizeVoiceInvoice": "Afronden → Voice-factuur",
-	"cta.newJob": "Nieuwe klus"
+	"cta.headline": "Koptekst",
+	"cta.newJob": "Nieuwe klus",
+	"cta.subtitle": "Ondertitel"
 }

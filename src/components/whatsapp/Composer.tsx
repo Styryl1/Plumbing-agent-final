@@ -20,7 +20,7 @@ export function Composer({
 	sessionActive,
 	onSent,
 }: ComposerProps): JSX.Element {
-	const tWhatsApp = useTranslations("whatsapp");
+	const t = useTranslations();
 	const [message, setMessage] = useState("");
 
 	const sendTextMutation = api.whatsapp.sendText.useMutation();
@@ -35,11 +35,11 @@ export function Composer({
 			});
 
 			setMessage("");
-			toast.success(tWhatsApp("composer.sent"));
+			toast.success(t("whatsapp.composer.sent"));
 			onSent?.();
 		} catch (error) {
 			console.error("Failed to send message:", error);
-			toast.error(tWhatsApp("composer.error"));
+			toast.error(t("whatsapp.composer.error"));
 		}
 	};
 
@@ -53,11 +53,11 @@ export function Composer({
 			});
 
 			setMessage("");
-			toast.success(tWhatsApp("composer.templateSent"));
+			toast.success(t("whatsapp.composer.templateSent"));
 			onSent?.();
 		} catch (error) {
 			console.error("Failed to send template:", error);
-			toast.error(tWhatsApp("composer.templateError"));
+			toast.error(t("whatsapp.composer.templateError"));
 		}
 	};
 
@@ -77,7 +77,7 @@ export function Composer({
 			{/* Session Warning */}
 			{!sessionActive && (
 				<div className="text-xs text-amber-600 bg-amber-50 p-2 rounded border">
-					{tWhatsApp("composer.sessionExpiredWarning")}
+					{t("whatsapp.composer.sessionExpiredWarning")}
 				</div>
 			)}
 
@@ -91,8 +91,8 @@ export function Composer({
 					onKeyDown={handleKeyDown}
 					placeholder={
 						sessionActive
-							? tWhatsApp("composer.placeholder")
-							: tWhatsApp("composer.templatePlaceholder")
+							? t("whatsapp.composer.placeholder")
+							: t("whatsapp.composer.templatePlaceholder")
 					}
 					className="min-h-[80px] resize-none"
 					disabled={isLoading}
@@ -111,12 +111,12 @@ export function Composer({
 						{isLoading ? (
 							<>
 								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-								{tWhatsApp("composer.sending")}
+								{t("whatsapp.composer.sending")}
 							</>
 						) : (
 							<>
 								<Send className="h-4 w-4 mr-2" />
-								{tWhatsApp("composer.send")}
+								{t("whatsapp.composer.send")}
 							</>
 						)}
 					</Button>
@@ -131,12 +131,12 @@ export function Composer({
 						{isLoading ? (
 							<>
 								<Loader2 className="h-4 w-4 mr-2 animate-spin" />
-								{tWhatsApp("composer.sending")}
+								{t("whatsapp.composer.sending")}
 							</>
 						) : (
 							<>
 								<FileText className="h-4 w-4 mr-2" />
-								{tWhatsApp("composer.useTemplate")}
+								{t("whatsapp.composer.useTemplate")}
 							</>
 						)}
 					</Button>

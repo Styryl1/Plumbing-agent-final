@@ -82,8 +82,8 @@ export function InvoiceDraftEditor({
 	onSave,
 	onCancel,
 }: InvoiceDraftEditorProps): JSX.Element {
-	const tInvoices = useTranslations("invoices");
-	const tForm = useTranslations("invoices.form");
+	const t = useTranslations();
+	const t = useTranslations();
 
 	// Form state
 	const [selectedCustomerId, setSelectedCustomerId] = useState<string>(
@@ -116,7 +116,7 @@ export function InvoiceDraftEditor({
 			if (result.id) onSave?.(result.id);
 		},
 		onError: (error) => {
-			toast.error(error.message || tInvoices("createError"));
+			toast.error(error.message || t("invoices.createError"));
 		},
 	});
 
@@ -215,12 +215,12 @@ export function InvoiceDraftEditor({
 
 	const handleSave = async (): Promise<void> => {
 		if (!selectedCustomerId) {
-			toast.error(tForm("customer.required"));
+			toast.error(t("invoices.form.customer.required"));
 			return;
 		}
 
 		if (lineItems.length === 0) {
-			toast.error(tForm("lineItems.required"));
+			toast.error(t("invoices.form.lineItems.required"));
 			return;
 		}
 
@@ -274,24 +274,28 @@ export function InvoiceDraftEditor({
 			{/* Header */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tInvoices("draft.title")}</CardTitle>
+					<CardTitle>{t("invoices.draft.title")}</CardTitle>
 				</CardHeader>
 			</Card>
 
 			{/* Customer Selection */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tForm("customer.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.customer.title")}</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="space-y-2">
-						<Label htmlFor="customer">{tForm("customer.label")}</Label>
+						<Label htmlFor="customer">
+							{t("invoices.form.customer.label")}
+						</Label>
 						<Select
 							value={selectedCustomerId}
 							onValueChange={setSelectedCustomerId}
 						>
 							<SelectTrigger>
-								<SelectValue placeholder={tForm("customer.placeholder")} />
+								<SelectValue
+									placeholder={t("invoices.form.customer.placeholder")}
+								/>
 							</SelectTrigger>
 							<SelectContent>
 								{customers?.map((customer) => (
@@ -312,7 +316,7 @@ export function InvoiceDraftEditor({
 									setShowJobImport(true);
 								}}
 							>
-								{tInvoices("importFromJob")}
+								{t("invoices.importFromJob")}
 							</Button>
 						</div>
 					)}
@@ -322,11 +326,13 @@ export function InvoiceDraftEditor({
 			{/* Payment Terms */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tForm("paymentTerms.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.paymentTerms.title")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-2">
-						<Label htmlFor="paymentTerms">{tForm("paymentTerms.label")}</Label>
+						<Label htmlFor="paymentTerms">
+							{t("invoices.form.paymentTerms.label")}
+						</Label>
 						<Select value={paymentTerms} onValueChange={setPaymentTerms}>
 							<SelectTrigger>
 								<SelectValue />
@@ -346,16 +352,16 @@ export function InvoiceDraftEditor({
 			{/* Line Items */}
 			<Card>
 				<CardHeader className="flex flex-row items-center justify-between">
-					<CardTitle>{tForm("lineItems.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.lineItems.title")}</CardTitle>
 					<Button onClick={addLineItem} size="sm">
 						<Plus className="h-4 w-4 mr-2" />
-						{tForm("lineItems.add")}
+						{t("invoices.form.lineItems.add")}
 					</Button>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					{lineItems.length === 0 ? (
 						<div className="text-center py-8 text-muted-foreground">
-							{tForm("lineItems.empty")}
+							{t("invoices.form.lineItems.empty")}
 						</div>
 					) : (
 						lineItems.map((item) => (
@@ -365,7 +371,7 @@ export function InvoiceDraftEditor({
 										{/* Description */}
 										<div className="col-span-12 lg:col-span-4">
 											<Label htmlFor={`description-${item.tempId}`}>
-												{tForm("lineItems.description")}
+												{t("invoices.form.lineItems.description")}
 											</Label>
 											<Textarea
 												id={`description-${item.tempId}`}
@@ -382,7 +388,7 @@ export function InvoiceDraftEditor({
 										{/* Quantity */}
 										<div className="col-span-6 lg:col-span-3">
 											<Label htmlFor={`qty-${item.tempId}`}>
-												{tForm("lineItems.quantity")}
+												{t("invoices.form.lineItems.quantity")}
 											</Label>
 											<Input
 												id={`qty-${item.tempId}`}
@@ -400,7 +406,7 @@ export function InvoiceDraftEditor({
 										{/* Unit Price */}
 										<div className="col-span-6 lg:col-span-3">
 											<Label htmlFor={`price-${item.tempId}`}>
-												{tForm("lineItems.unitPrice")}
+												{t("invoices.form.lineItems.unitPrice")}
 											</Label>
 											<Input
 												id={`price-${item.tempId}`}
@@ -419,7 +425,7 @@ export function InvoiceDraftEditor({
 										{/* VAT Rate */}
 										<div className="col-span-6 lg:col-span-1">
 											<Label htmlFor={`vat-${item.tempId}`}>
-												{tForm("lineItems.vatRate")}
+												{t("invoices.form.lineItems.vatRate")}
 											</Label>
 											<Select
 												value={(item.vatRate * 100).toString()}
@@ -481,7 +487,7 @@ export function InvoiceDraftEditor({
 									{/* Line Total */}
 									<div className="mt-4 pt-4 border-t flex justify-between">
 										<span className="text-sm text-muted-foreground">
-											{tForm("lineItems.lineTotal")}
+											{t("invoices.form.lineItems.lineTotal")}
 										</span>
 										<span className="font-medium">
 											{formatMoney(
@@ -502,11 +508,13 @@ export function InvoiceDraftEditor({
 			{/* Discount */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tForm("discount.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.discount.title")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-2">
-						<Label htmlFor="discount">{tForm("discount.percentage")}</Label>
+						<Label htmlFor="discount">
+							{t("invoices.form.discount.percentage")}
+						</Label>
 						<Input
 							id="discount"
 							type="number"
@@ -526,12 +534,12 @@ export function InvoiceDraftEditor({
 			{/* Totals */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tForm("totals.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.totals.title")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-3">
 						<div className="flex justify-between">
-							<span>{tForm("totals.subtotal")}</span>
+							<span>{t("invoices.form.totals.subtotal")}</span>
 							<span>
 								{formatMoney(totals.subtotalCents + totals.discountAmountCents)}
 							</span>
@@ -539,22 +547,22 @@ export function InvoiceDraftEditor({
 						{discountPercentage > 0 && (
 							<div className="flex justify-between text-red-600">
 								<span>
-									{tForm("totals.discount")} ({discountPercentage}%)
+									{t("invoices.form.totals.discount")} ({discountPercentage}%)
 								</span>
 								<span>-{formatMoney(totals.discountAmountCents)}</span>
 							</div>
 						)}
 						<div className="flex justify-between">
-							<span>{tForm("totals.subtotalAfterDiscount")}</span>
+							<span>{t("invoices.form.totals.subtotalAfterDiscount")}</span>
 							<span>{formatMoney(totals.subtotalCents)}</span>
 						</div>
 						<div className="flex justify-between text-muted-foreground">
-							<span>{tForm("totals.vat")}</span>
+							<span>{t("invoices.form.totals.vat")}</span>
 							<span>{formatMoney(totals.vatAmountCents)}</span>
 						</div>
 						<Separator />
 						<div className="flex justify-between text-xl font-bold">
-							<span>{tForm("totals.total")}</span>
+							<span>{t("invoices.form.totals.total")}</span>
 							<span className="text-green-600">
 								{formatMoney(totals.totalCents)}
 							</span>
@@ -566,30 +574,32 @@ export function InvoiceDraftEditor({
 			{/* Notes */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tForm("notes.title")}</CardTitle>
+					<CardTitle>{t("invoices.form.notes.title")}</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="space-y-2">
-						<Label htmlFor="notes">{tForm("notes.public")}</Label>
+						<Label htmlFor="notes">{t("invoices.form.notes.public")}</Label>
 						<Textarea
 							id="notes"
 							value={notes}
 							onChange={(e) => {
 								setNotes(e.target.value);
 							}}
-							placeholder={tForm("notes.publicPlaceholder")}
+							placeholder={t("invoices.form.notes.publicPlaceholder")}
 							rows={3}
 						/>
 					</div>
 					<div className="space-y-2">
-						<Label htmlFor="internalNotes">{tForm("notes.internal")}</Label>
+						<Label htmlFor="internalNotes">
+							{t("invoices.form.notes.internal")}
+						</Label>
 						<Textarea
 							id="internalNotes"
 							value={internalNotes}
 							onChange={(e) => {
 								setInternalNotes(e.target.value);
 							}}
-							placeholder={tForm("notes.internalPlaceholder")}
+							placeholder={t("invoices.form.notes.internalPlaceholder")}
 							rows={3}
 						/>
 					</div>
@@ -600,7 +610,7 @@ export function InvoiceDraftEditor({
 			<Card>
 				<CardFooter className="flex justify-between">
 					<Button variant="outline" onClick={onCancel}>
-						{tInvoices("actions.cancel")}
+						{t("invoices.actions.cancel")}
 					</Button>
 					<Button
 						onClick={handleSave}
@@ -611,7 +621,7 @@ export function InvoiceDraftEditor({
 						}
 					>
 						<Save className="h-4 w-4 mr-2" />
-						{tInvoices("actions.saveDraft")}
+						{t("invoices.actions.saveDraft")}
 					</Button>
 				</CardFooter>
 			</Card>

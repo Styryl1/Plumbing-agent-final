@@ -1,18 +1,4 @@
 {
-	"benefits": {
-		"faster": {
-			"title": "Title",
-			"description": "Description"
-		},
-		"smarter": {
-			"title": "Title",
-			"description": "Description"
-		},
-		"better_paid": {
-			"title": "Title",
-			"description": "Description"
-		}
-	},
 	"controls": {
 		"title": "Title",
 		"description": "Description",
@@ -20,76 +6,167 @@
 		"creating": "Creating",
 		"createDrafts": "CreateDrafts"
 	},
-	"launch": {
-		"meta": {
-			"title": "Title",
-			"description": "Description",
-			"keywords": "Keywords"
-		},
-		"demo": {
-			"content": {
-				"common": {
-					"loading": "Loading"
+	"meta": {
+		"title": "Plumbing Agent - Emergency Plumber Platform",
+		"description": "Transform emergency plumbing with WhatsApp intake, AI diagnosis, and instant invoicing",
+		"keywords": "emergency plumber, plumbing software, WhatsApp business, Dutch plumber, loodgieter"
+	},
+	"demo": {
+		"page": {
+			"title": "Product Demo",
+			"headline": "See Plumbing Agent in action",
+			"subtitle": "From WhatsApp intake to paid invoice in minutes",
+			"benefits": {
+				"faster": {
+					"title": "Faster Response Times",
+					"description": "WhatsApp intake and AI analysis cut response time from hours to minutes"
+				},
+				"smarter": {
+					"title": "Smarter Diagnosis",
+					"description": "AI-powered issue analysis helps you prepare better and work more efficiently"
+				},
+				"better_paid": {
+					"title": "Get Paid Faster",
+					"description": "Instant invoicing and automated payment reminders improve cash flow"
 				}
 			},
-			"page": {
-				"nav": {
-					"previous": "Previous",
-					"next": "Next"
-				}
-			}
+			"cta": {
+				"headline": "Ready to try it?",
+				"subtitle": "Join the pilot and get early access",
+				"button": "Join waitlist"
+			},
+			"nav": {
+				"previous": "Previous",
+				"next": "Next",
+				"step_counter": "Step {current} of {total}"
+			},
+			"back": "Back"
 		},
-		"usp": {
-			"title": "Title",
-			"subtitle": "Subtitle",
+		"content": {
 			"whatsapp": {
-				"title": "Title",
-				"desc": "Desc"
+				"photo_attached": "Photo attached",
+				"ai_analyzing": "Analyzing message…"
 			},
-			"ai": {
-				"title": "Title",
-				"desc": "Desc"
+			"ai_suggestion": {
+				"diagnosis": "Diagnosis",
+				"reliable": "Reliable",
+				"urgency": "Urgency",
+				"emergency": "Emergency",
+				"estimated_time": "Estimated time",
+				"minutes": "minutes",
+				"required_materials": "Required materials",
+				"quantity_format": "{qty}x"
 			},
 			"schedule": {
-				"title": "Title",
-				"desc": "Desc"
+				"assigned_to": "Assigned to",
+				"start_time": "Start time",
+				"end_time": "End time",
+				"auto_assigned": "Auto-assigned"
 			},
-			"jobcards": {
-				"title": "Title",
-				"desc": "Desc"
+			"job_card": {
+				"address": "Address",
+				"phone": "Phone"
 			},
-			"invoicing": {
-				"title": "Title",
-				"desc": "Desc"
+			"voice_draft": {
+				"voice_transcript": "Voice transcript",
+				"invoice_lines": "Invoice lines",
+				"line_format": "{qty}× {item}",
+				"subtotal_ex_vat": "Subtotal (ex VAT)",
+				"vat_total": "VAT total",
+				"total": "Total"
 			},
-			"compliance": {
-				"title": "Title",
-				"desc": "Desc"
-			}
-		},
-		"trust": {
-			"dutch_compliance": "Dutch Compliance",
-			"ideal_payments": "Ideal Payments",
-			"whatsapp_business": "Whatsapp Business"
-		},
-		"waitlist": {
-			"title": "Title",
-			"subtitle": "Subtitle",
-			"email": "Email",
-			"phone": "Phone",
-			"org": "Org",
-			"success": "Success",
-			"error": "Error",
-			"submit": "Submit",
-			"gdpr": "Gdpr"
+			"send_pay": {
+				"invoice_id": "Invoice ID",
+				"invoice_sent": "Invoice sent",
+				"payment_status": "Payment status",
+				"pdf": "PDF",
+				"whatsapp_message": "WhatsApp message"
+			},
+			"reminders": {
+				"after_days": "After {days} days",
+				"scheduled": "Scheduled",
+				"automation_active": "Automation active",
+				"opt_out_respected": "Opt-out respected",
+				"email_escalation": "Email escalation",
+				"title": "Payment reminders"
+			},
+			"common": {
+				"loading": "Loading demo data…",
+				"alternative_payment": "Alternative payment",
+				"due_date": "Due date",
+				"email": "Email",
+				"step_data_unavailable": "Step data unavailable"
+			},
+			"step_previous": "Previous",
+			"step_next": "Next",
+			"step_jump": "Jump to step",
+			"demo_started": "Demo started",
+			"demo_completed": "Demo completed"
 		}
+	},
+	"usp": {
+		"title": "Title",
+		"subtitle": "Subtitle",
+		"whatsapp": {
+			"title": "Title",
+			"desc": "Desc"
+		},
+		"ai": {
+			"title": "Title",
+			"desc": "Desc"
+		},
+		"schedule": {
+			"title": "Title",
+			"desc": "Desc"
+		},
+		"jobcards": {
+			"title": "Title",
+			"desc": "Desc"
+		},
+		"invoicing": {
+			"title": "Title",
+			"desc": "Desc"
+		},
+		"compliance": {
+			"title": "Title",
+			"desc": "Desc"
+		}
+	},
+	"cookie_consent": {
+		"title": "We use cookies",
+		"description": "We use essential cookies and analytics to improve your experience.",
+		"accept_all": "Accept all",
+		"reject_all": "Reject all",
+		"essential_only": "Essential only",
+		"privacy_policy": "Privacy policy",
+		"close": "Close"
+	},
+	"trust": {
+		"dutch_compliance": "Dutch Compliance",
+		"ideal_payments": "Ideal Payments",
+		"whatsapp_business": "Whatsapp Business"
+	},
+	"waitlist": {
+		"title": "Join the Pilot Program",
+		"subtitle": "Get early access to Plumbing Agent and transform your emergency plumbing business",
+		"email": "Email address",
+		"phone": "Phone number (optional)",
+		"org": "Organization name (optional)",
+		"success": "Thank you! We'll be in touch soon with pilot access details.",
+		"error": "Something went wrong. Please try again or contact us directly.",
+		"submit": "Join Waitlist",
+		"gdpr": "By submitting, you agree to our privacy policy and terms of service."
 	},
 	"list": {
 		"title": "Title",
 		"loading": "Loading"
 	},
-	"pilot.banner.subtitle": "Certain features are enabled for testing.",
-	"pilot.banner.title": "Pilot Mode",
+	"pilot": {
+		"banner": {
+			"subtitle": "Certain features are enabled for testing.",
+			"title": "Pilot Mode"
+		}
+	},
 	"results": {
 		"title": "Title",
 		"total": "Total",

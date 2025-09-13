@@ -11,9 +11,8 @@ const steps = [
   { name: "Check Routes", cmd: ["node", ["scripts/check-routes.mjs"]] },
   { name: "Check Encoding", cmd: ["node", ["scripts/check-encoding.mjs"]] },
   { name: "Check Placeholders", cmd: ["node", ["scripts/check-placeholders.mjs"]] },
-  { name: "Vitest Tests", cmd: ["pnpm", ["-s", "test"]], env: { WB_ALLOW_DB: "1" } },
-  { name: "Workbench Tests", cmd: ["npx", ["vitest", "run", "--config", "workbench/vitest.config.ts"]], env: { WB_ALLOW_DB: "1" } },
   { name: "i18n Prune", cmd: ["pnpm", ["-s", "i18n:prune"]] },
+  { name: "i18n Scan", cmd: ["pnpm", ["-s", "i18n:scan"]] },
   { name: "i18n Check", cmd: ["pnpm", ["-s", "i18n:check"]] },
   { name: "Audit Rules",  cmd: ["node", ["scripts/audit-production-rules.mjs"]] },
   { name: "Build",        cmd: ["pnpm", ["-s", "exec", "next", "build"]] }

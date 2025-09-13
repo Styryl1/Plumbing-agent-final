@@ -57,10 +57,7 @@ export default function CustomerEditDialog({
 	customer,
 	onCustomerUpdated,
 }: CustomerEditDialogProps): JSX.Element {
-	const tCustomers = useTranslations("customers");
-	const tForm = useTranslations("customers.form");
-	const tCommon = useTranslations("common");
-	const tAction = useTranslations("action");
+	const t = useTranslations();
 
 	const utils = api.useUtils();
 
@@ -113,7 +110,7 @@ export default function CustomerEditDialog({
 			void utils.customers.search.invalidate();
 
 			onCustomerUpdated();
-			toast.success(tCustomers("success.updated"));
+			toast.success(t("customers.success.updated"));
 		},
 		onError: (error) => {
 			const zodFlatten = getZodFlattenFromTRPC(error);
@@ -122,7 +119,7 @@ export default function CustomerEditDialog({
 				return;
 			}
 			// Show error toast
-			toast.error(tCustomers("error.update"));
+			toast.error(t("customers.error.update"));
 		},
 	});
 
@@ -198,9 +195,9 @@ export default function CustomerEditDialog({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-[560px] max-h-[85vh] overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>{tCustomers("edit.title")}</DialogTitle>
+					<DialogTitle>{t("customers.edit.title")}</DialogTitle>
 					<DialogDescription>
-						{tCustomers("edit.description")}
+						{t("customers.edit.description")}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -208,11 +205,11 @@ export default function CustomerEditDialog({
 					<div className="grid gap-4">
 						{/* Name */}
 						<div className="space-y-2">
-							<Label htmlFor="name">{tForm("name.label")}</Label>
+							<Label htmlFor="name">{t("customers.form.name.label")}</Label>
 							<Input
 								id="name"
 								type="text"
-								placeholder={tForm("name.placeholder")}
+								placeholder={t("customers.form.name.placeholder")}
 								{...form.register("name")}
 								className={form.formState.errors.name ? "border-red-500" : ""}
 								required
@@ -226,11 +223,11 @@ export default function CustomerEditDialog({
 
 						{/* Email */}
 						<div className="space-y-2">
-							<Label htmlFor="email">{tForm("email.label")}</Label>
+							<Label htmlFor="email">{t("customers.form.email.label")}</Label>
 							<Input
 								id="email"
 								type="email"
-								placeholder={tForm("email.placeholder")}
+								placeholder={t("customers.form.email.placeholder")}
 								{...form.register("email")}
 								className={form.formState.errors.email ? "border-red-500" : ""}
 							/>
@@ -243,11 +240,11 @@ export default function CustomerEditDialog({
 
 						{/* Phone */}
 						<div className="space-y-2">
-							<Label htmlFor="phone">{tForm("phone.label")}</Label>
+							<Label htmlFor="phone">{t("customers.form.phone.label")}</Label>
 							<Input
 								id="phone"
 								type="tel"
-								placeholder={tForm("phone.placeholder")}
+								placeholder={t("customers.form.phone.placeholder")}
 								{...form.register("phone")}
 								className={form.formState.errors.phone ? "border-red-500" : ""}
 							/>
@@ -260,11 +257,13 @@ export default function CustomerEditDialog({
 
 						{/* Address */}
 						<div className="space-y-2">
-							<Label htmlFor="address">{tForm("address.label")}</Label>
+							<Label htmlFor="address">
+								{t("customers.form.address.label")}
+							</Label>
 							<Input
 								id="address"
 								type="text"
-								placeholder={tForm("address.placeholder")}
+								placeholder={t("customers.form.address.placeholder")}
 								{...form.register("address")}
 								className={
 									form.formState.errors.address ? "border-red-500" : ""
@@ -280,19 +279,19 @@ export default function CustomerEditDialog({
 						{/* Dutch Address Auto-fill Section */}
 						<div className="space-y-4 p-4 bg-gray-50 rounded-md">
 							<h4 className="text-sm font-medium text-gray-700">
-								{tForm("address.autoFill.title")}
+								{t("customers.form.address.autoFill.title")}
 							</h4>
 
 							{/* Postal Code */}
 							<div className="grid grid-cols-2 gap-3">
 								<div className="space-y-2">
 									<Label htmlFor="postalCode">
-										{tForm("postalCode.label")}
+										{t("customers.form.postalCode.label")}
 									</Label>
 									<Input
 										id="postalCode"
 										type="text"
-										placeholder={tForm("postalCode.placeholder")}
+										placeholder={t("customers.form.postalCode.placeholder")}
 										{...form.register("postalCode")}
 										className={
 											form.formState.errors.postalCode ? "border-red-500" : ""
@@ -308,12 +307,12 @@ export default function CustomerEditDialog({
 								{/* House Number */}
 								<div className="space-y-2">
 									<Label htmlFor="houseNumber">
-										{tForm("houseNumber.label")}
+										{t("customers.form.houseNumber.label")}
 									</Label>
 									<Input
 										id="houseNumber"
 										type="text"
-										placeholder={tForm("houseNumber.placeholder")}
+										placeholder={t("customers.form.houseNumber.placeholder")}
 										{...form.register("houseNumber")}
 										className={
 											form.formState.errors.houseNumber ? "border-red-500" : ""
@@ -331,22 +330,24 @@ export default function CustomerEditDialog({
 							{/* Auto-filled fields (read-only) */}
 							<div className="grid grid-cols-2 gap-3">
 								<div className="space-y-2">
-									<Label htmlFor="street">{tForm("street.label")}</Label>
+									<Label htmlFor="street">
+										{t("customers.form.street.label")}
+									</Label>
 									<Input
 										id="street"
 										type="text"
-										placeholder={tForm("street.placeholder")}
+										placeholder={t("customers.form.street.placeholder")}
 										{...form.register("street")}
 										className="bg-gray-50"
 										readOnly
 									/>
 								</div>
 								<div className="space-y-2">
-									<Label htmlFor="city">{tForm("city.label")}</Label>
+									<Label htmlFor="city">{t("customers.form.city.label")}</Label>
 									<Input
 										id="city"
 										type="text"
-										placeholder={tForm("city.placeholder")}
+										placeholder={t("customers.form.city.placeholder")}
 										{...form.register("city")}
 										className="bg-gray-50"
 										readOnly
@@ -356,14 +357,16 @@ export default function CustomerEditDialog({
 
 							{isLooking && (
 								<p className="text-sm text-blue-600">
-									{tForm("address.autoFill.loading")}
+									{t("customers.form.address.autoFill.loading")}
 								</p>
 							)}
 						</div>
 
 						{/* Language */}
 						<div className="space-y-2">
-							<Label htmlFor="language">{tForm("language.label")}</Label>
+							<Label htmlFor="language">
+								{t("customers.form.language.label")}
+							</Label>
 							<Select
 								value={form.watch("language")}
 								onValueChange={(value: "nl" | "en") => {
@@ -389,7 +392,7 @@ export default function CustomerEditDialog({
 								onOpenChange(false);
 							}}
 						>
-							{tCommon("cancel")}
+							{t("actions.cancel")}
 						</Button>
 						<Button
 							type="submit"
@@ -400,8 +403,8 @@ export default function CustomerEditDialog({
 							}
 						>
 							{updateCustomerMutation.isPending
-								? tCommon("loading")
-								: tAction("edit")}
+								? t("common.loading")
+								: t("actions.edit")}
 						</Button>
 					</DialogFooter>
 				</form>

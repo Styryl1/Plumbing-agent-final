@@ -1,6 +1,7 @@
 "use client";
 
 import { Calendar, FileText, Send, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import ReviewList from "~/components/invoices/ReviewList";
@@ -15,12 +16,11 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
-import { useT } from "~/i18n/client";
 import { parseZdt } from "~/lib/time";
 import { api } from "~/lib/trpc/client";
 
 export default function InvoiceReviewPage(): JSX.Element {
-	const t = useT("invoices.review");
+	const t = useTranslations();
 	const [selected, setSelected] = useState<Record<string, boolean>>({});
 	const [alsoWhatsApp, setAlsoWhatsApp] = useState(false);
 	const [sinceDate, setSinceDate] = useState(() => {
@@ -107,8 +107,10 @@ export default function InvoiceReviewPage(): JSX.Element {
 	return (
 		<div className="container mx-auto py-8 space-y-6">
 			<div>
-				<h1 className="text-3xl font-bold">{t("title")}</h1>
-				<p className="text-muted-foreground mt-2">{t("subtitle")}</p>
+				<h1 className="text-3xl font-bold">{t("invoices.review.title")}</h1>
+				<p className="text-muted-foreground mt-2">
+					{t("invoices.review.subtitle")}
+				</p>
 			</div>
 
 			{/* Controls Card */}
@@ -116,14 +118,18 @@ export default function InvoiceReviewPage(): JSX.Element {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Calendar className="h-5 w-5" />
-						{t("controls.title")}
+						{t("invoices.review.controls.title")}
 					</CardTitle>
-					<CardDescription>{t("controls.description")}</CardDescription>
+					<CardDescription>
+						{t("invoices.review.controls.description")}
+					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="flex flex-col sm:flex-row gap-4">
 						<div className="flex-1">
-							<Label htmlFor="sinceDate">{t("controls.sinceDate")}</Label>
+							<Label htmlFor="sinceDate">
+								{t("invoices.review.controls.sinceDate")}
+							</Label>
 							<Input
 								id="sinceDate"
 								type="date"
@@ -143,8 +149,8 @@ export default function InvoiceReviewPage(): JSX.Element {
 							>
 								<FileText className="h-4 w-4" />
 								{createDraftsMutation.isPending
-									? t("controls.creating")
-									: t("controls.createDrafts")}
+									? t("invoices.review.controls.creating")
+									: t("invoices.review.controls.createDrafts")}
 							</Button>
 						</div>
 					</div>
@@ -156,12 +162,14 @@ export default function InvoiceReviewPage(): JSX.Element {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Send className="h-5 w-5" />
-						{t("bulkActions.title")}
+						{t("invoices.review.bulkActions.title")}
 					</CardTitle>
 					<CardDescription>
 						{selectedIds.length > 0
-							? t("bulkActions.selectedCount", { count: selectedIds.length })
-							: t("bulkActions.description")}
+							? t("invoices.review.bulkActions.selectedCount", {
+									count: selectedIds.length,
+								})
+							: t("invoices.review.bulkActions.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
@@ -173,7 +181,7 @@ export default function InvoiceReviewPage(): JSX.Element {
 						/>
 						<Label htmlFor="alsoWhatsApp" className="flex items-center gap-2">
 							<Zap className="h-4 w-4" />
-							{t("bulkActions.alsoWhatsApp")}
+							{t("invoices.review.bulkActions.alsoWhatsApp")}
 						</Label>
 					</div>
 
@@ -184,8 +192,10 @@ export default function InvoiceReviewPage(): JSX.Element {
 					>
 						<Send className="h-4 w-4" />
 						{bulkSendMutation.isPending
-							? t("bulkActions.sending")
-							: t("bulkActions.send", { count: selectedIds.length })}
+							? t("invoices.review.bulkActions.sending")
+							: t("invoices.review.bulkActions.send", {
+									count: selectedIds.length,
+								})}
 					</Button>
 				</CardContent>
 			</Card>
@@ -193,11 +203,11 @@ export default function InvoiceReviewPage(): JSX.Element {
 			{/* Invoice List */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("list.title")}</CardTitle>
+					<CardTitle>{t("invoices.review.list.title")}</CardTitle>
 					<CardDescription>
 						{isLoadingDrafts
-							? t("list.loading")
-							: t("list.count", { count: drafts.length })}
+							? t("invoices.review.list.loading")
+							: t("invoices.review.list.count", { count: drafts.length })}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -215,20 +225,22 @@ export default function InvoiceReviewPage(): JSX.Element {
 			{bulkSendMutation.data && (
 				<Card>
 					<CardHeader>
-						<CardTitle>{t("results.title")}</CardTitle>
+						<CardTitle>{t("invoices.review.results.title")}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="space-y-2">
 							<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
 								<div>
-									<div className="font-medium">{t("results.total")}</div>
+									<div className="font-medium">
+										{t("invoices.review.results.total")}
+									</div>
 									<div className="text-2xl font-bold">
 										{bulkSendMutation.data.total}
 									</div>
 								</div>
 								<div>
 									<div className="font-medium text-green-600">
-										{t("results.sent")}
+										{t("invoices.review.results.sent")}
 									</div>
 									<div className="text-2xl font-bold text-green-600">
 										{bulkSendMutation.data.sent}
@@ -236,7 +248,7 @@ export default function InvoiceReviewPage(): JSX.Element {
 								</div>
 								<div>
 									<div className="font-medium text-yellow-600">
-										{t("results.skipped")}
+										{t("invoices.review.results.skipped")}
 									</div>
 									<div className="text-2xl font-bold text-yellow-600">
 										{bulkSendMutation.data.skipped}
@@ -244,7 +256,7 @@ export default function InvoiceReviewPage(): JSX.Element {
 								</div>
 								<div>
 									<div className="font-medium text-blue-600">
-										{t("results.withPaymentLinks")}
+										{t("invoices.review.results.withPaymentLinks")}
 									</div>
 									<div className="text-2xl font-bold text-blue-600">
 										{bulkSendMutation.data.withPaymentLinks}
@@ -254,7 +266,7 @@ export default function InvoiceReviewPage(): JSX.Element {
 							{bulkSendMutation.data.errors.length > 0 && (
 								<div className="mt-4">
 									<div className="font-medium text-red-600 mb-2">
-										{t("results.errors")}
+										{t("invoices.review.results.errors")}
 									</div>
 									<div className="space-y-1 text-sm">
 										{bulkSendMutation.data.errors.map((error, idx) => (

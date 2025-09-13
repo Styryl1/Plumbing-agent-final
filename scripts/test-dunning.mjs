@@ -9,7 +9,7 @@ import { createClient } from "@supabase/supabase-js";
 // Mock environment for testing
 process.env.NODE_ENV = "development";
 process.env.EMAIL_PROVIDER = "disabled";
-process.env.WHATSAPP_ACCESS_TOKEN = "test_token";
+process.env.WHATSAPP_ACCESS_TOKEN = REDACTED
 process.env.WHATSAPP_BUSINESS_PHONE_ID = "test_phone_id";
 
 // Simple mock Supabase client for testing

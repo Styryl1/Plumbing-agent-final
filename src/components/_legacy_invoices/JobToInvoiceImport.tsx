@@ -42,10 +42,10 @@ export function JobToInvoiceImport({
 	onImport,
 	onCancel,
 }: JobToInvoiceImportProps): JSX.Element {
-	const tInvoices = useTranslations("invoices");
-	const tForm = useTranslations("invoices.import");
-	const tJobDetails = useTranslations("invoices.import.jobDetails");
-	const tEstimate = useTranslations("invoices.import.estimate");
+	const t = useTranslations();
+	const t = useTranslations();
+	const t = useTranslations();
+	const t = useTranslations();
 
 	const [selectedJobId, setSelectedJobId] = useState<string>(
 		initialJobId ?? "",
@@ -110,17 +110,21 @@ export function JobToInvoiceImport({
 		>
 			<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>{tForm("title")}</DialogTitle>
-					<DialogDescription>{tForm("description")}</DialogDescription>
+					<DialogTitle>{t("invoices.import.title")}</DialogTitle>
+					<DialogDescription>
+						{t("invoices.import.description")}
+					</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-6">
 					{/* Job Selection */}
 					<div className="space-y-2">
-						<Label htmlFor="job-select">{tForm("selectJob")}</Label>
+						<Label htmlFor="job-select">{t("invoices.import.selectJob")}</Label>
 						<Select value={selectedJobId} onValueChange={setSelectedJobId}>
 							<SelectTrigger>
-								<SelectValue placeholder={tForm("selectJobPlaceholder")} />
+								<SelectValue
+									placeholder={t("invoices.import.selectJobPlaceholder")}
+								/>
 							</SelectTrigger>
 							<SelectContent>
 								{jobs?.map((job) => (
@@ -171,7 +175,7 @@ export function JobToInvoiceImport({
 										<CalendarDays className="h-4 w-4 text-muted-foreground" />
 										<div>
 											<div className="text-sm font-medium">
-												{tJobDetails("date")}
+												{t("invoices.import.jobDetails.date")}
 											</div>
 											<div className="text-sm text-muted-foreground">
 												{parseZdt(selectedJob.start)
@@ -184,7 +188,7 @@ export function JobToInvoiceImport({
 										<Clock className="h-4 w-4 text-muted-foreground" />
 										<div>
 											<div className="text-sm font-medium">
-												{tJobDetails("duration")}
+												{t("invoices.import.jobDetails.duration")}
 											</div>
 											<div className="text-sm text-muted-foreground">
 												{formatJobDuration(selectedJob)}
@@ -196,7 +200,7 @@ export function JobToInvoiceImport({
 								{/* Employee */}
 								<div>
 									<div className="text-sm font-medium">
-										{tJobDetails("employee")}
+										{t("invoices.import.jobDetails.employee")}
 									</div>
 									<div className="text-sm text-muted-foreground">
 										{getEmployeeName(selectedJob.employeeId)}
@@ -207,7 +211,7 @@ export function JobToInvoiceImport({
 								{selectedJob.description && (
 									<div>
 										<div className="text-sm font-medium">
-											{tJobDetails("description")}
+											{t("invoices.import.jobDetails.description")}
 										</div>
 										<div className="text-sm text-muted-foreground">
 											{selectedJob.description}
@@ -222,11 +226,13 @@ export function JobToInvoiceImport({
 
 					{/* Labor Configuration */}
 					<div className="space-y-4">
-						<h4 className="font-medium">{tForm("laborConfig")}</h4>
+						<h4 className="font-medium">{t("invoices.import.laborConfig")}</h4>
 
 						<div className="grid grid-cols-2 gap-4">
 							<div className="space-y-2">
-								<Label htmlFor="labor-hours">{tForm("laborHours")}</Label>
+								<Label htmlFor="labor-hours">
+									{t("invoices.import.laborHours")}
+								</Label>
 								<Input
 									id="labor-hours"
 									type="number"
@@ -241,7 +247,9 @@ export function JobToInvoiceImport({
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="hourly-rate">{tForm("hourlyRate")}</Label>
+								<Label htmlFor="hourly-rate">
+									{t("invoices.import.hourlyRate")}
+								</Label>
 								<Input
 									id="hourly-rate"
 									type="number"
@@ -259,7 +267,9 @@ export function JobToInvoiceImport({
 						<Card className="bg-blue-50 border-blue-200">
 							<CardContent className="pt-4">
 								<div className="flex justify-between items-center">
-									<span className="font-medium">{tEstimate("title")}</span>
+									<span className="font-medium">
+										{t("invoices.import.estimate.title")}
+									</span>
 									<span className="text-xl font-bold text-blue-600">
 										{formatMoney(calculateEstimatedAmount())}
 									</span>
@@ -278,14 +288,14 @@ export function JobToInvoiceImport({
 
 				<DialogFooter>
 					<Button variant="outline" onClick={onCancel}>
-						{tInvoices("actions.cancel")}
+						{t("invoices.actions.cancel")}
 					</Button>
 					<Button
 						onClick={handleImport}
 						disabled={!selectedJobId}
 						className="bg-green-600 hover:bg-green-700"
 					>
-						{tForm("import")}
+						{t("invoices.import.import")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

@@ -34,7 +34,7 @@ type Step = "prereqs" | "numbers" | "test" | "done";
 
 export default function WhatsAppOnboardPage(): JSX.Element {
 	const t = useT("settings.whatsapp.onboard");
-	const tHealth = useT("settings.whatsapp.health");
+	const tHealth = useT("misc.health");
 
 	// Wizard state
 	const [currentStep, setCurrentStep] = useState<Step>("prereqs");

@@ -53,9 +53,7 @@ export default function CustomerCreateDialog({
 	onOpenChange,
 	onCustomerCreated,
 }: CustomerCreateDialogProps): JSX.Element {
-	const tCustomers = useTranslations("customers");
-	const tForm = useTranslations("customers.form");
-	const tCommon = useTranslations("common");
+	const t = useTranslations();
 
 	// No need for separate field error state - React Hook Form manages this
 
@@ -139,9 +137,9 @@ export default function CustomerCreateDialog({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-[560px] max-h-[85vh] overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>{tCustomers("create.title")}</DialogTitle>
+					<DialogTitle>{t("customers.create.title")}</DialogTitle>
 					<DialogDescription>
-						{tCustomers("create.description")}
+						{t("customers.create.description")}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -149,11 +147,11 @@ export default function CustomerCreateDialog({
 					<div className="grid gap-4">
 						{/* Name */}
 						<div className="space-y-2">
-							<Label htmlFor="name">{tForm("name.label")}</Label>
+							<Label htmlFor="name">{t("customers.form.name.label")}</Label>
 							<Input
 								id="name"
 								type="text"
-								placeholder={tForm("name.placeholder")}
+								placeholder={t("customers.form.name.placeholder")}
 								{...form.register("name")}
 								className={form.formState.errors.name ? "border-red-500" : ""}
 								required
@@ -167,11 +165,11 @@ export default function CustomerCreateDialog({
 
 						{/* Email */}
 						<div className="space-y-2">
-							<Label htmlFor="email">{tForm("email.label")}</Label>
+							<Label htmlFor="email">{t("customers.form.email.label")}</Label>
 							<Input
 								id="email"
 								type="email"
-								placeholder={tForm("email.placeholder")}
+								placeholder={t("customers.form.email.placeholder")}
 								{...form.register("email")}
 								className={form.formState.errors.email ? "border-red-500" : ""}
 							/>
@@ -184,11 +182,11 @@ export default function CustomerCreateDialog({
 
 						{/* Phone */}
 						<div className="space-y-2">
-							<Label htmlFor="phone">{tForm("phone.label")}</Label>
+							<Label htmlFor="phone">{t("customers.form.phone.label")}</Label>
 							<Input
 								id="phone"
 								type="tel"
-								placeholder={tForm("phone.placeholder")}
+								placeholder={t("customers.form.phone.placeholder")}
 								{...form.register("phone")}
 								className={form.formState.errors.phone ? "border-red-500" : ""}
 							/>
@@ -201,11 +199,13 @@ export default function CustomerCreateDialog({
 
 						{/* Address */}
 						<div className="space-y-2">
-							<Label htmlFor="address">{tForm("address.label")}</Label>
+							<Label htmlFor="address">
+								{t("customers.form.address.label")}
+							</Label>
 							<Input
 								id="address"
 								type="text"
-								placeholder={tForm("address.placeholder")}
+								placeholder={t("customers.form.address.placeholder")}
 								{...form.register("address")}
 								className={
 									form.formState.errors.address ? "border-red-500" : ""
@@ -221,19 +221,19 @@ export default function CustomerCreateDialog({
 						{/* Dutch Address Auto-fill Section */}
 						<div className="space-y-4 p-4 bg-gray-50 rounded-md">
 							<h4 className="text-sm font-medium text-gray-700">
-								{tForm("address.autoFill.title")}
+								{t("customers.form.address.autoFill.title")}
 							</h4>
 
 							{/* Postal Code */}
 							<div className="grid grid-cols-2 gap-3">
 								<div className="space-y-2">
 									<Label htmlFor="postalCode">
-										{tForm("postalCode.label")}
+										{t("customers.form.postalCode.label")}
 									</Label>
 									<Input
 										id="postalCode"
 										type="text"
-										placeholder={tForm("postalCode.placeholder")}
+										placeholder={t("customers.form.postalCode.placeholder")}
 										{...form.register("postalCode")}
 										className={
 											form.formState.errors.postalCode ? "border-red-500" : ""
@@ -249,12 +249,12 @@ export default function CustomerCreateDialog({
 								{/* House Number */}
 								<div className="space-y-2">
 									<Label htmlFor="houseNumber">
-										{tForm("houseNumber.label")}
+										{t("customers.form.houseNumber.label")}
 									</Label>
 									<Input
 										id="houseNumber"
 										type="text"
-										placeholder={tForm("houseNumber.placeholder")}
+										placeholder={t("customers.form.houseNumber.placeholder")}
 										{...form.register("houseNumber")}
 										className={
 											form.formState.errors.houseNumber ? "border-red-500" : ""
@@ -270,18 +270,20 @@ export default function CustomerCreateDialog({
 
 							{/* Auto-filled Street */}
 							<div className="space-y-2">
-								<Label htmlFor="street">{tForm("street.label")}</Label>
+								<Label htmlFor="street">
+									{t("customers.form.street.label")}
+								</Label>
 								<Input
 									id="street"
 									type="text"
-									placeholder={tForm("street.placeholder")}
+									placeholder={t("customers.form.street.placeholder")}
 									{...form.register("street")}
 									className={`${form.formState.errors.street ? "border-red-500" : ""} ${isLooking ? "bg-yellow-50" : ""}`}
 									readOnly={isLooking}
 								/>
 								{isLooking && (
 									<p className="text-xs text-yellow-600">
-										{tCommon("loading")}...
+										{t("common.loading")}...
 									</p>
 								)}
 								{form.formState.errors.street && (
@@ -293,11 +295,11 @@ export default function CustomerCreateDialog({
 
 							{/* Auto-filled City */}
 							<div className="space-y-2">
-								<Label htmlFor="city">{tForm("city.label")}</Label>
+								<Label htmlFor="city">{t("customers.form.city.label")}</Label>
 								<Input
 									id="city"
 									type="text"
-									placeholder={tForm("city.placeholder")}
+									placeholder={t("customers.form.city.placeholder")}
 									{...form.register("city")}
 									className={`${form.formState.errors.city ? "border-red-500" : ""} ${isLooking ? "bg-yellow-50" : ""}`}
 									readOnly={isLooking}
@@ -312,7 +314,9 @@ export default function CustomerCreateDialog({
 
 						{/* Language */}
 						<div className="space-y-2">
-							<Label htmlFor="language">{tForm("language.label")}</Label>
+							<Label htmlFor="language">
+								{t("customers.form.language.label")}
+							</Label>
 							<Select
 								value={form.watch("language")}
 								onValueChange={(value: "nl" | "en") => {
@@ -338,7 +342,7 @@ export default function CustomerCreateDialog({
 								onOpenChange(false);
 							}}
 						>
-							{tCommon("cancel")}
+							{t("actions.cancel")}
 						</Button>
 						<Button
 							type="submit"
@@ -351,8 +355,8 @@ export default function CustomerCreateDialog({
 							})()}
 						>
 							{createCustomerMutation.isPending
-								? tCommon("loading")
-								: tCustomers("addNew")}
+								? t("common.loading")
+								: t("customers.addNew")}
 						</Button>
 					</DialogFooter>
 				</form>

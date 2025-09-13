@@ -24,8 +24,8 @@ import { api } from "~/lib/trpc/client";
 import { mapToLeadDTO } from "~/lib/whatsapp/mappers";
 
 export default function WhatsAppLeadsPage(): JSX.Element {
-	const tWhatsApp = useTranslations("whatsapp");
-	const tCommon = useTranslations("");
+	const t = useTranslations();
+	const t = useTranslations();
 	const router = useRouter();
 
 	// Fetch leads using existing tRPC procedure
@@ -48,10 +48,10 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 						<CardHeader>
 							<CardTitle className="flex items-center gap-2">
 								<MessageCircle className="h-5 w-5" />
-								{tWhatsApp("leads.title")}
+								{t("whatsapp.leads.title")}
 							</CardTitle>
 							<CardDescription>
-								{tWhatsApp("leads.description")}
+								{t("whatsapp.leads.description")}
 							</CardDescription>
 						</CardHeader>
 						<CardContent>
@@ -79,15 +79,15 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 							<div>
 								<CardTitle className="flex items-center gap-2">
 									<MessageCircle className="h-5 w-5" />
-									{tWhatsApp("leads.title")}
+									{t("whatsapp.leads.title")}
 								</CardTitle>
 								<CardDescription>
-									{tWhatsApp("leads.description")}
+									{t("whatsapp.leads.description")}
 								</CardDescription>
 							</div>
 							<div className="flex items-center gap-2 text-sm text-muted-foreground">
 								<Users className="h-4 w-4" />
-								{leads.length} {tWhatsApp("leads.count")}
+								{leads.length} {t("whatsapp.leads.count")}
 							</div>
 						</div>
 					</CardHeader>
@@ -96,24 +96,24 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 							<div className="text-center py-8">
 								<MessageCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
 								<h3 className="text-lg font-semibold mb-2">
-									{tWhatsApp("leads.empty.title")}
+									{t("whatsapp.leads.empty.title")}
 								</h3>
 								<p className="text-muted-foreground mb-4">
-									{tWhatsApp("leads.empty.description")}
+									{t("whatsapp.leads.empty.description")}
 								</p>
 							</div>
 						) : (
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>{tWhatsApp("leads.table.contact")}</TableHead>
+										<TableHead>{t("whatsapp.leads.table.contact")}</TableHead>
 										<TableHead>
-											{tWhatsApp("leads.table.lastMessage")}
+											{t("whatsapp.leads.table.lastMessage")}
 										</TableHead>
-										<TableHead>{tWhatsApp("leads.table.unread")}</TableHead>
-										<TableHead>{tWhatsApp("leads.table.session")}</TableHead>
+										<TableHead>{t("whatsapp.leads.table.unread")}</TableHead>
+										<TableHead>{t("whatsapp.leads.table.session")}</TableHead>
 										<TableHead>
-											{tWhatsApp("leads.table.lastActivity")}
+											{t("whatsapp.leads.table.lastActivity")}
 										</TableHead>
 									</TableRow>
 								</TableHeader>
@@ -129,7 +129,7 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 											<TableCell>
 												<div className="space-y-1">
 													<div className="font-medium">
-														{lead.name ?? tCommon("common.unnamed")}
+														{lead.name ?? t(".common.unnamed")}
 													</div>
 													<div className="text-sm text-muted-foreground">
 														{lead.phoneMasked}
@@ -155,8 +155,8 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 												>
 													<Clock className="h-3 w-3 mr-1" />
 													{lead.sessionActive
-														? tWhatsApp("session.active")
-														: tWhatsApp("session.expired")}
+														? t("whatsapp.session.active")
+														: t("whatsapp.session.expired")}
 												</Badge>
 											</TableCell>
 											<TableCell className="text-sm text-muted-foreground">

@@ -25,8 +25,8 @@ Set these secrets in your GitHub repository settings:
 
 Ensure your app has the `INTERNAL_JOB_TOKEN` environment variable set to match the GitHub secret:
 
-```bash
-INTERNAL_JOB_TOKEN=your-secure-token-here
+REDACTED
+INTERNAL_JOB_TOKEN=REDACTED
 ```
 
 ## Manual Testing
@@ -39,13 +39,13 @@ Test the dunning endpoint locally:
 # Dry run (no reminders sent)
 curl -X POST http://localhost:3000/api/jobs/dunning/run \
   -H "Content-Type: application/json" \
-  -H "X-Internal-Job-Token: your-token" \
+  -H "X-Internal-Job-Token: REDACTED
   -d '{"mode":"dry","batch":10}'
 
 # Live run (sends reminders)
 curl -X POST http://localhost:3000/api/jobs/dunning/run \
   -H "Content-Type: application/json" \
-  -H "X-Internal-Job-Token: your-token" \
+  -H "X-Internal-Job-Token: REDACTED
   -d '{"mode":"run","batch":50}'
 ```
 
@@ -56,7 +56,7 @@ Test against production:
 ```bash
 curl -X POST https://your-app.vercel.app/api/jobs/dunning/run \
   -H "Content-Type: application/json" \
-  -H "X-Internal-Job-Token: your-production-token" \
+  -H "X-Internal-Job-Token: REDACTED
   -d '{"mode":"dry","batch":5}'
 ```
 
@@ -89,7 +89,7 @@ The cron job sends a POST request to `/api/jobs/dunning/run` with:
 
 **Headers:**
 - `Content-Type: application/json`
-- `X-Internal-Job-Token: [secret-token]`
+- `X-Internal-Job-Token: REDACTED
 
 ## Response Format
 
@@ -159,7 +159,7 @@ For debugging, manually run with a small batch and dry mode:
 
 ```bash
 curl -X POST "$APP_URL/api/jobs/dunning/run" \
-  -H "X-Internal-Job-Token: $TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{"mode":"dry","batch":1}' \
   -v

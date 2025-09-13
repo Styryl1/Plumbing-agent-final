@@ -31,7 +31,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import { useT } from "~/i18n/client";
 import { formatDutchDate, formatDutchTime } from "~/lib/dates";
 import { api } from "~/lib/trpc/client";
 import type { JobDTO } from "~/types/job";
@@ -48,24 +47,20 @@ export default function JobsTable({
 }: JobsTableProps): JSX.Element {
 	const [jobToDelete, setJobToDelete] = useState<string | null>(null);
 	const utils = api.useUtils();
-	const t = useT();
-	const tCustomers = useTranslations("customers");
-
-	// Jobs delete translations
-	const tJobs = useTranslations("jobs");
-	const tCommon = useTranslations("common");
+	// Translation hook
+	const t = useTranslations();
 
 	// Delete job mutation
 	const deleteMutation = api.jobs.remove.useMutation({
 		onSuccess: () => {
 			// Job was successfully deleted
 			setJobToDelete(null);
-			toast.success(tJobs("delete.success"));
+			toast.success(t("jobs.delete.success"));
 			// Invalidate queries to refresh the UI
 			void utils.invalidate();
 		},
 		onError: () => {
-			toast.error(tJobs("delete.failed"));
+			toast.error(t("jobs.delete.failed"));
 		},
 	});
 
@@ -84,12 +79,14 @@ export default function JobsTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>{t("table.title")}</TableHead>
-							<TableHead>{t("table.date")}</TableHead>
-							<TableHead>{t("table.time")}</TableHead>
-							<TableHead>{t("form.address")}</TableHead>
-							<TableHead>{t("table.status")}</TableHead>
-							<TableHead className="w-[70px]">{t("table.actions")}</TableHead>
+							<TableHead>{t("ui.table.title")}</TableHead>
+							<TableHead>{t("ui.table.date")}</TableHead>
+							<TableHead>{t("ui.table.time")}</TableHead>
+							<TableHead>{t("ui.form.address")}</TableHead>
+							<TableHead>{t("ui.table.status")}</TableHead>
+							<TableHead className="w-[70px]">
+								{t("ui.table.actions")}
+							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -99,7 +96,7 @@ export default function JobsTable({
 									colSpan={6}
 									className="h-24 text-center text-muted-foreground"
 								>
-									{t("table.noJobs")}
+									{t("ui.table.noJobs")}
 								</TableCell>
 							</TableRow>
 						) : (
@@ -110,7 +107,7 @@ export default function JobsTable({
 											<span>{job.title}</span>
 											{job.customer?.isArchived && (
 												<Badge variant="secondary" className="text-xs">
-													{tCustomers("archived.badge")}
+													{t("customers.archived.badge")}
 												</Badge>
 											)}
 										</div>
@@ -169,9 +166,9 @@ export default function JobsTable({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>{t("job.deleteTitle")}</AlertDialogTitle>
+						<AlertDialogTitle>{t("jobs.job.deleteTitle")}</AlertDialogTitle>
 						<AlertDialogDescription>
-							{t("job.deleteDescription")}
+							{t("jobs.job.deleteDescription")}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
@@ -185,7 +182,7 @@ export default function JobsTable({
 							disabled={deleteMutation.isPending}
 						>
 							{deleteMutation.isPending
-								? tCommon("deleting")
+								? t("actions.deleting")
 								: t("actions.delete")}
 						</AlertDialogAction>
 					</AlertDialogFooter>

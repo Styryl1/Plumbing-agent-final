@@ -14,7 +14,8 @@ interface DashboardHeaderProps {
 export function DashboardHeader({
 	initialLocale,
 }: DashboardHeaderProps): JSX.Element {
-	const t = useT();
+	const tSys = useT("system");
+	const tUi = useT("ui");
 
 	return (
 		<header className="border-b bg-card shadow-soft">
@@ -23,10 +24,10 @@ export function DashboardHeader({
 					{/* Logo/Title */}
 					<div className="flex items-center">
 						<h1 className="text-xl font-semibold text-foreground">
-							{t("app.title")}
+							{tSys("app.title")}
 						</h1>
 						<span className="ml-2 text-sm text-muted-foreground">
-							{t("nav.dashboard")}
+							{tUi("nav.dashboard")}
 						</span>
 					</div>
 
@@ -37,25 +38,25 @@ export function DashboardHeader({
 								href="/dashboard"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("nav.dashboard")}
+								{tUi("nav.dashboard")}
 							</a>
 							<a
 								href="/jobs"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("nav.jobs")}
+								{tUi("nav.jobs")}
 							</a>
 							<a
 								href="/customers"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("nav.customers")}
+								{tUi("nav.customers")}
 							</a>
 							<Link
 								href="/invoices"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("nav.invoices")}
+								{tUi("nav.invoices")}
 							</Link>
 						</nav>
 					</div>

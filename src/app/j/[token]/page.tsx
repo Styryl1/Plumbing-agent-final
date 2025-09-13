@@ -76,7 +76,7 @@ export default async function JobCardPage({
 	params,
 }: JobCardPageProps): Promise<JSX.Element> {
 	const data = getJobCardData(params.token);
-	const t = await getTranslations("jobCard");
+	const t = await getTranslations("misc.jobCard");
 
 	if (!data) {
 		notFound();

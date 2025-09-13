@@ -38,7 +38,7 @@ import { api } from "~/lib/trpc/client";
 const TOTAL_STEPS = 3;
 
 export default function WhatsAppSettingsPage(): JSX.Element {
-	const t = useTranslations("settings.whatsapp");
+	const t = useTranslations();
 	const [currentStep, setCurrentStep] = useState(1);
 	const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -53,28 +53,32 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 	// Mutations
 	const mapNumberMutation = api.whatsappSettings.mapNumber.useMutation({
 		onSuccess: () => {
-			toast.success(t("numbers.add.success"));
+			toast.success(t("settings.whatsapp.numbers.add.success"));
 			setPhoneNumberId("");
 			void refetchSettings();
 		},
 		onError: (error) => {
-			toast.error(`${t("numbers.add.error")}: ${error.message}`);
+			toast.error(
+				`${t("settings.whatsapp.numbers.add.error")}: ${error.message}`,
+			);
 		},
 	});
 
 	const removeNumberMutation = api.whatsappSettings.removeNumber.useMutation({
 		onSuccess: () => {
-			toast.success(t("numbers.remove.success"));
+			toast.success(t("settings.whatsapp.numbers.remove.success"));
 			void refetchSettings();
 		},
 		onError: (error) => {
-			toast.error(`${t("numbers.remove.error")}: ${error.message}`);
+			toast.error(
+				`${t("settings.whatsapp.numbers.remove.error")}: ${error.message}`,
+			);
 		},
 	});
 
 	const sendTestMutation = api.whatsappSettings.sendTest.useMutation({
 		onSuccess: () => {
-			toast.success(t("test.success.message"));
+			toast.success(t("settings.whatsapp.test.success.message"));
 		},
 		onError: (error) => {
 			const errorKey = error.message.includes("Control number not mapped")
@@ -91,7 +95,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 	const handleCopyUrl = async (url: string, label: string): Promise<void> => {
 		await navigator.clipboard.writeText(url);
 		setCopiedUrl(label);
-		toast.success(t("prereqs.webhookUrls.copied"));
+		toast.success(t("settings.whatsapp.prereqs.webhookUrls.copied"));
 		setTimeout(() => {
 			setCopiedUrl(null);
 		}, 2000);
@@ -109,7 +113,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 	const handleRemoveNumber = async (
 		labelToRemove: "customer" | "control",
 	): Promise<void> => {
-		if (confirm(t("numbers.remove.confirm"))) {
+		if (confirm(t("settings.whatsapp.numbers.remove.confirm"))) {
 			await removeNumberMutation.mutateAsync({ label: labelToRemove });
 		}
 	};
@@ -154,8 +158,10 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 		<div className="container max-w-4xl py-8 space-y-6">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-3xl font-bold">{t("title")}</h1>
-					<p className="text-muted-foreground mt-2">{t("subtitle")}</p>
+					<h1 className="text-3xl font-bold">{t("settings.whatsapp.title")}</h1>
+					<p className="text-muted-foreground mt-2">
+						{t("settings.whatsapp.subtitle")}
+					</p>
 				</div>
 			</div>
 
@@ -195,24 +201,26 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<Shield className="h-5 w-5" />
-							{t("prereqs.title")}
+							{t("settings.whatsapp.prereqs.title")}
 						</CardTitle>
-						<CardDescription>{t("prereqs.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.prereqs.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						{/* Webhook URLs */}
 						<div>
 							<h3 className="font-semibold mb-3">
-								{t("prereqs.webhookUrls.title")}
+								{t("settings.whatsapp.prereqs.webhookUrls.title")}
 							</h3>
 							<p className="text-sm text-muted-foreground mb-4">
-								{t("prereqs.webhookUrls.description")}
+								{t("settings.whatsapp.prereqs.webhookUrls.description")}
 							</p>
 							<div className="space-y-3">
 								<div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
 									<div className="flex-1">
 										<Label className="text-xs font-medium">
-											{t("prereqs.webhookUrls.customer")}
+											{t("settings.whatsapp.prereqs.webhookUrls.customer")}
 										</Label>
 										<code className="text-sm block mt-1 break-all">
 											{settings.customerWebhookUrl}
@@ -235,7 +243,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 								<div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
 									<div className="flex-1">
 										<Label className="text-xs font-medium">
-											{t("prereqs.webhookUrls.control")}
+											{t("settings.whatsapp.prereqs.webhookUrls.control")}
 										</Label>
 										<code className="text-sm block mt-1 break-all">
 											{settings.controlWebhookUrl}
@@ -261,16 +269,18 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 						{/* API Credentials */}
 						<div>
 							<h3 className="font-semibold mb-3">
-								{t("prereqs.credentials.title")}
+								{t("settings.whatsapp.prereqs.credentials.title")}
 							</h3>
 							<p className="text-sm text-muted-foreground mb-4">
-								{t("prereqs.credentials.description")}
+								{t("settings.whatsapp.prereqs.credentials.description")}
 							</p>
 							<div className="space-y-3">
 								<div className="flex items-center justify-between p-3 border rounded-lg">
 									<div className="flex items-center gap-3">
 										<StatusIcon configured={settings.verifyTokenConfigured} />
-										<span>{t("prereqs.credentials.verifyToken")}</span>
+										<span>
+											{t("settings.whatsapp.prereqs.credentials.verifyToken")}
+										</span>
 									</div>
 									<Badge
 										variant={
@@ -278,14 +288,16 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 										}
 									>
 										{settings.verifyTokenConfigured
-											? t("prereqs.credentials.configured")
-											: t("prereqs.credentials.missing")}
+											? t("settings.whatsapp.prereqs.credentials.configured")
+											: t("settings.whatsapp.prereqs.credentials.missing")}
 									</Badge>
 								</div>
 								<div className="flex items-center justify-between p-3 border rounded-lg">
 									<div className="flex items-center gap-3">
 										<StatusIcon configured={settings.hmacConfigured} />
-										<span>{t("prereqs.credentials.hmacSecret")}</span>
+										<span>
+											{t("settings.whatsapp.prereqs.credentials.hmacSecret")}
+										</span>
 									</div>
 									<Badge
 										variant={
@@ -293,13 +305,13 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 										}
 									>
 										{settings.hmacConfigured
-											? t("prereqs.credentials.configured")
-											: t("prereqs.credentials.missing")}
+											? t("settings.whatsapp.prereqs.credentials.configured")
+											: t("settings.whatsapp.prereqs.credentials.missing")}
 									</Badge>
 								</div>
 							</div>
 							<p className="text-xs text-muted-foreground mt-3">
-								{t("prereqs.credentials.note")}
+								{t("settings.whatsapp.prereqs.credentials.note")}
 							</p>
 						</div>
 					</CardContent>
@@ -312,19 +324,25 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<Phone className="h-5 w-5" />
-							{t("numbers.title")}
+							{t("settings.whatsapp.numbers.title")}
 						</CardTitle>
-						<CardDescription>{t("numbers.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.numbers.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						{/* Current Numbers */}
 						<div>
-							<h3 className="font-semibold mb-3">{t("numbers.title")}</h3>
+							<h3 className="font-semibold mb-3">
+								{t("settings.whatsapp.numbers.title")}
+							</h3>
 							{settings.mappedNumbers.length === 0 ? (
 								<div className="text-center py-8 text-muted-foreground">
 									<Phone className="h-8 w-8 mx-auto mb-2 opacity-50" />
-									<p>{t("numbers.empty.title")}</p>
-									<p className="text-sm">{t("numbers.empty.description")}</p>
+									<p>{t("settings.whatsapp.numbers.empty.title")}</p>
+									<p className="text-sm">
+										{t("settings.whatsapp.numbers.empty.description")}
+									</p>
 								</div>
 							) : (
 								<div className="space-y-2">
@@ -350,7 +368,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 												variant="outline"
 												onClick={async () => handleRemoveNumber(number.label)}
 											>
-												{t("numbers.table.actions")}
+												{t("settings.whatsapp.numbers.table.actions")}
 											</Button>
 										</div>
 									))}
@@ -360,11 +378,13 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 
 						{/* Add Number Form */}
 						<div className="border-t pt-6">
-							<h3 className="font-semibold mb-3">{t("numbers.add.title")}</h3>
+							<h3 className="font-semibold mb-3">
+								{t("settings.whatsapp.numbers.add.title")}
+							</h3>
 							<div className="space-y-3">
 								<div>
 									<Label htmlFor="phoneNumberId">
-										{t("numbers.add.phoneNumberId.label")}
+										{t("settings.whatsapp.numbers.add.phoneNumberId.label")}
 									</Label>
 									<Input
 										id="phoneNumberId"
@@ -372,15 +392,19 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 										onChange={(e) => {
 											setPhoneNumberId(e.target.value);
 										}}
-										placeholder={t("numbers.add.phoneNumberId.placeholder")}
+										placeholder={t(
+											"settings.whatsapp.numbers.add.phoneNumberId.placeholder",
+										)}
 										className="mt-1"
 									/>
 									<p className="text-xs text-muted-foreground mt-1">
-										{t("numbers.add.phoneNumberId.helper")}
+										{t("settings.whatsapp.numbers.add.phoneNumberId.helper")}
 									</p>
 								</div>
 								<div>
-									<Label htmlFor="label">{t("numbers.add.label.label")}</Label>
+									<Label htmlFor="label">
+										{t("settings.whatsapp.numbers.add.label.label")}
+									</Label>
 									<Select
 										value={label}
 										onValueChange={(value) => {
@@ -392,15 +416,15 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="customer">
-												{t("numbers.labels.customer")}
+												{t("settings.whatsapp.numbers.labels.customer")}
 											</SelectItem>
 											<SelectItem value="control">
-												{t("numbers.labels.control")}
+												{t("settings.whatsapp.numbers.labels.control")}
 											</SelectItem>
 										</SelectContent>
 									</Select>
 									<p className="text-xs text-muted-foreground mt-1">
-										{t("numbers.add.label.helper")}
+										{t("settings.whatsapp.numbers.add.label.helper")}
 									</p>
 								</div>
 								<Button
@@ -413,7 +437,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 									{mapNumberMutation.isPending ? (
 										<RefreshCw className="h-4 w-4 animate-spin mr-2" />
 									) : null}
-									{t("numbers.add.submit")}
+									{t("settings.whatsapp.numbers.add.submit")}
 								</Button>
 							</div>
 						</div>
@@ -427,15 +451,17 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<MessageSquare className="h-5 w-5" />
-							{t("test.title")}
+							{t("settings.whatsapp.test.title")}
 						</CardTitle>
-						<CardDescription>{t("test.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.test.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						{/* Requirements */}
 						<div>
 							<h3 className="font-semibold mb-3">
-								{t("test.requirements.title")}
+								{t("settings.whatsapp.test.requirements.title")}
 							</h3>
 							<ul className="text-sm space-y-2">
 								{(t.raw("test.requirements.items") as string[]).map(
@@ -465,7 +491,7 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 								) : (
 									<Send className="h-4 w-4 mr-2" />
 								)}
-								{t("test.button")}
+								{t("settings.whatsapp.test.button")}
 							</Button>
 						</div>
 					</CardContent>
@@ -481,13 +507,13 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 					}}
 					disabled={currentStep === 1}
 				>
-					{t("wizard.previous")}
+					{t("settings.whatsapp.wizard.previous")}
 				</Button>
 				<Button
 					onClick={() => {
 						if (currentStep === TOTAL_STEPS) {
 							// Wizard complete
-							toast.success(t("completion.description"));
+							toast.success(t("settings.whatsapp.completion.description"));
 						} else {
 							setCurrentStep(Math.min(TOTAL_STEPS, currentStep + 1));
 						}
@@ -496,7 +522,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 						!canProceedToStep(currentStep + 1) && currentStep < TOTAL_STEPS
 					}
 				>
-					{currentStep === TOTAL_STEPS ? t("wizard.finish") : t("wizard.next")}
+					{currentStep === TOTAL_STEPS
+						? t("settings.whatsapp.wizard.finish")
+						: t("settings.whatsapp.wizard.next")}
 				</Button>
 			</div>
 		</div>

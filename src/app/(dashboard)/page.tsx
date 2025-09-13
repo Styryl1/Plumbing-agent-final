@@ -15,7 +15,9 @@ import { api } from "~/lib/trpc/client";
 
 export default function DashboardPage(): JSX.Element {
 	const auth = useAuth();
-	const t = useT();
+	const tUi = useT("ui");
+	const tMisc = useT("misc");
+	const tAuth = useT("auth");
 
 	// Fetch stats from API
 	const { data: jobsToday } = api.jobs.list.useQuery({
@@ -55,41 +57,41 @@ export default function DashboardPage(): JSX.Element {
 		<div className="space-y-6">
 			<div>
 				<h1 className="text-3xl font-bold text-gray-900">
-					{t("nav.dashboard")}
+					{tUi("nav.dashboard")}
 				</h1>
-				<p className="text-gray-600 mt-2">{t("dashboard.welcome")}</p>
+				<p className="text-gray-600 mt-2">{tMisc("dashboard.welcome")}</p>
 			</div>
 
 			{/* Auth Context Display */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("auth.context.title")}</CardTitle>
-					<CardDescription>{t("auth.context.description")}</CardDescription>
+					<CardTitle>{tAuth("auth.context.title")}</CardTitle>
+					<CardDescription>{tAuth("auth.context.description")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{t("auth.userId")}
+								{tAuth("auth.userId")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.userId ?? t("auth.notSignedIn")}
+								{auth.userId ?? tAuth("auth.notSignedIn")}
 							</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{t("auth.orgId")}
+								{tAuth("auth.orgId")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.orgId ?? t("auth.noOrganization")}
+								{auth.orgId ?? tAuth("auth.noOrganization")}
 							</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{t("auth.role")}
+								{tAuth("auth.role")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.orgRole ?? t("auth.noRole")}
+								{auth.orgRole ?? tAuth("auth.noRole")}
 							</p>
 						</div>
 					</div>
@@ -97,7 +99,7 @@ export default function DashboardPage(): JSX.Element {
 					{!auth.orgId && (
 						<div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
 							<p className="text-sm text-yellow-800">
-								💡 <strong>{t("ui.tip")}:</strong> {t("auth.tip")}
+								💡 <strong>{tMisc("ui.tip")} :</strong> {tAuth("auth.tip")}
 							</p>
 						</div>
 					)}
@@ -109,56 +111,62 @@ export default function DashboardPage(): JSX.Element {
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-gray-500">
-							{t("stats.activeJobs")}
+							{tUi("stats.activeJobs")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">{stats.activeJobsToday}</div>
-						<p className="text-xs text-gray-500 mt-1">{t("stats.today")}</p>
+						<p className="text-xs text-gray-500 mt-1">{tUi("stats.today")}</p>
 					</CardContent>
 				</Card>
 
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-gray-500">
-							{t("stats.newCustomers")}
+							{tUi("stats.newCustomers")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
 							{stats.newCustomersThisWeek}
 						</div>
-						<p className="text-xs text-gray-500 mt-1">{t("stats.thisWeek")}</p>
+						<p className="text-xs text-gray-500 mt-1">
+							{tUi("stats.thisWeek")}
+						</p>
 					</CardContent>
 				</Card>
 
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-gray-500">
-							{t("stats.outstandingInvoices")}
+							{tUi("stats.outstandingInvoices")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{t("money.euro")}
+							{tMisc("money.euro")}
 							{(stats.outstandingInvoices / 100).toFixed(2)}
 						</div>
-						<p className="text-xs text-gray-500 mt-1">{t("stats.toCollect")}</p>
+						<p className="text-xs text-gray-500 mt-1">
+							{tUi("stats.toCollect")}
+						</p>
 					</CardContent>
 				</Card>
 
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-gray-500">
-							{t("stats.revenue")}
+							{tUi("stats.revenue")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{t("money.euro")}
+							{tMisc("money.euro")}
 							{(stats.revenueThisMonth / 100).toFixed(2)}
 						</div>
-						<p className="text-xs text-gray-500 mt-1">{t("stats.thisMonth")}</p>
+						<p className="text-xs text-gray-500 mt-1">
+							{tUi("stats.thisMonth")}
+						</p>
 					</CardContent>
 				</Card>
 			</div>

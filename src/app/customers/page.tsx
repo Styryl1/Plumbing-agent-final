@@ -21,7 +21,8 @@ import CustomerEditDialog from "./CustomerEditDialog";
 import CustomersTable from "./CustomersTable";
 
 export default function CustomersPage(): JSX.Element {
-	const t = useT();
+	const t = useT("customers");
+	const tCommon = useT("common");
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 	const [editingCustomer, setEditingCustomer] = useState<
 		CustomerDTO | undefined
@@ -88,7 +89,7 @@ export default function CustomersPage(): JSX.Element {
 			<div className="flex h-96 items-center justify-center">
 				<div className="text-center">
 					<p className="text-lg font-medium text-destructive">
-						{t("customers.error.load")}
+						{t("error.load")}
 					</p>
 					<p className="text-sm text-muted-foreground">{error.message}</p>
 				</div>
@@ -101,12 +102,8 @@ export default function CustomersPage(): JSX.Element {
 			{/* Header */}
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h1 className="text-3xl font-bold text-foreground">
-						{t("customers.title")}
-					</h1>
-					<p className="mt-2 text-muted-foreground">
-						{t("customers.description")}
-					</p>
+					<h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
+					<p className="mt-2 text-muted-foreground">{t("description")}</p>
 				</div>
 
 				<Button
@@ -115,7 +112,7 @@ export default function CustomersPage(): JSX.Element {
 					}}
 				>
 					<Plus className="mr-2 h-4 w-4" />
-					{t("customers.addNew")}
+					{t("addNew")}
 				</Button>
 			</div>
 
@@ -125,7 +122,7 @@ export default function CustomersPage(): JSX.Element {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-sm font-medium text-muted-foreground">
-								{t("customers.stats.total")}
+								{t("stats.total")}
 							</CardTitle>
 							<Badge variant="secondary">{stats.total}</Badge>
 						</div>
@@ -133,7 +130,7 @@ export default function CustomersPage(): JSX.Element {
 					<CardContent>
 						<div className="text-2xl font-bold text-primary">{stats.total}</div>
 						<p className="mt-1 text-xs text-muted-foreground">
-							{t("customers.stats.total")}
+							{t("stats.total")}
 						</p>
 					</CardContent>
 				</Card>
@@ -142,7 +139,7 @@ export default function CustomersPage(): JSX.Element {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-sm font-medium text-muted-foreground">
-								{t("customers.stats.thisMonth")}
+								{t("stats.thisMonth")}
 							</CardTitle>
 							<Badge variant="default">{stats.thisMonth}</Badge>
 						</div>
@@ -152,7 +149,7 @@ export default function CustomersPage(): JSX.Element {
 							{stats.thisMonth}
 						</div>
 						<p className="mt-1 text-xs text-muted-foreground">
-							{t("customers.stats.thisMonth")}
+							{t("stats.thisMonth")}
 						</p>
 					</CardContent>
 				</Card>
@@ -161,7 +158,7 @@ export default function CustomersPage(): JSX.Element {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-sm font-medium text-muted-foreground">
-								{t("customers.stats.active")}
+								{t("stats.active")}
 							</CardTitle>
 							<Badge variant="outline">{stats.active}</Badge>
 						</div>
@@ -171,7 +168,7 @@ export default function CustomersPage(): JSX.Element {
 							{stats.active}
 						</div>
 						<p className="mt-1 text-xs text-muted-foreground">
-							{t("customers.stats.active")}
+							{t("stats.active")}
 						</p>
 					</CardContent>
 				</Card>
@@ -180,7 +177,7 @@ export default function CustomersPage(): JSX.Element {
 					<CardHeader className="pb-2">
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-sm font-medium text-muted-foreground">
-								{t("customers.stats.archived")}
+								{t("stats.archived")}
 							</CardTitle>
 							<Badge variant="destructive">{stats.archived}</Badge>
 						</div>
@@ -190,7 +187,7 @@ export default function CustomersPage(): JSX.Element {
 							{stats.archived}
 						</div>
 						<p className="mt-1 text-xs text-muted-foreground">
-							{t("customers.stats.archived")}
+							{t("stats.archived")}
 						</p>
 					</CardContent>
 				</Card>
@@ -200,25 +197,25 @@ export default function CustomersPage(): JSX.Element {
 			<Tabs defaultValue="active" className="space-y-4">
 				<TabsList>
 					<TabsTrigger value="active">
-						{t("customers.title")} ({stats.active})
+						{t("title")} ({stats.active})
 					</TabsTrigger>
 					<TabsTrigger value="archived">
-						{t("customers.archived.tab")} ({stats.archived})
+						{t("archived.tab")} ({stats.archived})
 					</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="active" className="space-y-4">
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("customers.title")}</CardTitle>
-							<CardDescription>{t("customers.description")}</CardDescription>
+							<CardTitle>{t("title")}</CardTitle>
+							<CardDescription>{t("description")}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{isLoading ? (
 								<div className="flex h-48 items-center justify-center">
 									<div className="text-center">
 										<div className="text-lg font-medium text-muted-foreground">
-											{t("common.loading")}
+											{tCommon("loading")}
 										</div>
 									</div>
 								</div>
@@ -238,17 +235,15 @@ export default function CustomersPage(): JSX.Element {
 				<TabsContent value="archived" className="space-y-4">
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("customers.archived.title")}</CardTitle>
-							<CardDescription>
-								{t("customers.archived.description")}
-							</CardDescription>
+							<CardTitle>{t("archived.title")}</CardTitle>
+							<CardDescription>{t("archived.description")}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{errorArchived ? (
 								<div className="flex h-48 items-center justify-center">
 									<div className="text-center">
 										<p className="text-lg font-medium text-destructive">
-											{t("customers.error.load")}
+											{t("error.load")}
 										</p>
 										<p className="text-sm text-muted-foreground">
 											{errorArchived.message}
@@ -259,7 +254,7 @@ export default function CustomersPage(): JSX.Element {
 								<div className="flex h-48 items-center justify-center">
 									<div className="text-center">
 										<div className="text-lg font-medium text-muted-foreground">
-											{t("common.loading")}
+											{tCommon("loading")}
 										</div>
 									</div>
 								</div>

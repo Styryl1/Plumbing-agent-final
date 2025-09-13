@@ -19,7 +19,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default function DemoPageEN(): React.ReactElement {
-	const t = useTranslations("launch.demo.page");
+	const t = useTranslations();
 	return (
 		<div className="min-h-screen bg-gray-50">
 			{/* Navigation */}
@@ -30,13 +30,17 @@ export default function DemoPageEN(): React.ReactElement {
 							<Button asChild variant="ghost" size="sm">
 								<Link href="/en/launch" className="flex items-center gap-2">
 									<ArrowLeftIcon className="h-4 w-4" />
-									{t("back")}
+									{t("launch.demo.page.back")}
 								</Link>
 							</Button>
-							<h1 className="text-xl font-semibold">{t("title")}</h1>
+							<h1 className="text-xl font-semibold">
+								{t("launch.demo.page.title")}
+							</h1>
 						</div>
 						<Button asChild variant="outline">
-							<Link href="/en/launch#waitlist">{t("cta.button")}</Link>
+							<Link href="/en/launch#waitlist">
+								{t("launch.demo.page.cta.button")}
+							</Link>
 						</Button>
 					</div>
 				</div>
@@ -47,10 +51,10 @@ export default function DemoPageEN(): React.ReactElement {
 				{/* Introduction */}
 				<div className="mb-8 text-center">
 					<h2 className="text-3xl font-bold tracking-tight text-gray-900 mb-4">
-						{t("headline")}
+						{t("launch.demo.page.headline")}
 					</h2>
 					<p className="text-lg text-gray-600 max-w-2xl mx-auto">
-						{t("subtitle")}
+						{t("launch.demo.page.subtitle")}
 					</p>
 				</div>
 
@@ -61,15 +65,19 @@ export default function DemoPageEN(): React.ReactElement {
 				<div className="mt-12 text-center">
 					<div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8">
 						<h3 className="text-2xl font-bold text-emerald-900 mb-2">
-							{t("cta.headline")}
+							{t("launch.demo.page.cta.headline")}
 						</h3>
-						<p className="text-emerald-800 mb-6">{t("cta.subtitle")}</p>
+						<p className="text-emerald-800 mb-6">
+							{t("launch.demo.page.cta.subtitle")}
+						</p>
 						<Button
 							asChild
 							size="lg"
 							className="bg-emerald-600 hover:bg-emerald-700"
 						>
-							<Link href="/en/launch#waitlist">{t("cta.button")}</Link>
+							<Link href="/en/launch#waitlist">
+								{t("launch.demo.page.cta.button")}
+							</Link>
 						</Button>
 					</div>
 				</div>
@@ -81,10 +89,10 @@ export default function DemoPageEN(): React.ReactElement {
 							<span className="text-xl">⚡</span>
 						</div>
 						<h3 className="mt-4 text-lg font-semibold">
-							{t("benefits.faster.title")}
+							{t("launch.demo.page.benefits.faster.title")}
 						</h3>
 						<p className="mt-2 text-sm text-gray-600">
-							{t("benefits.faster.description")}
+							{t("launch.demo.page.benefits.faster.description")}
 						</p>
 					</div>
 					<div className="text-center">
@@ -92,10 +100,10 @@ export default function DemoPageEN(): React.ReactElement {
 							<span className="text-xl">🧠</span>
 						</div>
 						<h3 className="mt-4 text-lg font-semibold">
-							{t("benefits.smarter.title")}
+							{t("launch.demo.page.benefits.smarter.title")}
 						</h3>
 						<p className="mt-2 text-sm text-gray-600">
-							{t("benefits.smarter.description")}
+							{t("launch.demo.page.benefits.smarter.description")}
 						</p>
 					</div>
 					<div className="text-center">
@@ -103,10 +111,10 @@ export default function DemoPageEN(): React.ReactElement {
 							<span className="text-xl">💰</span>
 						</div>
 						<h3 className="mt-4 text-lg font-semibold">
-							{t("benefits.better_paid.title")}
+							{t("launch.demo.page.benefits.better_paid.title")}
 						</h3>
 						<p className="mt-2 text-sm text-gray-600">
-							{t("benefits.better_paid.description")}
+							{t("launch.demo.page.benefits.better_paid.description")}
 						</p>
 					</div>
 				</div>

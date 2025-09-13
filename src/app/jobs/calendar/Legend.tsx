@@ -1,7 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
-import { useT } from "~/i18n/client";
 import { useEmployeeColors } from "./useEmployeeColors";
 
 interface Employee {
@@ -15,7 +15,7 @@ interface LegendProps {
 }
 
 export default function Legend({ employees }: LegendProps): JSX.Element {
-	const t = useT();
+	const t = useTranslations();
 	const { getEmployeeColor } = useEmployeeColors(employees);
 
 	if (employees.length === 0) {

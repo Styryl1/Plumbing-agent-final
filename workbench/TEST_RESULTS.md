@@ -53,7 +53,7 @@ To run complete database integration tests, add to `.env.local`:
 ```bash
 WB_ALLOW_DB=1
 TEST_ORG_ID=org_test_12345
-WHATSAPP_APP_SECRET=your_whatsapp_app_secret
+WHATSAPP_APP_SECRET=REDACTED
 WHATSAPP_BUSINESS_PHONE_ID=test_phone_id  
 WHATSAPP_CONTROL_PHONE_ID=test_control_phone
 ```

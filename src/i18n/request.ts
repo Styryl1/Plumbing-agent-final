@@ -1,22 +1,38 @@
 import { cookies } from "next/headers";
 import { getRequestConfig } from "next-intl/server";
-import { DEFAULT_LOCALE, type Locale, loadMessages } from ".";
+import {
+	DEFAULT_LOCALE,
+	type Locale,
+	loadMessages,
+	SUPPORTED_LOCALES,
+} from ".";
 
-export default getRequestConfig(async () => {
-	// Detect locale from cookie (same pattern as middleware)
+// v4: prefer requestLocale, fall back to cookie/default
+export default getRequestConfig(async ({ requestLocale }) => {
 	const cookieStore = await cookies();
-	const cookieLocale = cookieStore.get("locale")?.value as Locale | undefined;
-	const locale: Locale =
-		cookieLocale === "en" || cookieLocale === "nl"
-			? cookieLocale
-			: DEFAULT_LOCALE;
+	const cookieValue = cookieStore.get("locale")?.value;
+	const requestedLocale = await requestLocale;
+
+	// Type-safe locale validation
+	const isValidLocale = (value: unknown): value is Locale => {
+		return (
+			typeof value === "string" && SUPPORTED_LOCALES.includes(value as Locale)
+		);
+	};
+
+	// Your rule: cookie wins if present; otherwise requestLocale; else default
+	let locale: Locale;
+	if (isValidLocale(cookieValue)) {
+		locale = cookieValue;
+	} else if (isValidLocale(requestedLocale)) {
+		locale = requestedLocale;
+	} else {
+		locale = DEFAULT_LOCALE;
+	}
 
 	return {
 		locale,
 		messages: loadMessages(locale),
 		timeZone: "Europe/Amsterdam",
-		// Only return serializable properties
-		// now timestamp automatically provided by next-intl if not specified
-		// onError and getMessageFallback must be defined client-side
 	};
 });

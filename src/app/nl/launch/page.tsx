@@ -9,14 +9,14 @@ import { USPGrid } from "~/components/launch/USPGrid";
 import { WaitlistForm } from "~/components/launch/WaitlistForm";
 
 export async function generateMetadata(): Promise<Metadata> {
-	const t = await getTranslations({ locale: "nl" });
+	const t = await getTranslations({ locale: "nl", namespace: "launch" });
 	const base = "https://loodgieter-agent.nl";
 	const path = "/nl/launch";
 
 	return {
-		title: t("launch.meta.title"),
-		description: t("launch.meta.description"),
-		keywords: t("launch.meta.keywords"),
+		title: t("meta.title"),
+		description: t("meta.description"),
+		keywords: t("meta.keywords"),
 		alternates: {
 			canonical: `${base}${path}`,
 			languages: {
@@ -26,8 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
 			},
 		},
 		openGraph: {
-			title: t("launch.meta.title"),
-			description: t("launch.meta.description"),
+			title: t("meta.title"),
+			description: t("meta.description"),
 			url: `${base}${path}`,
 			siteName: "Loodgieter Agent",
 			locale: "nl_NL",
@@ -35,8 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: t("launch.meta.title"),
-			description: t("launch.meta.description"),
+			title: t("meta.title"),
+			description: t("meta.description"),
 		},
 		robots: {
 			index: true,

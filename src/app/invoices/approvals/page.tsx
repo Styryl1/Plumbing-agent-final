@@ -1,6 +1,7 @@
 "use client";
 
 import { Calendar, CheckCircle2, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
@@ -22,7 +23,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import { useT } from "~/i18n/client";
 import { parseZdt } from "~/lib/time";
 import { api } from "~/lib/trpc/client";
 
@@ -34,7 +34,7 @@ function formatCurrency(cents: number): string {
 }
 
 export default function InvoiceApprovalsPage(): JSX.Element {
-	const t = useT("approvals");
+	const t = useTranslations();
 	const [selected, setSelected] = useState<Record<string, boolean>>({});
 	const [targetDate, setTargetDate] = useState(() => {
 		// Default to today
@@ -104,9 +104,11 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 			<div>
 				<h1 className="text-3xl font-bold flex items-center gap-2">
 					<CheckCircle2 className="h-8 w-8" />
-					{t("title")}
+					{t("misc.approvals.title")}
 				</h1>
-				<p className="text-muted-foreground mt-2">{t("subtitle")}</p>
+				<p className="text-muted-foreground mt-2">
+					{t("misc.approvals.subtitle")}
+				</p>
 			</div>
 
 			{/* Date Filter */}
@@ -114,13 +116,17 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Calendar className="h-5 w-5" />
-						{t("dateFilter.title")}
+						{t("misc.approvals.dateFilter.title")}
 					</CardTitle>
-					<CardDescription>{t("dateFilter.description")}</CardDescription>
+					<CardDescription>
+						{t("misc.approvals.dateFilter.description")}
+					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="max-w-sm">
-						<Label htmlFor="targetDate">{t("dateFilter.label")}</Label>
+						<Label htmlFor="targetDate">
+							{t("misc.approvals.dateFilter.label")}
+						</Label>
 						<Input
 							id="targetDate"
 							type="date"
@@ -139,12 +145,14 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-2">
 						<Send className="h-5 w-5" />
-						{t("actions.title")}
+						{t("misc.approvals.actions.title")}
 					</CardTitle>
 					<CardDescription>
 						{selectedIds.length > 0
-							? t("actions.selectedCount", { count: selectedIds.length })
-							: t("actions.description")}
+							? t("misc.approvals.actions.selectedCount", {
+									count: selectedIds.length,
+								})
+							: t("misc.approvals.actions.description")}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -155,8 +163,10 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 					>
 						<Send className="h-4 w-4" />
 						{sendManyMutation.isPending
-							? t("actions.sending")
-							: t("actions.sendSelected", { count: selectedIds.length })}
+							? t("misc.approvals.actions.sending")
+							: t("misc.approvals.actions.sendSelected", {
+									count: selectedIds.length,
+								})}
 					</Button>
 				</CardContent>
 			</Card>
@@ -164,11 +174,11 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 			{/* Invoice List */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("list.title")}</CardTitle>
+					<CardTitle>{t("misc.approvals.list.title")}</CardTitle>
 					<CardDescription>
 						{isLoadingDrafts
-							? t("list.loading")
-							: t("list.count", { count: drafts.length })}
+							? t("misc.approvals.list.loading")
+							: t("misc.approvals.list.count", { count: drafts.length })}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -179,12 +189,15 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 									<Checkbox
 										checked={isAllSelected}
 										onCheckedChange={handleSelectAll}
-										aria-label={t("selectAll")}
+										aria-label={t("misc.approvals.selectAll")}
 									/>
-									<span className="text-sm font-medium">{t("selectAll")}</span>
+									<span className="text-sm font-medium">
+										{t("misc.approvals.selectAll")}
+									</span>
 								</div>
 								<div className="text-sm text-muted-foreground">
-									{selectedIds.length} / {drafts.length} {t("selected")}
+									{selectedIds.length} / {drafts.length}{" "}
+									{t("misc.approvals.selected")}
 								</div>
 							</div>
 						)}
@@ -194,12 +207,18 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 								<TableHeader>
 									<TableRow>
 										<TableHead className="w-12">
-											<span className="sr-only">{t("select")}</span>
+											<span className="sr-only">
+												{t("misc.approvals.select")}
+											</span>
 										</TableHead>
-										<TableHead>{t("number")}</TableHead>
-										<TableHead>{t("customer")}</TableHead>
-										<TableHead className="text-right">{t("total")}</TableHead>
-										<TableHead className="text-right">{t("created")}</TableHead>
+										<TableHead>{t("misc.approvals.number")}</TableHead>
+										<TableHead>{t("misc.approvals.customer")}</TableHead>
+										<TableHead className="text-right">
+											{t("misc.approvals.total")}
+										</TableHead>
+										<TableHead className="text-right">
+											{t("misc.approvals.created")}
+										</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
@@ -207,7 +226,9 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 										<TableRow>
 											<TableCell colSpan={5} className="text-center py-8">
 												<div className="text-muted-foreground">
-													{isLoadingDrafts ? t("list.loading") : t("empty")}
+													{isLoadingDrafts
+														? t("misc.approvals.list.loading")
+														: t("misc.approvals.empty")}
 												</div>
 											</TableCell>
 										</TableRow>
@@ -220,7 +241,7 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 														onCheckedChange={() => {
 															handleToggleSelect(draft.id);
 														}}
-														aria-label={`${t("select")} ${draft.number}`}
+														aria-label={`${t("misc.approvals.select")} ${draft.number}`}
 													/>
 												</TableCell>
 												<TableCell>
@@ -253,20 +274,22 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 			{sendManyMutation.data && (
 				<Card>
 					<CardHeader>
-						<CardTitle>{t("results.title")}</CardTitle>
+						<CardTitle>{t("misc.approvals.results.title")}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="space-y-2">
 							<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
 								<div>
-									<div className="font-medium">{t("results.total")}</div>
+									<div className="font-medium">
+										{t("misc.approvals.results.total")}
+									</div>
 									<div className="text-2xl font-bold">
 										{sendManyMutation.data.total}
 									</div>
 								</div>
 								<div>
 									<div className="font-medium text-green-600">
-										{t("results.sent")}
+										{t("misc.approvals.results.sent")}
 									</div>
 									<div className="text-2xl font-bold text-green-600">
 										{sendManyMutation.data.sent}
@@ -274,7 +297,7 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 								</div>
 								<div>
 									<div className="font-medium text-yellow-600">
-										{t("results.skipped")}
+										{t("misc.approvals.results.skipped")}
 									</div>
 									<div className="text-2xl font-bold text-yellow-600">
 										{sendManyMutation.data.skipped}
@@ -282,7 +305,7 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 								</div>
 								<div>
 									<div className="font-medium text-blue-600">
-										{t("results.withPaymentLinks")}
+										{t("misc.approvals.results.withPaymentLinks")}
 									</div>
 									<div className="text-2xl font-bold text-blue-600">
 										{sendManyMutation.data.withPaymentLinks}
@@ -292,7 +315,7 @@ export default function InvoiceApprovalsPage(): JSX.Element {
 							{sendManyMutation.data.errors.length > 0 && (
 								<div className="mt-4">
 									<div className="font-medium text-red-600 mb-2">
-										{t("results.errors")}
+										{t("misc.approvals.results.errors")}
 									</div>
 									<div className="space-y-1 text-sm">
 										{sendManyMutation.data.errors.map((error, idx) => (

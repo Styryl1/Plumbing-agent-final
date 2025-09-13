@@ -81,7 +81,7 @@ invoice_daily_snapshots (
 Single day (today):
 ```bash
 curl -X POST /api/jobs/reporting/snapshot \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{"mode": "one"}'
 ```
@@ -89,7 +89,7 @@ curl -X POST /api/jobs/reporting/snapshot \
 Specific date:
 ```bash
 curl -X POST /api/jobs/reporting/snapshot \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{"mode": "one", "date": "2025-09-06T12:00:00+02:00[Europe/Amsterdam]"}'
 ```
@@ -97,7 +97,7 @@ curl -X POST /api/jobs/reporting/snapshot \
 Backfill range:
 ```bash
 curl -X POST /api/jobs/reporting/snapshot \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{
     "mode": "backfill", 
@@ -115,7 +115,7 @@ Run daily at **00:30 Europe/Amsterdam** to capture complete previous day:
 ```bash
 # Cron: 30 0 * * * (adjust for timezone)
 curl -X POST https://your-domain.com/api/jobs/reporting/snapshot \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{"mode": "one"}'
 ```
@@ -127,7 +127,7 @@ For historical data or system recovery:
 ```bash
 # Backfill last 30 days
 curl -X POST /api/jobs/reporting/snapshot \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{
     "mode": "backfill", 

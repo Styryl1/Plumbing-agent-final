@@ -41,7 +41,7 @@ This is the correct pattern for background job processing that operates across t
 #### Using API Route
 ```bash
 curl -X POST "http://localhost:3000/api/jobs/invoices/refresh" \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{
     "mode": "one",
@@ -52,7 +52,7 @@ curl -X POST "http://localhost:3000/api/jobs/invoices/refresh" \
 #### Using pnpm Script (Local Development)
 ```bash
 # Add to package.json scripts:
-"refresh:invoice": "curl -X POST http://localhost:3000/api/jobs/invoices/refresh -H \"X-Internal-Job-Token: $INTERNAL_JOB_TOKEN\" -H \"Content-Type: application/json\" -d"
+"refresh:invoice": "curl -X POST http://localhost:3000/api/jobs/invoices/refresh -H \"X-Internal-Job-Token: REDACTED
 
 # Usage:
 pnpm refresh:invoice '{"mode":"one","invoiceId":"uuid-here"}'
@@ -63,7 +63,7 @@ pnpm refresh:invoice '{"mode":"one","invoiceId":"uuid-here"}'
 #### Using API Route
 ```bash
 curl -X POST "http://localhost:3000/api/jobs/invoices/refresh" \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{
     "mode": "due",
@@ -74,7 +74,7 @@ curl -X POST "http://localhost:3000/api/jobs/invoices/refresh" \
 #### Using pnpm Script  
 ```bash
 # Add to package.json scripts:
-"refresh:due": "curl -X POST http://localhost:3000/api/jobs/invoices/refresh -H \"X-Internal-Job-Token: $INTERNAL_JOB_TOKEN\" -H \"Content-Type: application/json\" -d '{\"mode\":\"due\"}'"
+"refresh:due": "curl -X POST http://localhost:3000/api/jobs/invoices/refresh -H \"X-Internal-Job-Token: REDACTED
 
 # Usage:
 pnpm refresh:due
@@ -85,7 +85,7 @@ pnpm refresh:due
 ```bash
 # Run every 5 minutes for active polling (WeFact/e-Boekhouden)
 */5 * * * * curl -X POST https://your-app.com/api/jobs/invoices/refresh \
-  -H "X-Internal-Job-Token: $INTERNAL_JOB_TOKEN" \
+  -H "X-Internal-Job-Token: REDACTED
   -H "Content-Type: application/json" \
   -d '{"mode":"due","batch":50}' \
   >> /var/log/invoice-refresh.log 2>&1
@@ -95,7 +95,7 @@ pnpm refresh:due
 
 ```bash
 # Required for API authentication
-INTERNAL_JOB_TOKEN="your-secure-random-token-here"
+INTERNAL_JOB_TOKEN=REDACTED
 
 # Provider feature flags (must be enabled)
 INVOICING_MONEYBIRD="true"

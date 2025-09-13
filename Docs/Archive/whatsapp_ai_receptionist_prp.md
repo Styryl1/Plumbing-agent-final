@@ -193,7 +193,7 @@ export const bookingLinks = pgTable("booking_links", {
   id: uuid("id").primaryKey().defaultRandom(),
   orgId: uuid("org_id").notNull(),
   conversationId: uuid("conversation_id").notNull(),
-  token: varchar("token", { length: 64 }).notNull().unique(),
+  token: REDACTED
   expiresAt: timestamp("expires_at").notNull(),
   prefilled: jsonb("prefilled").$type<{
     durationMin: number; address?: string; jobType?: string;

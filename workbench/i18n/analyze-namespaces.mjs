@@ -14,7 +14,7 @@ const analyzeNamespaces = () => {
   const rootKeys = [];
   
   // Analyze all keys
-  Object.keys(enJson).forEach(key => {
+  Object.keys(enJson).forEach(key =REDACTED
     const parts = key.split('.');
     
     if (parts.length === 1) {
@@ -50,7 +50,7 @@ const analyzeNamespaces = () => {
   
   if (rootKeys.length > 0) {
     console.log('\n🏠 Root level keys:');
-    rootKeys.slice(0, 10).forEach(key => console.log(`  ${key}`));
+    rootKeys.slice(0, 10).forEach(key =REDACTED
     if (rootKeys.length > 10) {
       console.log(`  ... and ${rootKeys.length - 10} more`);
     }

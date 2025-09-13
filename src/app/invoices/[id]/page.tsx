@@ -3,6 +3,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { IssueActions } from "~/components/invoices/IssueActions";
 import { PaymentLinks } from "~/components/invoices/PaymentLinks";
@@ -19,11 +20,10 @@ import {
 } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { Skeleton } from "~/components/ui/skeleton";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
 
 export default function InvoiceDetailPage(): JSX.Element {
-	const t = useT();
+	const t = useTranslations();
 	const params = useParams();
 	const invoiceId = params.id as string;
 
@@ -78,10 +78,10 @@ export default function InvoiceDetailPage(): JSX.Element {
 					</Link>
 					<div>
 						<h1 className="text-3xl font-bold text-foreground">
-							{t("invoice.notFound")}
+							{t("invoices.invoice.notFound")}
 						</h1>
 						<p className="mt-2 text-muted-foreground">
-							{t("invoice.notFoundDescription")}
+							{t("invoices.invoice.notFoundDescription")}
 						</p>
 					</div>
 				</div>
@@ -101,11 +101,11 @@ export default function InvoiceDetailPage(): JSX.Element {
 				<div>
 					<h1 className="text-3xl font-bold text-foreground">
 						{invoice.invoiceNumber
-							? `${t("invoice.title")} ${invoice.invoiceNumber}`
-							: t("invoice.draftLabel")}
+							? `${t("invoices.invoice.title")} ${invoice.invoiceNumber}`
+							: t("invoices.invoice.draftLabel")}
 					</h1>
 					<p className="mt-2 text-muted-foreground">
-						{t("invoice.customer")}: {invoice.customer?.name}
+						{t("invoices.invoice.customer")}: {invoice.customer?.name}
 					</p>
 				</div>
 			</div>
@@ -114,14 +114,16 @@ export default function InvoiceDetailPage(): JSX.Element {
 				{/* Main Invoice Details */}
 				<Card className="lg:col-span-2">
 					<CardHeader>
-						<CardTitle>{t("invoice.details")}</CardTitle>
-						<CardDescription>{t("invoice.detailsDescription")}</CardDescription>
+						<CardTitle>{t("invoices.invoice.details")}</CardTitle>
+						<CardDescription>
+							{t("invoices.invoice.detailsDescription")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-6">
 						{/* Customer Information */}
 						<div>
 							<h3 className="font-semibold text-foreground mb-2">
-								{t("invoice.customer")}
+								{t("invoices.invoice.customer")}
 							</h3>
 							<div className="text-sm space-y-1">
 								<p className="font-medium">{invoice.customer?.name}</p>
@@ -140,7 +142,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 							<>
 								<div>
 									<h3 className="font-semibold text-foreground mb-2">
-										{t("invoice.job")}
+										{t("invoices.invoice.job")}
 									</h3>
 									<div className="text-sm space-y-1">
 										<p className="font-medium">{invoice.job.title}</p>
@@ -153,24 +155,24 @@ export default function InvoiceDetailPage(): JSX.Element {
 						{/* Amount Information */}
 						<div>
 							<h3 className="font-semibold text-foreground mb-2">
-								{t("invoice.amounts")}
+								{t("invoices.invoice.amounts")}
 							</h3>
 							<div className="space-y-2 text-sm">
 								<div className="flex justify-between">
 									<span className="text-muted-foreground">
-										{t("invoice.subtotalExVat")}
+										{t("invoices.invoice.subtotalExVat")}
 									</span>
 									<span>€{(invoice.subtotalExVat / 100).toFixed(2)}</span>
 								</div>
 								<div className="flex justify-between">
 									<span className="text-muted-foreground">
-										{t("invoice.vatAmount")}
+										{t("invoices.invoice.vatAmount")}
 									</span>
 									<span>€{(invoice.totalVatAmount / 100).toFixed(2)}</span>
 								</div>
 								<Separator />
 								<div className="flex justify-between font-semibold">
-									<span>{t("invoice.totalIncVat")}</span>
+									<span>{t("invoices.invoice.totalIncVat")}</span>
 									<span>€{(invoice.totalIncVat / 100).toFixed(2)}</span>
 								</div>
 							</div>
@@ -182,7 +184,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 								<Separator />
 								<div>
 									<h3 className="font-semibold text-foreground mb-2">
-										{t("invoice.notes")}
+										{t("invoices.invoice.notes")}
 									</h3>
 									<p className="text-sm text-muted-foreground whitespace-pre-wrap">
 										{invoice.notes}
@@ -234,13 +236,13 @@ export default function InvoiceDetailPage(): JSX.Element {
 					{/* Status Card */}
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("invoice.status")}</CardTitle>
+							<CardTitle>{t("invoices.invoice.status")}</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div>
 								<div className="flex items-center justify-between mb-2">
 									<span className="text-sm text-muted-foreground">
-										{t("invoice.status")}
+										{t("invoices.invoice.status")}
 									</span>
 									<Badge
 										variant={
@@ -250,11 +252,11 @@ export default function InvoiceDetailPage(): JSX.Element {
 										}
 									>
 										{invoice.status === "draft"
-											? t("status.draft")
+											? t("common.status.draft")
 											: invoice.status === "sent"
-												? t("invoice.sent")
+												? t("invoices.invoice.sent")
 												: invoice.status === "paid"
-													? t("invoice.paid")
+													? t("invoices.invoice.paid")
 													: invoice.status}
 									</Badge>
 								</div>
@@ -262,7 +264,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 								{invoice.provider && (
 									<div className="flex items-center justify-between">
 										<span className="text-sm text-muted-foreground">
-											{t("invoice.provider")}
+											{t("invoices.invoice.provider")}
 										</span>
 										<ProviderBadge
 											provider={invoice.provider}
@@ -276,7 +278,7 @@ export default function InvoiceDetailPage(): JSX.Element {
 							{invoice.issuedAt && (
 								<div className="text-sm">
 									<span className="text-muted-foreground">
-										{t("invoice.issuedOn")}:
+										{t("invoices.invoice.issuedOn")}:
 									</span>
 									<br />
 									<span className="font-medium">

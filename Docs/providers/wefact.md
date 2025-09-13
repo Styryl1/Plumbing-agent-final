@@ -46,7 +46,7 @@ Add to your `.env.local` or production environment:
 
 ```bash
 # WeFact Integration
-WEFACT_API_KEY=your_wefact_api_key_here
+WEFACT_API_KEY=REDACTED
 WEFACT_BASE_URL=https://api.mijnwefact.nl/v2/  # Optional, defaults to this
 INVOICING_WEFACT=true  # Enable WeFact provider
 ```

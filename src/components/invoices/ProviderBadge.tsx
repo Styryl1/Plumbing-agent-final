@@ -46,11 +46,17 @@ export default function ProviderBadge({
 	issuedAt,
 	className,
 }: ProviderBadgeProps): React.JSX.Element {
-	const t = useTranslations("invoices");
+	const t = useTranslations();
 	const isLocked = isInvoiceLocked(issuedAt, providerStatus);
 
 	// Map provider names to i18n keys to avoid dynamic template literals
-	const providerKeys: Record<InvoiceProvider, string> = {
+	const providerKeys: Record<
+		InvoiceProvider,
+		| "providers.moneybird"
+		| "providers.wefact"
+		| "providers.eboekhouden"
+		| "providers.peppol"
+	> = {
 		moneybird: "providers.moneybird",
 		wefact: "providers.wefact",
 		eboekhouden: "providers.eboekhouden",
@@ -60,13 +66,13 @@ export default function ProviderBadge({
 	if (isLegacy) {
 		return (
 			<Badge variant="outline" className={className ?? ""}>
-				{t("badges.legacy")}
+				{t("invoices.badges.legacy")}
 			</Badge>
 		);
 	}
 
 	const providerLabel =
-		provider != null ? t(providerKeys[provider]) : t("status.draft");
+		provider != null ? t(providerKeys[provider]) : t("invoices.status.draft");
 	// Allowed variants only; color nuance via className
 	const variant: React.ComponentProps<typeof Badge>["variant"] =
 		providerStatus === "paid" ? "secondary" : "default";
@@ -94,7 +100,7 @@ export default function ProviderBadge({
 				<Tooltip>
 					<TooltipTrigger asChild>{badge}</TooltipTrigger>
 					<TooltipContent>
-						<p>{t("badges.locked_tooltip")}</p>
+						<p>{t("invoices.badges.locked_tooltip")}</p>
 					</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>

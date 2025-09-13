@@ -35,6 +35,20 @@ import type { Database } from "~/types/supabase";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+async function findSuggestionIdByMsgId(
+	db: SupabaseClient<Database>,
+	orgId: string,
+	msgId: string,
+): Promise<string | null> {
+	const res = await db
+		.from("wa_suggestions")
+		.select("id")
+		.eq("org_id", orgId)
+		.eq("message_id", msgId)
+		.single();
+	return res.data?.id ?? null;
+}
+
 /**
  * Execute a control command and send response to control chat
  */
@@ -49,36 +63,44 @@ async function executeControlCommand(
 	try {
 		switch (command.kind) {
 			case "approve": {
-				const result = await approveSuggestion(
+				const suggestionId = await findSuggestionIdByMsgId(
 					db,
-					command.suggestionId,
-					context,
-					{
-						createJob: command.createJob ?? false,
-					},
+					context.orgId,
+					command.msgId,
 				);
-
-				if (result.success) {
-					if (result.jobId && result.jobCardUrl) {
-						responseText = `✅ Approved & sent suggestion ${command.suggestionId.substring(0, 8)}...\n🗓️ Job created: ${result.jobId.substring(0, 8)}...\n📱 ${result.jobCardUrl}`;
-					} else {
-						responseText = `✅ Approved and sent suggestion ${command.suggestionId.substring(0, 8)}...`;
-					}
-				} else {
-					responseText = `❌ Failed to approve: ${result.error}`;
+				if (!suggestionId) {
+					responseText = `❌ No suggestion found for ${command.msgId}`;
+					break;
 				}
+				const result = await approveSuggestion(db, suggestionId, context, {
+					createJob: command.createJob ?? false,
+				});
+				responseText = result.success
+					? result.jobCardUrl
+						? `✅ Approved. ${result.jobCardUrl}`
+						: "✅ Approved."
+					: `❌ Failed to approve: ${result.error}`;
 				break;
 			}
 			case "reject": {
+				const suggestionId = await findSuggestionIdByMsgId(
+					db,
+					context.orgId,
+					command.msgId,
+				);
+				if (!suggestionId) {
+					responseText = `❌ No suggestion found for ${command.msgId}`;
+					break;
+				}
 				const result = await rejectSuggestion(
 					db,
-					command.suggestionId,
+					suggestionId,
 					command.reason,
 					context,
 				);
 				responseText = result.success
-					? `🚫 Rejected suggestion ${command.suggestionId.substring(0, 8)}...\nReason: ${command.reason}`
-					: `❌ Failed to reject: ${result.error}`;
+					? "🛑 Rejected."
+					: `❌ Failed: ${result.error}`;
 				break;
 			}
 			case "send": {

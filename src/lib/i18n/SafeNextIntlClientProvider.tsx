@@ -4,11 +4,12 @@ import type { AbstractIntlMessages } from "next-intl";
 import { IntlErrorCode, NextIntlClientProvider } from "next-intl";
 import type { JSX, ReactNode } from "react";
 import { useCallback } from "react";
+import type { Locale } from "~/i18n/config";
 
 type Messages = AbstractIntlMessages;
 
 type Props = {
-	locale: string;
+	locale: Locale;
 	messages: Messages;
 	timeZone?: string;
 	formats?: Record<string, unknown>;
@@ -31,10 +32,17 @@ export default function SafeNextIntlClientProvider({
 			"code" in err &&
 			(err as { code: unknown }).code === IntlErrorCode.MISSING_MESSAGE
 		) {
-			// Silently ignore missing message errors - they're handled by getMessageFallback
+			// In development, log missing message details for debugging
+			if (process.env.NODE_ENV === "development") {
+				console.warn(
+					"[i18n] Missing translation key:",
+					(err as { message?: string }).message,
+					"\n🔍 Add this key to both en and nl namespace files, then run 'pnpm i18n:aggregate'",
+				);
+			}
 			return;
 		}
-		// Only log actual errors (not missing messages)
+		// Log other intl errors
 		console.error("[i18n] Intl error:", err);
 	}, []);
 
@@ -54,7 +62,19 @@ export default function SafeNextIntlClientProvider({
 				error !== null &&
 				"code" in error &&
 				(error as { code: unknown }).code === IntlErrorCode.MISSING_MESSAGE;
-			return isMissingMessage ? path : `__${path}__`;
+
+			if (isMissingMessage) {
+				if (process.env.NODE_ENV === "development") {
+					// Visual warning in development - makes missing keys obvious
+					return `🚨 ${path}`;
+				} else {
+					// In production, return the key path (English fallback should prevent this)
+					return path;
+				}
+			}
+
+			// For other errors, wrap in double underscores
+			return `__${path}__`;
 		},
 		[],
 	);

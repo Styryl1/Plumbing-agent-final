@@ -20,7 +20,7 @@ declare global {
 export function CookieConsent(): React.ReactElement | null {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const tCookies = useTranslations("launch.cookie_consent");
+	const t = useTranslations();
 
 	useEffect(() => {
 		// Check if user has already made a choice
@@ -110,21 +110,23 @@ export function CookieConsent(): React.ReactElement | null {
 							<div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
 								🍪
 							</div>
-							<h3 className="font-semibold text-sm">{tCookies("title")}</h3>
+							<h3 className="font-semibold text-sm">
+								{t("launch.cookie_consent.title")}
+							</h3>
 						</div>
 						<button
 							onClick={() => {
 								setIsVisible(false);
 							}}
 							className="text-gray-400 hover:text-gray-600 transition-colors"
-							aria-label={tCookies("close")}
+							aria-label={t("launch.cookie_consent.close")}
 						>
 							<X className="h-4 w-4" />
 						</button>
 					</div>
 
 					<p className="text-sm text-gray-600 mb-4">
-						{tCookies("description")}
+						{t("launch.cookie_consent.description")}
 					</p>
 
 					<div className="space-y-2">
@@ -134,7 +136,7 @@ export function CookieConsent(): React.ReactElement | null {
 								size="sm"
 								className="bg-emerald-600 hover:bg-emerald-700 text-white flex-1"
 							>
-								{tCookies("accept_all")}
+								{t("launch.cookie_consent.accept_all")}
 							</Button>
 							<Button
 								onClick={handleEssentialOnly}
@@ -142,7 +144,7 @@ export function CookieConsent(): React.ReactElement | null {
 								size="sm"
 								className="flex-1"
 							>
-								{tCookies("essential_only")}
+								{t("launch.cookie_consent.essential_only")}
 							</Button>
 						</div>
 
@@ -151,13 +153,13 @@ export function CookieConsent(): React.ReactElement | null {
 								onClick={handleReject}
 								className="text-gray-500 hover:text-gray-700 underline"
 							>
-								{tCookies("reject_all")}
+								{t("launch.cookie_consent.reject_all")}
 							</button>
 							<Link
 								href="/privacy"
 								className="text-emerald-600 hover:text-emerald-700 underline"
 							>
-								{tCookies("privacy_policy")}
+								{t("launch.cookie_consent.privacy_policy")}
 							</Link>
 						</div>
 					</div>

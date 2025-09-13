@@ -133,7 +133,7 @@ export const whatsappSettingsRouter = createTRPCRouter({
 		}
 
 		// Send test message using existing send function
-		const testMessage =
+		const verificationMessage =
 			"✅ WhatsApp control test OK - Setup wizard verification";
 
 		// Call Meta API directly for test (simpler than full conversation flow)
@@ -147,7 +147,7 @@ export const whatsappSettingsRouter = createTRPCRouter({
 			messaging_product: "whatsapp",
 			to: existingConvo.wa_contact_id,
 			type: "text",
-			text: { body: testMessage },
+			text: { body: verificationMessage },
 		};
 
 		const response = await fetch(url, {
@@ -177,11 +177,11 @@ export const whatsappSettingsRouter = createTRPCRouter({
 				`test_${Temporal.Now.instant().epochMilliseconds}`,
 			direction: "out",
 			message_type: "text",
-			content: testMessage,
+			content: verificationMessage,
 			media_url: null,
 			payload_json: {
 				mode: "session",
-				testMessage: true,
+				isControlVerification: true,
 				createdAt: nowIso,
 			},
 			created_at: nowIso,

@@ -107,7 +107,8 @@
 		"where": "Where",
 		"customer": "Customer",
 		"issue": "Issue",
-		"status": {
+		"status": "Status",
+		"statusValues": {
 			"planned": "Planned",
 			"scheduled": "Scheduled",
 			"in_progress": "In Progress",

@@ -2,6 +2,7 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { nl } from "date-fns/locale";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -13,7 +14,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import { useT } from "~/i18n/client";
 import { epochMs, parseZdt } from "~/lib/time";
 
 interface ReviewListRow {
@@ -41,7 +41,7 @@ function formatCurrency(cents: number): string {
 	});
 }
 
-function getProviderBadgeVariant(
+function getProviderBadgeVariantReview(
 	provider: ReviewListRow["provider"],
 ): "default" | "secondary" | "outline" {
 	switch (provider) {
@@ -58,14 +58,14 @@ function getProviderBadgeVariant(
 	}
 }
 
-export default function ReviewList({
+export default function ReviewListReview({
 	rows,
 	selected,
 	onToggle,
 	onSelectAll,
 	isAllSelected,
 }: ReviewListProps): JSX.Element {
-	const t = useT("invoices.review");
+	const t = useTranslations();
 
 	return (
 		<div className="space-y-4">
@@ -74,13 +74,15 @@ export default function ReviewList({
 					<Checkbox
 						checked={isAllSelected}
 						onCheckedChange={onSelectAll}
-						aria-label={t("selectAll")}
+						aria-label={t("invoices.review.selectAll")}
 					/>
-					<span className="text-sm font-medium">{t("selectAll")}</span>
+					<span className="text-sm font-medium">
+						{t("invoices.review.selectAll")}
+					</span>
 				</div>
 				<div className="text-sm text-muted-foreground">
 					{Object.values(selected).filter(Boolean).length} / {rows.length}{" "}
-					{t("selected")}
+					{t("invoices.review.selected")}
 				</div>
 			</div>
 
@@ -89,20 +91,26 @@ export default function ReviewList({
 					<TableHeader>
 						<TableRow>
 							<TableHead className="w-12">
-								<span className="sr-only">{t("select")}</span>
+								<span className="sr-only">{t("invoices.review.select")}</span>
 							</TableHead>
-							<TableHead>{t("customer")}</TableHead>
-							<TableHead>{t("job")}</TableHead>
-							<TableHead className="text-right">{t("total")}</TableHead>
-							<TableHead>{t("provider")}</TableHead>
-							<TableHead className="text-right">{t("created")}</TableHead>
+							<TableHead>{t("invoices.review.customer")}</TableHead>
+							<TableHead>{t("invoices.review.job")}</TableHead>
+							<TableHead className="text-right">
+								{t("invoices.review.total")}
+							</TableHead>
+							<TableHead>{t("invoices.review.provider")}</TableHead>
+							<TableHead className="text-right">
+								{t("invoices.review.created")}
+							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{rows.length === 0 ? (
 							<TableRow>
 								<TableCell colSpan={6} className="text-center py-8">
-									<div className="text-muted-foreground">{t("noInvoices")}</div>
+									<div className="text-muted-foreground">
+										{t("invoices.review.noInvoices")}
+									</div>
 								</TableCell>
 							</TableRow>
 						) : (
@@ -114,7 +122,7 @@ export default function ReviewList({
 											onCheckedChange={() => {
 												onToggle(row.id);
 											}}
-											aria-label={`${t("select")} ${row.customerName}`}
+											aria-label={`${t("invoices.review.select")} ${row.customerName}`}
 										/>
 									</TableCell>
 									<TableCell>
@@ -132,7 +140,7 @@ export default function ReviewList({
 											</div>
 										) : (
 											<span className="text-muted-foreground">
-												{t("noJob")}
+												{t("invoices.review.noJob")}
 											</span>
 										)}
 									</TableCell>
@@ -141,11 +149,15 @@ export default function ReviewList({
 									</TableCell>
 									<TableCell>
 										{row.provider ? (
-											<Badge variant={getProviderBadgeVariant(row.provider)}>
+											<Badge
+												variant={getProviderBadgeVariantReview(row.provider)}
+											>
 												{row.provider}
 											</Badge>
 										) : (
-											<Badge variant="outline">{t("noProvider")}</Badge>
+											<Badge variant="outline">
+												{t("invoices.review.noProvider")}
+											</Badge>
 										)}
 									</TableCell>
 									<TableCell className="text-right text-sm text-muted-foreground">

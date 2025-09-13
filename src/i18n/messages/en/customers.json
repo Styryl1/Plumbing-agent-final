@@ -1,151 +1,93 @@
 {
-	"customers": {
-		"selectCustomer": "Select customer",
-		"recent": "Recent",
-		"allOthers": "All others",
-		"title": "Customers",
-		"description": "Manage customer information and contact details",
-		"errors": {
-			"name": {
-				"required": "Name is required"
-			},
-			"phone": {
-				"required": "Phone is required",
-				"invalid": "Enter a valid phone"
-			},
-			"email": {
-				"invalid": "Enter a valid email"
-			},
-			"postalCode": {
-				"invalid": "Invalid Dutch postal code (e.g., 1234 AB)"
-			},
-			"houseNumber": {
-				"required": "House number required"
-			},
-			"address": {
-				"required": "Address is required"
-			},
-			"notFoundOrNoPermission": "Customer not found or no permission",
-			"serverError": "Server error occurred",
-			"emailAlreadyExists": "Customer with this email already exists"
-		},
-		"searchPlaceholder": "Search customers...",
-		"noCustomersFound": "No customers found",
-		"addNew": "New customer",
-		"archived": {
-			"title": "Archived customers",
-			"description": "View archived customers",
-			"badge": "Archived customer",
-			"noArchivedFound": "No archived customers found",
-			"tab": "Archived"
-		},
-		"unarchive": {
-			"action": "Restore",
-			"tooltip": "Restore customer",
-			"success": "Customer successfully restored",
-			"error": "Failed to restore customer"
-		},
-		"create": {
-			"title": "Create new customer",
-			"description": "Add a new customer to the system"
-		},
-		"edit": {
-			"title": "Edit customer",
-			"description": "Modify customer information"
-		},
-		"form": {
-			"name": {
-				"label": "Name",
-				"placeholder": "Full name"
-			},
-			"email": {
-				"label": "Email address",
-				"placeholder": "name@example.com"
-			},
-			"phone": {
-				"label": "Phone number",
-				"placeholder": "06 12345678"
-			},
-			"address": {
-				"label": "Address",
-				"placeholder": "Street 123",
-				"autoFill": {
-					"title": "Dutch Address Lookup"
-				}
-			},
-			"postalCode": {
-				"label": "Postal code",
-				"placeholder": "1234 AB"
-			},
-			"houseNumber": {
-				"label": "House number",
-				"placeholder": "123"
-			},
-			"street": {
-				"label": "Street",
-				"placeholder": "Street name"
-			},
-			"city": {
-				"label": "City",
-				"placeholder": "City name"
-			},
-			"language": {
-				"label": "Language"
-			},
-			"validation": {
-				"nameRequired": "Name is required",
-				"nameTooLong": "Name too long",
-				"emailInvalid": "Please enter a valid email address",
-				"emailTooLong": "Email address too long",
-				"phoneRequired": "Phone number is required",
-				"phoneTooLong": "Phone number too long",
-				"addressTooLong": "Address too long",
-				"postalCodeRequired": "Postal code is required",
-				"postalCodeInvalid": "Invalid Dutch postal code (e.g., 1234 AB)",
-				"postalCodeTooLong": "Postal code too long"
-			},
-			"requiredSymbol": "*"
-		},
-		"table": {
-			"columns": {
-				"name": "Name",
-				"contact": "Contact",
-				"address": "Address",
-				"created": "Created",
-				"actions": "Actions"
-			}
-		},
-		"stats": {
-			"total": "Total count",
-			"thisMonth": "This month",
-			"active": "Active customers",
-			"archived": "Archived customers"
-		},
-		"delete": {
-			"title": "Delete customer",
-			"description": "Are you sure you want to delete this customer? This action cannot be undone.",
-			"archive": {
-				"title": "Archive customer",
-				"cannotDelete": "Cannot delete customer: there are still jobs or invoices linked.",
-				"linkedData": "Linked data:",
-				"jobs": "job(s)",
-				"invoices": "invoice(s)",
-				"archiveInstead": "Would you like to archive customer {name} instead?"
-			}
-		},
-		"error": {
-			"load": "Failed to load customers",
-			"create": "Failed to create customer",
-			"update": "Failed to update customer",
-			"delete": "Failed to delete customer",
-			"deleteLinked": "Customer has linked jobs/invoices. You can archive instead.",
-			"archive": "Failed to archive customer"
-		},
-		"success": {
-			"created": "Customer created successfully",
-			"updated": "Customer updated successfully",
-			"deleted": "Customer deleted successfully",
-			"archived": "Customer archived successfully"
-		}
-	}
+	"selectCustomer": "Select customer",
+	"recent": "Recent",
+	"allOthers": "All others",
+	"title": "Customers",
+	"description": "Manage customer information and contact details",
+	"errors.name.required": "Name is required",
+	"errors.phone.required": "Phone is required",
+	"errors.phone.invalid": "Enter a valid phone",
+	"errors.email.invalid": "Enter a valid email",
+	"errors.postalCode.invalid": "Invalid Dutch postal code (e.g., 1234 AB)",
+	"errors.houseNumber.required": "House number required",
+	"errors.address.required": "Address is required",
+	"errors.notFoundOrNoPermission": "Customer not found or no permission",
+	"errors.serverError": "Server error occurred",
+	"errors.emailAlreadyExists": "Customer with this email already exists",
+	"searchPlaceholder": "Search customers...",
+	"noCustomersFound": "No customers found",
+	"addNew": "New customer",
+	"actions.creating": "Creating...",
+	"actions.create": "Create customer",
+	"actions.cancel": "Cancel",
+	"archived.title": "Archived customers",
+	"archived.description": "View archived customers",
+	"archived.badge": "Archived customer",
+	"archived.noArchivedFound": "No archived customers found",
+	"archived.tab": "Archived",
+	"unarchive.action": "Restore",
+	"unarchive.tooltip": "Restore customer",
+	"unarchive.success": "Customer successfully restored",
+	"unarchive.error": "Failed to restore customer",
+	"create.title": "Create new customer",
+	"create.description": "Add a new customer to the system",
+	"edit.title": "Edit customer",
+	"edit.description": "Modify customer information",
+	"form.name.label": "Name",
+	"form.name.placeholder": "Full name",
+	"form.email.label": "Email address",
+	"form.email.placeholder": "name@example.com",
+	"form.phone.label": "Phone number",
+	"form.phone.placeholder": "06 12345678",
+	"form.address.label": "Address",
+	"form.address.placeholder": "Street 123",
+	"form.address.autoFill.title": "Dutch Address Lookup",
+	"form.address.autoFill.loading": "Looking up address…",
+	"form.postalCode.label": "Postal code",
+	"form.postalCode.placeholder": "1234 AB",
+	"form.houseNumber.label": "House number",
+	"form.houseNumber.placeholder": "123",
+	"form.street.label": "Street",
+	"form.street.placeholder": "Street name",
+	"form.city.label": "City",
+	"form.city.placeholder": "City name",
+	"form.language.label": "Language",
+	"form.validation.nameRequired": "Name is required",
+	"form.validation.nameTooLong": "Name too long",
+	"form.validation.emailInvalid": "Please enter a valid email address",
+	"form.validation.emailTooLong": "Email address too long",
+	"form.validation.phoneRequired": "Phone number is required",
+	"form.validation.phoneTooLong": "Phone number too long",
+	"form.validation.addressTooLong": "Address too long",
+	"form.validation.postalCodeRequired": "Postal code is required",
+	"form.validation.postalCodeInvalid": "Invalid Dutch postal code (e.g., 1234 AB)",
+	"form.validation.postalCodeTooLong": "Postal code too long",
+	"form.requiredSymbol": "*",
+	"table.columns.name": "Name",
+	"table.columns.contact": "Contact",
+	"table.columns.address": "Address",
+	"table.columns.created": "Created",
+	"table.columns.actions": "Actions",
+	"stats.total": "Total count",
+	"stats.thisMonth": "This month",
+	"stats.active": "Active customers",
+	"stats.archived": "Archived customers",
+	"delete.title": "Delete customer",
+	"delete.description": "Are you sure you want to delete this customer? This action cannot be undone.",
+	"delete.archive.title": "Archive customer",
+	"delete.archive.cannotDelete": "Cannot delete customer: there are still jobs or invoices linked.",
+	"delete.archive.linkedData": "Linked data:",
+	"delete.archive.jobs": "job(s)",
+	"delete.archive.invoices": "invoice(s)",
+	"delete.archive.archiveInstead": "Would you like to archive customer {name} instead?",
+	"error.load": "Failed to load customers",
+	"error.create": "Failed to create customer",
+	"error.update": "Failed to update customer",
+	"error.delete": "Failed to delete customer",
+	"error.deleteLinked": "Customer has linked jobs/invoices. You can archive instead.",
+	"error.archive": "Failed to archive customer",
+	"success.created": "Customer created successfully",
+	"success.updated": "Customer updated successfully",
+	"success.deleted": "Customer deleted successfully",
+	"success.archived": "Customer archived successfully"
 }

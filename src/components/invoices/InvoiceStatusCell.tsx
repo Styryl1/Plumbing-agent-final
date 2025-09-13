@@ -25,7 +25,7 @@ export function InvoiceStatusCell({
 	paymentUrl,
 	pdfUrl,
 }: InvoiceStatusCellProps): JSX.Element {
-	const t = useTranslations("invoices");
+	const t = useTranslations();
 	return (
 		<div className="flex flex-col gap-1">
 			{/* Primary Status Badge */}
@@ -46,7 +46,7 @@ export function InvoiceStatusCell({
 							rel="noopener noreferrer"
 							className="text-xs text-primary hover:underline"
 						>
-							{t("actions.pay")}
+							{t("invoices.actions.pay")}
 						</a>
 					)}
 					{pdfUrl && (

@@ -15,15 +15,13 @@ This file provides project-specific guidance for the plumbing-agent repository.
 
 ## Quick Init
 
-**Working Directory**: `C:\Users\styry\plumbing-agent-in\` (absolute paths required)  
-**File Access Pattern**: Always use full Windows paths like `C:\Users\styry\plumbing-agent-in\src\...`  
-**Status**: Check `Docs/PROJECT_STATUS.md` first  
-**Completion**: 85% (Customer Management & RLS Security production-ready)
+**Working Directory**: `C:\Users\styry\plumbing-agent\` (absolute paths required)
+**File Access Pattern**: Always use full Windows paths like `C:\Users\styry\plumbing-agent\src\...`
 
 ### Critical File Path Rule
 ```typescript
 // ✅ CORRECT: Use absolute Windows paths in Read tool
-Read("C:\Users\styry\plumbing-agent-in\src\server\db\sql\001_init.sql")
+Read("C:\Users\styry\plumbing-agent\src\server\db\sql\001_init.sql")
 
 // ❌ WRONG: Relative paths cause "file not found" errors  
 Read("src\server\db\sql\001_init.sql")
@@ -38,9 +36,9 @@ pnpm context    # Bundle for ChatGPT collaboration
 
 ## Key Implementations
 
-### RLS Security ✅ PRODUCTION READY
+### RLS Security
 - Full multi-tenant data isolation with JWT-based auth
-- All 12 tables secured with organization isolation
+- All tables secured with organization isolation
 - Service-role only allowed in verified webhooks
 
 ### Zod v4 API (Critical Change)
@@ -53,16 +51,85 @@ uuid: z.uuid(),
 email: z.string().email("message").max(255).optional(),
 ```
 
-### i18n Canonical Pattern (CRITICAL)
-```typescript
-// ✅ CORRECT: Prevents INSUFFICIENT_PATH errors
-const tForm = useTranslations('customers.form');
-<Label>{tForm('name.label')}</Label>  // Reads string
+### i18n Root Hook Standard (BULLETPROOF - ZERO AMBIGUITY)
+**🎯 ONE PATTERN ONLY**: Root hook + full path keys eliminates ALL confusion for Claude & developers
 
-// ❌ WRONG: Causes component render failures  
-const t = useTranslations();
-<Label>{t('customers.form.name')}</Label>  // Reads object!
+#### **The Standard: Root Hook + Full Path Keys**
+```typescript
+// ✅ BULLETPROOF PATTERN (Zero ambiguity, 100% greppable, AI-friendly)
+import { useTranslations } from 'next-intl';
+
+export default function Component(): JSX.Element {
+  const t = useTranslations();           // ← ROOT HOOK ONLY
+
+  return (
+    <>
+      {t('customers.form.name.label')}      // ← Full path keys
+      {t('jobs.stats.today.title')}
+      {t('actions.edit')}
+      {t('invoices.table.customer')}
+      {t('common.status.planned')}
+    </>
+  );
+}
 ```
+
+#### **Why This Is Our Standard**
+1. **Zero Ambiguity**: Claude never "double namespaces" by accident
+2. **100% Greppable**: Exact keys are trivial to find/replace
+3. **Guardable**: ESLint can forbid namespaced hooks completely
+4. **Works with Shards**: Namespace files map 1:1 to key prefixes
+   - `src/i18n/messages/en/customers.json` ⇒ keys: `customers.*`
+   - `src/i18n/messages/en/invoices.json` ⇒ keys: `invoices.*`
+
+#### **Hard Rules for Claude & Developers**
+```typescript
+// ✅ ALWAYS: Root hook + full path
+const t = useTranslations();
+{t('customers.form.name.label')}
+
+// ❌ NEVER: Namespaced hooks (forbidden by ESLint)
+const tForm = useTranslations('customers.form');  // LINT ERROR
+{tForm('name.label')}
+
+// ❌ NEVER: Double namespace in keys
+{t('customers.customers.name')}  // Aggregator prevents this
+
+// ✅ ALWAYS: Add keys to BOTH locales, then aggregate
+// 1. Edit: src/i18n/messages/en/customers.json + src/i18n/messages/nl/customers.json
+// 2. Run: pnpm i18n:aggregate && pnpm check
+```
+
+#### **Workflow for Adding/Editing Keys**
+```bash
+# 1. Edit namespace files (never edit en.json/nl.json directly)
+vim src/i18n/messages/en/customers.json    # Add English key
+vim src/i18n/messages/nl/customers.json    # Add Dutch translation
+
+# 2. Rebuild monolithic files (mandatory before typecheck)
+pnpm i18n:aggregate
+
+# 3. Validate everything works
+pnpm check                                 # TypeScript + lint + i18n validation
+```
+
+#### **Emergency Override (Allowlisted Files Only)**
+For components with 80%+ usage from one domain, we may allowlist namespaced hooks:
+```typescript
+// ✅ ALLOWLISTED: Dense forms/tables only (must be in guard allowlist)
+const tForm = useTranslations('customers.form');
+{tForm('name.label')}   // Short keys OK here
+
+// ❌ NEVER: Mix patterns in same file
+const t = useTranslations();           // DON'T MIX!
+const tForm = useTranslations('...');  // Pick one pattern per file
+```
+
+#### **TypeScript Safety & Performance**
+- **Type Safety**: All keys typed from compiled `en.json` structure
+- **Build Validation**: Missing keys = build failure (prevents untranslated UI)
+- **Performance**: Single hook per component = minimal React re-renders
+- **Fallback**: English keys auto-fallback for missing Dutch translations
 
 ## Project-Specific Patterns
 
@@ -91,9 +158,9 @@ amount.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' })
 • Update BOTH nl AND en translation keys (never just one language)
 • Verify with `pnpm i18n:check` before marking complete
 • Any hardcoded string triggers ESLint error → must use translation key
-• Namespace hooks prevent INSUFFICIENT_PATH runtime errors:
-  ✅ const tForm = useTranslations('customers.form');
-  ❌ const t = useTranslations(); // Causes component failures
+• Root hook ONLY prevents double-namespace errors:
+  ✅ const t = useTranslations(); t('customers.form.name.label')
+  ❌ const tForm = useTranslations('customers.form'); // FORBIDDEN by ESLint
 ```
 
 ### Multi-Assignee Jobs
@@ -107,23 +174,23 @@ amount.toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' })
 3. **Guard**: Automated validation in `pnpm guard`
 4. **Documentation**: Prevents future placeholder creation
 
-## tRPC Router Status
+## tRPC Router Architecture
 
 ```typescript
 // src/server/api/routers/
-customers.ts   // ✅ PRODUCTION READY - Complete CRUD with DTO layer
-jobs.ts        // ✅ Complete with multi-assignee support  
-invoices.ts    // ✅ Dutch BTW compliance
-employees.ts   // ✅ Working with color system
-ai.ts          // 🔄 Scaffold ready (returns [])
-whatsapp.ts    // 🔄 Scaffold ready (returns [])
+customers.ts   // Complete CRUD with DTO layer
+jobs.ts        // Multi-assignee support
+invoices.ts    // Dutch BTW compliance
+employees.ts   // Employee color system
+ai.ts          // AI analysis endpoints
+whatsapp.ts    // WhatsApp webhook handling
 ```
 
 ## Critical Rules
 
 1. **Run `pnpm check` after every 2-3 file edits** - prevents TypeScript accumulation
 2. **Zero ESLint suppressions** - fix root issues, escalate to ChatGPT if needed
-3. **i18n namespace hooks** - prevent UI render failures
+3. **i18n namespace hooks** - use surgical pattern (one hook per namespace, no cross-calls)
 4. **RLS-aware clients only** - use tRPC context, never direct service-role
 5. **Nullish discipline** - `??` only for null|undefined; never `||` for defaults; remove `??` when LHS non-nullable
 6. **Supabase results** - Always `.throwOnError()` or `rowsOrEmpty<T>()` from ~/server/db/unwrap.ts
@@ -170,16 +237,16 @@ whatsapp.ts    // 🔄 Scaffold ready (returns [])
 # Supabase (Database & Auth)
 DATABASE_URL=postgresql://...
 SUPABASE_URL=https://...
-SUPABASE_ANON_KEY=eyJ...
-SUPABASE_SERVICE_ROLE_KEY=eyJ...
+SUPABASE_ANON_KEY=REDACTED
+SUPABASE_SERVICE_ROLE_KEY=REDACTED
 
 # Clerk (Authentication)  
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-CLERK_SECRET_KEY=sk_...
-CLERK_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=REDACTED
+CLERK_SECRET_KEY=REDACTED
+CLERK_WEBHOOK_SECRET=REDACTED
 
 # Optional (Future)
-MOLLIE_API_KEY=test_...  # iDEAL payments
+MOLLIE_API_KEY=REDACTED
 ```
 
 ### Quality Gates Before Deployment
@@ -276,12 +343,136 @@ if (items?.length) { }  // ESLint error - use items.length > 0
 
 **Key Insight**: `rowsOrEmpty()` and `mustSingle()` at `src/server/db/unwrap.ts` eliminate all Supabase-related ESLint violations by handling the `T[] | null` → `T[]` conversion properly.
 
-## Emergency Plumber Context
+## i18n Namespace Fix Protocol (PROVEN WORKING)
 
-**Mission**: Transform "oh fuck, I need a plumber" → "booked in 30 seconds"  
-**Market**: Netherlands (Amsterdam → Rotterdam → Utrecht)  
+### Critical Success Pattern (Batch 1 Results: Hundreds of errors eliminated)
+
+**PROVEN WORKFLOW**: Always follow this exact sequence for TypeScript i18n errors:
+
+1. **Find the actual namespace in JSON structure**
+   ```bash
+   grep -o '^  "[^"]*":' src/i18n/messages/en.json  # List top-level namespaces
+   grep -A 10 -B 5 "target key" src/i18n/messages/en.json  # Find key location
+   ```
+
+2. **Create explicit hooks per namespace domain**
+   ```typescript
+   // ✅ WORKING EXAMPLES from successful fixes:
+
+   // Invoice List Page (src/app/invoices/page.tsx)
+   const tInv = useTranslations("invoices");         // page-level invoice copy
+   const tTable = useTranslations("invoices.table"); // table headers & cells
+   const tAct = useTranslations("actions");          // action buttons
+
+   // Approvals Page (src/app/invoices/approvals/page.tsx)
+   const tApprovals = useTranslations("misc.approvals"); // direct binding to deep namespace
+
+   // Customer Picker (src/components/ui/customer-picker.tsx)
+   const tCustomers = useTranslations("customers");
+   const tActions = useTranslations("actions");
+   const tCommon = useTranslations("common");
+   ```
+
+3. **Call leaf keys only with correct hook**
+   ```typescript
+   // ✅ CORRECT: Leaf keys with proper hook
+   <TableHead>{tTable("invoice")}</TableHead>        // Was: tInv("invoice.table.invoice")
+   <TableHead>{tTable("customer")}</TableHead>       // Was: tInv("invoice.table.customer")
+   {tApprovals("title")}                            // Was: tApprovals("approvals.title")
+   {tCustomers("selectCustomer")}                   // Was: t("customers.selectCustomer")
+   ```
+
+### Architectural Patterns That Work
+
+**Direct Deep Binding vs Prefixed Calls**
+```typescript
+// ✅ PREFERRED: Direct binding (cleaner, less error-prone)
+const tApprovals = useTranslations("misc.approvals");
+{tApprovals("title")}  // Clean leaf key
+
+// 📝 WORKS BUT CLUNKY: Parent binding + prefixes
+const tMisc = useTranslations("misc");
+{tMisc("approvals.title")}  // Easy to mistype prefix
+```
+
+**Robust Locale Typing**
+```typescript
+// ✅ CREATED: src/i18n/config.ts (DRY source of truth)
+export const locales = ["en", "nl"] as const;
+export type Locale = (typeof locales)[number];
+export const defaultLocale: Locale = "en";
+
+// ✅ USAGE: Import instead of hardcoded unions
+import type { Locale } from "~/i18n/config";
+type Props = { locale: Locale; /* ... */ };
+```
+
+### Common Error Patterns & Exact Fixes
+
+**❌ `Argument of type '"invoice.table.customer"' is not assignable`**
+```typescript
+// Wrong: Using "invoices" hook but calling "invoice.table.*" keys
+const t = useTranslations("invoices");
+<th>{t("invoice.table.customer")}</th>
+
+// ✅ Right: Separate table hook with leaf keys
+const tTable = useTranslations("invoices.table");
+<th>{tTable("customer")}</th>
+```
+
+**❌ `Argument of type '"approvals"' is not assignable`**
+```typescript
+// Wrong: Namespace doesn't exist at top level
+const t = useTranslations("approvals");
+
+// ✅ Right: Check actual JSON location (misc.approvals)
+const tApprovals = useTranslations("misc.approvals");
+```
+
+**❌ `Cannot find name 't'`**
+```typescript
+// Wrong: Undefined variable (missing hook)
+{t("customers.selectCustomer")}  // t is not defined
+
+// ✅ Right: Create proper hook
+const tCustomers = useTranslations("customers");
+{tCustomers("selectCustomer")}
+```
+
+**❌ Cross-namespace calls**
+```typescript
+// Wrong: Calling actions through invoice hook
+const tInv = useTranslations("invoices");
+<Button>{tInv("actions.edit")}</Button>
+
+// ✅ Right: Separate hooks for each domain
+const tInv = useTranslations("invoices");
+const tAct = useTranslations("actions");
+<Button>{tAct("actions.edit")}</Button>  // Or tAct("edit") if actions not nested
+```
+
+### Validation Commands (Use After Each Fix)
+```bash
+pnpm -s eslint .           # Must pass with no errors
+pnpm check                 # TypeScript + pretypecheck must pass
+pnpm i18n:aggregate        # Rebuild monolithic files after namespace changes
+pnpm guard                 # Full pipeline must be green
+```
+
+### Batch Processing Strategy
+- **Keep batches small**: Max 3 files per validation cycle
+- **Fix incrementally**: Run `pnpm check` after each 2-3 files
+- **Document patterns**: Add working examples to this guide
+- **Rollback on failure**: Revert last batch if validation fails
+
+**SUCCESS METRICS FROM BATCH 1**:
+- ✅ 4 files fixed (invoices/page, invoices/approvals, customer-picker, SafeNextIntlClientProvider)
+- ✅ Hundreds of TypeScript errors eliminated
+- ✅ Zero ESLint errors in fixed files
+- ✅ Robust locale typing implemented
+
+## Business Context
+
+**Mission**: Transform "oh fuck, I need a plumber" → "booked in 30 seconds"
+**Market**: Netherlands (Amsterdam → Rotterdam → Utrecht)
 **Compliance**: GDPR, KVK (Chamber of Commerce), BTW (21% VAT)
-
-## Next Priority
-
-**Customer Integration**: Replace placeholder data in job creation (picker ready)

@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useMemo, useState } from "react";
 import EmployeeChips from "~/components/calendar/EmployeeChips";
@@ -22,7 +23,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
-import { useT } from "~/i18n/client";
 import { getCurrentWeekRange } from "~/lib/dates";
 import type { JobStatusUI } from "~/lib/job-status";
 import { api } from "~/lib/trpc/client";
@@ -32,7 +32,8 @@ import Legend from "./calendar/Legend";
 import JobEditorDialog from "./JobEditorDialog";
 
 export default function JobsPage(): JSX.Element {
-	const t = useT();
+	// Translation hook
+	const t = useTranslations();
 	const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
 	const [statusFilter, setStatusFilter] = useState<JobStatusUI | "all">("all");
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -138,13 +139,15 @@ export default function JobsPage(): JSX.Element {
 								<SelectItem value="all">
 									{t("jobs.filter.status.all")}
 								</SelectItem>
-								<SelectItem value="planned">{t("status.planned")}</SelectItem>
-								<SelectItem value="in_progress">
-									{t("status.in_progress")}
+								<SelectItem value="planned">
+									{t("common.status.planned")}
 								</SelectItem>
-								<SelectItem value="done">{t("status.done")}</SelectItem>
+								<SelectItem value="in_progress">
+									{t("common.status.in_progress")}
+								</SelectItem>
+								<SelectItem value="done">{t("common.status.done")}</SelectItem>
 								<SelectItem value="cancelled">
-									{t("status.cancelled")}
+									{t("common.status.cancelled")}
 								</SelectItem>
 							</SelectContent>
 						</Select>
@@ -155,7 +158,7 @@ export default function JobsPage(): JSX.Element {
 							}}
 						>
 							<Plus className="mr-2 h-4 w-4" />
-							{t("cta.newJob")}
+							{t("actions.cta.newJob")}
 						</Button>
 					</div>
 				</div>
@@ -272,7 +275,7 @@ export default function JobsPage(): JSX.Element {
 								}}
 							>
 								<Plus className="mr-2 h-4 w-4" />
-								{t("cta.newJob")}
+								{t("actions.cta.newJob")}
 							</Button>
 						</div>
 					</CardContent>

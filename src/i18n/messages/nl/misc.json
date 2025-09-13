@@ -107,7 +107,8 @@
 		"where": "Waar",
 		"customer": "Klant",
 		"issue": "Probleem",
-		"status": {
+		"status": "Status",
+		"statusValues": {
 			"planned": "Gepland",
 			"scheduled": "Ingepland",
 			"in_progress": "Bezig",

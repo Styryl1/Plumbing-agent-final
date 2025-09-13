@@ -45,7 +45,6 @@ import {
 	SheetTitle,
 } from "~/components/ui/sheet";
 import { Textarea } from "~/components/ui/textarea";
-import { useT } from "~/i18n/client";
 import { formatZDT, getDuration, toZDT } from "~/lib/calendar-temporal";
 import { formatPhoneNumber } from "~/lib/phone";
 import { api } from "~/lib/trpc/client";
@@ -70,11 +69,8 @@ export default function JobDrawer({
 	currentEmployeeId,
 }: JobDrawerProps): JSX.Element {
 	const router = useRouter();
-	const t = useT();
-	const tForm = useTranslations("form");
-	const tCustomers = useTranslations("customers");
-	const tJobs = useTranslations("jobs");
-	const tCommon = useTranslations("common");
+	// Root translation hook for full path access
+	const t = useTranslations();
 	const [isEditing, setIsEditing] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	type JobPriority = "normal" | "urgent" | "emergency";
@@ -162,7 +158,7 @@ export default function JobDrawer({
 	const utils = api.useUtils();
 	const deleteJobMutation = api.jobs.remove.useMutation({
 		onSuccess: () => {
-			toast.success(tJobs("delete.success"));
+			toast.success(t("jobs.jobs.delete.success"));
 			setShowDeleteConfirm(false);
 			onOpenChange(false); // Close drawer after successful delete
 			// Invalidate queries to refresh the calendar
@@ -171,19 +167,19 @@ export default function JobDrawer({
 		},
 		onError: (error) => {
 			const msg =
-				error instanceof Error ? error.message : tJobs("delete.failed");
+				error instanceof Error ? error.message : t("jobs.jobs.delete.failed");
 			toast.error(msg);
 		},
 	});
 
 	const createDraftMutation = api.invoiceFlow.createDraftFromJob.useMutation({
 		onSuccess: (result) => {
-			toast.success(t("jobs.invoice.createDraft.success"));
+			toast.success(t("JobDrawer.invoice.success"));
 			onOpenChange(false); // Close drawer
 			router.push(`/invoices/${result.invoiceId}`);
 		},
 		onError: (error) => {
-			toast.error(t("jobs.invoice.createDraft.error") + ": " + error.message);
+			toast.error(t("JobDrawer.invoice.error") + ": " + error.message);
 		},
 	});
 
@@ -358,7 +354,7 @@ export default function JobDrawer({
 			>
 				<SheetHeader>
 					<SheetTitle className="flex items-center justify-between">
-						<span>{t("jobs.details")}</span>
+						<span>{t("JobDrawer.details")}</span>
 						{canEdit() && !isEditing && (
 							<div className="flex gap-2">
 								<Button
@@ -383,7 +379,7 @@ export default function JobDrawer({
 									size="sm"
 								>
 									<Edit className="h-4 w-4 mr-1" />
-									{t("action.edit")}
+									{t("JobDrawer.edit")}
 								</Button>
 
 								{/* Generate Invoice Button - only for completed jobs with customers */}
@@ -394,7 +390,7 @@ export default function JobDrawer({
 												const result = await createDraftMutation.mutateAsync({
 													jobId: job.id,
 												});
-												toast.success(t("jobs.invoice.createDraft.success"));
+												toast.success(t("JobDrawer.invoice.success"));
 												router.push(`/invoices/${result.invoiceId}`);
 											} catch (error) {
 												console.error("Failed to create draft:", error);
@@ -407,8 +403,8 @@ export default function JobDrawer({
 									>
 										<Receipt className="h-4 w-4 mr-1" />
 										{createDraftMutation.isPending
-											? t("actions.creating")
-											: t("jobs.invoice.createDraft.label")}
+											? t("JobDrawer.creating")
+											: t("JobDrawer.invoice.create")}
 									</Button>
 								)}
 
@@ -420,7 +416,7 @@ export default function JobDrawer({
 									size="sm"
 								>
 									<Trash2 className="h-4 w-4 mr-1" />
-									{t("action.delete")}
+									{t("JobDrawer.delete")}
 								</Button>
 							</div>
 						)}
@@ -441,7 +437,7 @@ export default function JobDrawer({
 								<>
 									<div>
 										<Label htmlFor="edit-title" className="text-sm font-medium">
-											{t("form.title")} *
+											{t("JobDrawer.title")} *
 										</Label>
 										<Input
 											id="edit-title"
@@ -461,7 +457,7 @@ export default function JobDrawer({
 											htmlFor="edit-description"
 											className="text-sm font-medium"
 										>
-											{t("field.description")}
+											{t("JobDrawer.description")}
 										</Label>
 										<Textarea
 											id="edit-description"
@@ -482,7 +478,7 @@ export default function JobDrawer({
 											htmlFor="edit-priority"
 											className="text-sm font-medium"
 										>
-											{t("field.priority")}
+											{t("JobDrawer.priority")}
 										</Label>
 										<Select
 											value={formData.priority}
@@ -495,13 +491,13 @@ export default function JobDrawer({
 											</SelectTrigger>
 											<SelectContent>
 												<SelectItem value="normal">
-													{t("priority.normal")}
+													{t("JobDrawer.priorities.normal")}
 												</SelectItem>
 												<SelectItem value="urgent">
-													{t("priority.urgent")}
+													{t("JobDrawer.priorities.urgent")}
 												</SelectItem>
 												<SelectItem value="emergency">
-													{t("priority.emergency")}
+													{t("JobDrawer.priorities.emergency")}
 												</SelectItem>
 											</SelectContent>
 										</Select>
@@ -512,7 +508,7 @@ export default function JobDrawer({
 											htmlFor="edit-status"
 											className="text-sm font-medium"
 										>
-											{t("field.status")}
+											{t("JobDrawer.status")}
 										</Label>
 										<Select
 											value={formData.status}
@@ -545,7 +541,7 @@ export default function JobDrawer({
 												htmlFor="edit-start"
 												className="text-sm font-medium"
 											>
-												{tForm("startTime")}
+												{t("JobDrawer.startTime")}
 											</Label>
 											<Input
 												id="edit-start"
@@ -562,7 +558,7 @@ export default function JobDrawer({
 										</div>
 										<div>
 											<Label htmlFor="edit-end" className="text-sm font-medium">
-												{tForm("endTime")}
+												{t("JobDrawer.endTime")}
 											</Label>
 											<Input
 												id="edit-end"
@@ -585,7 +581,7 @@ export default function JobDrawer({
 											htmlFor="edit-customer"
 											className="text-sm font-medium"
 										>
-											{tForm("customer")}
+											{t("ui.form.customer")}
 										</Label>
 										<Select
 											value={formData.customerId ?? ""}
@@ -615,8 +611,10 @@ export default function JobDrawer({
 											htmlFor="edit-status"
 											className="text-sm font-medium"
 										>
-											{t("field.status")}{" "}
-											<span aria-hidden="true">{t("form.requiredSymbol")}</span>
+											{t("JobDrawer.status")}{" "}
+											<span aria-hidden="true">
+												{t("JobDrawer.requiredSymbol")}
+											</span>
 										</Label>
 										<Select
 											value={formData.status}
@@ -660,7 +658,7 @@ export default function JobDrawer({
 									{job.description && (
 										<div>
 											<h3 className="text-sm font-medium text-gray-700 mb-1">
-												{t("field.description")}
+												{t("JobDrawer.description")}
 											</h3>
 											<p className="text-sm text-gray-600">{job.description}</p>
 										</div>
@@ -674,14 +672,16 @@ export default function JobDrawer({
 						{/* Time & Duration */}
 						<div className="space-y-3">
 							<h3 className="text-sm font-medium text-gray-700">
-								{t("jobs.calendar.title")}
+								{t("JobDrawer.calendar")}
 							</h3>
 							<div className="space-y-2 text-sm">
 								{job.start && (
 									<div className="flex items-center gap-2">
 										<CalendarIcon className="h-4 w-4 text-gray-400" />
 										<span>
-											{t("field.start")}: {formatDateTime(job.start)}
+											{t("JobDrawer.startTime", {
+												time: formatDateTime(job.start),
+											})}
 										</span>
 									</div>
 								)}
@@ -689,7 +689,7 @@ export default function JobDrawer({
 									<div className="flex items-center gap-2">
 										<Clock className="h-4 w-4 text-gray-400" />
 										<span>
-											{t("label.durationMinutes", {
+											{t("JobDrawer.duration", {
 												minutes: getDurationMinutes(job.start, job.end),
 											})}
 										</span>
@@ -706,11 +706,11 @@ export default function JobDrawer({
 								<div className="space-y-3">
 									<div className="flex items-center justify-between">
 										<h3 className="text-sm font-medium text-gray-700">
-											{t("field.customer")}
+											{t("JobDrawer.customer")}
 										</h3>
 										{job.customer?.isArchived && (
 											<Badge variant="secondary" className="text-xs">
-												{tCustomers("archived.badge")}
+												{t("customers.archived.badge")}
 											</Badge>
 										)}
 									</div>
@@ -779,7 +779,7 @@ export default function JobDrawer({
 						<div className="space-y-3">
 							<h3 className="text-sm font-medium text-gray-700">
 								<Users className="h-4 w-4 inline mr-1" />
-								{t("jobs.assignments.title")}
+								{t("JobDrawer.assignments")}
 							</h3>
 
 							{isEditing ? (
@@ -789,7 +789,7 @@ export default function JobDrawer({
 											htmlFor="edit-primary"
 											className="text-sm font-medium"
 										>
-											{t("field.primaryEmployee")}
+											{t("JobDrawer.primaryEmployee")}
 										</Label>
 										<Select
 											value={formData.primaryEmployeeId ?? ""}
@@ -816,7 +816,7 @@ export default function JobDrawer({
 									{/* TODO: Add multi-select for secondary employees */}
 									<div>
 										<Label className="text-sm font-medium text-gray-500">
-											{t("field.secondaryEmployees")}
+											{t("JobDrawer.secondaryEmployees")}
 										</Label>
 									</div>
 								</>
@@ -825,7 +825,7 @@ export default function JobDrawer({
 									{job.employeeId ? (
 										<div className="text-sm">
 											<span className="font-medium">
-												{t("field.primaryEmployee")}:{" "}
+												{t("JobDrawer.primaryEmployee")}:{" "}
 											</span>
 											{employees.find((e) => e.id === job.employeeId)?.name ??
 												"Onbekend"}
@@ -834,7 +834,7 @@ export default function JobDrawer({
 									{job.secondaryEmployeeIds.length > 0 ? (
 										<div className="text-sm">
 											<span className="font-medium">
-												{t("field.secondaryEmployees")}:{" "}
+												{t("JobDrawer.secondaryEmployees")}:{" "}
 											</span>
 											{job.secondaryEmployeeIds
 												.map(
@@ -865,7 +865,7 @@ export default function JobDrawer({
 											rescheduleMutation.isPending
 										}
 									>
-										{t("actions.cancel")}
+										{t("JobDrawer.cancel")}
 									</Button>
 									<Button
 										onClick={handleSave}
@@ -895,8 +895,8 @@ export default function JobDrawer({
 									>
 										<Receipt className="h-4 w-4 mr-2" />
 										{createDraftMutation.isPending
-											? t("jobs.invoice.createDraft.creating")
-											: t("jobs.invoice.createDraft.label")}
+											? t("JobDrawer.invoice.creating")
+											: t("JobDrawer.invoice.create")}
 									</Button>
 								)
 							)}
@@ -909,16 +909,16 @@ export default function JobDrawer({
 			<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>{tJobs("delete.title")}</AlertDialogTitle>
+						<AlertDialogTitle>{t("jobs.jobs.delete.title")}</AlertDialogTitle>
 						<AlertDialogDescription>
-							{tJobs("delete.description")}
+							{t("jobs.jobs.delete.description")}
 							{job && (
 								<span className="font-medium"> &quot;{job.title}&quot;</span>
 							)}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
+						<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={() => {
 								if (jobId) {
@@ -928,8 +928,8 @@ export default function JobDrawer({
 							disabled={deleteJobMutation.isPending}
 						>
 							{deleteJobMutation.isPending
-								? tCommon("deleting")
-								: t("action.delete")}
+								? t("actions.deleting")
+								: t("JobDrawer.delete")}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

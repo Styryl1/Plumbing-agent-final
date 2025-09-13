@@ -22,8 +22,7 @@ interface ActionsRailProps {
 }
 
 export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
-	const tWhatsApp = useTranslations("whatsapp");
-	const tCommon = useTranslations("");
+	const t = useTranslations();
 	const router = useRouter();
 	const [isCreatingJob, setIsCreatingJob] = useState(false);
 
@@ -51,10 +50,10 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 			});
 
 			router.push(`/jobs/create?${searchParams.toString()}`);
-			toast.success(tWhatsApp("actions.jobCreated"));
+			toast.success(t("whatsapp.actions.jobCreated"));
 		} catch (error) {
 			console.error("Failed to create job:", error);
-			toast.error(tWhatsApp("actions.jobError"));
+			toast.error(t("whatsapp.actions.jobError"));
 		} finally {
 			setIsCreatingJob(false);
 		}
@@ -62,14 +61,14 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 
 	const handleSendPaylink = (): void => {
 		try {
-			// Mock implementation - in real app, this would:
+			// TODO: Implement payment link generation
 			// 1. Get invoice linked to conversation
 			// 2. Generate payment link
 			// 3. Send via WhatsApp
-			toast.info(tWhatsApp("actions.paylinkNotImplemented"));
+			toast.info(t("whatsapp.actions.paylinkNotImplemented"));
 		} catch (error) {
 			console.error("Failed to send paylink:", error);
-			toast.error(tWhatsApp("actions.paylinkError"));
+			toast.error(t("whatsapp.actions.paylinkError"));
 		}
 	};
 
@@ -80,21 +79,21 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 				status: "closed",
 			});
 
-			toast.success(tWhatsApp("actions.conversationClosed"));
+			toast.success(t("whatsapp.actions.conversationClosed"));
 			router.push("/whatsapp");
 		} catch (error) {
 			console.error("Failed to close conversation:", error);
-			toast.error(tWhatsApp("actions.closeError"));
+			toast.error(t("whatsapp.actions.closeError"));
 		}
 	};
 
 	const handleApprove = (): void => {
 		try {
-			// Mock control chat approve
-			toast.info(tWhatsApp("control.approved"));
+			// TODO: Implement approval workflow
+			toast.info(t("whatsapp.control.approved"));
 		} catch (error) {
 			console.error("Failed to approve:", error);
-			toast.error(tWhatsApp("control.approveError"));
+			toast.error(t("whatsapp.control.approveError"));
 		}
 	};
 
@@ -104,7 +103,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 			<Card>
 				<CardHeader>
 					<CardTitle className="text-sm">
-						{tWhatsApp("actions.title")}
+						{t("whatsapp.actions.title")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-3">
@@ -119,7 +118,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 						) : (
 							<Plus className="h-4 w-4 mr-2" />
 						)}
-						{tWhatsApp("actions.createJob")}
+						{t("whatsapp.actions.createJob")}
 					</Button>
 
 					<Button
@@ -129,7 +128,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 						variant="outline"
 					>
 						<Euro className="h-4 w-4 mr-2" />
-						{tWhatsApp("actions.sendPaylink")}
+						{t("whatsapp.actions.sendPaylink")}
 					</Button>
 
 					<Separator />
@@ -145,7 +144,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 						) : (
 							<X className="h-4 w-4 mr-2" />
 						)}
-						{tWhatsApp("actions.close")}
+						{t("whatsapp.actions.close")}
 					</Button>
 				</CardContent>
 			</Card>
@@ -154,12 +153,12 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 			<Card>
 				<CardHeader>
 					<CardTitle className="text-sm">
-						{tWhatsApp("control.title")}
+						{t("whatsapp.control.title")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-3">
 					<p className="text-xs text-muted-foreground">
-						{tWhatsApp("control.description")}
+						{t("whatsapp.control.description")}
 					</p>
 
 					<div className="flex gap-2">
@@ -170,7 +169,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 							className="flex-1"
 						>
 							<CheckCircle className="h-3 w-3 mr-1" />
-							{tWhatsApp("control.approve")}
+							{t("whatsapp.control.approve")}
 						</Button>
 
 						<Button
@@ -180,7 +179,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 							className="flex-1"
 						>
 							<X className="h-3 w-3 mr-1" />
-							{tWhatsApp("control.close")}
+							{t("whatsapp.control.close")}
 						</Button>
 					</div>
 				</CardContent>
@@ -190,18 +189,20 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 			{conversation && (
 				<Card>
 					<CardHeader>
-						<CardTitle className="text-sm">{tWhatsApp("info.title")}</CardTitle>
+						<CardTitle className="text-sm">
+							{t("whatsapp.info.title")}
+						</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-2 text-xs">
 						<div className="flex justify-between">
 							<span className="text-muted-foreground">
-								{tWhatsApp("info.status")}
+								{t("whatsapp.info.status")}
 							</span>
-							<span>{conversation.status ?? tCommon("common.unknown")}</span>
+							<span>{conversation.status ?? t("common.unknown")}</span>
 						</div>
 						<div className="flex justify-between">
 							<span className="text-muted-foreground">
-								{tWhatsApp("info.created")}
+								{t("whatsapp.info.created")}
 							</span>
 							<span>
 								{conversation.last_message_at
@@ -214,7 +215,7 @@ export function ActionsRail({ conversationId }: ActionsRailProps): JSX.Element {
 												month: "2-digit",
 												year: "numeric",
 											})
-									: tCommon("common.unknown")}
+									: t("common.unknown")}
 							</span>
 						</div>
 					</CardContent>
