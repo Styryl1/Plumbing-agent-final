@@ -6,196 +6,169 @@
 		"creating": "Creating",
 		"createDrafts": "CreateDrafts"
 	},
-	"launch": {
-		"meta": {
-			"title": "Plumbing Agent - Noodloodgieter Platform",
-			"description": "Transformeer spoed loodgieterswerk met WhatsApp intake, AI diagnose, en directe facturatie",
-			"keywords": "noodloodgieter, loodgieter software, WhatsApp business, Nederlandse loodgieter, emergency plumber"
-		},
-		"demo": {
-			"page": {
-				"title": "Productdemo",
-				"headline": "Bekijk Plumbing Agent in actie",
-				"subtitle": "Van WhatsApp-intake naar betaalde factuur in minuten",
-				"benefits": {
-					"faster": {
-						"title": "Snellere Reactietijden",
-						"description": "WhatsApp intake en AI-analyse verkorten reactietijd van uren naar minuten"
-					},
-					"smarter": {
-						"title": "Slimmere Diagnose",
-						"description": "AI-gestuurde probleemanalyse helpt je beter voorbereiden en efficiënter werken"
-					},
-					"better_paid": {
-						"title": "Sneller Betaald",
-						"description": "Directe facturatie en geautomatiseerde betalingsherinneringen verbeteren cashflow"
-					}
+	"meta": {
+		"title": "Plumbing Agent - Noodloodgieter Platform",
+		"description": "Transformeer spoed loodgieterswerk met WhatsApp intake, AI diagnose, en directe facturatie",
+		"keywords": "noodloodgieter, loodgieter software, WhatsApp business, Nederlandse loodgieter, emergency plumber"
+	},
+	"demo": {
+		"page": {
+			"title": "Productdemo",
+			"headline": "Bekijk Plumbing Agent in actie",
+			"subtitle": "Van WhatsApp-intake naar betaalde factuur in minuten",
+			"benefits": {
+				"faster": {
+					"title": "Snellere Reactietijden",
+					"description": "WhatsApp intake en AI-analyse verkorten reactietijd van uren naar minuten"
 				},
-				"cta": {
-					"headline": "Klaar om te proberen?",
-					"subtitle": "Doe mee aan de pilot en krijg vroege toegang",
-					"button": "Aanmelden"
+				"smarter": {
+					"title": "Slimmere Diagnose",
+					"description": "AI-gestuurde probleemanalyse helpt je beter voorbereiden en efficiënter werken"
 				},
-				"nav": {
-					"previous": "Vorige",
-					"next": "Volgende",
-					"step_counter": "Stap {current} van {total}"
-				},
-				"done": "Helemaal klaar!",
-				"autoplay_pause": "Autoplay pauzeren",
-				"autoplay_start": "Autoplay starten",
-				"keyboard_help": "Gebruik pijltjestoetsen om te navigeren",
-				"time_estimate": "Geschatte tijd: {minutes} minuten",
-				"time_average": "Gemiddelde tijd",
-				"back": "Terug"
+				"better_paid": {
+					"title": "Sneller Betaald",
+					"description": "Directe facturatie en geautomatiseerde betalingsherinneringen verbeteren cashflow"
+				}
 			},
-			"content": {
-				"whatsapp": {
-					"photo_attached": "Foto toegevoegd",
-					"ai_analyzing": "Bericht analyseren."
-				},
-				"ai_suggestion": {
-					"diagnosis": "Diagnose",
-					"reliable": "Betrouwbaar",
-					"urgency": "Urgentie",
-					"emergency": "Spoed",
-					"estimated_time": "Geschatte tijd",
-					"minutes": "min",
-					"required_materials": "Benodigde materialen",
-					"quantity_format": "{qty}×"
-				},
-				"schedule": {
-					"assigned_to": "Toegewezen aan",
-					"start_time": "Starttijd",
-					"end_time": "Eindtijd",
-					"auto_assigned": "Automatisch toegewezen"
-				},
-				"job_card": {
-					"address": "Adres",
-					"phone": "Telefoon",
-					"notes": "Notities"
-				},
-				"voice_draft": {
-					"voice_transcript": "Spraaktranscript",
-					"invoice_lines": "Factuurregels",
-					"line_format": "{qty}× {item}",
-					"subtotal_ex_vat": "Subtotaal (excl. btw)",
-					"vat_total": "Btw-totaal",
-					"total": "Totaal"
-				},
-				"send_pay": {
-					"invoice_id": "Factuurnummer",
-					"invoice_sent": "Factuur verzonden",
-					"payment_status": "Betaalstatus",
-					"pdf": "PDF",
-					"whatsapp_message": "WhatsApp-bericht",
-					"awaiting_payment": "Wacht op betaling",
-					"click_pay": "Klik om te betalen"
-				},
-				"reminders": {
-					"after_days": "Na {days} dagen",
-					"scheduled": "Ingepland",
-					"automation_active": "Automatisering actief",
-					"opt_out_respected": "Uitschrijven gerespecteerd",
-					"email_escalation": "E-mail-escalatie",
-					"title": "Betaalherinneringen",
-					"whatsapp_series": "WhatsApp Serie"
-				},
-				"common": {
-					"loading": "Demogegevens laden.",
-					"alternative_payment": "Alternatieve betaling",
-					"due_date": "Vervaldatum",
-					"email": "E-mail",
-					"step_data_unavailable": "Stapgegevens niet beschikbaar"
-				},
-				"step_previous": "Vorige",
-				"step_next": "Volgende",
-				"step_jump": "Ga naar stap",
-				"demo_started": "Demo gestart",
-				"demo_completed": "Demo voltooid"
-			}
+			"cta": {
+				"headline": "Klaar om te proberen?",
+				"subtitle": "Doe mee aan de pilot en krijg vroege toegang",
+				"button": "Aanmelden"
+			},
+			"nav": {
+				"previous": "Vorige",
+				"next": "Volgende",
+				"step_counter": "Stap {current} van {total}"
+			},
+			"done": "Helemaal klaar!",
+			"autoplay_pause": "Autoplay pauzeren",
+			"autoplay_start": "Autoplay starten",
+			"keyboard_help": "Gebruik pijltjestoetsen om te navigeren",
+			"time_estimate": "Geschatte tijd: {minutes} minuten",
+			"time_average": "Gemiddelde tijd",
+			"back": "Terug"
 		},
-		"usp": {
-			"title": "Title",
-			"subtitle": "Subtitle",
+		"content": {
 			"whatsapp": {
-				"title": "Title",
-				"desc": "Desc"
+				"photo_attached": "Foto toegevoegd",
+				"ai_analyzing": "Bericht analyseren."
 			},
-			"ai": {
-				"title": "Title",
-				"desc": "Desc"
+			"ai_suggestion": {
+				"diagnosis": "Diagnose",
+				"reliable": "Betrouwbaar",
+				"urgency": "Urgentie",
+				"emergency": "Spoed",
+				"estimated_time": "Geschatte tijd",
+				"minutes": "min",
+				"required_materials": "Benodigde materialen",
+				"quantity_format": "{qty}×"
 			},
 			"schedule": {
-				"title": "Title",
-				"desc": "Desc"
+				"assigned_to": "Toegewezen aan",
+				"start_time": "Starttijd",
+				"end_time": "Eindtijd",
+				"auto_assigned": "Automatisch toegewezen"
 			},
-			"jobcards": {
-				"title": "Title",
-				"desc": "Desc"
+			"job_card": {
+				"address": "Adres",
+				"phone": "Telefoon",
+				"notes": "Notities"
 			},
-			"invoicing": {
-				"title": "Title",
-				"desc": "Desc"
+			"voice_draft": {
+				"voice_transcript": "Spraaktranscript",
+				"invoice_lines": "Factuurregels",
+				"line_format": "{qty}× {item}",
+				"subtotal_ex_vat": "Subtotaal (excl. btw)",
+				"vat_total": "Btw-totaal",
+				"total": "Totaal"
 			},
-			"compliance": {
-				"title": "Title",
-				"desc": "Desc"
-			}
+			"send_pay": {
+				"invoice_id": "Factuurnummer",
+				"invoice_sent": "Factuur verzonden",
+				"payment_status": "Betaalstatus",
+				"pdf": "PDF",
+				"whatsapp_message": "WhatsApp-bericht",
+				"awaiting_payment": "Wacht op betaling",
+				"click_pay": "Klik om te betalen"
+			},
+			"reminders": {
+				"after_days": "Na {days} dagen",
+				"scheduled": "Ingepland",
+				"automation_active": "Automatisering actief",
+				"opt_out_respected": "Uitschrijven gerespecteerd",
+				"email_escalation": "E-mail-escalatie",
+				"title": "Betaalherinneringen",
+				"whatsapp_series": "WhatsApp Serie"
+			},
+			"common": {
+				"loading": "Demogegevens laden.",
+				"alternative_payment": "Alternatieve betaling",
+				"due_date": "Vervaldatum",
+				"email": "E-mail",
+				"step_data_unavailable": "Stapgegevens niet beschikbaar"
+			},
+			"step_previous": "Vorige",
+			"step_next": "Volgende",
+			"step_jump": "Ga naar stap",
+			"demo_started": "Demo gestart",
+			"demo_completed": "Demo voltooid"
+		}
+	},
+	"usp": {
+		"title": "Title",
+		"subtitle": "Subtitle",
+		"whatsapp": {
+			"title": "Title",
+			"desc": "Desc"
 		},
-		"cookie_consent": {
-			"title": "We gebruiken cookies",
-			"description": "We gebruiken essentiële cookies en analytics om je ervaring te verbeteren.",
-			"accept_all": "Alles accepteren",
-			"reject_all": "Alles weigeren",
-			"essential_only": "Alleen essentieel",
-			"privacy_policy": "Privacybeleid",
-			"close": "Sluiten"
+		"ai": {
+			"title": "Title",
+			"desc": "Desc"
 		},
-		"trust": {
-			"dutch_compliance": "Dutch Compliance",
-			"ideal_payments": "Ideal Payments",
-			"whatsapp_business": "Whatsapp Business",
-			"avg_compliant": "AVG-conform",
-			"ideal_certified": "iDEAL-gecertificeerd",
-			"kvk_registered": "KVK-geregistreerd"
+		"schedule": {
+			"title": "Title",
+			"desc": "Desc"
 		},
-		"waitlist": {
-			"title": "Word Pilot Deelnemer",
-			"subtitle": "Krijg vroege toegang tot Plumbing Agent en transformeer uw spoedloodgieter bedrijf",
-			"email": "E-mailadres",
-			"phone": "Telefoonnummer (optioneel)",
-			"org": "Organisatienaam (optioneel)",
-			"success": "Dank je wel! We nemen binnenkort contact op met toegangsgegevens voor de pilot.",
-			"error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
-			"submit": "Meld je aan",
-			"gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
+		"jobcards": {
+			"title": "Title",
+			"desc": "Desc"
 		},
-		"hero": {
-			"h1": "Plumbing Agent voor vakmensen",
-			"subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
-			"cta_demo": "Plan een demo",
-			"cta_waitlist": "Op wachtlijst",
-			"urgency": "Beperkte beta-toegang",
-			"social_proof": "Vertrouwd door groeiende loodgietersteams"
+		"invoicing": {
+			"title": "Title",
+			"desc": "Desc"
 		},
-		"roi_calculator": {
-			"title": "Bereken je ROI",
-			"subtitle": "Bereken je ROI",
-			"input_label": "Uren die je per week wilt besparen",
-			"placeholder_text": "bijv. 5–10",
-			"hours_per_week": "Uren bespaard / week",
-			"rate_per_hour": "Uurtarief (€)",
-			"time_saved": "Tijd bespaard",
-			"extra_revenue": "Extra omzet",
-			"yearly_savings": "Jaarlijkse besparingen",
-			"calculate_button": "Berekenen",
-			"cta_start_saving": "Begin nu met besparen",
-			"results": {
-				"total_value": "Totale jaarlijkse waarde"
-			}
-		},
-		"current_hours": "Huidige uren per week"
+		"compliance": {
+			"title": "Title",
+			"desc": "Desc"
+		}
+	},
+	"cookie_consent": {
+		"title": "We gebruiken cookies",
+		"description": "We gebruiken essentiële cookies en analytics om je ervaring te verbeteren.",
+		"accept_all": "Alles accepteren",
+		"reject_all": "Alles weigeren",
+		"essential_only": "Alleen essentieel",
+		"privacy_policy": "Privacybeleid",
+		"close": "Sluiten"
+	},
+	"trust": {
+		"dutch_compliance": "Dutch Compliance",
+		"ideal_payments": "Ideal Payments",
+		"whatsapp_business": "Whatsapp Business",
+		"avg_compliant": "AVG-conform",
+		"ideal_certified": "iDEAL-gecertificeerd",
+		"kvk_registered": "KVK-geregistreerd"
+	},
+	"waitlist": {
+		"title": "Word Pilot Deelnemer",
+		"subtitle": "Krijg vroege toegang tot Plumbing Agent en transformeer uw spoedloodgieter bedrijf",
+		"email": "E-mailadres",
+		"phone": "Telefoonnummer (optioneel)",
+		"org": "Organisatienaam (optioneel)",
+		"success": "Dank je wel! We nemen binnenkort contact op met toegangsgegevens voor de pilot.",
+		"error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
+		"submit": "Meld je aan",
+		"gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
 	},
 	"list": {
 		"title": "Title",
@@ -203,12 +176,10 @@
 	},
 	"pilot": {
 		"banner": {
-			"title": "__TODO__",
-			"subtitle": "__TODO__"
+			"subtitle": "Bepaalde functies zijn ingeschakeld voor testen.",
+			"title": "Pilotmodus"
 		}
 	},
-	"pilot.banner.subtitle": "Bepaalde functies zijn ingeschakeld voor testen.",
-	"pilot.banner.title": "Pilotmodus",
 	"results": {
 		"title": "Title",
 		"total": "Total",
@@ -216,5 +187,30 @@
 		"skipped": "Skipped",
 		"withPaymentLinks": "WithPaymentLinks",
 		"errors": "Errors"
-	}
+	},
+	"hero": {
+		"h1": "Plumbing Agent voor vakmensen",
+		"subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
+		"cta_demo": "Plan een demo",
+		"cta_waitlist": "Op wachtlijst",
+		"urgency": "Beperkte beta-toegang",
+		"social_proof": "Vertrouwd door groeiende loodgietersteams"
+	},
+	"roi_calculator": {
+		"title": "Bereken je ROI",
+		"subtitle": "Bereken je ROI",
+		"input_label": "Uren die je per week wilt besparen",
+		"placeholder_text": "bijv. 5–10",
+		"hours_per_week": "Uren bespaard / week",
+		"rate_per_hour": "Uurtarief (€)",
+		"time_saved": "Tijd bespaard",
+		"extra_revenue": "Extra omzet",
+		"yearly_savings": "Jaarlijkse besparingen",
+		"calculate_button": "Berekenen",
+		"cta_start_saving": "Begin nu met besparen",
+		"results": {
+			"total_value": "Totale jaarlijkse waarde"
+		}
+	},
+	"current_hours": "Huidige uren per week"
 }

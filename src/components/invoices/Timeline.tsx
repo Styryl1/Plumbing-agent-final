@@ -48,13 +48,13 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 
 	type I18nKey = Parameters<typeof t>[0];
 	const eventKindKeys: Record<EventKind, I18nKey> = {
-		created: "invoice.timeline.created" as I18nKey,
-		sent: "invoice.timeline.sent" as I18nKey,
-		paid: "invoice.timeline.paid" as I18nKey,
-		reminder_sent: "invoice.timeline.reminder_sent" as I18nKey,
-		reminder_error: "invoice.timeline.reminder_error" as I18nKey,
-		reminder_skipped: "invoice.timeline.reminder_skipped" as I18nKey,
-		manual_follow_up: "invoice.timeline.manual_follow_up" as I18nKey,
+		created: "invoices.timeline.created" as I18nKey,
+		sent: "invoices.timeline.sent" as I18nKey,
+		paid: "invoices.timeline.paid" as I18nKey,
+		reminder_sent: "invoices.timeline.reminder_sent" as I18nKey,
+		reminder_error: "invoices.timeline.reminder_error" as I18nKey,
+		reminder_skipped: "invoices.timeline.reminder_skipped" as I18nKey,
+		manual_follow_up: "invoices.timeline.manual_follow_up" as I18nKey,
 	};
 
 	const {
@@ -93,7 +93,7 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 		return (
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("invoice.timeline.heading")}</CardTitle>
+					<CardTitle>{t("invoices.timeline.heading")}</CardTitle>
 					<CardDescription>Loading timeline...</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -117,12 +117,12 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 		return (
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("invoice.timeline.heading")}</CardTitle>
-					<CardDescription>{t("invoice.timeline.loadError")}</CardDescription>
+					<CardTitle>{t("invoices.timeline.heading")}</CardTitle>
+					<CardDescription>{t("invoices.timeline.loadError")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<p className="text-sm text-muted-foreground">
-						{t("invoice.timeline.loadErrorDescription")}
+						{t("invoices.timeline.loadErrorDescription")}
 					</p>
 				</CardContent>
 			</Card>
@@ -133,12 +133,12 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 		return (
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("invoice.timeline.heading")}</CardTitle>
-					<CardDescription>{t("invoice.timeline.noEvents")}</CardDescription>
+					<CardTitle>{t("invoices.timeline.heading")}</CardTitle>
+					<CardDescription>{t("invoices.timeline.noEvents")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<p className="text-sm text-muted-foreground">
-						{t("invoice.timeline.noEventsDescription")}
+						{t("invoices.timeline.noEventsDescription")}
 					</p>
 				</CardContent>
 			</Card>
@@ -148,8 +148,8 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>{t("invoice.timeline.heading")}</CardTitle>
-				<CardDescription>{t("invoice.timeline.description")}</CardDescription>
+				<CardTitle>{t("invoices.timeline.heading")}</CardTitle>
+				<CardDescription>{t("invoices.timeline.description")}</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4" role="list" aria-label="Invoice timeline">

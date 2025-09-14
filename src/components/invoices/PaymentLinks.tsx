@@ -221,10 +221,10 @@ export function PaymentLinks({
 							<MessageCircle className="mr-2 h-4 w-4" />
 							{sendWhatsAppMutation.isPending
 								? t("actions.sending")
-								: t("invoices.invoice.actions.sendWhatsApp")}
+								: t("invoices.actions.sendWhatsApp")}
 						</Button>
 						<p className="text-xs text-muted-foreground">
-							{t("invoices.invoice.actions.sendWhatsAppDescription")}
+							{t("invoices.actions.sendWhatsAppDescription")}
 						</p>
 					</div>
 				)}

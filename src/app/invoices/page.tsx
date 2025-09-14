@@ -50,17 +50,15 @@ export default function InvoicesPage(): JSX.Element {
 			<div className="flex justify-between items-start">
 				<div>
 					<h1 className="text-3xl font-bold text-foreground">
-						{t("invoices.invoice.title")}
+						{t("invoices.title")}
 					</h1>
-					<p className="mt-2 text-muted-foreground">
-						{t("invoices.invoice.manage")}
-					</p>
+					<p className="mt-2 text-muted-foreground">{t("invoices.manage")}</p>
 				</div>
 				<div className="flex gap-2">
 					<Link href="/invoices/approvals">
 						<Button variant="outline" size="sm">
 							<Settings className="mr-2 h-4 w-4" />
-							{t("invoices.invoice.approvals")}
+							{t("invoices.approvals")}
 						</Button>
 					</Link>
 				</div>
@@ -77,7 +75,7 @@ export default function InvoicesPage(): JSX.Element {
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-muted-foreground">
-							{t("invoices.invoice.totalOutstanding")}
+							{t("invoices.totalOutstanding")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -90,7 +88,7 @@ export default function InvoicesPage(): JSX.Element {
 						</div>
 						<div className="mt-1 text-xs text-muted-foreground">
 							{stats ? (
-								`${stats.draftCount + stats.issuedCount} ${t("invoices.invoice.totalInvoices")}`
+								`${stats.draftCount + stats.issuedCount} ${t("invoices.totalInvoices")}`
 							) : (
 								<Skeleton className="h-4 w-40" />
 							)}
@@ -101,7 +99,7 @@ export default function InvoicesPage(): JSX.Element {
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-muted-foreground">
-							{t("invoices.invoice.thisMonth")}
+							{t("invoices.thisMonth")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -114,8 +112,8 @@ export default function InvoicesPage(): JSX.Element {
 						</div>
 						<div className="mt-1 text-xs text-muted-foreground">
 							{stats && stats.draftCount > 0
-								? `${stats.draftCount} ${t("invoices.invoice.draftsReady")}`
-								: t("invoices.invoice.noPendingDrafts")}
+								? `${stats.draftCount} ${t("invoices.draftsReady")}`
+								: t("invoices.noPendingDrafts")}
 						</div>
 					</CardContent>
 				</Card>
@@ -123,7 +121,7 @@ export default function InvoicesPage(): JSX.Element {
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-muted-foreground">
-							{t("invoices.invoice.overdue")}
+							{t("invoices.overdue")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -136,8 +134,8 @@ export default function InvoicesPage(): JSX.Element {
 						</div>
 						<div className="mt-1 text-xs text-muted-foreground">
 							{stats && stats.overdue > 0
-								? t("invoices.invoice.requiresAttention")
-								: t("invoices.invoice.noOverdue")}
+								? t("invoices.requiresAttention")
+								: t("invoices.noOverdue")}
 						</div>
 					</CardContent>
 				</Card>
@@ -145,7 +143,7 @@ export default function InvoicesPage(): JSX.Element {
 				<Card>
 					<CardHeader className="pb-2">
 						<CardTitle className="text-sm font-medium text-muted-foreground">
-							{t("invoices.invoice.average")}
+							{t("invoices.average")}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -157,7 +155,7 @@ export default function InvoicesPage(): JSX.Element {
 							)}
 						</div>
 						<p className="mt-1 text-xs text-muted-foreground">
-							{t("invoices.invoice.perInvoiceYear")}
+							{t("invoices.perInvoiceYear")}
 						</p>
 					</CardContent>
 				</Card>
@@ -170,9 +168,9 @@ export default function InvoicesPage(): JSX.Element {
 						<div className="flex items-center gap-3">
 							<Zap className="h-6 w-6 text-primary" />
 							<div>
-								<CardTitle>{t("invoices.invoice.connectProvider")}</CardTitle>
+								<CardTitle>{t("invoices.connectProvider")}</CardTitle>
 								<CardDescription>
-									{t("invoices.invoice.connectProviderDesc")}
+									{t("invoices.connectProviderDesc")}
 								</CardDescription>
 							</div>
 						</div>
@@ -182,11 +180,11 @@ export default function InvoicesPage(): JSX.Element {
 							<Link href="/api/providers/moneybird/oauth/start">
 								<Button className="w-full sm:w-auto">
 									<Settings className="mr-2 h-4 w-4" />
-									{t("invoices.invoice.connectMoneybird")}
+									{t("invoices.connectMoneybird")}
 								</Button>
 							</Link>
 							<p className="text-sm text-muted-foreground flex items-center">
-								{t("invoices.invoice.moreProvidersComingSoon")}
+								{t("invoices.moreProvidersComingSoon")}
 							</p>
 						</div>
 					</CardContent>
@@ -197,10 +195,8 @@ export default function InvoicesPage(): JSX.Element {
 			{!isLoading && drafts.length === 0 && sent.length === 0 ? (
 				<Card>
 					<CardHeader>
-						<CardTitle>{t("invoices.invoice.empty.title")}</CardTitle>
-						<CardDescription>
-							{t("invoices.invoice.empty.description")}
-						</CardDescription>
+						<CardTitle>{t("invoices.empty.title")}</CardTitle>
+						<CardDescription>{t("invoices.empty.description")}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<div className="flex flex-col items-center text-center py-8">
@@ -210,12 +206,12 @@ export default function InvoicesPage(): JSX.Element {
 								</div>
 							</div>
 							<p className="text-muted-foreground mb-6">
-								{t("invoices.invoice.empty.getStarted")}
+								{t("invoices.empty.getStarted")}
 							</p>
 							<Link href="/jobs">
 								<Button>
 									<Plus className="mr-2 h-4 w-4" />
-									{t("invoices.invoice.createFromJob")}
+									{t("invoices.createFromJob")}
 								</Button>
 							</Link>
 						</div>
@@ -225,22 +221,20 @@ export default function InvoicesPage(): JSX.Element {
 				/* Invoice Tables */
 				<Card>
 					<CardHeader>
-						<CardTitle>{t("invoices.invoice.overview")}</CardTitle>
-						<CardDescription>
-							{t("invoices.invoice.managePending")}
-						</CardDescription>
+						<CardTitle>{t("invoices.overview")}</CardTitle>
+						<CardDescription>{t("invoices.managePending")}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<Tabs defaultValue="drafts" className="w-full">
 							<TabsList className="grid w-full grid-cols-2">
 								<TabsTrigger value="drafts">
-									{t("invoices.invoice.drafts")}{" "}
+									{t("invoices.drafts")}{" "}
 									<Badge variant="secondary" className="ml-2">
 										{drafts.length}
 									</Badge>
 								</TabsTrigger>
 								<TabsTrigger value="issued">
-									{t("invoices.invoice.issued")}{" "}
+									{t("invoices.issued")}{" "}
 									<Badge variant="outline" className="ml-2">
 										{sent.length}
 									</Badge>
@@ -307,7 +301,7 @@ export default function InvoicesPage(): JSX.Element {
 													<TableCell className="font-medium">
 														{draft.invoiceNumber
 															? draft.invoiceNumber
-															: t("invoices.invoice.draftLabel")}
+															: t("invoices.draftLabel")}
 													</TableCell>
 													<TableCell>{draft.customer.name}</TableCell>
 													<TableCell>{draft.job.title}</TableCell>
@@ -335,12 +329,12 @@ export default function InvoicesPage(): JSX.Element {
 								) : (
 									<div className="text-center py-12">
 										<p className="text-muted-foreground mb-4">
-											{t("invoices.invoice.noDrafts")}
+											{t("invoices.noDrafts")}
 										</p>
 										<Link href="/jobs">
 											<Button>
 												<Plus className="mr-2 h-4 w-4" />
-												{t("invoices.invoice.createFromJob")}
+												{t("invoices.createFromJob")}
 											</Button>
 										</Link>
 									</div>
@@ -445,10 +439,10 @@ export default function InvoicesPage(): JSX.Element {
 															}
 														>
 															{invoice.providerStatus === "paid"
-																? t("invoices.invoice.paid")
+																? t("invoices.paid")
 																: invoice.providerStatus === "sent"
-																	? t("invoices.invoice.sent")
-																	: t("invoices.invoice.unknown")}
+																	? t("invoices.sent")
+																	: t("invoices.unknown")}
 														</Badge>
 													</TableCell>
 													<TableCell className="flex gap-2">
@@ -459,7 +453,7 @@ export default function InvoicesPage(): JSX.Element {
 																rel="noopener noreferrer"
 															>
 																<Button size="sm" variant="outline">
-																	{t("invoices.invoice.viewPdf")}
+																	{t("invoices.viewPdf")}
 																</Button>
 															</Link>
 														)}
@@ -470,7 +464,7 @@ export default function InvoicesPage(): JSX.Element {
 																rel="noopener noreferrer"
 															>
 																<Button size="sm" variant="outline">
-																	{t("invoices.invoice.payOnline")}
+																	{t("invoices.payOnline")}
 																</Button>
 															</Link>
 														)}
@@ -482,7 +476,7 @@ export default function InvoicesPage(): JSX.Element {
 								) : (
 									<div className="text-center py-12">
 										<p className="text-muted-foreground mb-4">
-											{t("invoices.invoice.noSentInvoices")}
+											{t("invoices.noSentInvoices")}
 										</p>
 									</div>
 								)}

@@ -503,7 +503,7 @@ export function InvoiceDraftFast({
 			{draft.notes && (
 				<Card>
 					<CardHeader>
-						<CardTitle>{t("invoices.notes.title")}</CardTitle>
+						<CardTitle>{t("invoices.simpleNotes.title")}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<p className="text-sm text-muted-foreground whitespace-pre-wrap">

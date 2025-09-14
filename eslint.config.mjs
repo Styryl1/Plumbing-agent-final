@@ -51,6 +51,7 @@ export default [
       // Test and development folders
       "tests/**",
       "workbench/**",
+      "e2e/**",
       // S1 Legacy code quarantine (ignored during v2 transition)
       "src/components/_legacy_*/**/*",
       "src/server/**/*.legacy.ts",

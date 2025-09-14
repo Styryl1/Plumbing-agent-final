@@ -53,12 +53,12 @@ export function IssueActions({
 	// Use existing send mutation
 	const sendMutation = api.invoices.send.useMutation({
 		onSuccess: () => {
-			toast.success(t("invoice.issuedSuccessfully"));
+			toast.success(t("invoices.issuedSuccessfully"));
 			// Revalidate invoice data
 			void utils.invoices.getById.invalidate({ id: invoiceId });
 		},
 		onError: (error) => {
-			toast.error(t("invoice.issueFailed"), {
+			toast.error(t("invoices.issueFailed"), {
 				description: error.message,
 			});
 		},
@@ -82,19 +82,19 @@ export function IssueActions({
 					<div className="flex items-center justify-between">
 						<CardTitle className="flex items-center gap-2">
 							<Lock className="h-4 w-4 text-muted-foreground" />
-							{t("invoice.issueActions")}
+							{t("invoices.issueActions")}
 						</CardTitle>
 						{provider && (
 							<Badge variant="secondary" className="bg-primary/10 text-primary">
-								{t("invoice.lockedBadge", { provider })}
+								{t("invoices.lockedBadge", { provider })}
 							</Badge>
 						)}
 					</div>
-					<CardDescription>{t("invoice.lockedDescription")}</CardDescription>
+					<CardDescription>{t("invoices.lockedDescription")}</CardDescription>
 				</CardHeader>
 				<CardContent className="pt-0">
 					<div className="text-sm text-muted-foreground">
-						{t("invoice.providerPdfNote")}
+						{t("invoices.providerPdfNote")}
 					</div>
 				</CardContent>
 			</Card>
@@ -106,12 +106,12 @@ export function IssueActions({
 		return (
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("invoice.issueActions")}</CardTitle>
-					<CardDescription>{t("invoice.needsProvider")}</CardDescription>
+					<CardTitle>{t("invoices.issueActions")}</CardTitle>
+					<CardDescription>{t("invoices.needsProvider")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="text-sm text-muted-foreground">
-						{t("invoice.needsProviderDescription")}
+						{t("invoices.needsProviderDescription")}
 					</div>
 				</CardContent>
 			</Card>
@@ -129,7 +129,7 @@ export function IssueActions({
 					<div className="flex items-center justify-between">
 						<CardTitle className="flex items-center gap-2">
 							<AlertTriangle className="h-4 w-4 text-orange-600" />
-							{t("invoice.issueActions")}
+							{t("invoices.issueActions")}
 						</CardTitle>
 						<Badge
 							variant="outline"
@@ -174,9 +174,9 @@ export function IssueActions({
 			<CardHeader>
 				<div className="flex items-center justify-between">
 					<div>
-						<CardTitle>{t("invoice.issueActions")}</CardTitle>
+						<CardTitle>{t("invoices.issueActions")}</CardTitle>
 						<CardDescription>
-							{t("invoice.issueActionsDescription")}
+							{t("invoices.issueActionsDescription")}
 						</CardDescription>
 					</div>
 					{providerHealth && provider && (
@@ -197,10 +197,10 @@ export function IssueActions({
 					size="lg"
 				>
 					<Send className="mr-2 h-4 w-4" />
-					{isIssuing ? t("invoice.issuing") : t("invoice.issueViaMoneybird")}
+					{isIssuing ? t("invoices.issuing") : t("invoices.issueViaMoneybird")}
 				</Button>
 				<p className="mt-2 text-xs text-muted-foreground">
-					{t("invoice.issueViaProviderNote")}
+					{t("invoices.issueViaProviderNote")}
 				</p>
 			</CardContent>
 		</Card>

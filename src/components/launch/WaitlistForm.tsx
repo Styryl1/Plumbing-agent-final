@@ -79,7 +79,11 @@ export function WaitlistForm(): React.ReactElement {
 							</CardDescription>
 						</CardHeader>
 						<CardContent>
-							<form onSubmit={handleSubmit} className="space-y-6">
+							<form
+								data-testid="waitlist-form"
+								onSubmit={handleSubmit}
+								className="space-y-6"
+							>
 								<div className="space-y-2">
 									<Label htmlFor="email">{t("launch.waitlist.email")}</Label>
 									<Input

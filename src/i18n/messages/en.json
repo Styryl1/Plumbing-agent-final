@@ -1,1911 +1,1906 @@
 {
-	"actions": {
-		"back": "Back",
-		"cancel": "Cancel",
-		"configure": "Configure",
-		"connect": "Connect",
-		"create": "Create",
-		"creating": "Creating...",
-		"delete": "Delete",
-		"deleting": "Deleting...",
-		"edit": "Edit",
-		"fix": "Fix",
-		"openActions": "Open actions",
-		"pay": "Pay",
-		"saving": "Saving...",
-		"sending": "Sending...",
-		"update": "Update",
-		"cta": {
-			"applySuggestion": "Apply suggestion",
-			"button": "Button",
-			"createInvoice": "Create Invoice",
-			"finalizeVoiceInvoice": "Finalize → Voice invoice",
-			"headline": "Headline",
-			"newJob": "New job",
-			"subtitle": "Subtitle"
-		}
-	},
-	"auth": {
-		"context": {
-			"description": "Current user and organization information",
-			"title": "Authentication Context"
-		},
-		"noOrganization": "No organization selected",
-		"noRole": "No role assigned",
-		"notSignedIn": "Not signed in",
-		"orgId": "Organization ID",
-		"role": "Role",
-		"signInSubtitle": "Sign in to your plumber dashboard",
-		"signUpSubtitle": "Register your plumbing business",
-		"tip": "Tip: Select or create an organization using the organization switcher in the header to get started.",
-		"userId": "User ID"
-	},
-	"common": {
-		"cancel": "Cancel",
-		"error": "Error",
-		"loading": "Loading...",
-		"unnamed": "Unnamed",
-		"unknown": "Unknown",
-		"due_date": "Due date",
-		"alternative_payment": "Alternative payment",
-		"email": "Email",
-		"step_data_unavailable": "Step data unavailable",
-		"yes": "Yes",
-		"no": "No",
-		"priority": {
-			"emergency": "Emergency",
-			"normal": "Normal",
-			"urgent": "Urgent"
-		},
-		"status": {
-			"cancelled": "Cancelled",
-			"done": "Completed",
-			"draft": "Draft",
-			"in_progress": "In Progress",
-			"planned": "Planned"
-		}
-	},
-	"customers": {
-		"selectCustomer": "Select customer",
-		"recent": "Recent",
-		"allOthers": "All others",
-		"title": "Customers",
-		"description": "Manage customer information and contact details",
-		"errors": {
-			"name": {
-				"required": "Name is required"
-			},
-			"phone": {
-				"required": "Phone is required",
-				"invalid": "Enter a valid phone"
-			},
-			"email": {
-				"invalid": "Enter a valid email"
-			},
-			"postalCode": {
-				"invalid": "Invalid Dutch postal code (e.g., 1234 AB)"
-			},
-			"houseNumber": {
-				"required": "House number required"
-			},
-			"address": {
-				"required": "Address is required"
-			},
-			"notFoundOrNoPermission": "Customer not found or no permission",
-			"serverError": "Server error occurred",
-			"emailAlreadyExists": "Customer with this email already exists"
-		},
-		"searchPlaceholder": "Search customers...",
-		"noCustomersFound": "No customers found",
-		"addNew": "New customer",
-		"actions": {
-			"creating": "Creating...",
-			"create": "Create customer",
-			"cancel": "Cancel"
-		},
-		"archived": {
-			"title": "Archived customers",
-			"description": "View archived customers",
-			"badge": "Archived customer",
-			"noArchivedFound": "No archived customers found",
-			"tab": "Archived"
-		},
-		"unarchive": {
-			"action": "Restore",
-			"tooltip": "Restore customer",
-			"success": "Customer successfully restored",
-			"error": "Failed to restore customer"
-		},
-		"create": {
-			"title": "Create new customer",
-			"description": "Add a new customer to the system"
-		},
-		"edit": {
-			"title": "Edit customer",
-			"description": "Modify customer information"
-		},
-		"form": {
-			"name": {
-				"label": "Name",
-				"placeholder": "Full name"
-			},
-			"email": {
-				"label": "Email address",
-				"placeholder": "name@example.com"
-			},
-			"phone": {
-				"label": "Phone number",
-				"placeholder": "06 12345678"
-			},
-			"address": {
-				"label": "Address",
-				"placeholder": "Street 123",
-				"autoFill": {
-					"title": "Dutch Address Lookup",
-					"loading": "Looking up address…"
-				}
-			},
-			"postalCode": {
-				"label": "Postal code",
-				"placeholder": "1234 AB"
-			},
-			"houseNumber": {
-				"label": "House number",
-				"placeholder": "123"
-			},
-			"street": {
-				"label": "Street",
-				"placeholder": "Street name"
-			},
-			"city": {
-				"label": "City",
-				"placeholder": "City name"
-			},
-			"language": {
-				"label": "Language"
-			},
-			"validation": {
-				"nameRequired": "Name is required",
-				"nameTooLong": "Name too long",
-				"emailInvalid": "Please enter a valid email address",
-				"emailTooLong": "Email address too long",
-				"phoneRequired": "Phone number is required",
-				"phoneTooLong": "Phone number too long",
-				"addressTooLong": "Address too long",
-				"postalCodeRequired": "Postal code is required",
-				"postalCodeInvalid": "Invalid Dutch postal code (e.g., 1234 AB)",
-				"postalCodeTooLong": "Postal code too long"
-			},
-			"requiredSymbol": "*"
-		},
-		"table": {
-			"columns": {
-				"name": "Name",
-				"contact": "Contact",
-				"address": "Address",
-				"created": "Created",
-				"actions": "Actions"
-			}
-		},
-		"stats": {
-			"total": "Total count",
-			"thisMonth": "This month",
-			"active": "Active customers",
-			"archived": "Archived customers"
-		},
-		"delete": {
-			"title": "Delete customer",
-			"description": "Are you sure you want to delete this customer? This action cannot be undone.",
-			"archive": {
-				"title": "Archive customer",
-				"cannotDelete": "Cannot delete customer: there are still jobs or invoices linked.",
-				"linkedData": "Linked data:",
-				"jobs": "job(s)",
-				"invoices": "invoice(s)",
-				"archiveInstead": "Would you like to archive customer {name} instead?"
-			}
-		},
-		"error": {
-			"load": "Failed to load customers",
-			"create": "Failed to create customer",
-			"update": "Failed to update customer",
-			"delete": "Failed to delete customer",
-			"deleteLinked": "Customer has linked jobs/invoices. You can archive instead.",
-			"archive": "Failed to archive customer"
-		},
-		"success": {
-			"created": "Customer created successfully",
-			"updated": "Customer updated successfully",
-			"deleted": "Customer deleted successfully",
-			"archived": "Customer archived successfully"
-		}
-	},
-	"employees": {
-		"filter": {
-			"all": "All",
-			"clearAll": "Clear all"
-		}
-	},
-	"error": {
-		"load": "Failed to load"
-	},
-	"errors": {
-		"title": "Error",
-		"general": "Something went wrong",
-		"tryAgain": "Try again",
-		"contactSupport": "Contact support",
-		"notFound": "Not found",
-		"unauthorized": "Unauthorized access",
-		"forbidden": "Access denied",
-		"validation": "Validation error",
-		"network": "Network error",
-		"timeout": "Request timed out",
-		"serverError": "Server error",
-		"unknown": "Unknown error",
-		"fieldRequired": "This field is required",
-		"invalidFormat": "Invalid format",
-		"tooShort": "Too short",
-		"tooLong": "Too long",
-		"mustBeNumber": "Must be a number",
-		"mustBeEmail": "Must be a valid email",
-		"passwordTooWeak": "Password too weak"
-	},
-	"invoice": {
-		"issuedSuccessfully": "Invoice issued successfully!",
-		"issueFailed": "Failed to issue invoice",
-		"issueActions": "Issue Actions",
-		"lockedBadge": "Issued by {provider}",
-		"lockedDescription": "This invoice has been issued and is now locked. The provider is the source of truth for all changes.",
-		"providerPdfNote": "PDF and payment links are managed by the provider",
-		"needsProvider": "Provider Required",
-		"needsProviderDescription": "Connect an invoice provider to issue invoices.",
-		"issueActionsDescription": "Actions to issue and manage this invoice",
-		"issuing": "Issuing...",
-		"issueViaMoneybird": "Issue via Moneybird",
-		"issueViaProviderNote": "This will create and send the invoice via your connected provider",
-		"timeline": {
-			"heading": "Timeline",
-			"description": "Invoice lifecycle events",
-			"loadError": "Failed to load timeline",
-			"loadErrorDescription": "Unable to fetch invoice timeline events.",
-			"noEvents": "No timeline events available",
-			"noEventsDescription": "Timeline events will appear here as the invoice progresses."
-		}
-	},
-	"invoices": {
-		"actions": {
-			"cancel": "Cancel",
-			"pay": "Pay",
-			"markReviewed": "Mark as Reviewed",
-			"saveDraft": "Save Draft",
-			"send": "Send Invoice"
-		},
-		"badges": {
-			"legacy": "Legacy",
-			"locked_tooltip": "Locked after send - Provider is source of truth"
-		},
-		"status": {
-			"draft": "Draft",
-			"draftUnsent": "Draft • unsent"
-		},
-		"providers": {
-			"moneybird": "Moneybird",
-			"wefact": "WeFact",
-			"eboekhouden": "e-Boekhouden",
-			"peppol": "Peppol",
-			"oauth": {
-				"success": "Connection Successful",
-				"error": "Connection Error",
-				"moneybirdConnected": "Moneybird has been successfully connected and is ready for use",
-				"selectAdmin": "Moneybird is connected. You can now select an administration in your invoice settings",
-				"genericError": "Something went wrong during connection. Please try again",
-				"authError": "Authorization denied or failed",
-				"csrfError": "Security error: invalid session state",
-				"stateError": "Invalid connection state",
-				"userMismatch": "User does not match expected account",
-				"stateExpired": "Connection session has expired, please try again",
-				"tokenError": "Could not retrieve access token",
-				"adminError": "Could not retrieve administrations from provider",
-				"callbackError": "Unknown error during connection process"
-			}
-		},
-		"voiceMode": {
-			"steps": {
-				"review": "Review",
-				"confirm": "Confirm",
-				"changes": "Changes",
-				"final": "Final"
-			},
-			"active": "Voice Mode Active",
-			"approve": "Approve",
-			"approved": "Approved",
-			"changesNotes": "Change Notes",
-			"changesPlaceholder": "Describe the changes needed...",
-			"changesRequested": "Changes Requested",
-			"confirmPrompt": "Please confirm the invoice details",
-			"requestChanges": "Request Changes",
-			"reviewing": "Reviewing voice input",
-			"safeActive": "Safe Voice Mode Active",
-			"safeInstructions": "Speak clearly for best results",
-			"submitChanges": "Submit Changes",
-			"toggle": "Toggle Voice Mode"
-		},
-		"invoice": {
-			"notFound": "Invoice not found",
-			"notFoundDescription": "The invoice you're looking for doesn't exist or you don't have access to it.",
-			"customer": "Customer",
-			"details": "Invoice Details",
-			"detailsDescription": "Invoice information and line items",
-			"job": "Job",
-			"amounts": "Amounts",
-			"subtotalExVat": "Subtotal (ex VAT)",
-			"vatAmount": "VAT Amount",
-			"totalIncVat": "Total (inc VAT)",
-			"notes": "Notes",
-			"status": "Status",
-			"provider": "Provider",
-			"issuedOn": "Issued on",
-			"issuedSuccessfully": "Invoice issued successfully!",
-			"issueFailed": "Failed to issue invoice",
-			"needsProvider": "Provider Required",
-			"needsProviderDescription": "Connect an invoice provider to issue invoices.",
-			"issueActionsDescription": "Actions to issue and manage this invoice",
-			"issuing": "Issuing...",
-			"issueViaMoneybird": "Issue via Moneybird",
-			"issueViaProviderNote": "This will create and send the invoice via your connected provider",
-			"lockedBadge": "Issued by {provider}",
-			"lockedDescription": "This invoice has been issued and is now locked. The provider is the source of truth for all changes.",
-			"providerPdfNote": "PDF and payment links are managed by the provider",
-			"timeline": {
-				"heading": "Timeline",
-				"description": "Invoice lifecycle events",
-				"loadError": "Failed to load timeline",
-				"loadErrorDescription": "Unable to fetch invoice timeline events.",
-				"noEvents": "No timeline events available",
-				"noEventsDescription": "Timeline events will appear here as the invoice progresses.",
-				"created": "Created",
-				"sent": "Sent",
-				"paid": "Paid",
-				"reminder_sent": "Reminder Sent",
-				"reminder_error": "Reminder Failed",
-				"reminder_skipped": "Customer Opted Out",
-				"manual_follow_up": "Manual Follow-up Required"
-			},
-			"issueActions": "Issue Actions",
-			"alreadyIssued": "Already Issued",
-			"alreadyIssuedDescription": "This invoice has already been sent to the customer.",
-			"actions": {
-				"sendWhatsApp": "Send via WhatsApp",
-				"sendWhatsAppDescription": "Send payment link directly to customer via WhatsApp",
-				"updateCustomerAddress": "Update customer address"
-			},
-			"average": "Average",
-			"backToInvoices": "Back to invoices",
-			"confirmed": "Confirmed",
-			"connectMoneybird": "Connect Moneybird",
-			"connectProvider": "Connect Invoice Provider",
-			"connectProviderDesc": "Connect an invoice provider to automatically send invoices and receive payments",
-			"create": {
-				"addressError": "Address error while creating invoice",
-				"description": "Creating invoice for {customer}",
-				"error": "Failed to create invoice",
-				"title": "Create Invoice"
-			},
-			"createFromJob": "Create invoice from job",
-			"draft": "Draft",
-			"draftLabel": "Draft",
-			"drafts": "Drafts",
-			"draftsReady": "drafts ready",
-			"edit": {
-				"description": "Update invoice details before sending",
-				"error": "Failed to update invoice",
-				"title": "Edit Invoice"
-			},
-			"errors": {
-				"addressGuidance": "Add street, house number and postal code to customer details",
-				"addressRequired": "Complete customer address is required for invoicing",
-				"invalidId": "Invalid invoice ID. Check the link or choose another invoice.",
-				"notFound": "Invoice not found"
-			},
-			"issued": "Issued",
-			"manage": "Manage all invoices and payments",
-			"managePending": "Manage outstanding and paid invoices",
-			"modes": {
-				"fast": "Fast mode",
-				"safe": "Safe mode"
-			},
-			"moreProvidersComingSoon": "More providers coming soon",
-			"noDrafts": "No draft invoices found",
-			"noOverdue": "No overdue invoices",
-			"noPendingDrafts": "No pending drafts",
-			"noSentInvoices": "No sent invoices found",
-			"overdue": "Overdue",
-			"overview": "Invoice Overview",
-			"paid": "Paid",
-			"payOnline": "Pay Online",
-			"perInvoiceYear": "Per invoice this year",
-			"requiresAttention": "Requires attention",
-			"sent": "Sent",
-			"summary": {
-				"items": "Items",
-				"title": "Summary"
-			},
-			"thisMonth": "This Month",
-			"title": "Invoices",
-			"totalInvoices": "invoices total",
-			"totalOutstanding": "Total Outstanding",
-			"unknown": "Unknown",
-			"viewPdf": "View PDF",
-			"approvals": "Approvals",
-			"empty": {
-				"title": "No invoices yet",
-				"description": "Create your first invoice from a completed job",
-				"getStarted": "Once you complete a job, you can create an invoice for your customer"
-			}
-		},
-		"autosave": {
-			"error": "Save error",
-			"saved": "Saved",
-			"saving": "Saving..."
-		},
-		"compliance": {
-			"applied": "Applied",
-			"btwId": "VAT Identification Number",
-			"complete": "Complete",
-			"customerAddress": "Customer Complete Address",
-			"dutchVat": "Dutch VAT Rate",
-			"incomplete": "Incomplete",
-			"kvkNumber": "KVK Number",
-			"title": "Dutch Legal Compliance",
-			"verified": "Verified"
-		},
-		"confirmSuccess": "Invoice approved",
-		"draft": {
-			"fastMode": {
-				"badge": "Fast",
-				"description": "Quick invoice creation",
-				"title": "Fast Mode",
-				"warning": "Fast mode may miss details"
-			},
-			"safeMode": {
-				"addLineHint": "Add line items one by one",
-				"badge": "Safe",
-				"description": "Detailed invoice creation",
-				"info": "Safe mode ensures accuracy",
-				"title": "Safe Mode"
-			},
-			"switchToFast": "Switch to Fast Mode",
-			"switchToSafe": "Switch to Safe Mode",
-			"title": "Draft Invoice"
-		},
-		"errors": {
-			"loadFailed": "Failed to load invoice"
-		},
-		"import": {
-			"estimate": {
-				"calculation": "{hours} hrs × €{rate}/hr = €{total}",
-				"title": "Estimated amount (excl. VAT)"
-			},
-			"jobDetails": {
-				"date": "Date",
-				"description": "Description",
-				"duration": "Duration",
-				"employee": "Employee"
-			},
-			"title": "Import from Job",
-			"description": "Import job details to create invoice",
-			"selectJob": "Select job",
-			"selectJobPlaceholder": "Choose a job to import from...",
-			"laborConfig": "Labor Configuration",
-			"laborHours": "Labor hours",
-			"hourlyRate": "Hourly rate",
-			"import": "Import job data"
-		},
-		"lineAdded": "Line item added",
-		"lineItems": {
-			"addNew": "Add New Item",
-			"description": "Description",
-			"multiplier": "×",
-			"quantity": "Quantity",
-			"summary": "Line Items Summary",
-			"title": "Line Items",
-			"type": "Type",
-			"unitPrice": "Unit Price",
-			"vatRate": "VAT Rate"
-		},
-		"notes": {
-			"title": "Notes"
-		},
-		"review": {
-			"bulkActions": {
-				"alsoWhatsApp": "Also send WhatsApp payment links",
-				"description": "Select invoices to send in bulk",
-				"selectedCount": "{count} invoices selected",
-				"send": "Send {count} invoices",
-				"sending": "Sending invoices...",
-				"title": "Bulk Send"
-			},
-			"controls": {
-				"createDrafts": "Create drafts from jobs",
-				"creating": "Creating drafts...",
-				"description": "Create invoice drafts from completed jobs",
-				"sinceDate": "Since date",
-				"title": "Generate Drafts"
-			},
-			"created": "Created",
-			"customer": "Customer",
-			"job": "Job",
-			"list": {
-				"count": "{count} draft invoices",
-				"loading": "Loading drafts...",
-				"title": "Draft Invoices"
-			},
-			"noInvoices": "No draft invoices found",
-			"noJob": "No job",
-			"noProvider": "No provider",
-			"provider": "Provider",
-			"results": {
-				"errors": "Errors",
-				"sent": "Sent",
-				"skipped": "Skipped",
-				"title": "Send Results",
-				"total": "Total",
-				"withPaymentLinks": "With Payment Links"
-			},
-			"select": "Select",
-			"selectAll": "Select all",
-			"selected": "selected",
-			"subtitle": "Review draft invoices and send them via providers",
-			"title": "Review & Send Invoices",
-			"total": "Total"
-		},
-		"saveSuccess": "Invoice saved successfully",
-		"sendError": "Error sending invoice",
-		"sendSuccess": "Invoice sent successfully",
-		"summary": {
-			"lineItems": "Line Items",
-			"paymentTerms": "Payment Terms",
-			"title": "Invoice Summary",
-			"totalAmount": "Total Amount"
-		},
-		"totals": {
-			"breakdown": "Total Breakdown",
-			"includingVat": "Including VAT",
-			"subtotal": "Subtotal",
-			"total": "Total",
-			"vat": "VAT"
-		},
-		"createError": "Failed to create invoice",
-		"importFromJob": "Import from job",
-		"form": {
-			"customer": {
-				"title": "Customer Information",
-				"label": "Customer",
-				"placeholder": "Select a customer...",
-				"required": "Customer is required"
-			},
-			"paymentTerms": {
-				"title": "Payment Terms",
-				"label": "Payment terms (days)"
-			},
-			"lineItems": {
-				"title": "Line Items",
-				"add": "Add line item",
-				"empty": "No line items yet",
-				"description": "Description",
-				"quantity": "Quantity",
-				"unitPrice": "Unit price",
-				"vatRate": "VAT rate",
-				"lineTotal": "Line total",
-				"required": "At least one line item is required"
-			},
-			"discount": {
-				"title": "Discount",
-				"percentage": "Discount %"
-			},
-			"totals": {
-				"title": "Totals",
-				"subtotal": "Subtotal",
-				"discount": "Discount",
-				"subtotalAfterDiscount": "Subtotal after discount",
-				"vat": "VAT",
-				"total": "Total"
-			},
-			"notes": {
-				"title": "Notes",
-				"public": "Public notes",
-				"publicPlaceholder": "Notes visible to customer...",
-				"internal": "Internal notes",
-				"internalPlaceholder": "Internal notes for your reference..."
-			}
-		}
-	},
-	"JobDrawer": {
-		"details": "Job Details",
-		"edit": "Edit",
-		"delete": {
-			"title": "Delete Job",
-			"description": "Are you sure you want to delete this job? This action cannot be undone.",
-			"success": "Job deleted successfully",
-			"failed": "Failed to delete job"
-		},
-		"cancel": "Cancel",
-		"save": "Save",
-		"saving": "Saving...",
-		"creating": "Creating...",
-		"deleting": "Deleting...",
-		"title": "Title",
-		"description": "Description",
-		"priority": "Priority",
-		"status": "Status",
-		"customer": "Customer",
-		"startTime": "Start time: {time}",
-		"endTime": "End time",
-		"duration": "{minutes} minutes",
-		"primaryEmployee": "Primary employee",
-		"secondaryEmployees": "Secondary employees",
-		"assignments": "Assignments",
-		"calendar": "Schedule",
-		"requiredSymbol": "*",
-		"selectEmployee": "Select employee",
-		"selectCustomer": "Select customer",
-		"selectStatus": "Select status",
-		"priorities": {
-			"normal": "Normal",
-			"urgent": "Urgent",
-			"emergency": "Emergency"
-		},
-		"statuses": {
-			"planned": "Planned",
-			"in_progress": "In Progress",
-			"done": "Done",
-			"cancelled": "Cancelled"
-		},
-		"invoice": {
-			"create": "Create Invoice",
-			"creating": "Creating invoice...",
-			"success": "Invoice draft created successfully",
-			"error": "Failed to create invoice draft"
-		}
-	},
-	"jobs": {
-		"invoice": {
-			"createDraft": {
-				"label": "Create Invoice",
-				"creating": "Creating invoice...",
-				"success": "Invoice draft created successfully",
-				"error": "Failed to create invoice draft"
-			}
-		},
-		"delete": {
-			"success": "Job deleted",
-			"failed": "Failed to delete job",
-			"title": "Delete Job",
-			"description": "Are you sure you want to delete this job?"
-		},
-		"job": {
-			"createDescription": "Create a new job.",
-			"deleteDescription": "Are you sure you want to delete this job? This action cannot be undone.",
-			"deleteTitle": "Delete Job",
-			"editDescription": "Edit the details of this job.",
-			"editJob": "Edit Job",
-			"newJob": "New Job"
-		},
-		"aiSuggestions": "AI suggestions",
-		"assignments": {
-			"title": "Assignments"
-		},
-		"calendar": {
-			"desc": "Drag jobs to move or resize them",
-			"title": "Planning calendar"
-		},
-		"create": {
-			"failed": "Failed to create job",
-			"success": "Job created successfully"
-		},
-		"description": "Manage all plumbing jobs and scheduling",
-		"empty": {
-			"title": "No jobs scheduled",
-			"description": "Create your first job to get started"
-		},
-		"details": "Job details",
-		"error": {
-			"load": "Failed to load jobs"
-		},
-		"errors": {
-			"notFoundOrNoPermission": "Job not found or no permission",
-			"serverError": "Server error occurred",
-			"title": {
-				"required": "Title is required"
-			}
-		},
-		"filter": {
-			"status": {
-				"all": "All statuses"
-			}
-		},
-		"generateInvoice": "Generate Invoice",
-		"legend": {
-			"header": "Employees",
-			"none": "No employees available"
-		},
-		"noAiSuggestions": "No AI recommendations available",
-		"source": "Source:",
-		"stats": {
-			"emergency": {
-				"desc": "Requires immediate action",
-				"title": "Emergency jobs"
-			},
-			"monthCompleted": {
-				"desc": "Finished this month",
-				"title": "Completed"
-			},
-			"today": {
-				"desc": "Total jobs scheduled today",
-				"title": "Today's Jobs"
-			},
-			"week": {
-				"desc": "Jobs scheduled this week",
-				"title": "This Week"
-			}
-		},
-		"table": {
-			"desc": "All jobs in a table view with editing options",
-			"title": "Jobs overview"
-		},
-		"title": "Jobs & planning",
-		"unscheduled": {
-			"ai": {
-				"assign": "Assign to calendar",
-				"confidence": "Confidence",
-				"customer": "Customer",
-				"empty": "No AI suggestions available",
-				"minutes": "min",
-				"title": "AI Suggestions"
-			}
-		},
-		"update": {
-			"failed": "Failed to update job",
-			"success": "Job updated successfully"
-		}
-	},
-	"launch": {
-		"controls": {
-			"title": "Title",
-			"description": "Description",
-			"sinceDate": "SinceDate",
-			"creating": "Creating",
-			"createDrafts": "CreateDrafts"
-		},
-		"meta": {
-			"title": "Plumbing Agent - Emergency Plumber Platform",
-			"description": "Transform emergency plumbing with WhatsApp intake, AI diagnosis, and instant invoicing",
-			"keywords": "emergency plumber, plumbing software, WhatsApp business, Dutch plumber, loodgieter"
-		},
-		"demo": {
-			"page": {
-				"title": "Product Demo",
-				"headline": "See Plumbing Agent in action",
-				"subtitle": "From WhatsApp intake to paid invoice in minutes",
-				"benefits": {
-					"faster": {
-						"title": "Faster Response Times",
-						"description": "WhatsApp intake and AI analysis cut response time from hours to minutes"
-					},
-					"smarter": {
-						"title": "Smarter Diagnosis",
-						"description": "AI-powered issue analysis helps you prepare better and work more efficiently"
-					},
-					"better_paid": {
-						"title": "Get Paid Faster",
-						"description": "Instant invoicing and automated payment reminders improve cash flow"
-					}
-				},
-				"cta": {
-					"headline": "Ready to try it?",
-					"subtitle": "Join the pilot and get early access",
-					"button": "Join waitlist"
-				},
-				"nav": {
-					"previous": "Previous",
-					"next": "Next",
-					"step_counter": "Step {current} of {total}"
-				},
-				"done": "You're all set!",
-				"autoplay_pause": "Pause Autoplay",
-				"autoplay_start": "Start Autoplay",
-				"keyboard_help": "Use arrow keys to navigate",
-				"time_estimate": "Estimated time: {minutes} minutes",
-				"time_average": "Average time",
-				"back": "Back"
-			},
-			"content": {
-				"whatsapp": {
-					"photo_attached": "Photo attached",
-					"ai_analyzing": "Analyzing message…"
-				},
-				"ai_suggestion": {
-					"diagnosis": "Diagnosis",
-					"reliable": "Reliable",
-					"urgency": "Urgency",
-					"emergency": "Emergency",
-					"estimated_time": "Estimated time",
-					"minutes": "minutes",
-					"required_materials": "Required materials",
-					"quantity_format": "{qty}x"
-				},
-				"schedule": {
-					"assigned_to": "Assigned to",
-					"start_time": "Start time",
-					"end_time": "End time",
-					"auto_assigned": "Auto-assigned"
-				},
-				"job_card": {
-					"address": "Address",
-					"phone": "Phone",
-					"notes": "Notes"
-				},
-				"voice_draft": {
-					"voice_transcript": "Voice transcript",
-					"invoice_lines": "Invoice lines",
-					"line_format": "{qty}× {item}",
-					"subtotal_ex_vat": "Subtotal (ex VAT)",
-					"vat_total": "VAT total",
-					"total": "Total"
-				},
-				"send_pay": {
-					"invoice_id": "Invoice ID",
-					"invoice_sent": "Invoice sent",
-					"payment_status": "Payment status",
-					"pdf": "PDF",
-					"whatsapp_message": "WhatsApp message",
-					"awaiting_payment": "Awaiting Payment",
-					"click_pay": "Click to Pay"
-				},
-				"reminders": {
-					"after_days": "After {days} days",
-					"scheduled": "Scheduled",
-					"automation_active": "Automation active",
-					"opt_out_respected": "Opt-out respected",
-					"email_escalation": "Email escalation",
-					"title": "Payment reminders",
-					"whatsapp_series": "WhatsApp Series"
-				},
-				"common": {
-					"loading": "Loading demo data…",
-					"alternative_payment": "Alternative payment",
-					"due_date": "Due date",
-					"email": "Email",
-					"step_data_unavailable": "Step data unavailable"
-				},
-				"step_previous": "Previous",
-				"step_next": "Next",
-				"step_jump": "Jump to step",
-				"demo_started": "Demo started",
-				"demo_completed": "Demo completed"
-			}
-		},
-		"usp": {
-			"title": "Title",
-			"subtitle": "Subtitle",
-			"whatsapp": {
-				"title": "Title",
-				"desc": "Desc"
-			},
-			"ai": {
-				"title": "Title",
-				"desc": "Desc"
-			},
-			"schedule": {
-				"title": "Title",
-				"desc": "Desc"
-			},
-			"jobcards": {
-				"title": "Title",
-				"desc": "Desc"
-			},
-			"invoicing": {
-				"title": "Title",
-				"desc": "Desc"
-			},
-			"compliance": {
-				"title": "Title",
-				"desc": "Desc"
-			}
-		},
-		"cookie_consent": {
-			"title": "We use cookies",
-			"description": "We use essential cookies and analytics to improve your experience.",
-			"accept_all": "Accept all",
-			"reject_all": "Reject all",
-			"essential_only": "Essential only",
-			"privacy_policy": "Privacy policy",
-			"close": "Close"
-		},
-		"trust": {
-			"dutch_compliance": "Dutch Compliance",
-			"ideal_payments": "Ideal Payments",
-			"whatsapp_business": "Whatsapp Business",
-			"avg_compliant": "AVG compliant",
-			"ideal_certified": "IDEAL certified",
-			"kvk_registered": "KVK registered"
-		},
-		"waitlist": {
-			"title": "Join the Pilot Program",
-			"subtitle": "Get early access to Plumbing Agent and transform your emergency plumbing business",
-			"email": "Email address",
-			"phone": "Phone number (optional)",
-			"org": "Organization name (optional)",
-			"success": "Thank you! We'll be in touch soon with pilot access details.",
-			"error": "Something went wrong. Please try again or contact us directly.",
-			"submit": "Join Waitlist",
-			"gdpr": "By submitting, you agree to our privacy policy and terms of service."
-		},
-		"list": {
-			"title": "Title",
-			"loading": "Loading"
-		},
-		"pilot": {
-			"banner": {
-				"subtitle": "Certain features are enabled for testing.",
-				"title": "Pilot Mode"
-			}
-		},
-		"results": {
-			"title": "Title",
-			"total": "Total",
-			"sent": "Sent",
-			"skipped": "Skipped",
-			"withPaymentLinks": "WithPaymentLinks",
-			"errors": "Errors"
-		},
-		"hero": {
-			"h1": "Plumbing Agent for pros",
-			"subhead": "Automate scheduling, invoices, and WhatsApp with AI.",
-			"cta_demo": "Book a demo",
-			"cta_waitlist": "Join waitlist",
-			"urgency": "Limited beta access",
-			"social_proof": "Trusted by growing plumbing teams"
-		},
-		"roi_calculator": {
-			"title": "Calculate your ROI",
-			"subtitle": "Estimate your ROI",
-			"input_label": "Hours you want to save per week",
-			"placeholder_text": "e.g. 5–10",
-			"hours_per_week": "Hours saved / week",
-			"rate_per_hour": "Hourly rate (€)",
-			"time_saved": "Time saved",
-			"extra_revenue": "Extra revenue",
-			"yearly_savings": "Yearly savings",
-			"calculate_button": "Calculate",
-			"cta_start_saving": "Start saving now",
-			"results": {
-				"total_value": "Total annual value"
-			}
-		},
-		"current_hours": "Current hours per week"
-	},
-	"meta": {
-		"title": "Page title",
-		"description": "Page description",
-		"keywords": "keywords"
-	},
-	"misc": {
-		"app": {
-			"title": "Emergency Plumber Platform"
-		},
-		"cta": {
-			"newJob": "New Job"
-		},
-		"priority": {
-			"normal": "Normal",
-			"urgent": "Urgent",
-			"emergency": "Emergency"
-		},
-		"form": {
-			"title": "Title",
-			"required": "Required",
-			"priority": "Priority",
-			"description": "Description",
-			"startTime": "Start Time",
-			"duration": "Duration",
-			"primaryEmployee": "Primary Employee"
-		},
-		"tabs": {
-			"whatsapp": "WhatsApp"
-		},
-		"action": {
-			"delete": "Delete",
-			"edit": "Edit"
-		},
-		"active": "Active",
-		"ai_suggestion": {
-			"diagnosis": "Diagnosis",
-			"reliable": "Reliable",
-			"urgency": "Urgency",
-			"emergency": "Emergency",
-			"estimated_time": "Estimated Time",
-			"minutes": "Minutes",
-			"required_materials": "Required Materials"
-		},
-		"approvals": {
-			"title": "Daily Invoice Approvals",
-			"subtitle": "Review and send draft invoices created today",
-			"selectAll": "Select all",
-			"selected": "selected",
-			"select": "Select",
-			"number": "Number",
-			"customer": "Customer",
-			"total": "Total",
-			"created": "Created",
-			"empty": "No draft invoices found for this date",
-			"dateFilter": {
-				"title": "Date Filter",
-				"description": "Select the date to view draft invoices",
-				"label": "Target date"
-			},
-			"actions": {
-				"title": "Batch Actions",
-				"description": "Select invoices to send in batch",
-				"selectedCount": "{count} invoices selected",
-				"sendSelected": "Send {count} selected",
-				"sending": "Sending invoices..."
-			},
-			"list": {
-				"title": "Draft Invoices",
-				"loading": "Loading drafts...",
-				"count": "{count} draft invoices"
-			},
-			"results": {
-				"title": "Send Results",
-				"total": "Total",
-				"sent": "Sent",
-				"skipped": "Skipped",
-				"withPaymentLinks": "With Payment Links",
-				"errors": "Errors"
-			}
-		},
-		"approved": "Approved",
-		"back": "Back",
-		"badge": {
-			"accepted": "Accepted"
-		},
-		"bulkActions": {
-			"title": "Title",
-			"description": "Description",
-			"alsoWhatsApp": "AlsoWhatsApp",
-			"sending": "Sending"
-		},
-		"connected": {
-			"description": "Description"
-		},
-		"created": "Created",
-		"customer": "Customer",
-		"dashboard": {
-			"welcome": "Welcome to your plumber management platform"
-		},
-		"description": "Description",
-		"done": {
-			"title": "Title",
-			"description": "Description",
-			"success": "Success",
-			"successDescription": "SuccessDescription",
-			"healthSummary": "HealthSummary",
-			"environment": "Environment",
-			"webhook": "Webhook",
-			"security": "Security",
-			"goToSettings": "GoToSettings"
-		},
-		"draftInvoice": "DraftInvoice",
-		"eboekhouden": {
-			"description": "Description"
-		},
-		"employees": {
-			"filter": {
-				"all": "All",
-				"clearAll": "Clear all"
-			}
-		},
-		"headline": "Headline",
-		"health": {
-			"title": "Title",
-			"description": "Description",
-			"env": "Env",
-			"ok": "Ok",
-			"missing": "Missing",
-			"webhook": "Webhook",
-			"unreachable": "Unreachable",
-			"secret": "Secret",
-			"refresh": "Refresh"
-		},
-		"houseNumber": "House number",
-		"id": "ID",
-		"job_card": {
-			"address": "Address",
-			"phone": "Phone",
-			"notes": "Notes"
-		},
-		"job_card_mobile": {
-			"title": "Job Details",
-			"when": "When",
-			"where": "Where",
-			"customer": "Customer",
-			"issue": "Issue",
-			"status": "Status",
-			"statusValues": {
-				"planned": "Planned",
-				"scheduled": "Scheduled",
-				"in_progress": "In Progress",
-				"done": "Done",
-				"cancelled": "Cancelled",
-				"unknown": "Unknown"
-			},
-			"openCalendar": "📅 Open in calendar",
-			"backToJobs": "← Back to jobs",
-			"readOnlyNotice": "Read-only view for mobile",
-			"phoneUnknown": "Phone unknown",
-			"addressUnknown": "Address unknown",
-			"dateUnknown": "Date unknown",
-			"timeUnknown": "Time unknown"
-		},
-		"jobCard": {
-			"title": "Job Card",
-			"phone": "Phone",
-			"jobStatus": "Job Status",
-			"jobNumber": "Job",
-			"active": "Active",
-			"scheduled": "Scheduled",
-			"lastResponse": "Last AI Response",
-			"approved": "Approved",
-			"urgency": "Urgency",
-			"schedule": "Schedule",
-			"draftInvoice": "Draft Invoice",
-			"tokenExpires": "Access expires"
-		},
-		"jobNumber": "JobNumber",
-		"jobStatus": "JobStatus",
-		"label": {
-			"durationMinutes": "{minutes} minutes"
-		},
-		"lastResponse": "LastResponse",
-		"mappings": {
-			"title": "Title",
-			"description": "Description",
-			"empty": "Empty",
-			"label": {
-				"business": "Business",
-				"control": "Control"
-			}
-		},
-		"money": {
-			"euro": "€"
-		},
-		"moneybird": {
-			"description": "Description"
-		},
-		"next": "Next",
-		"noInvoices": "NoInvoices",
-		"noJob": "NoJob",
-		"noProvider": "NoProvider",
-		"note": "Note",
-		"numbers": {
-			"success": "Success",
-			"error": "Error",
-			"validation": "Validation",
-			"title": "Title",
-			"description": "Description",
-			"businessLabel": "BusinessLabel",
-			"businessHelp": "BusinessHelp",
-			"controlLabel": "ControlLabel",
-			"controlHelp": "ControlHelp",
-			"save": "Save",
-			"labels": {
-				"select": "{label, select, customer {Customer number} control {Control number} other {label}}"
-			}
-		},
-		"onboard": {
-			"title": "Title",
-			"quickTitle": "QuickTitle",
-			"quickDescription": "QuickDescription",
-			"start": "Start"
-		},
-		"peppol": {
-			"description": "Description"
-		},
-		"phone": "Phone",
-		"postalCode": "Postal code",
-		"prereqs": {
-			"title": "Title",
-			"description": "Description",
-			"webhookUrl": "WebhookUrl",
-			"webhookHelp": "WebhookHelp",
-			"verifyToken": "VerifyToken",
-			"tokenHelp": "TokenHelp"
-		},
-		"provider": "Provider",
-		"reminders": {
-			"title": "Title",
-			"whatsapp_series": "Whatsapp Series",
-			"scheduled": "Scheduled",
-			"automation_active": "Automation Active",
-			"opt_out_respected": "Opt Out Respected",
-			"email_escalation": "Email Escalation"
-		},
-		"schedule": {
-			"assigned_to": "Assigned to",
-			"auto_assigned": "Auto assigned",
-			"end_time": "End time",
-			"start_time": "Start time"
-		},
-		"seed": {
-			"success": "Success",
-			"error": "Error",
-			"validation": "Validation",
-			"title": "Title",
-			"description": "Description",
-			"businessId": "BusinessId",
-			"controlId": "ControlId",
-			"submit": "Submit"
-		},
-		"select": "Select",
-		"selectAll": "SelectAll",
-		"selected": "Selected",
-		"send_pay": {
-			"invoice_sent": "Invoice Sent",
-			"invoice_id": "Invoice Id",
-			"payment_status": "Payment Status",
-			"awaiting_payment": "Awaiting Payment",
-			"click_pay": "Click Pay",
-			"pdf": "Pdf",
-			"whatsapp_message": "Whatsapp Message"
-		},
-		"states": {
-			"connected": "Connected",
-			"needs_action": "Needs Action",
-			"error": "Error"
-		},
-		"steps": {
-			"prereqs": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"numbers": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"test": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"done": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"whatsapp": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"ai_suggestion": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"schedule": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"job_card": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"voice_draft": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"send_pay": {
-				"title": "Title",
-				"description": "Description"
-			},
-			"reminders": {
-				"title": "Title",
-				"description": "Description"
-			}
-		},
-		"subtitle": "Subtitle",
-		"test": {
-			"success": "Success",
-			"error": "Error",
-			"validation": "Validation",
-			"title": "Title",
-			"description": "Description",
-			"phoneLabel": "PhoneLabel",
-			"phoneHelp": "PhoneHelp",
-			"messageLabel": "MessageLabel",
-			"messagePlaceholder": "MessagePlaceholder",
-			"messageHelp": "MessageHelp",
-			"configured": "Configured",
-			"send": "Send"
-		},
-		"title": "Title",
-		"toast": {
-			"deleteError": "Cannot delete job:",
-			"jobDeleted": "Job successfully deleted"
-		},
-		"tokenExpires": "TokenExpires",
-		"total": "Total",
-		"ui": {
-			"tip": "Tip"
-		},
-		"upsert": {
-			"success": "Success",
-			"error": "Error",
-			"validation": "Validation",
-			"title": "Title",
-			"phoneNumberId": "PhoneNumberId",
-			"label": "Label",
-			"submit": "Submit"
-		},
-		"urgency": "Urgency",
-		"voice_draft": {
-			"voice_transcript": "Voice Transcript",
-			"invoice_lines": "Invoice Lines",
-			"subtotal_ex_vat": "Subtotal Ex Vat",
-			"vat_total": "Vat Total",
-			"total": "Total"
-		},
-		"wefact": {
-			"description": "Description"
-		}
-	},
-	"notifications": {
-		"title": "Notifications",
-		"empty": "No notifications",
-		"markAllRead": "Mark all as read",
-		"markAsRead": "Mark as read",
-		"markAsUnread": "Mark as unread",
-		"delete": "Delete notification",
-		"types": {
-			"info": "Information",
-			"success": "Success",
-			"warning": "Warning",
-			"error": "Error",
-			"invoice": "Invoice",
-			"job": "Job",
-			"customer": "Customer",
-			"payment": "Payment"
-		},
-		"settings": {
-			"title": "Notification Settings",
-			"email": "Email notifications",
-			"push": "Push notifications",
-			"whatsapp": "WhatsApp notifications"
-		}
-	},
-	"panel": {
-		"title": "Panel"
-	},
-	"payment": {
-		"status": "Payment Status",
-		"awaiting": "Awaiting Payment",
-		"paid": "Paid",
-		"overdue": "Overdue",
-		"failed": "Payment Failed",
-		"refunded": "Refunded",
-		"links": "Payment Links",
-		"method": "Payment Method",
-		"amount": "Amount",
-		"dueDate": "Due Date",
-		"payNow": "Pay Now",
-		"payOnline": "Pay Online",
-		"ideal": "iDEAL",
-		"creditCard": "Credit Card",
-		"bankTransfer": "Bank Transfer"
-	},
-	"providers": {
-		"actions": {
-			"back": "Back",
-			"configure": "Configure",
-			"connect": "Connect",
-			"fix": "Fix connection"
-		},
-		"moneybird": {
-			"title": "Moneybird",
-			"description": "Professional Dutch accounting with API integration",
-			"connect": "Connect",
-			"reconnect": "Reconnect",
-			"disconnect": "Disconnect",
-			"connected": "Connected",
-			"openDashboard": "Open Dashboard",
-			"reconnectHelper": "Your token has expired. Please reconnect to continue.",
-			"health": {
-				"ok": "Connected",
-				"invalid_token": "Token Expired",
-				"not_connected": "Not Connected"
-			}
-		},
-		"wefact": {
-			"title": "WeFact",
-			"description": "Simple invoicing with payment processing"
-		},
-		"eboekhouden": {
-			"title": "e-Boekhouden",
-			"description": "Popular choice for Dutch small businesses"
-		},
-		"peppol": {
-			"title": "Peppol",
-			"description": "European B2B electronic invoicing standard"
-		},
-		"panel": {
-			"title": "Invoice Providers",
-			"description": "Connect accounting providers to issue professional invoices",
-			"note": "Connect at least one provider to start issuing invoices. Each provider handles numbering, PDFs, and compliance."
-		},
-		"states": {
-			"connected": "Connected",
-			"needs_action": "Setup required",
-			"error": "Error"
-		},
-		"comingSoon": "Coming soon",
-		"connected": {
-			"description": "Provider is ready for issuing invoices"
-		},
-		"oauth": {
-			"adminError": "Could not retrieve administrations",
-			"authError": "Authorization denied or failed",
-			"callbackError": "Unknown error during connection process",
-			"csrfError": "Security error: invalid session state",
-			"error": "Connection Error",
-			"genericError": "Something went wrong during connection",
-			"moneybirdConnected": "Moneybird connected successfully",
-			"selectAdmin": "Select administration",
-			"stateError": "Invalid connection state",
-			"stateExpired": "Connection session has expired",
-			"success": "Connection Successful",
-			"tokenError": "Could not retrieve access token",
-			"userMismatch": "User does not match expected account"
-		},
-		"setup": {
-			"actions": {
-				"back": "Back to providers",
-				"cancel": "Cancel",
-				"connect": "Connect WeFact",
-				"connecting": "Connecting..."
-			},
-			"apiKey": {
-				"help": "You can find your API key in your WeFact account settings under API access",
-				"label": "API Key",
-				"placeholder": "Enter your WeFact API key"
-			},
-			"baseUrl": {
-				"help": "Leave default unless using custom WeFact installation",
-				"label": "API Base URL"
-			},
-			"errors": {
-				"connection": "Connection failed"
-			},
-			"wefact": {
-				"description": "Configure your WeFact account for automated invoice processing",
-				"title": "Connect WeFact"
-			}
-		}
-	},
-	"settings": {
-		"whatsapp": {
-			"title": "WhatsApp Setup",
-			"subtitle": "Configure your WhatsApp Business integration",
-			"wizard": {
-				"step": "Step {current} of {total}",
-				"next": "Continue",
-				"previous": "Back",
-				"finish": "Complete Setup",
-				"skip": "Skip for now"
-			},
-			"prereqs": {
-				"title": "Prerequisites",
-				"description": "Verify your WhatsApp Business account configuration",
-				"webhookUrls": {
-					"title": "Webhook URLs",
-					"description": "Configure these URLs in your Meta App webhook settings",
-					"customer": "Customer webhook",
-					"control": "Control webhook",
-					"copy": "Copy URL",
-					"copied": "Copied!"
-				},
-				"credentials": {
-					"title": "API Credentials",
-					"description": "Server-side credentials configured via environment variables",
-					"verifyToken": "Verify Token",
-					"hmacSecret": "HMAC Secret",
-					"configured": "✅ Configured",
-					"missing": "❌ Missing",
-					"note": "These are managed by your system administrator and are not visible for security reasons."
-				}
-			},
-			"numbers": {
-				"title": "Phone Numbers",
-				"description": "Map your WhatsApp Business phone number IDs to customer and control channels",
-				"table": {
-					"phoneNumberId": "Phone Number ID",
-					"label": "Type",
-					"createdAt": "Added",
-					"actions": "Actions"
-				},
-				"labels": {
-					"customer": "Customer",
-					"control": "Control",
-					"select": "{label, select, customer {Customer} control {Control}}"
-				},
-				"empty": {
-					"title": "No numbers configured",
-					"description": "Add your WhatsApp Business phone number IDs to get started"
-				},
-				"add": {
-					"title": "Add Phone Number",
-					"phoneNumberId": {
-						"label": "Phone Number ID",
-						"placeholder": "Enter WhatsApp Business phone number ID",
-						"helper": "Found in your Meta Business account"
-					},
-					"label": {
-						"label": "Channel Type",
-						"helper": "Customer for public inquiries, Control for internal management"
-					},
-					"submit": "Add Number",
-					"submitting": "Adding...",
-					"success": "Phone number added successfully",
-					"error": "Failed to add phone number"
-				},
-				"remove": {
-					"confirm": "Remove this phone number mapping?",
-					"success": "Phone number removed successfully",
-					"error": "Failed to remove phone number"
-				}
-			},
-			"test": {
-				"title": "Test Connection",
-				"description": "Send a test message to verify your control channel is working",
-				"button": "Send Test Message",
-				"sending": "Sending...",
-				"success": {
-					"title": "Test Successful!",
-					"message": "Test message sent to control channel",
-					"nextSteps": "Your WhatsApp integration is now ready to use."
-				},
-				"error": {
-					"noControl": "Control number not configured",
-					"noConversation": "No control conversation found. Please send a message from your control phone first.",
-					"apiError": "WhatsApp API error",
-					"unknown": "An error occurred while sending the test message"
-				},
-				"requirements": {
-					"title": "Requirements for testing",
-					"items": {
-						"0": "Control phone number must be mapped",
-						"1": "Send at least one message from control phone to establish conversation",
-						"2": "Valid API credentials must be configured"
-					}
-				}
-			},
-			"completion": {
-				"title": "Setup Complete!",
-				"description": "Your WhatsApp Business integration is configured and ready to use.",
-				"summary": {
-					"webhooks": "Webhook URLs configured",
-					"credentials": "API credentials verified",
-					"numbers": "{count} phone numbers mapped",
-					"test": "Connection test passed"
-				},
-				"nextSteps": {
-					"title": "What's next?",
-					"items": {
-						"0": "Visit the WhatsApp dashboard to manage conversations",
-						"1": "Configure automated responses and templates",
-						"2": "Train your team on the control channel commands"
-					}
-				},
-				"actions": {
-					"dashboard": "Go to WhatsApp Dashboard",
-					"settings": "Manage Settings"
-				}
-			},
-			"onboard": {
-				"back": "Back",
-				"next": "Continue",
-				"title": "WhatsApp onboarding",
-				"description": "Configure numbers and verify webhooks",
-				"steps": {
-					"prereqs": {
-						"title": "Prerequisites"
-					},
-					"numbers": {
-						"title": "Numbers"
-					},
-					"test": {
-						"title": "Test"
-					},
-					"done": {
-						"title": "Done"
-					}
-				},
-				"prereqs": {
-					"title": "Prerequisites",
-					"description": "Verify token and webhook URL in Meta Business",
-					"verifyToken": "Verify token",
-					"tokenHelp": "Use this token in your webhook configuration.",
-					"webhookUrl": "Webhook URL",
-					"webhookHelp": "Configure this URL in Meta Business."
-				},
-				"numbers": {
-					"title": "Numbers",
-					"description": "Map number IDs to channels",
-					"businessLabel": "Customer number",
-					"businessHelp": "Used for customer chats",
-					"controlLabel": "Control number",
-					"controlHelp": "Used for system messages",
-					"save": "Save mapping",
-					"success": "Numbers saved",
-					"error": "Failed to save numbers",
-					"validation": "Please select both numbers"
-				},
-				"test": {
-					"title": "Send a test",
-					"description": "Send a test message to verify delivery",
-					"phoneLabel": "Phone",
-					"phoneHelp": "Enter a WhatsApp-enabled phone",
-					"messageLabel": "Message",
-					"messagePlaceholder": "Hello from Plumbing Agent!",
-					"messageHelp": "This will be sent to your device",
-					"configured": "Configured",
-					"send": "Send test",
-					"success": "Test message sent",
-					"error": "Failed to send test",
-					"validation": "Provide phone and message"
-				},
-				"done": {
-					"title": "All set!",
-					"description": "Your WhatsApp integration is configured",
-					"success": "Configuration complete",
-					"successDescription": "You can now receive and send messages",
-					"healthSummary": "Health summary",
-					"environment": "Environment",
-					"webhook": "Webhook",
-					"security": "Security",
-					"goToSettings": "Go to WhatsApp settings"
-				}
-			},
-			"health": {
-				"ok": "OK",
-				"invalid_token": "Invalid token",
-				"not_connected": "Not connected",
-				"webhook_ok": "Webhook OK",
-				"webhook_error": "Webhook error",
-				"security": "Security",
-				"webhook": "Webhook"
-			}
-		}
-	},
-	"states": {
-		"needs_action": "Needs action"
-	},
-	"stats": {
-		"total": "Total",
-		"thisMonth": "This month",
-		"active": "Active",
-		"archived": "Archived"
-	},
-	"system": {
-		"app": {
-			"title": "Plumbing Agent"
-		},
-		"errors": {
-			"paymentLink": {
-				"sendFailed": "Failed to send payment link"
-			}
-		},
-		"locale": "en",
-		"meta": {
-			"created": "Created:"
-		},
-		"notifications": {
-			"paymentLink": {
-				"sent": "Payment link sent via WhatsApp"
-			}
-		},
-		"payment": {
-			"links": "Payment & Documents",
-			"linksDescription": "Payment links and official documents",
-			"noLinksDescription": "Payment links will appear after the invoice is sent",
-			"noLinksAvailable": "No payment links available",
-			"payOnline": "Pay Online",
-			"providerPayment": "Official payment link from provider",
-			"openMollieCheckout": "Create iDEAL Payment",
-			"creatingMollie": "Creating payment link...",
-			"molliePayment": "Backup payment via iDEAL",
-			"mollieCreated": "Payment link created and opened",
-			"mollieFailed": "Failed to create payment link",
-			"downloadPdf": "Download PDF",
-			"viewPdf": "View PDF",
-			"pdfDescription": "Official invoice document",
-			"officialInvoice": "Official invoice document",
-			"paymentCopied": "Payment link copied to clipboard",
-			"pdfCopied": "PDF link copied to clipboard",
-			"copyFailed": "Failed to copy to clipboard"
-		}
-	},
-	"ui": {
-		"badges": {
-			"locked_tooltip": "Feature locked for your plan. Enable it in Settings.",
-			"legacy": "Legacy"
-		},
-		"common": {
-			"title": "Title",
-			"description": "Description",
-			"back": "Back",
-			"status": "Status",
-			"active": "Active",
-			"approved": "Approved",
-			"schedule": "Schedule",
-			"when": "When",
-			"where": "Where",
-			"customer": "Customer",
-			"issue": "Issue",
-			"lastResponse": "Last response",
-			"comingSoon": "Coming soon",
-			"draftInvoice": "Draft invoice",
-			"tokenExpires": "Token expires",
-			"dateUnknown": "Date unknown",
-			"timeUnknown": "Time unknown",
-			"phoneUnknown": "Phone unknown",
-			"addressUnknown": "Address unknown",
-			"urgency": "Urgency",
-			"loading": "Loading..."
-		},
-		"field": {
-			"status": "Status",
-			"customer": "Customer",
-			"description": "Description",
-			"primaryEmployee": "Lead plumber *",
-			"priority": "Priority",
-			"secondaryEmployees": "Assistants (coming soon)",
-			"start": "Start"
-		},
-		"form": {
-			"address": "Address",
-			"customer": "Customer",
-			"description": "Description",
-			"duration": "Duration (min)",
-			"employee": "Employee",
-			"endDate": "End Date",
-			"endTime": "End Time",
-			"noEmployee": "No employee",
-			"notes": "Notes",
-			"primaryEmployee": "Primary Employee",
-			"priority": "Priority",
-			"priorityOptions": {
-				"normal": "Normal",
-				"urgent": "Urgent",
-				"emergency": "Emergency"
-			},
-			"required": "Required",
-			"requiredSymbol": "*",
-			"startDate": "Start Date",
-			"startTime": "Start time",
-			"status": "Status",
-			"title": "Title"
-		},
-		"nav": {
-			"customers": "Customers",
-			"dashboard": "Dashboard",
-			"invoices": "Invoices",
-			"jobs": "Jobs"
-		},
-		"stats": {
-			"activeJobs": "Active Jobs",
-			"newCustomers": "New Customers",
-			"outstandingInvoices": "Outstanding Invoices",
-			"revenue": "Revenue",
-			"thisMonth": "This month",
-			"thisWeek": "This week",
-			"toCollect": "To collect",
-			"today": "Today"
-		},
-		"table": {
-			"actions": "Actions",
-			"amount": "Amount",
-			"customer": "Customer",
-			"date": "Date",
-			"draft": "Draft",
-			"dueDate": "Due Date",
-			"invoice": "Invoice",
-			"issuedOn": "Issued On",
-			"job": "Job",
-			"method": "Method",
-			"noJobs": "No jobs found",
-			"paidOn": "Paid On",
-			"provider": "Provider",
-			"status": "Status",
-			"time": "Time",
-			"title": "Title"
-		},
-		"tabs": {
-			"whatsapp": "WhatsApp"
-		}
-	},
-	"whatsapp": {
-		"leads": {
-			"title": "WhatsApp Leads",
-			"description": "Manage incoming WhatsApp conversations",
-			"count": "leads",
-			"table": {
-				"contact": "Contact",
-				"lastMessage": "Last Message",
-				"unread": "Unread",
-				"session": "Session",
-				"lastActivity": "Last Activity"
-			},
-			"empty": {
-				"title": "No active leads",
-				"description": "New WhatsApp conversations will appear here"
-			}
-		},
-		"session": {
-			"active": "Active",
-			"expired": "Expired",
-			"expiresAt": "Expires at",
-			"expiresIn": "Expires in"
-		},
-		"conversation": {
-			"title": "Messages",
-			"empty": {
-				"title": "No messages yet",
-				"description": "Start a conversation to see messages here"
-			}
-		},
-		"message": {
-			"media": "Media attachment"
-		},
-		"composer": {
-			"placeholder": "Type a message...",
-			"templatePlaceholder": "Type a template message...",
-			"send": "Send",
-			"useTemplate": "Send Template",
-			"sending": "Sending...",
-			"sent": "Message sent",
-			"templateSent": "Template sent",
-			"error": "Failed to send message",
-			"templateError": "Failed to send template",
-			"sessionExpiredWarning": "24-hour session expired. Use template messages to continue conversation."
-		},
-		"actions": {
-			"title": "Actions",
-			"createJob": "Create Job",
-			"sendPaylink": "Send Paylink",
-			"close": "Close Conversation",
-			"jobCreated": "Job created successfully",
-			"jobError": "Failed to create job",
-			"paylinkNotImplemented": "Paylink feature coming soon",
-			"paylinkError": "Failed to send paylink",
-			"conversationClosed": "Conversation closed",
-			"closeError": "Failed to close conversation"
-		},
-		"control": {
-			"title": "Control Chat",
-			"description": "Quick approval actions",
-			"approve": "Approve",
-			"close": "Close",
-			"approved": "Conversation approved",
-			"approveError": "Failed to approve"
-		},
-		"info": {
-			"title": "Info",
-			"status": "Status",
-			"created": "Created",
-			"linkedCustomer": "Customer"
-		},
-		"photo_attached": "Photo Attached",
-		"ai_analyzing": "AI analyzing...",
-		"createJob": "Create job",
-		"lastActivity": "Last activity",
-		"messages": "messages",
-		"noMessages": "No WhatsApp messages available"
-	}
+  "actions": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "configure": "Configure",
+    "connect": "Connect",
+    "create": "Create",
+    "creating": "Creating...",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "edit": "Edit",
+    "fix": "Fix",
+    "openActions": "Open actions",
+    "pay": "Pay",
+    "saving": "Saving...",
+    "sending": "Sending...",
+    "update": "Update",
+    "cta": {
+      "applySuggestion": "Apply suggestion",
+      "button": "Button",
+      "createInvoice": "Create Invoice",
+      "finalizeVoiceInvoice": "Finalize → Voice invoice",
+      "headline": "Headline",
+      "newJob": "New job",
+      "subtitle": "Subtitle"
+    }
+  },
+  "auth": {
+    "context": {
+      "description": "Current user and organization information",
+      "title": "Authentication Context"
+    },
+    "noOrganization": "No organization selected",
+    "noRole": "No role assigned",
+    "notSignedIn": "Not signed in",
+    "orgId": "Organization ID",
+    "role": "Role",
+    "signInSubtitle": "Sign in to your plumber dashboard",
+    "signUpSubtitle": "Register your plumbing business",
+    "tip": "Tip: Select or create an organization using the organization switcher in the header to get started.",
+    "userId": "User ID"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "error": "Error",
+    "loading": "Loading...",
+    "unnamed": "Unnamed",
+    "unknown": "Unknown",
+    "due_date": "Due date",
+    "alternative_payment": "Alternative payment",
+    "email": "Email",
+    "step_data_unavailable": "Step data unavailable",
+    "yes": "Yes",
+    "no": "No",
+    "priority": {
+      "emergency": "Emergency",
+      "normal": "Normal",
+      "urgent": "Urgent"
+    },
+    "status": {
+      "cancelled": "Cancelled",
+      "done": "Completed",
+      "draft": "Draft",
+      "in_progress": "In Progress",
+      "planned": "Planned"
+    }
+  },
+  "customers": {
+    "selectCustomer": "Select customer",
+    "recent": "Recent",
+    "allOthers": "All others",
+    "title": "Customers",
+    "description": "Manage customer information and contact details",
+    "errors": {
+      "name": {
+        "required": "Name is required"
+      },
+      "phone": {
+        "required": "Phone is required",
+        "invalid": "Enter a valid phone"
+      },
+      "email": {
+        "invalid": "Enter a valid email"
+      },
+      "postalCode": {
+        "invalid": "Invalid Dutch postal code (e.g., 1234 AB)"
+      },
+      "houseNumber": {
+        "required": "House number required"
+      },
+      "address": {
+        "required": "Address is required"
+      },
+      "notFoundOrNoPermission": "Customer not found or no permission",
+      "serverError": "Server error occurred",
+      "emailAlreadyExists": "Customer with this email already exists"
+    },
+    "searchPlaceholder": "Search customers...",
+    "noCustomersFound": "No customers found",
+    "addNew": "New customer",
+    "actions": {
+      "creating": "Creating...",
+      "create": "Create customer",
+      "cancel": "Cancel"
+    },
+    "archived": {
+      "title": "Archived customers",
+      "description": "View archived customers",
+      "badge": "Archived customer",
+      "noArchivedFound": "No archived customers found",
+      "tab": "Archived"
+    },
+    "unarchive": {
+      "action": "Restore",
+      "tooltip": "Restore customer",
+      "success": "Customer successfully restored",
+      "error": "Failed to restore customer"
+    },
+    "create": {
+      "title": "Create new customer",
+      "description": "Add a new customer to the system"
+    },
+    "edit": {
+      "title": "Edit customer",
+      "description": "Modify customer information"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Full name"
+      },
+      "email": {
+        "label": "Email address",
+        "placeholder": "name@example.com"
+      },
+      "phone": {
+        "label": "Phone number",
+        "placeholder": "06 12345678"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Street 123",
+        "autoFill": {
+          "title": "Dutch Address Lookup",
+          "loading": "Looking up address…"
+        }
+      },
+      "postalCode": {
+        "label": "Postal code",
+        "placeholder": "1234 AB"
+      },
+      "houseNumber": {
+        "label": "House number",
+        "placeholder": "123"
+      },
+      "street": {
+        "label": "Street",
+        "placeholder": "Street name"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "City name"
+      },
+      "language": {
+        "label": "Language"
+      },
+      "validation": {
+        "nameRequired": "Name is required",
+        "nameTooLong": "Name too long",
+        "emailInvalid": "Please enter a valid email address",
+        "emailTooLong": "Email address too long",
+        "phoneRequired": "Phone number is required",
+        "phoneTooLong": "Phone number too long",
+        "addressTooLong": "Address too long",
+        "postalCodeRequired": "Postal code is required",
+        "postalCodeInvalid": "Invalid Dutch postal code (e.g., 1234 AB)",
+        "postalCodeTooLong": "Postal code too long"
+      },
+      "requiredSymbol": "*"
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "contact": "Contact",
+        "address": "Address",
+        "created": "Created",
+        "actions": "Actions"
+      }
+    },
+    "stats": {
+      "total": "Total count",
+      "thisMonth": "This month",
+      "active": "Active customers",
+      "archived": "Archived customers"
+    },
+    "delete": {
+      "title": "Delete customer",
+      "description": "Are you sure you want to delete this customer? This action cannot be undone.",
+      "archive": {
+        "title": "Archive customer",
+        "cannotDelete": "Cannot delete customer: there are still jobs or invoices linked.",
+        "linkedData": "Linked data:",
+        "jobs": "job(s)",
+        "invoices": "invoice(s)",
+        "archiveInstead": "Would you like to archive customer {name} instead?"
+      }
+    },
+    "error": {
+      "load": "Failed to load customers",
+      "create": "Failed to create customer",
+      "update": "Failed to update customer",
+      "delete": "Failed to delete customer",
+      "deleteLinked": "Customer has linked jobs/invoices. You can archive instead.",
+      "archive": "Failed to archive customer"
+    },
+    "success": {
+      "created": "Customer created successfully",
+      "updated": "Customer updated successfully",
+      "deleted": "Customer deleted successfully",
+      "archived": "Customer archived successfully"
+    }
+  },
+  "employees": {
+    "filter": {
+      "all": "All",
+      "clearAll": "Clear all"
+    }
+  },
+  "error": {
+    "load": "Failed to load"
+  },
+  "errors": {
+    "title": "Error",
+    "general": "Something went wrong",
+    "tryAgain": "Try again",
+    "contactSupport": "Contact support",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access denied",
+    "validation": "Validation error",
+    "network": "Network error",
+    "timeout": "Request timed out",
+    "serverError": "Server error",
+    "unknown": "Unknown error",
+    "fieldRequired": "This field is required",
+    "invalidFormat": "Invalid format",
+    "tooShort": "Too short",
+    "tooLong": "Too long",
+    "mustBeNumber": "Must be a number",
+    "mustBeEmail": "Must be a valid email",
+    "passwordTooWeak": "Password too weak"
+  },
+  "invoices": {
+    "notFound": "Invoice not found",
+    "notFoundDescription": "The invoice you're looking for doesn't exist or you don't have access to it.",
+    "customer": "Customer",
+    "details": "Invoice Details",
+    "detailsDescription": "Invoice information and line items",
+    "job": "Job",
+    "amounts": "Amounts",
+    "subtotalExVat": "Subtotal (ex VAT)",
+    "vatAmount": "VAT Amount",
+    "totalIncVat": "Total (inc VAT)",
+    "notesLabel": "Notes",
+    "statusLabel": "Status",
+    "provider": "Provider",
+    "issuedOn": "Issued on",
+    "issuedSuccessfully": "Invoice issued successfully!",
+    "issueFailed": "Failed to issue invoice",
+    "needsProvider": "Provider Required",
+    "needsProviderDescription": "Connect an invoice provider to issue invoices.",
+    "issueActionsDescription": "Actions to issue and manage this invoice",
+    "issuing": "Issuing...",
+    "issueViaMoneybird": "Issue via Moneybird",
+    "issueViaProviderNote": "This will create and send the invoice via your connected provider",
+    "lockedBadge": "Issued by {provider}",
+    "lockedDescription": "This invoice has been issued and is now locked. The provider is the source of truth for all changes.",
+    "providerPdfNote": "PDF and payment links are managed by the provider",
+    "issueActions": "Issue Actions",
+    "alreadyIssued": "Already Issued",
+    "alreadyIssuedDescription": "This invoice has already been sent to the customer.",
+    "timeline": {
+      "heading": "Timeline",
+      "description": "Invoice lifecycle events",
+      "loadError": "Failed to load timeline",
+      "loadErrorDescription": "Unable to fetch invoice timeline events.",
+      "noEvents": "No timeline events available",
+      "noEventsDescription": "Timeline events will appear here as the invoice progresses.",
+      "created": "Created",
+      "sent": "Sent",
+      "paid": "Paid",
+      "reminder_sent": "Reminder Sent",
+      "reminder_error": "Reminder Failed",
+      "reminder_skipped": "Customer Opted Out",
+      "manual_follow_up": "Manual Follow-up Required"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "pay": "Pay",
+      "markReviewed": "Mark as Reviewed",
+      "saveDraft": "Save Draft",
+      "send": "Send Invoice",
+      "sendWhatsApp": "Send via WhatsApp",
+      "sendWhatsAppDescription": "Send payment link directly to customer via WhatsApp",
+      "updateCustomerAddress": "Update customer address"
+    },
+    "badges": {
+      "legacy": "Legacy",
+      "locked_tooltip": "Locked after send - Provider is source of truth"
+    },
+    "status": {
+      "draft": "Draft",
+      "draftUnsent": "Draft • unsent"
+    },
+    "providers": {
+      "moneybird": "Moneybird",
+      "wefact": "WeFact",
+      "eboekhouden": "e-Boekhouden",
+      "peppol": "Peppol",
+      "oauth": {
+        "success": "Connection Successful",
+        "error": "Connection Error",
+        "moneybirdConnected": "Moneybird has been successfully connected and is ready for use",
+        "selectAdmin": "Moneybird is connected. You can now select an administration in your invoice settings",
+        "genericError": "Something went wrong during connection. Please try again",
+        "authError": "Authorization denied or failed",
+        "csrfError": "Security error: invalid session state",
+        "stateError": "Invalid connection state",
+        "userMismatch": "User does not match expected account",
+        "stateExpired": "Connection session has expired, please try again",
+        "tokenError": "Could not retrieve access token",
+        "adminError": "Could not retrieve administrations from provider",
+        "callbackError": "Unknown error during connection process"
+      }
+    },
+    "voiceMode": {
+      "active": "Voice Mode Active",
+      "approve": "Approve",
+      "approved": "Approved",
+      "changesNotes": "Change Notes",
+      "changesPlaceholder": "Describe the changes needed...",
+      "changesRequested": "Changes Requested",
+      "confirmPrompt": "Please confirm the invoice details",
+      "requestChanges": "Request Changes",
+      "reviewing": "Reviewing voice input",
+      "safeActive": "Safe Voice Mode Active",
+      "safeInstructions": "Speak clearly for best results",
+      "submitChanges": "Submit Changes",
+      "toggle": "Toggle Voice Mode",
+      "steps": {
+        "review": "Review",
+        "confirm": "Confirm",
+        "changes": "Changes",
+        "final": "Final"
+      }
+    },
+    "autosave": {
+      "error": "Save error",
+      "saved": "Saved",
+      "saving": "Saving..."
+    },
+    "compliance": {
+      "applied": "Applied",
+      "btwId": "VAT Identification Number",
+      "complete": "Complete",
+      "customerAddress": "Customer Complete Address",
+      "dutchVat": "Dutch VAT Rate",
+      "incomplete": "Incomplete",
+      "kvkNumber": "KVK Number",
+      "title": "Dutch Legal Compliance",
+      "verified": "Verified"
+    },
+    "confirmSuccess": "Invoice approved",
+    "draft": {
+      "fastMode": {
+        "badge": "Fast",
+        "description": "Quick invoice creation",
+        "title": "Fast Mode",
+        "warning": "Fast mode may miss details"
+      },
+      "safeMode": {
+        "addLineHint": "Add line items one by one",
+        "badge": "Safe",
+        "description": "Detailed invoice creation",
+        "info": "Safe mode ensures accuracy",
+        "title": "Safe Mode"
+      },
+      "switchToFast": "Switch to Fast Mode",
+      "switchToSafe": "Switch to Safe Mode",
+      "title": "Draft Invoice"
+    },
+    "errors": {
+      "loadFailed": "Failed to load invoice",
+      "addressGuidance": "Add street, house number and postal code to customer details",
+      "addressRequired": "Complete customer address is required for invoicing",
+      "invalidId": "Invalid invoice ID. Check the link or choose another invoice.",
+      "notFound": "Invoice not found"
+    },
+    "import": {
+      "estimate": {
+        "calculation": "{hours} hrs × €{rate}/hr = €{total}",
+        "title": "Estimated amount (excl. VAT)"
+      },
+      "jobDetails": {
+        "date": "Date",
+        "description": "Description",
+        "duration": "Duration",
+        "employee": "Employee"
+      },
+      "title": "Import from Job",
+      "description": "Import job details to create invoice",
+      "selectJob": "Select job",
+      "selectJobPlaceholder": "Choose a job to import from...",
+      "laborConfig": "Labor Configuration",
+      "laborHours": "Labor hours",
+      "hourlyRate": "Hourly rate",
+      "import": "Import job data"
+    },
+    "lineAdded": "Line item added",
+    "lineItems": {
+      "addNew": "Add New Item",
+      "description": "Description",
+      "multiplier": "×",
+      "quantity": "Quantity",
+      "summary": "Line Items Summary",
+      "title": "Line Items",
+      "type": "Type",
+      "unitPrice": "Unit Price",
+      "vatRate": "VAT Rate"
+    },
+    "simpleNotes": {
+      "title": "Notes"
+    },
+    "review": {
+      "bulkActions": {
+        "alsoWhatsApp": "Also send WhatsApp payment links",
+        "description": "Select invoices to send in bulk",
+        "selectedCount": "{count} invoices selected",
+        "send": "Send {count} invoices",
+        "sending": "Sending invoices...",
+        "title": "Bulk Send"
+      },
+      "controls": {
+        "createDrafts": "Create drafts from jobs",
+        "creating": "Creating drafts...",
+        "description": "Create invoice drafts from completed jobs",
+        "sinceDate": "Since date",
+        "title": "Generate Drafts"
+      },
+      "created": "Created",
+      "customer": "Customer",
+      "job": "Job",
+      "list": {
+        "count": "{count} draft invoices",
+        "loading": "Loading drafts...",
+        "title": "Draft Invoices"
+      },
+      "noInvoices": "No draft invoices found",
+      "noJob": "No job",
+      "noProvider": "No provider",
+      "provider": "Provider",
+      "results": {
+        "errors": "Errors",
+        "sent": "Sent",
+        "skipped": "Skipped",
+        "title": "Send Results",
+        "total": "Total",
+        "withPaymentLinks": "With Payment Links"
+      },
+      "select": "Select",
+      "selectAll": "Select all",
+      "selected": "selected",
+      "subtitle": "Review draft invoices and send them via providers",
+      "title": "Review & Send Invoices",
+      "total": "Total"
+    },
+    "saveSuccess": "Invoice saved successfully",
+    "sendError": "Error sending invoice",
+    "sendSuccess": "Invoice sent successfully",
+    "summary": {
+      "lineItems": "Line Items",
+      "paymentTerms": "Payment Terms",
+      "title": "Invoice Summary",
+      "totalAmount": "Total Amount",
+      "items": "Items"
+    },
+    "totals": {
+      "breakdown": "Total Breakdown",
+      "includingVat": "Including VAT",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "vat": "VAT"
+    },
+    "createError": "Failed to create invoice",
+    "importFromJob": "Import from job",
+    "form": {
+      "customer": {
+        "title": "Customer Information",
+        "label": "Customer",
+        "placeholder": "Select a customer...",
+        "required": "Customer is required"
+      },
+      "paymentTerms": {
+        "title": "Payment Terms",
+        "label": "Payment terms (days)"
+      },
+      "lineItems": {
+        "title": "Line Items",
+        "add": "Add line item",
+        "empty": "No line items yet",
+        "description": "Description",
+        "quantity": "Quantity",
+        "unitPrice": "Unit price",
+        "vatRate": "VAT rate",
+        "lineTotal": "Line total",
+        "required": "At least one line item is required"
+      },
+      "discount": {
+        "title": "Discount",
+        "percentage": "Discount %"
+      },
+      "totals": {
+        "title": "Totals",
+        "subtotal": "Subtotal",
+        "discount": "Discount",
+        "subtotalAfterDiscount": "Subtotal after discount",
+        "vat": "VAT",
+        "total": "Total"
+      },
+      "notes": {
+        "title": "Notes",
+        "public": "Public notes",
+        "publicPlaceholder": "Notes visible to customer...",
+        "internal": "Internal notes",
+        "internalPlaceholder": "Internal notes for your reference..."
+      }
+    },
+    "average": "Average",
+    "backToInvoices": "Back to invoices",
+    "confirmed": "Confirmed",
+    "connectMoneybird": "Connect Moneybird",
+    "connectProvider": "Connect Invoice Provider",
+    "connectProviderDesc": "Connect an invoice provider to automatically send invoices and receive payments",
+    "create": {
+      "addressError": "Address error while creating invoice",
+      "description": "Creating invoice for {customer}",
+      "error": "Failed to create invoice",
+      "title": "Create Invoice"
+    },
+    "createFromJob": "Create invoice from job",
+    "draftStatus": "Draft",
+    "draftLabel": "Draft",
+    "drafts": "Drafts",
+    "draftsReady": "drafts ready",
+    "edit": {
+      "description": "Update invoice details before sending",
+      "error": "Failed to update invoice",
+      "title": "Edit Invoice"
+    },
+    "issued": "Issued",
+    "manage": "Manage all invoices and payments",
+    "managePending": "Manage outstanding and paid invoices",
+    "modes": {
+      "fast": "Fast mode",
+      "safe": "Safe mode"
+    },
+    "moreProvidersComingSoon": "More providers coming soon",
+    "noDrafts": "No draft invoices found",
+    "noOverdue": "No overdue invoices",
+    "noPendingDrafts": "No pending drafts",
+    "noSentInvoices": "No sent invoices found",
+    "overdue": "Overdue",
+    "overview": "Invoice Overview",
+    "paid": "Paid",
+    "payOnline": "Pay Online",
+    "perInvoiceYear": "Per invoice this year",
+    "requiresAttention": "Requires attention",
+    "sent": "Sent",
+    "thisMonth": "This Month",
+    "title": "Invoices",
+    "totalInvoices": "invoices total",
+    "totalOutstanding": "Total Outstanding",
+    "unknown": "Unknown",
+    "viewPdf": "View PDF",
+    "approvals": "Approvals",
+    "notesHeading": "Notes",
+    "statusHeading": "Status",
+    "empty": {
+      "title": "No invoices yet",
+      "description": "Create your first invoice from a completed job",
+      "getStarted": "Once you complete a job, you can create an invoice for your customer"
+    },
+    "invoice": {
+      "title": "Invoice Details",
+      "notFound": "Invoice not found",
+      "notFoundDescription": "The invoice you're looking for doesn't exist or you don't have access to it.",
+      "draftLabel": "Draft",
+      "customer": "Customer",
+      "details": "Invoice Details",
+      "detailsDescription": "Invoice information and line items",
+      "job": "Job",
+      "amounts": "Amounts",
+      "subtotalExVat": "Subtotal (ex VAT)",
+      "vatAmount": "VAT Amount",
+      "totalIncVat": "Total (inc VAT)",
+      "notes": "Notes",
+      "status": "Status",
+      "sent": "Sent",
+      "paid": "Paid",
+      "provider": "Provider",
+      "issuedOn": "Issued on",
+      "actions": {
+        "sendWhatsApp": "Send via WhatsApp",
+        "sendWhatsAppDescription": "Send payment link directly to customer via WhatsApp"
+      }
+    }
+  },
+  "JobDrawer": {
+    "details": "Job Details",
+    "edit": "Edit",
+    "delete": {
+      "title": "Delete Job",
+      "description": "Are you sure you want to delete this job? This action cannot be undone.",
+      "success": "Job deleted successfully",
+      "failed": "Failed to delete job"
+    },
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "creating": "Creating...",
+    "deleting": "Deleting...",
+    "title": "Title",
+    "description": "Description",
+    "priority": "Priority",
+    "status": "Status",
+    "customer": "Customer",
+    "startTime": "Start time: {time}",
+    "endTime": "End time",
+    "duration": "{minutes} minutes",
+    "primaryEmployee": "Primary employee",
+    "secondaryEmployees": "Secondary employees",
+    "assignments": "Assignments",
+    "calendar": "Schedule",
+    "requiredSymbol": "*",
+    "selectEmployee": "Select employee",
+    "selectCustomer": "Select customer",
+    "selectStatus": "Select status",
+    "priorities": {
+      "normal": "Normal",
+      "urgent": "Urgent",
+      "emergency": "Emergency"
+    },
+    "statuses": {
+      "planned": "Planned",
+      "in_progress": "In Progress",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "invoice": {
+      "create": "Create Invoice",
+      "creating": "Creating invoice...",
+      "success": "Invoice draft created successfully",
+      "error": "Failed to create invoice draft"
+    }
+  },
+  "jobs": {
+    "invoice": {
+      "createDraft": {
+        "label": "Create Invoice",
+        "creating": "Creating invoice...",
+        "success": "Invoice draft created successfully",
+        "error": "Failed to create invoice draft"
+      }
+    },
+    "delete": {
+      "success": "Job deleted",
+      "failed": "Failed to delete job",
+      "title": "Delete Job",
+      "description": "Are you sure you want to delete this job?"
+    },
+    "job": {
+      "createDescription": "Create a new job.",
+      "deleteDescription": "Are you sure you want to delete this job? This action cannot be undone.",
+      "deleteTitle": "Delete Job",
+      "editDescription": "Edit the details of this job.",
+      "editJob": "Edit Job",
+      "newJob": "New Job"
+    },
+    "aiSuggestions": "AI suggestions",
+    "assignments": {
+      "title": "Assignments"
+    },
+    "calendar": {
+      "desc": "Drag jobs to move or resize them",
+      "title": "Planning calendar"
+    },
+    "create": {
+      "failed": "Failed to create job",
+      "success": "Job created successfully"
+    },
+    "description": "Manage all plumbing jobs and scheduling",
+    "empty": {
+      "title": "No jobs scheduled",
+      "description": "Create your first job to get started"
+    },
+    "details": "Job details",
+    "error": {
+      "load": "Failed to load jobs"
+    },
+    "errors": {
+      "notFoundOrNoPermission": "Job not found or no permission",
+      "serverError": "Server error occurred",
+      "title": {
+        "required": "Title is required"
+      }
+    },
+    "filter": {
+      "status": {
+        "all": "All statuses"
+      }
+    },
+    "generateInvoice": "Generate Invoice",
+    "legend": {
+      "header": "Employees",
+      "none": "No employees available"
+    },
+    "noAiSuggestions": "No AI recommendations available",
+    "source": "Source:",
+    "stats": {
+      "emergency": {
+        "desc": "Requires immediate action",
+        "title": "Emergency jobs"
+      },
+      "monthCompleted": {
+        "desc": "Finished this month",
+        "title": "Completed"
+      },
+      "today": {
+        "desc": "Total jobs scheduled today",
+        "title": "Today's Jobs"
+      },
+      "week": {
+        "desc": "Jobs scheduled this week",
+        "title": "This Week"
+      }
+    },
+    "table": {
+      "desc": "All jobs in a table view with editing options",
+      "title": "Jobs overview"
+    },
+    "title": "Jobs & planning",
+    "unscheduled": {
+      "ai": {
+        "assign": "Assign to calendar",
+        "confidence": "Confidence",
+        "customer": "Customer",
+        "empty": "No AI suggestions available",
+        "minutes": "min",
+        "title": "AI Suggestions"
+      }
+    },
+    "update": {
+      "failed": "Failed to update job",
+      "success": "Job updated successfully"
+    }
+  },
+  "launch": {
+    "controls": {
+      "title": "Title",
+      "description": "Description",
+      "sinceDate": "SinceDate",
+      "creating": "Creating",
+      "createDrafts": "CreateDrafts"
+    },
+    "meta": {
+      "title": "Plumbing Agent - Emergency Plumber Platform",
+      "description": "Transform emergency plumbing with WhatsApp intake, AI diagnosis, and instant invoicing",
+      "keywords": "emergency plumber, plumbing software, WhatsApp business, Dutch plumber, loodgieter"
+    },
+    "demo": {
+      "page": {
+        "title": "Product Demo",
+        "headline": "See Plumbing Agent in action",
+        "subtitle": "From WhatsApp intake to paid invoice in minutes",
+        "benefits": {
+          "faster": {
+            "title": "Faster Response Times",
+            "description": "WhatsApp intake and AI analysis cut response time from hours to minutes"
+          },
+          "smarter": {
+            "title": "Smarter Diagnosis",
+            "description": "AI-powered issue analysis helps you prepare better and work more efficiently"
+          },
+          "better_paid": {
+            "title": "Get Paid Faster",
+            "description": "Instant invoicing and automated payment reminders improve cash flow"
+          }
+        },
+        "cta": {
+          "headline": "Ready to try it?",
+          "subtitle": "Join the pilot and get early access",
+          "button": "Join waitlist"
+        },
+        "nav": {
+          "previous": "Previous",
+          "next": "Next",
+          "step_counter": "Step {current} of {total}"
+        },
+        "done": "You're all set!",
+        "autoplay_pause": "Pause Autoplay",
+        "autoplay_start": "Start Autoplay",
+        "keyboard_help": "Use arrow keys to navigate",
+        "time_estimate": "Estimated time: {minutes} minutes",
+        "time_average": "Average time",
+        "back": "Back"
+      },
+      "content": {
+        "whatsapp": {
+          "photo_attached": "Photo attached",
+          "ai_analyzing": "Analyzing message…"
+        },
+        "ai_suggestion": {
+          "diagnosis": "Diagnosis",
+          "reliable": "Reliable",
+          "urgency": "Urgency",
+          "emergency": "Emergency",
+          "estimated_time": "Estimated time",
+          "minutes": "minutes",
+          "required_materials": "Required materials",
+          "quantity_format": "{qty}x"
+        },
+        "schedule": {
+          "assigned_to": "Assigned to",
+          "start_time": "Start time",
+          "end_time": "End time",
+          "auto_assigned": "Auto-assigned"
+        },
+        "job_card": {
+          "address": "Address",
+          "phone": "Phone",
+          "notes": "Notes"
+        },
+        "voice_draft": {
+          "voice_transcript": "Voice transcript",
+          "invoice_lines": "Invoice lines",
+          "line_format": "{qty}× {item}",
+          "subtotal_ex_vat": "Subtotal (ex VAT)",
+          "vat_total": "VAT total",
+          "total": "Total"
+        },
+        "send_pay": {
+          "invoice_id": "Invoice ID",
+          "invoice_sent": "Invoice sent",
+          "payment_status": "Payment status",
+          "pdf": "PDF",
+          "whatsapp_message": "WhatsApp message",
+          "awaiting_payment": "Awaiting Payment",
+          "click_pay": "Click to Pay"
+        },
+        "reminders": {
+          "after_days": "After {days} days",
+          "scheduled": "Scheduled",
+          "automation_active": "Automation active",
+          "opt_out_respected": "Opt-out respected",
+          "email_escalation": "Email escalation",
+          "title": "Payment reminders",
+          "whatsapp_series": "WhatsApp Series"
+        },
+        "common": {
+          "loading": "Loading demo data…",
+          "alternative_payment": "Alternative payment",
+          "due_date": "Due date",
+          "email": "Email",
+          "step_data_unavailable": "Step data unavailable"
+        },
+        "step_previous": "Previous",
+        "step_next": "Next",
+        "step_jump": "Jump to step",
+        "demo_started": "Demo started",
+        "demo_completed": "Demo completed"
+      }
+    },
+    "usp": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "whatsapp": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "ai": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "schedule": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "jobcards": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "invoicing": {
+        "title": "Title",
+        "desc": "Desc"
+      },
+      "compliance": {
+        "title": "Title",
+        "desc": "Desc"
+      }
+    },
+    "cookie_consent": {
+      "title": "We use cookies",
+      "description": "We use essential cookies and analytics to improve your experience.",
+      "accept_all": "Accept all",
+      "reject_all": "Reject all",
+      "essential_only": "Essential only",
+      "privacy_policy": "Privacy policy",
+      "close": "Close"
+    },
+    "trust": {
+      "dutch_compliance": "Dutch Compliance",
+      "ideal_payments": "Ideal Payments",
+      "whatsapp_business": "Whatsapp Business",
+      "avg_compliant": "AVG compliant",
+      "ideal_certified": "IDEAL certified",
+      "kvk_registered": "KVK registered"
+    },
+    "waitlist": {
+      "title": "Join the Pilot Program",
+      "subtitle": "Get early access to Plumbing Agent and transform your emergency plumbing business",
+      "email": "Email address",
+      "phone": "Phone number (optional)",
+      "org": "Organization name (optional)",
+      "success": "Thank you! We'll be in touch soon with pilot access details.",
+      "error": "Something went wrong. Please try again or contact us directly.",
+      "submit": "Join Waitlist",
+      "gdpr": "By submitting, you agree to our privacy policy and terms of service."
+    },
+    "list": {
+      "title": "Title",
+      "loading": "Loading"
+    },
+    "pilot": {
+      "banner": {
+        "subtitle": "Certain features are enabled for testing.",
+        "title": "Pilot Mode"
+      }
+    },
+    "results": {
+      "title": "Title",
+      "total": "Total",
+      "sent": "Sent",
+      "skipped": "Skipped",
+      "withPaymentLinks": "WithPaymentLinks",
+      "errors": "Errors"
+    },
+    "hero": {
+      "h1": "Plumbing Agent for pros",
+      "subhead": "Automate scheduling, invoices, and WhatsApp with AI.",
+      "cta_demo": "Book a demo",
+      "cta_waitlist": "Join waitlist",
+      "urgency": "Limited beta access",
+      "social_proof": "Trusted by growing plumbing teams"
+    },
+    "roi_calculator": {
+      "title": "Calculate your ROI",
+      "subtitle": "Estimate your ROI",
+      "input_label": "Hours you want to save per week",
+      "placeholder_text": "e.g. 5–10",
+      "hours_per_week": "Hours saved / week",
+      "rate_per_hour": "Hourly rate (€)",
+      "time_saved": "Time saved",
+      "extra_revenue": "Extra revenue",
+      "yearly_savings": "Yearly savings",
+      "calculate_button": "Calculate",
+      "cta_start_saving": "Start saving now",
+      "results": {
+        "total_value": "Total annual value"
+      }
+    },
+    "current_hours": "Current hours per week"
+  },
+  "meta": {
+    "title": "Page title",
+    "description": "Page description",
+    "keywords": "keywords"
+  },
+  "misc": {
+    "app": {
+      "title": "Emergency Plumber Platform"
+    },
+    "cta": {
+      "newJob": "New Job"
+    },
+    "priority": {
+      "normal": "Normal",
+      "urgent": "Urgent",
+      "emergency": "Emergency"
+    },
+    "form": {
+      "title": "Title",
+      "required": "Required",
+      "priority": "Priority",
+      "description": "Description",
+      "startTime": "Start Time",
+      "duration": "Duration",
+      "primaryEmployee": "Primary Employee"
+    },
+    "tabs": {
+      "whatsapp": "WhatsApp"
+    },
+    "action": {
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "active": "Active",
+    "ai_suggestion": {
+      "diagnosis": "Diagnosis",
+      "reliable": "Reliable",
+      "urgency": "Urgency",
+      "emergency": "Emergency",
+      "estimated_time": "Estimated Time",
+      "minutes": "Minutes",
+      "required_materials": "Required Materials"
+    },
+    "approvals": {
+      "title": "Daily Invoice Approvals",
+      "subtitle": "Review and send draft invoices created today",
+      "selectAll": "Select all",
+      "selected": "selected",
+      "select": "Select",
+      "number": "Number",
+      "customer": "Customer",
+      "total": "Total",
+      "created": "Created",
+      "empty": "No draft invoices found for this date",
+      "dateFilter": {
+        "title": "Date Filter",
+        "description": "Select the date to view draft invoices",
+        "label": "Target date"
+      },
+      "actions": {
+        "title": "Batch Actions",
+        "description": "Select invoices to send in batch",
+        "selectedCount": "{count} invoices selected",
+        "sendSelected": "Send {count} selected",
+        "sending": "Sending invoices..."
+      },
+      "list": {
+        "title": "Draft Invoices",
+        "loading": "Loading drafts...",
+        "count": "{count} draft invoices"
+      },
+      "results": {
+        "title": "Send Results",
+        "total": "Total",
+        "sent": "Sent",
+        "skipped": "Skipped",
+        "withPaymentLinks": "With Payment Links",
+        "errors": "Errors"
+      }
+    },
+    "approved": "Approved",
+    "back": "Back",
+    "badge": {
+      "accepted": "Accepted"
+    },
+    "bulkActions": {
+      "title": "Title",
+      "description": "Description",
+      "alsoWhatsApp": "AlsoWhatsApp",
+      "sending": "Sending"
+    },
+    "connected": {
+      "description": "Description"
+    },
+    "created": "Created",
+    "customer": "Customer",
+    "dashboard": {
+      "welcome": "Welcome to your plumber management platform"
+    },
+    "description": "Description",
+    "done": {
+      "title": "Title",
+      "description": "Description",
+      "success": "Success",
+      "successDescription": "SuccessDescription",
+      "healthSummary": "HealthSummary",
+      "environment": "Environment",
+      "webhook": "Webhook",
+      "security": "Security",
+      "goToSettings": "GoToSettings"
+    },
+    "draftInvoice": "DraftInvoice",
+    "eboekhouden": {
+      "description": "Description"
+    },
+    "employees": {
+      "filter": {
+        "all": "All",
+        "clearAll": "Clear all"
+      }
+    },
+    "headline": "Headline",
+    "health": {
+      "title": "Title",
+      "description": "Description",
+      "env": "Env",
+      "ok": "Ok",
+      "missing": "Missing",
+      "webhook": "Webhook",
+      "unreachable": "Unreachable",
+      "secret": "Secret",
+      "refresh": "Refresh"
+    },
+    "houseNumber": "House number",
+    "id": "ID",
+    "job_card": {
+      "address": "Address",
+      "phone": "Phone",
+      "notes": "Notes"
+    },
+    "job_card_mobile": {
+      "title": "Job Details",
+      "when": "When",
+      "where": "Where",
+      "customer": "Customer",
+      "issue": "Issue",
+      "status": "Status",
+      "statusValues": {
+        "planned": "Planned",
+        "scheduled": "Scheduled",
+        "in_progress": "In Progress",
+        "done": "Done",
+        "cancelled": "Cancelled",
+        "unknown": "Unknown"
+      },
+      "openCalendar": "📅 Open in calendar",
+      "backToJobs": "← Back to jobs",
+      "readOnlyNotice": "Read-only view for mobile",
+      "phoneUnknown": "Phone unknown",
+      "addressUnknown": "Address unknown",
+      "dateUnknown": "Date unknown",
+      "timeUnknown": "Time unknown"
+    },
+    "jobCard": {
+      "title": "Job Card",
+      "phone": "Phone",
+      "jobStatus": "Job Status",
+      "jobNumber": "Job",
+      "active": "Active",
+      "scheduled": "Scheduled",
+      "lastResponse": "Last AI Response",
+      "approved": "Approved",
+      "urgency": "Urgency",
+      "schedule": "Schedule",
+      "draftInvoice": "Draft Invoice",
+      "tokenExpires": "Access expires"
+    },
+    "jobNumber": "JobNumber",
+    "jobStatus": "JobStatus",
+    "label": {
+      "durationMinutes": "{minutes} minutes"
+    },
+    "lastResponse": "LastResponse",
+    "mappings": {
+      "title": "Title",
+      "description": "Description",
+      "empty": "Empty",
+      "label": {
+        "business": "Business",
+        "control": "Control"
+      }
+    },
+    "money": {
+      "euro": "€"
+    },
+    "moneybird": {
+      "description": "Description"
+    },
+    "next": "Next",
+    "noInvoices": "NoInvoices",
+    "noJob": "NoJob",
+    "noProvider": "NoProvider",
+    "note": "Note",
+    "numbers": {
+      "success": "Success",
+      "error": "Error",
+      "validation": "Validation",
+      "title": "Title",
+      "description": "Description",
+      "businessLabel": "BusinessLabel",
+      "businessHelp": "BusinessHelp",
+      "controlLabel": "ControlLabel",
+      "controlHelp": "ControlHelp",
+      "save": "Save",
+      "labels": {
+        "select": "{label, select, customer {Customer number} control {Control number} other {label}}"
+      }
+    },
+    "onboard": {
+      "title": "Title",
+      "quickTitle": "QuickTitle",
+      "quickDescription": "QuickDescription",
+      "start": "Start"
+    },
+    "peppol": {
+      "description": "Description"
+    },
+    "phone": "Phone",
+    "postalCode": "Postal code",
+    "prereqs": {
+      "title": "Title",
+      "description": "Description",
+      "webhookUrl": "WebhookUrl",
+      "webhookHelp": "WebhookHelp",
+      "verifyToken": "VerifyToken",
+      "tokenHelp": "TokenHelp"
+    },
+    "provider": "Provider",
+    "reminders": {
+      "title": "Title",
+      "whatsapp_series": "Whatsapp Series",
+      "scheduled": "Scheduled",
+      "automation_active": "Automation Active",
+      "opt_out_respected": "Opt Out Respected",
+      "email_escalation": "Email Escalation"
+    },
+    "schedule": {
+      "assigned_to": "Assigned to",
+      "auto_assigned": "Auto assigned",
+      "end_time": "End time",
+      "start_time": "Start time"
+    },
+    "seed": {
+      "success": "Success",
+      "error": "Error",
+      "validation": "Validation",
+      "title": "Title",
+      "description": "Description",
+      "businessId": "BusinessId",
+      "controlId": "ControlId",
+      "submit": "Submit"
+    },
+    "select": "Select",
+    "selectAll": "SelectAll",
+    "selected": "Selected",
+    "send_pay": {
+      "invoice_sent": "Invoice Sent",
+      "invoice_id": "Invoice Id",
+      "payment_status": "Payment Status",
+      "awaiting_payment": "Awaiting Payment",
+      "click_pay": "Click Pay",
+      "pdf": "Pdf",
+      "whatsapp_message": "Whatsapp Message"
+    },
+    "states": {
+      "connected": "Connected",
+      "needs_action": "Needs Action",
+      "error": "Error"
+    },
+    "steps": {
+      "prereqs": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "numbers": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "test": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "done": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "whatsapp": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "ai_suggestion": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "schedule": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "job_card": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "voice_draft": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "send_pay": {
+        "title": "Title",
+        "description": "Description"
+      },
+      "reminders": {
+        "title": "Title",
+        "description": "Description"
+      }
+    },
+    "subtitle": "Subtitle",
+    "test": {
+      "success": "Success",
+      "error": "Error",
+      "validation": "Validation",
+      "title": "Title",
+      "description": "Description",
+      "phoneLabel": "PhoneLabel",
+      "phoneHelp": "PhoneHelp",
+      "messageLabel": "MessageLabel",
+      "messagePlaceholder": "MessagePlaceholder",
+      "messageHelp": "MessageHelp",
+      "configured": "Configured",
+      "send": "Send"
+    },
+    "title": "Title",
+    "toast": {
+      "deleteError": "Cannot delete job:",
+      "jobDeleted": "Job successfully deleted"
+    },
+    "tokenExpires": "TokenExpires",
+    "total": "Total",
+    "ui": {
+      "tip": "Tip"
+    },
+    "upsert": {
+      "success": "Success",
+      "error": "Error",
+      "validation": "Validation",
+      "title": "Title",
+      "phoneNumberId": "PhoneNumberId",
+      "label": "Label",
+      "submit": "Submit"
+    },
+    "urgency": "Urgency",
+    "voice_draft": {
+      "voice_transcript": "Voice Transcript",
+      "invoice_lines": "Invoice Lines",
+      "subtotal_ex_vat": "Subtotal Ex Vat",
+      "vat_total": "Vat Total",
+      "total": "Total"
+    },
+    "wefact": {
+      "description": "Description"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAllRead": "Mark all as read",
+    "markAsRead": "Mark as read",
+    "markAsUnread": "Mark as unread",
+    "delete": "Delete notification",
+    "types": {
+      "info": "Information",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error",
+      "invoice": "Invoice",
+      "job": "Job",
+      "customer": "Customer",
+      "payment": "Payment"
+    },
+    "settings": {
+      "title": "Notification Settings",
+      "email": "Email notifications",
+      "push": "Push notifications",
+      "whatsapp": "WhatsApp notifications"
+    }
+  },
+  "panel": {
+    "title": "Panel"
+  },
+  "payment": {
+    "status": "Payment Status",
+    "awaiting": "Awaiting Payment",
+    "paid": "Paid",
+    "overdue": "Overdue",
+    "failed": "Payment Failed",
+    "refunded": "Refunded",
+    "links": "Payment Links",
+    "method": "Payment Method",
+    "amount": "Amount",
+    "dueDate": "Due Date",
+    "payNow": "Pay Now",
+    "payOnline": "Pay Online",
+    "ideal": "iDEAL",
+    "creditCard": "Credit Card",
+    "bankTransfer": "Bank Transfer"
+  },
+  "providers": {
+    "actions": {
+      "back": "Back",
+      "configure": "Configure",
+      "connect": "Connect",
+      "fix": "Fix connection"
+    },
+    "moneybird": {
+      "title": "Moneybird",
+      "description": "Professional Dutch accounting with API integration",
+      "connect": "Connect",
+      "reconnect": "Reconnect",
+      "disconnect": "Disconnect",
+      "connected": "Connected",
+      "openDashboard": "Open Dashboard",
+      "reconnectHelper": "Your token has expired. Please reconnect to continue.",
+      "health": {
+        "ok": "Connected",
+        "invalid_token": "Token Expired",
+        "not_connected": "Not Connected"
+      }
+    },
+    "wefact": {
+      "title": "WeFact",
+      "description": "Simple invoicing with payment processing"
+    },
+    "eboekhouden": {
+      "title": "e-Boekhouden",
+      "description": "Popular choice for Dutch small businesses"
+    },
+    "peppol": {
+      "title": "Peppol",
+      "description": "European B2B electronic invoicing standard"
+    },
+    "panel": {
+      "title": "Invoice Providers",
+      "description": "Connect accounting providers to issue professional invoices",
+      "note": "Connect at least one provider to start issuing invoices. Each provider handles numbering, PDFs, and compliance."
+    },
+    "states": {
+      "connected": "Connected",
+      "needs_action": "Setup required",
+      "error": "Error"
+    },
+    "comingSoon": "Coming soon",
+    "connected": {
+      "description": "Provider is ready for issuing invoices"
+    },
+    "oauth": {
+      "adminError": "Could not retrieve administrations",
+      "authError": "Authorization denied or failed",
+      "callbackError": "Unknown error during connection process",
+      "csrfError": "Security error: invalid session state",
+      "error": "Connection Error",
+      "genericError": "Something went wrong during connection",
+      "moneybirdConnected": "Moneybird connected successfully",
+      "selectAdmin": "Select administration",
+      "stateError": "Invalid connection state",
+      "stateExpired": "Connection session has expired",
+      "success": "Connection Successful",
+      "tokenError": "Could not retrieve access token",
+      "userMismatch": "User does not match expected account"
+    },
+    "setup": {
+      "actions": {
+        "back": "Back to providers",
+        "cancel": "Cancel",
+        "connect": "Connect WeFact",
+        "connecting": "Connecting..."
+      },
+      "apiKey": {
+        "help": "You can find your API key in your WeFact account settings under API access",
+        "label": "API Key",
+        "placeholder": "Enter your WeFact API key"
+      },
+      "baseUrl": {
+        "help": "Leave default unless using custom WeFact installation",
+        "label": "API Base URL"
+      },
+      "errors": {
+        "connection": "Connection failed"
+      },
+      "wefact": {
+        "description": "Configure your WeFact account for automated invoice processing",
+        "title": "Connect WeFact"
+      }
+    }
+  },
+  "settings": {
+    "whatsapp": {
+      "title": "WhatsApp Setup",
+      "subtitle": "Configure your WhatsApp Business integration",
+      "wizard": {
+        "step": "Step {current} of {total}",
+        "next": "Continue",
+        "previous": "Back",
+        "finish": "Complete Setup",
+        "skip": "Skip for now"
+      },
+      "prereqs": {
+        "title": "Prerequisites",
+        "description": "Verify your WhatsApp Business account configuration",
+        "webhookUrls": {
+          "title": "Webhook URLs",
+          "description": "Configure these URLs in your Meta App webhook settings",
+          "customer": "Customer webhook",
+          "control": "Control webhook",
+          "copy": "Copy URL",
+          "copied": "Copied!"
+        },
+        "credentials": {
+          "title": "API Credentials",
+          "description": "Server-side credentials configured via environment variables",
+          "verifyToken": "Verify Token",
+          "hmacSecret": "HMAC Secret",
+          "configured": "✅ Configured",
+          "missing": "❌ Missing",
+          "note": "These are managed by your system administrator and are not visible for security reasons."
+        }
+      },
+      "numbers": {
+        "title": "Phone Numbers",
+        "description": "Map your WhatsApp Business phone number IDs to customer and control channels",
+        "table": {
+          "phoneNumberId": "Phone Number ID",
+          "label": "Type",
+          "createdAt": "Added",
+          "actions": "Actions"
+        },
+        "labels": {
+          "customer": "Customer",
+          "control": "Control",
+          "select": "{label, select, customer {Customer} control {Control}}"
+        },
+        "empty": {
+          "title": "No numbers configured",
+          "description": "Add your WhatsApp Business phone number IDs to get started"
+        },
+        "add": {
+          "title": "Add Phone Number",
+          "phoneNumberId": {
+            "label": "Phone Number ID",
+            "placeholder": "Enter WhatsApp Business phone number ID",
+            "helper": "Found in your Meta Business account"
+          },
+          "label": {
+            "label": "Channel Type",
+            "helper": "Customer for public inquiries, Control for internal management"
+          },
+          "submit": "Add Number",
+          "submitting": "Adding...",
+          "success": "Phone number added successfully",
+          "error": "Failed to add phone number"
+        },
+        "remove": {
+          "confirm": "Remove this phone number mapping?",
+          "success": "Phone number removed successfully",
+          "error": "Failed to remove phone number"
+        }
+      },
+      "test": {
+        "title": "Test Connection",
+        "description": "Send a test message to verify your control channel is working",
+        "button": "Send Test Message",
+        "sending": "Sending...",
+        "success": {
+          "title": "Test Successful!",
+          "message": "Test message sent to control channel",
+          "nextSteps": "Your WhatsApp integration is now ready to use."
+        },
+        "error": {
+          "noControl": "Control number not configured",
+          "noConversation": "No control conversation found. Please send a message from your control phone first.",
+          "apiError": "WhatsApp API error",
+          "unknown": "An error occurred while sending the test message"
+        },
+        "requirements": {
+          "title": "Requirements for testing",
+          "items": {
+            "0": "Control phone number must be mapped",
+            "1": "Send at least one message from control phone to establish conversation",
+            "2": "Valid API credentials must be configured"
+          }
+        }
+      },
+      "completion": {
+        "title": "Setup Complete!",
+        "description": "Your WhatsApp Business integration is configured and ready to use.",
+        "summary": {
+          "webhooks": "Webhook URLs configured",
+          "credentials": "API credentials verified",
+          "numbers": "{count} phone numbers mapped",
+          "test": "Connection test passed"
+        },
+        "nextSteps": {
+          "title": "What's next?",
+          "items": {
+            "0": "Visit the WhatsApp dashboard to manage conversations",
+            "1": "Configure automated responses and templates",
+            "2": "Train your team on the control channel commands"
+          }
+        },
+        "actions": {
+          "dashboard": "Go to WhatsApp Dashboard",
+          "settings": "Manage Settings"
+        }
+      },
+      "onboard": {
+        "back": "Back",
+        "next": "Continue",
+        "title": "WhatsApp onboarding",
+        "description": "Configure numbers and verify webhooks",
+        "steps": {
+          "prereqs": {
+            "title": "Prerequisites"
+          },
+          "numbers": {
+            "title": "Numbers"
+          },
+          "test": {
+            "title": "Test"
+          },
+          "done": {
+            "title": "Done"
+          }
+        },
+        "prereqs": {
+          "title": "Prerequisites",
+          "description": "Verify token and webhook URL in Meta Business",
+          "verifyToken": "Verify token",
+          "tokenHelp": "Use this token in your webhook configuration.",
+          "webhookUrl": "Webhook URL",
+          "webhookHelp": "Configure this URL in Meta Business."
+        },
+        "numbers": {
+          "title": "Numbers",
+          "description": "Map number IDs to channels",
+          "businessLabel": "Customer number",
+          "businessHelp": "Used for customer chats",
+          "controlLabel": "Control number",
+          "controlHelp": "Used for system messages",
+          "save": "Save mapping",
+          "success": "Numbers saved",
+          "error": "Failed to save numbers",
+          "validation": "Please select both numbers"
+        },
+        "test": {
+          "title": "Send a test",
+          "description": "Send a test message to verify delivery",
+          "phoneLabel": "Phone",
+          "phoneHelp": "Enter a WhatsApp-enabled phone",
+          "messageLabel": "Message",
+          "messagePlaceholder": "Hello from Plumbing Agent!",
+          "messageHelp": "This will be sent to your device",
+          "configured": "Configured",
+          "send": "Send test",
+          "success": "Test message sent",
+          "error": "Failed to send test",
+          "validation": "Provide phone and message"
+        },
+        "done": {
+          "title": "All set!",
+          "description": "Your WhatsApp integration is configured",
+          "success": "Configuration complete",
+          "successDescription": "You can now receive and send messages",
+          "healthSummary": "Health summary",
+          "environment": "Environment",
+          "webhook": "Webhook",
+          "security": "Security",
+          "goToSettings": "Go to WhatsApp settings"
+        }
+      },
+      "health": {
+        "ok": "OK",
+        "invalid_token": "Invalid token",
+        "not_connected": "Not connected",
+        "webhook_ok": "Webhook OK",
+        "webhook_error": "Webhook error",
+        "security": "Security",
+        "webhook": "Webhook"
+      }
+    }
+  },
+  "states": {
+    "needs_action": "Needs action"
+  },
+  "stats": {
+    "total": "Total",
+    "thisMonth": "This month",
+    "active": "Active",
+    "archived": "Archived"
+  },
+  "system": {
+    "app": {
+      "title": "Plumbing Agent"
+    },
+    "errors": {
+      "paymentLink": {
+        "sendFailed": "Failed to send payment link"
+      }
+    },
+    "locale": "en",
+    "meta": {
+      "created": "Created:"
+    },
+    "notifications": {
+      "paymentLink": {
+        "sent": "Payment link sent via WhatsApp"
+      }
+    },
+    "payment": {
+      "links": "Payment & Documents",
+      "linksDescription": "Payment links and official documents",
+      "noLinksDescription": "Payment links will appear after the invoice is sent",
+      "noLinksAvailable": "No payment links available",
+      "payOnline": "Pay Online",
+      "providerPayment": "Official payment link from provider",
+      "openMollieCheckout": "Create iDEAL Payment",
+      "creatingMollie": "Creating payment link...",
+      "molliePayment": "Backup payment via iDEAL",
+      "mollieCreated": "Payment link created and opened",
+      "mollieFailed": "Failed to create payment link",
+      "downloadPdf": "Download PDF",
+      "viewPdf": "View PDF",
+      "pdfDescription": "Official invoice document",
+      "officialInvoice": "Official invoice document",
+      "paymentCopied": "Payment link copied to clipboard",
+      "pdfCopied": "PDF link copied to clipboard",
+      "copyFailed": "Failed to copy to clipboard"
+    }
+  },
+  "ui": {
+    "badges": {
+      "locked_tooltip": "Feature locked for your plan. Enable it in Settings.",
+      "legacy": "Legacy"
+    },
+    "common": {
+      "title": "Title",
+      "description": "Description",
+      "back": "Back",
+      "status": "Status",
+      "active": "Active",
+      "approved": "Approved",
+      "schedule": "Schedule",
+      "when": "When",
+      "where": "Where",
+      "customer": "Customer",
+      "issue": "Issue",
+      "lastResponse": "Last response",
+      "comingSoon": "Coming soon",
+      "draftInvoice": "Draft invoice",
+      "tokenExpires": "Token expires",
+      "dateUnknown": "Date unknown",
+      "timeUnknown": "Time unknown",
+      "phoneUnknown": "Phone unknown",
+      "addressUnknown": "Address unknown",
+      "urgency": "Urgency",
+      "loading": "Loading..."
+    },
+    "field": {
+      "status": "Status",
+      "customer": "Customer",
+      "description": "Description",
+      "primaryEmployee": "Lead plumber *",
+      "priority": "Priority",
+      "secondaryEmployees": "Assistants (coming soon)",
+      "start": "Start"
+    },
+    "form": {
+      "address": "Address",
+      "customer": "Customer",
+      "description": "Description",
+      "duration": "Duration (min)",
+      "employee": "Employee",
+      "endDate": "End Date",
+      "endTime": "End Time",
+      "noEmployee": "No employee",
+      "notes": "Notes",
+      "primaryEmployee": "Primary Employee",
+      "priority": "Priority",
+      "priorityOptions": {
+        "normal": "Normal",
+        "urgent": "Urgent",
+        "emergency": "Emergency"
+      },
+      "required": "Required",
+      "requiredSymbol": "*",
+      "startDate": "Start Date",
+      "startTime": "Start time",
+      "status": "Status",
+      "title": "Title"
+    },
+    "nav": {
+      "customers": "Customers",
+      "dashboard": "Dashboard",
+      "invoices": "Invoices",
+      "jobs": "Jobs"
+    },
+    "stats": {
+      "activeJobs": "Active Jobs",
+      "newCustomers": "New Customers",
+      "outstandingInvoices": "Outstanding Invoices",
+      "revenue": "Revenue",
+      "thisMonth": "This month",
+      "thisWeek": "This week",
+      "toCollect": "To collect",
+      "today": "Today"
+    },
+    "table": {
+      "actions": "Actions",
+      "amount": "Amount",
+      "customer": "Customer",
+      "date": "Date",
+      "draft": "Draft",
+      "dueDate": "Due Date",
+      "invoice": "Invoice",
+      "issuedOn": "Issued On",
+      "job": "Job",
+      "method": "Method",
+      "noJobs": "No jobs found",
+      "paidOn": "Paid On",
+      "provider": "Provider",
+      "status": "Status",
+      "time": "Time",
+      "title": "Title"
+    },
+    "tabs": {
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "whatsapp": {
+    "leads": {
+      "title": "WhatsApp Leads",
+      "description": "Manage incoming WhatsApp conversations",
+      "count": "leads",
+      "table": {
+        "contact": "Contact",
+        "lastMessage": "Last Message",
+        "unread": "Unread",
+        "session": "Session",
+        "lastActivity": "Last Activity"
+      },
+      "empty": {
+        "title": "No active leads",
+        "description": "New WhatsApp conversations will appear here"
+      }
+    },
+    "session": {
+      "active": "Active",
+      "expired": "Expired",
+      "expiresAt": "Expires at",
+      "expiresIn": "Expires in"
+    },
+    "conversation": {
+      "title": "Messages",
+      "empty": {
+        "title": "No messages yet",
+        "description": "Start a conversation to see messages here"
+      }
+    },
+    "message": {
+      "media": "Media attachment"
+    },
+    "composer": {
+      "placeholder": "Type a message...",
+      "templatePlaceholder": "Type a template message...",
+      "send": "Send",
+      "useTemplate": "Send Template",
+      "sending": "Sending...",
+      "sent": "Message sent",
+      "templateSent": "Template sent",
+      "error": "Failed to send message",
+      "templateError": "Failed to send template",
+      "sessionExpiredWarning": "24-hour session expired. Use template messages to continue conversation."
+    },
+    "actions": {
+      "title": "Actions",
+      "createJob": "Create Job",
+      "sendPaylink": "Send Paylink",
+      "close": "Close Conversation",
+      "jobCreated": "Job created successfully",
+      "jobError": "Failed to create job",
+      "paylinkNotImplemented": "Paylink feature coming soon",
+      "paylinkError": "Failed to send paylink",
+      "conversationClosed": "Conversation closed",
+      "closeError": "Failed to close conversation"
+    },
+    "control": {
+      "title": "Control Chat",
+      "description": "Quick approval actions",
+      "approve": "Approve",
+      "close": "Close",
+      "approved": "Conversation approved",
+      "approveError": "Failed to approve"
+    },
+    "info": {
+      "title": "Info",
+      "status": "Status",
+      "created": "Created",
+      "linkedCustomer": "Customer"
+    },
+    "photo_attached": "Photo Attached",
+    "ai_analyzing": "AI analyzing...",
+    "createJob": "Create job",
+    "lastActivity": "Last activity",
+    "messages": "messages",
+    "noMessages": "No WhatsApp messages available"
+  }
 }
