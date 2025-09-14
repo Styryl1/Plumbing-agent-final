@@ -1,9 +1,10 @@
+// next-intl type augmentation (correct)
 import type en from "~/i18n/messages/en.json";
 
 type Messages = typeof en;
 
-declare global {
+declare module "next-intl" {
 	interface IntlMessages extends Messages {}
 }
 
-export {}; // make this a module so global augmentation is applied
+export {}; // keep this a module

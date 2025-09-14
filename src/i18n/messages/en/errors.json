@@ -1,0 +1,21 @@
+{
+	"title": "Error",
+	"general": "Something went wrong",
+	"tryAgain": "Try again",
+	"contactSupport": "Contact support",
+	"notFound": "Not found",
+	"unauthorized": "Unauthorized access",
+	"forbidden": "Access denied",
+	"validation": "Validation error",
+	"network": "Network error",
+	"timeout": "Request timed out",
+	"serverError": "Server error",
+	"unknown": "Unknown error",
+	"fieldRequired": "This field is required",
+	"invalidFormat": "Invalid format",
+	"tooShort": "Too short",
+	"tooLong": "Too long",
+	"mustBeNumber": "Must be a number",
+	"mustBeEmail": "Must be a valid email",
+	"passwordTooWeak": "Password too weak"
+}

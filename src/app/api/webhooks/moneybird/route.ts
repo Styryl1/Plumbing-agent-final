@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import "server-only";
 import { createHmac } from "crypto";
 import type { NextRequest } from "next/server";

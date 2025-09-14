@@ -17,7 +17,6 @@ import { Button } from "~/components/ui/button";
 
 export function Hero(): React.ReactElement {
 	const t = useTranslations();
-	const t = useTranslations();
 	const pathname = usePathname();
 	const locale = pathname.includes("/en/") ? "en" : "nl";
 

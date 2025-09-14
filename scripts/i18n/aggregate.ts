@@ -1,138 +1,117 @@
-#!/usr/bin/env tsx
-import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
-import { existsSync } from 'node:fs';
+/* eslint-disable no-console */
+/**
+ * Normalizes namespace files into src/i18n/messages/<locale>.json
+ * Prevents double nesting (e.g., launch.launch.*) and strips dotted
+ * prefixes matching the namespace (e.g., auth.context.*).
+ */
+import * as fs from "node:fs";
+import * as fsp from "node:fs/promises";
+import * as path from "node:path";
 
-const LOCALES = ['en', 'nl'];
-const NAMESPACE_DIRS = LOCALES.map(locale => `src/i18n/messages/${locale}`);
-const OUTPUT_DIR = 'src/i18n/messages';
+type Json = Record<string, unknown>;
+const ROOT = process.cwd();
+const MSGS = path.join(ROOT, "src", "i18n", "messages");
+const LOCALES = ["en", "nl"] as const;
 
-interface Messages {
-  [key: string]: any;
+const isObj = (v: unknown): v is Record<string, unknown> =>
+  !!v && typeof v === "object" && !Array.isArray(v);
+
+const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
+
+function mergeDeep(a: Json, b: Json): Json {
+  for (const [k, v] of Object.entries(b)) {
+    if (isObj(v)) a[k] = mergeDeep(isObj(a[k]) ? (a[k] as Json) : {}, v as Json);
+    else a[k] = v;
+  }
+  return a;
 }
 
-function buildNestedFromDotNotation(obj: Record<string, unknown>): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
+function unwrapWrapper(obj: Json, ns: string): Json {
+  if (ns in obj && isObj(obj[ns])) {
+    const { [ns]: wrapped, ...rest } = obj;
+    return { ...(wrapped as Json), ...rest };
+  }
+  return obj;
+}
 
-  // First pass: collect all dot-notation keys to understand conflicts
-  const dotKeys = Object.keys(obj).filter(key => key.includes('.'));
-  const conflictPrefixes = new Set<string>();
+function flatten(obj: Json, prefix = ""): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    const key = prefix ? `${prefix}.${k}` : k;
+    if (isObj(v)) Object.assign(out, flatten(v as Json, key));
+    else out[key] = v;
+  }
+  return out;
+}
 
-  for (const dotKey of dotKeys) {
-    const parts = dotKey.split('.');
-    for (let i = 1; i <= parts.length - 1; i++) {
-      const prefix = parts.slice(0, i).join('.');
-      conflictPrefixes.add(prefix);
+function expand(flat: Record<string, unknown>): Json {
+  const out: Json = {};
+  for (const [dot, v] of Object.entries(flat)) {
+    const parts = dot.split(".");
+    let cur = out;
+    while (parts.length > 1) {
+      const p = parts.shift()!;
+      if (!isObj(cur[p])) cur[p] = {};
+      cur = cur[p] as Json;
     }
+    cur[parts[0]!] = v;
   }
-
-  for (const [key, value] of Object.entries(obj)) {
-    if (typeof value !== 'string') {
-      // If value is already an object, keep nested structure as-is
-      result[key] = value;
-      continue;
-    }
-
-    // Handle dot-notation keys like "form.name.label" or "actions.cancel"
-    if (key.includes('.')) {
-      const parts = key.split('.');
-      let current = result;
-
-      for (let i = 0; i < parts.length - 1; i++) {
-        const part = parts[i]!;
-        if (!current[part]) {
-          current[part] = {};
-        } else if (typeof current[part] === 'string') {
-          // Conflict detected - convert string to object and preserve the string value
-          const stringValue = current[part];
-          current[part] = { '_': stringValue };
-        }
-        current = current[part] as Record<string, unknown>;
-      }
-
-      const lastPart = parts[parts.length - 1]!;
-      current[lastPart] = value;
-    } else {
-      // Simple key without dots - check for conflicts
-      if (conflictPrefixes.has(key)) {
-        // This key conflicts with dot-notation, use special '_' key
-        result[key] = { '_': value };
-      } else {
-        result[key] = value;
-      }
-    }
-  }
-
-  return result;
+  return out;
 }
 
-async function loadNamespaceFiles(namespaceDir: string): Promise<Messages> {
-  if (!existsSync(namespaceDir)) {
-    console.warn(`⚠️  Namespace directory not found: ${namespaceDir}`);
-    return {};
+function stripNsPrefix(flat: Record<string, unknown>, ns: string): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  const pref = `${ns}.`;
+  for (const [k, v] of Object.entries(flat)) {
+    out[k.startsWith(pref) ? k.slice(pref.length) : k] = v;
   }
-
-  const files = await readdir(namespaceDir);
-  const jsonFiles = files.filter(file => file.endsWith('.json'));
-
-  const aggregated: Messages = {};
-
-  for (const file of jsonFiles) {
-    const namespace = file.replace('.json', '');
-    const filePath = join(namespaceDir, file);
-
-    try {
-      const content = await readFile(filePath, 'utf-8');
-      let data = JSON.parse(content);
-
-      // Convert flat dot-notation keys to nested structure
-      data = buildNestedFromDotNotation(data);
-      aggregated[namespace] = data;
-
-      console.log(`  ✓ ${file}: ${Object.keys(data).length} keys`);
-    } catch (error) {
-      console.error(`❌ Failed to parse ${filePath}: ${error}`);
-      throw error;
-    }
-  }
-
-  return aggregated;
+  return out;
 }
 
-async function main() {
-  console.log('🔄 Aggregating namespace files into monolithic translations...\n');
-
-  for (const locale of LOCALES) {
-    console.log(`Processing ${locale.toUpperCase()}...`);
-
-    const namespaceDir = `src/i18n/messages/${locale}`;
-    const messages = await loadNamespaceFiles(namespaceDir);
-
-    const totalKeys = Object.values(messages).reduce((sum, namespace) => {
-      return sum + (typeof namespace === 'object' ? Object.keys(namespace).length : 0);
-    }, 0);
-
-    console.log(`  Total: ${totalKeys} keys`);
-
-    // Write aggregated file
-    const outputPath = join(OUTPUT_DIR, `${locale}.json`);
-    const outputContent = JSON.stringify(messages, null, 2);
-
-    await writeFile(outputPath, outputContent, 'utf-8');
-    console.log(`  ✅ Written to ${outputPath}\n`);
-  }
-
-  console.log('✅ Translation aggregation complete!\n');
-
-  console.log('📁 Output files:');
-  for (const locale of LOCALES) {
-    console.log(`  ${OUTPUT_DIR}/${locale}.json`);
-  }
-
-  console.log('\n💡 These files are automatically generated from the namespace files.');
-  console.log('   Edit the namespace files in src/i18n/messages/{en,nl}/ instead.');
+async function readJson(file: string): Promise<Json> {
+  const raw = await fsp.readFile(file, "utf8");
+  const data = JSON.parse(raw);
+  if (!isObj(data)) throw new Error(`Root not object in ${file}`);
+  return data;
 }
 
-if (require.main === module) {
-  main().catch(console.error);
+async function* walk(dir: string): AsyncGenerator<string> {
+  for (const e of await fsp.readdir(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) yield* walk(p);
+    else if (e.isFile() && p.endsWith(".json")) yield p;
+  }
 }
+
+async function aggregate(locale: string): Promise<void> {
+  const localeDir = path.join(MSGS, locale);
+  const outFile = path.join(MSGS, `${locale}.json`);
+  const aggregated: Json = {};
+
+  for await (const file of walk(localeDir)) {
+    if (path.basename(file) === `${locale}.json`) continue;
+    const ns = path.basename(file, ".json");
+    const original = await readJson(file);
+
+    const unwrapped = unwrapWrapper(clone(original), ns);
+    const flat = flatten(unwrapped);
+    const stripped = stripNsPrefix(flat, ns);
+    const node = expand(stripped);
+    aggregated[ns] = mergeDeep(isObj(aggregated[ns]) ? (aggregated[ns] as Json) : {}, node);
+  }
+
+  await fsp.writeFile(outFile, JSON.stringify(aggregated, null, 2) + "\n", "utf8");
+  // sanity warning
+  const flatOut = flatten(aggregated);
+  const doubled = Object.keys(flatOut).filter(k => {
+    const parts = k.split(".").slice(0, 2);
+    return parts.length === 2 && parts[0] === parts[1];
+  });
+  if (doubled.length) console.warn(`[warn] ${locale}: doubled keys example:`, doubled.slice(0,10));
+  console.log(`[i18n] wrote ${outFile} with ${Object.keys(flatOut).length} keys`);
+}
+
+async function main(): Promise<void> {
+  for (const l of LOCALES) await aggregate(l);
+}
+main().catch(err => { console.error(err); process.exit(1); });

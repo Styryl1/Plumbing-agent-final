@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // src/lib/predicates.ts
 // Type-safe boolean predicates for strict ESLint rules
 

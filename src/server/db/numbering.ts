@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Invoice numbering service with atomic number generation
 // Ensures unique invoice numbers per organization per year
 

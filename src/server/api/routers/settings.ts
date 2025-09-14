@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { getPublicFlags } from "~/lib/feature-flags";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 

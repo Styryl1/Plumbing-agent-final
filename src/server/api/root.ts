@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { aiRouter } from "./routers/ai";
 import { customersRouter } from "./routers/customers";
 import { employeesRouter } from "./routers/employees";

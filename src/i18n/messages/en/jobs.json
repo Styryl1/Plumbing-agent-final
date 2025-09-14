@@ -14,6 +14,14 @@
 				"success": "Invoice draft created successfully",
 				"error": "Failed to create invoice draft"
 			}
+		},
+		"jobs": {
+			"delete": {
+				"success": "Job deleted successfully",
+				"failed": "Failed to delete job",
+				"title": "Delete Job",
+				"description": "Are you sure you want to delete this job? This action cannot be undone."
+			}
 		}
 	},
 	"aiSuggestions": "AI suggestions",

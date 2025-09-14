@@ -25,6 +25,7 @@
 		"i18n:sync": "node scripts/i18n-sync.mjs",
 		"i18n:fix": "node scripts/i18n-fix-literals.mjs",
 		"i18n:aggregate": "tsx scripts/i18n/aggregate.ts",
+		"i18n:verify": "tsx scripts/i18n/verify.ts",
 		"i18n:scan": "node scripts/i18n-code-scanner.mjs",
 		"i18n:prune": "node --import tsx scripts/i18n-prune.ts",
 		"i18n:check": "node --import tsx scripts/i18n-check.ts",
@@ -32,6 +33,7 @@
 		"i18n:parity": "node scripts/i18n-parity-check.mjs",
 		"i18n:migrate-to-root": "node scripts/i18n-migrate-to-root.mjs",
 		"i18n:coverage-report": "node scripts/i18n-coverage-report.mjs",
+		"codemod:i18n-alias": "jscodeshift -t scripts/codemods/i18n-alias-to-root.mjs 'src/**/*.{ts,tsx}'",
 		"clean": "rimraf .next .turbo node_modules/.cache .eslintcache",
 		"dev:clean": "pnpm clean && pnpm dev",
 		"build:clean": "pnpm clean && pnpm build"
@@ -121,6 +123,7 @@
 		"eslint-plugin-unicorn": "^61.0.2",
 		"fs-extra": "^11.3.1",
 		"globby": "^14.1.0",
+		"jscodeshift": "^17.3.0",
 		"jsdom": "^27.0.0",
 		"pg": "^8.16.3",
 		"playwright": "^1.55.0",

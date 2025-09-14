@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 // Lightweight: accept E.164 or common NL formats; improve later with libphonenumber-js if desired
 const E164 = /^\+?[1-9]\d{6,14}$/;
 const NL_LOCAL = /^0\d{9}$/; // 10 digits, starts with 0

@@ -1,6 +1,7 @@
 "use client";
 
 import { Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import {
 	Card,

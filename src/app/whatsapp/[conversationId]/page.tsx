@@ -23,7 +23,6 @@ export default function WhatsAppConversationPage({
 	params,
 }: WhatsAppConversationPageProps): JSX.Element {
 	const t = useTranslations();
-	const t = useTranslations();
 	const router = useRouter();
 	const { conversationId } = params;
 
@@ -103,7 +102,7 @@ export default function WhatsAppConversationPage({
 						<div className="space-y-1">
 							<h1 className="text-xl font-semibold flex items-center gap-2">
 								<MessageCircle className="h-5 w-5" />
-								{conversation?.phone_number ?? t(".common.unnamed")}
+								{conversation?.phone_number ?? t("common.unnamed")}
 							</h1>
 							<p className="text-sm text-muted-foreground">
 								{conversation?.phone_number && `+${conversation.phone_number}`}

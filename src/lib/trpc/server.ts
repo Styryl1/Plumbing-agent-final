@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import "server-only";
 
 import { cache } from "react";

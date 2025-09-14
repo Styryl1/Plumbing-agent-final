@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 // Invoice DTOs - Barrel export from unified schema
 // This preserves existing imports while eliminating divergence
 

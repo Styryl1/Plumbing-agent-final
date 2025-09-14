@@ -1,6 +1,7 @@
 "use client";
 
 import { Clock, Gauge, Phone, Zap } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -235,7 +236,7 @@ export default function Unscheduled({
 					data-testid="unscheduled-open"
 				>
 					<Zap className="h-6 w-6" />
-					<span className="sr-only">{t("cta.newJob")}</span>
+					<span className="sr-only">{t("actions.cta.newJob")}</span>
 				</Button>
 			</SheetTrigger>
 
@@ -245,7 +246,7 @@ export default function Unscheduled({
 				data-testid="unscheduled-list"
 			>
 				<SheetHeader>
-					<SheetTitle>{t("cta.newJob")}</SheetTitle>
+					<SheetTitle>{t("actions.cta.newJob")}</SheetTitle>
 				</SheetHeader>
 
 				<div className="flex-1 overflow-hidden">
@@ -259,7 +260,9 @@ export default function Unscheduled({
 									</span>
 								)}
 							</TabsTrigger>
-							<TabsTrigger value="whatsapp">{t("tabs.whatsapp")}</TabsTrigger>
+							<TabsTrigger value="whatsapp">
+								{t("ui.tabs.whatsapp")}
+							</TabsTrigger>
 						</TabsList>
 
 						{/* AI Recommendations Tab */}
@@ -308,7 +311,7 @@ export default function Unscheduled({
 													</Badge>
 													{rec.urgency === "high" && (
 														<Badge variant="destructive" className="text-xs">
-															{t("priority.urgent")}
+															{t("ui.form.priority.urgent")}
 														</Badge>
 													)}
 												</div>
@@ -418,7 +421,7 @@ export default function Unscheduled({
 						<div className="grid grid-cols-2 gap-4">
 							<div>
 								<Label htmlFor="title" className="text-sm font-medium">
-									{t("form.title")} {t("form.required")}
+									{t("ui.form.title")} {t("ui.form.required")}
 								</Label>
 								<Input
 									id="title"
@@ -431,7 +434,7 @@ export default function Unscheduled({
 							</div>
 							<div>
 								<Label htmlFor="priority" className="text-sm font-medium">
-									{t("form.priority")}
+									{t("ui.form.priority")}
 								</Label>
 								<Select
 									value={formData.priority}
@@ -444,13 +447,13 @@ export default function Unscheduled({
 									</SelectTrigger>
 									<SelectContent>
 										<SelectItem value="normal">
-											{t("priority.normal")}
+											{t("ui.form.priority.normal")}
 										</SelectItem>
 										<SelectItem value="urgent">
-											{t("priority.urgent")}
+											{t("ui.form.priority.urgent")}
 										</SelectItem>
 										<SelectItem value="emergency">
-											{t("priority.emergency")}
+											{t("ui.form.priority.emergency")}
 										</SelectItem>
 									</SelectContent>
 								</Select>
@@ -459,7 +462,7 @@ export default function Unscheduled({
 
 						<div>
 							<Label htmlFor="description" className="text-sm font-medium">
-								{t("form.description")}
+								{t("ui.form.description")}
 							</Label>
 							<Textarea
 								id="description"
@@ -478,7 +481,7 @@ export default function Unscheduled({
 						<div className="grid grid-cols-2 gap-4">
 							<div>
 								<Label htmlFor="startTime" className="text-sm font-medium">
-									{t("form.startTime")} {t("form.required")}
+									{t("ui.form.startTime")} {t("ui.form.required")}
 								</Label>
 								<Input
 									id="startTime"
@@ -495,7 +498,7 @@ export default function Unscheduled({
 							</div>
 							<div>
 								<Label htmlFor="duration" className="text-sm font-medium">
-									{t("form.duration")}
+									{t("ui.form.duration")}
 								</Label>
 								<Input
 									id="duration"
@@ -517,7 +520,7 @@ export default function Unscheduled({
 
 						<div>
 							<Label htmlFor="primaryEmployee" className="text-sm font-medium">
-								{t("form.primaryEmployee")} {t("form.required")}
+								{t("ui.form.primaryEmployee")} {t("ui.form.required")}
 							</Label>
 							<Select
 								value={formData.primaryEmployeeId}

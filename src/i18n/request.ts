@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { useTranslations } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import {
 	DEFAULT_LOCALE,

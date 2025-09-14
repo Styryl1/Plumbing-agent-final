@@ -1,5 +1,6 @@
 /** @server-only */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { useTranslations } from "next-intl";
 import { env, serverOnlyEnv } from "~/lib/env";
 import type { Database } from "~/types/supabase";
 

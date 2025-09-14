@@ -43,9 +43,6 @@ export function JobToInvoiceImport({
 	onCancel,
 }: JobToInvoiceImportProps): JSX.Element {
 	const t = useTranslations();
-	const t = useTranslations();
-	const t = useTranslations();
-	const t = useTranslations();
 
 	const [selectedJobId, setSelectedJobId] = useState<string>(
 		initialJobId ?? "",

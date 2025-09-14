@@ -2,6 +2,7 @@
 
 import { AlertCircle, CheckCircle, Settings, XCircle } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { Button } from "~/components/ui/button";
 import {

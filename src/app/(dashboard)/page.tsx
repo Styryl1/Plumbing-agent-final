@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useMemo } from "react";
 import {
@@ -65,33 +66,33 @@ export default function DashboardPage(): JSX.Element {
 			{/* Auth Context Display */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{tAuth("auth.context.title")}</CardTitle>
-					<CardDescription>{tAuth("auth.context.description")}</CardDescription>
+					<CardTitle>{tAuth("context.title")}</CardTitle>
+					<CardDescription>{tAuth("context.description")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{tAuth("auth.userId")}
+								{tAuth("userId")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.userId ?? tAuth("auth.notSignedIn")}
+								{auth.userId ?? tAuth("notSignedIn")}
 							</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{tAuth("auth.orgId")}
+								{tAuth("orgId")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.orgId ?? tAuth("auth.noOrganization")}
+								{auth.orgId ?? tAuth("noOrganization")}
 							</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-medium text-sm text-gray-500">
-								{tAuth("auth.role")}
+								{tAuth("role")}
 							</h3>
 							<p className="font-mono text-sm bg-gray-100 p-2 rounded">
-								{auth.orgRole ?? tAuth("auth.noRole")}
+								{auth.orgRole ?? tAuth("noRole")}
 							</p>
 						</div>
 					</div>
@@ -99,7 +100,7 @@ export default function DashboardPage(): JSX.Element {
 					{!auth.orgId && (
 						<div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
 							<p className="text-sm text-yellow-800">
-								💡 <strong>{tMisc("ui.tip")} :</strong> {tAuth("auth.tip")}
+								💡 <strong>{tMisc("ui.tip")} :</strong> {tAuth("tip")}
 							</p>
 						</div>
 					)}

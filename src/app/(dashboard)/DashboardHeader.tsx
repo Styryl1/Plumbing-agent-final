@@ -2,6 +2,7 @@
 
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 import type { Locale } from "~/i18n";

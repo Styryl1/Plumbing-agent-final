@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // NL Postcode: 1234 AB (space optional)
 export const NL_POSTCODE = /^\d{4}\s?[A-Za-z]{2}$/;
 

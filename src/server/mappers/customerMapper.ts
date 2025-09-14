@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Customer mapper - Transforms between database types and DTOs
 // Enforces DTO boundary: DB → mapper → DTO → UI (never DB types in UI)
 // Handles snake_case ↔ camelCase and type safety

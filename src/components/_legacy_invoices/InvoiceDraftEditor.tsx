@@ -83,7 +83,6 @@ export function InvoiceDraftEditor({
 	onCancel,
 }: InvoiceDraftEditorProps): JSX.Element {
 	const t = useTranslations();
-	const t = useTranslations();
 
 	// Form state
 	const [selectedCustomerId, setSelectedCustomerId] = useState<string>(

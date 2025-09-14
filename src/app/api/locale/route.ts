@@ -1,5 +1,6 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { useTranslations } from "next-intl";
 
 type Locale = "en" | "nl";
 const isLocale = (x: unknown): x is Locale => x === "en" || x === "nl";

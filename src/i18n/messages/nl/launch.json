@@ -41,6 +41,12 @@
 					"next": "Volgende",
 					"step_counter": "Stap {current} van {total}"
 				},
+				"done": "Helemaal klaar!",
+				"autoplay_pause": "Autoplay pauzeren",
+				"autoplay_start": "Autoplay starten",
+				"keyboard_help": "Gebruik pijltjestoetsen om te navigeren",
+				"time_estimate": "Geschatte tijd: {minutes} minuten",
+				"time_average": "Gemiddelde tijd",
 				"back": "Terug"
 			},
 			"content": {
@@ -66,7 +72,8 @@
 				},
 				"job_card": {
 					"address": "Adres",
-					"phone": "Telefoon"
+					"phone": "Telefoon",
+					"notes": "Notities"
 				},
 				"voice_draft": {
 					"voice_transcript": "Spraaktranscript",
@@ -81,7 +88,9 @@
 					"invoice_sent": "Factuur verzonden",
 					"payment_status": "Betaalstatus",
 					"pdf": "PDF",
-					"whatsapp_message": "WhatsApp-bericht"
+					"whatsapp_message": "WhatsApp-bericht",
+					"awaiting_payment": "Wacht op betaling",
+					"click_pay": "Klik om te betalen"
 				},
 				"reminders": {
 					"after_days": "Na {days} dagen",
@@ -89,7 +98,8 @@
 					"automation_active": "Automatisering actief",
 					"opt_out_respected": "Uitschrijven gerespecteerd",
 					"email_escalation": "E-mail-escalatie",
-					"title": "Betaalherinneringen"
+					"title": "Betaalherinneringen",
+					"whatsapp_series": "WhatsApp Serie"
 				},
 				"common": {
 					"loading": "Demogegevens laden.",
@@ -145,7 +155,10 @@
 		"trust": {
 			"dutch_compliance": "Dutch Compliance",
 			"ideal_payments": "Ideal Payments",
-			"whatsapp_business": "Whatsapp Business"
+			"whatsapp_business": "Whatsapp Business",
+			"avg_compliant": "AVG-conform",
+			"ideal_certified": "iDEAL-gecertificeerd",
+			"kvk_registered": "KVK-geregistreerd"
 		},
 		"waitlist": {
 			"title": "Word Pilot Deelnemer",
@@ -157,7 +170,32 @@
 			"error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
 			"submit": "Meld je aan",
 			"gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
-		}
+		},
+		"hero": {
+			"h1": "Plumbing Agent voor vakmensen",
+			"subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
+			"cta_demo": "Plan een demo",
+			"cta_waitlist": "Op wachtlijst",
+			"urgency": "Beperkte beta-toegang",
+			"social_proof": "Vertrouwd door groeiende loodgietersteams"
+		},
+		"roi_calculator": {
+			"title": "Bereken je ROI",
+			"subtitle": "Bereken je ROI",
+			"input_label": "Uren die je per week wilt besparen",
+			"placeholder_text": "bijv. 5–10",
+			"hours_per_week": "Uren bespaard / week",
+			"rate_per_hour": "Uurtarief (€)",
+			"time_saved": "Tijd bespaard",
+			"extra_revenue": "Extra omzet",
+			"yearly_savings": "Jaarlijkse besparingen",
+			"calculate_button": "Berekenen",
+			"cta_start_saving": "Begin nu met besparen",
+			"results": {
+				"total_value": "Totale jaarlijkse waarde"
+			}
+		},
+		"current_hours": "Huidige uren per week"
 	},
 	"list": {
 		"title": "Title",

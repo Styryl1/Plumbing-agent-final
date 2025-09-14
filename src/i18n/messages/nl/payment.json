@@ -1,0 +1,17 @@
+{
+	"status": "Betalingsstatus",
+	"awaiting": "Wachtend op betaling",
+	"paid": "Betaald",
+	"overdue": "Achterstallig",
+	"failed": "Betaling mislukt",
+	"refunded": "Terugbetaald",
+	"links": "Betaallinks",
+	"method": "Betaalmethode",
+	"amount": "Bedrag",
+	"dueDate": "Vervaldatum",
+	"payNow": "Nu betalen",
+	"payOnline": "Online betalen",
+	"ideal": "iDEAL",
+	"creditCard": "Creditcard",
+	"bankTransfer": "Bankoverschrijving"
+}

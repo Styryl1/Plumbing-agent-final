@@ -1,5 +1,27 @@
 {
-	"__": "__TODO__",
+	"app": {
+		"title": "Spoedloodgieter Platform"
+	},
+	"cta": {
+		"newJob": "Nieuwe Klus"
+	},
+	"priority": {
+		"normal": "Normaal",
+		"urgent": "Urgent",
+		"emergency": "Noodgeval"
+	},
+	"form": {
+		"title": "Titel",
+		"required": "Verplicht",
+		"priority": "Prioriteit",
+		"description": "Beschrijving",
+		"startTime": "Starttijd",
+		"duration": "Duur",
+		"primaryEmployee": "Hoofdmedewerker"
+	},
+	"tabs": {
+		"whatsapp": "WhatsApp"
+	},
 	"action.delete": "Verwijderen",
 	"action.edit": "Bewerken",
 	"active": "Active",

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Customers tRPC router - CRUD operations for customer management
 // Enhanced with DTO/mapper pattern, Dutch validation, and comprehensive error handling
 // Maintains backward compatibility with existing API structure

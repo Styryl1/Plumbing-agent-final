@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // src/app/layout.tsx
 import "~/lib/polyfills"; // must be first
 

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Customer DTO - Single source of truth for customer data shapes
 // Used across UI components, tRPC routers, and API boundaries
 // Never import Supabase types directly - use this DTO interface

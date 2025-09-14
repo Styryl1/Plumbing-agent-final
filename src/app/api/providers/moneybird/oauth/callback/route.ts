@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import "server-only";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

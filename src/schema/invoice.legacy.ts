@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Invoice Data Transfer Object (DTO) schemas - Single source of truth for invoice system
 // These DTOs define the application-layer contracts, separate from database transport types
 // Money is stored as integer cents to avoid floating-point precision issues

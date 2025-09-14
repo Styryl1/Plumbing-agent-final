@@ -1,0 +1,17 @@
+{
+	"status": "Payment Status",
+	"awaiting": "Awaiting Payment",
+	"paid": "Paid",
+	"overdue": "Overdue",
+	"failed": "Payment Failed",
+	"refunded": "Refunded",
+	"links": "Payment Links",
+	"method": "Payment Method",
+	"amount": "Amount",
+	"dueDate": "Due Date",
+	"payNow": "Pay Now",
+	"payOnline": "Pay Online",
+	"ideal": "iDEAL",
+	"creditCard": "Credit Card",
+	"bankTransfer": "Bank Transfer"
+}

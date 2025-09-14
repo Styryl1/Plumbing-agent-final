@@ -1,0 +1,24 @@
+{
+	"title": "Notifications",
+	"empty": "No notifications",
+	"markAllRead": "Mark all as read",
+	"markAsRead": "Mark as read",
+	"markAsUnread": "Mark as unread",
+	"delete": "Delete notification",
+	"types": {
+		"info": "Information",
+		"success": "Success",
+		"warning": "Warning",
+		"error": "Error",
+		"invoice": "Invoice",
+		"job": "Job",
+		"customer": "Customer",
+		"payment": "Payment"
+	},
+	"settings": {
+		"title": "Notification Settings",
+		"email": "Email notifications",
+		"push": "Push notifications",
+		"whatsapp": "WhatsApp notifications"
+	}
+}

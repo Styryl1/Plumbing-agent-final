@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 
 export const MetaStatusSchema = z.object({

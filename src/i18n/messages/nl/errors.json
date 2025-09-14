@@ -1,0 +1,21 @@
+{
+	"title": "Fout",
+	"general": "Er is iets misgegaan",
+	"tryAgain": "Probeer opnieuw",
+	"contactSupport": "Contact opnemen met support",
+	"notFound": "Niet gevonden",
+	"unauthorized": "Ongeautoriseerde toegang",
+	"forbidden": "Toegang geweigerd",
+	"validation": "Validatiefout",
+	"network": "Netwerkfout",
+	"timeout": "Verzoek verlopen",
+	"serverError": "Serverfout",
+	"unknown": "Onbekende fout",
+	"fieldRequired": "Dit veld is verplicht",
+	"invalidFormat": "Ongeldige format",
+	"tooShort": "Te kort",
+	"tooLong": "Te lang",
+	"mustBeNumber": "Moet een nummer zijn",
+	"mustBeEmail": "Moet een geldig e-mailadres zijn",
+	"passwordTooWeak": "Wachtwoord te zwak"
+}

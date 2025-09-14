@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { api } from "~/lib/trpc/client";
 
 type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";

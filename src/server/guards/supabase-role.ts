@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 /** @server-only */
 import { env } from "~/lib/env";
 

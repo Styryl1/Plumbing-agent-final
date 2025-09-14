@@ -1,6 +1,7 @@
 "use client";
 
 import { Settings } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { MoneybirdTile } from "~/components/providers/MoneybirdTile";
 import {

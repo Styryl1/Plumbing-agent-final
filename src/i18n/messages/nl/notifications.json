@@ -1,0 +1,24 @@
+{
+	"title": "Notificaties",
+	"empty": "Geen notificaties",
+	"markAllRead": "Alle markeren als gelezen",
+	"markAsRead": "Markeren als gelezen",
+	"markAsUnread": "Markeren als ongelezen",
+	"delete": "Notificatie verwijderen",
+	"types": {
+		"info": "Informatie",
+		"success": "Gelukt",
+		"warning": "Waarschuwing",
+		"error": "Fout",
+		"invoice": "Factuur",
+		"job": "Klus",
+		"customer": "Klant",
+		"payment": "Betaling"
+	},
+	"settings": {
+		"title": "Notificatie-instellingen",
+		"email": "E-mail notificaties",
+		"push": "Push notificaties",
+		"whatsapp": "WhatsApp notificaties"
+	}
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useMemo, useState } from "react";
 import { Badge } from "~/components/ui/badge";

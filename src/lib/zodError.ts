@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ZodError } from "zod";
 
 export type ZodFlatten = {

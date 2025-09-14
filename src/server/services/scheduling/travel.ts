@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 import {
 	BASE_SPEED_KMH,

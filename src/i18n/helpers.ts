@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { useTranslations } from "next-intl";
 import type { Locale } from "./index";
 
 export async function getServerLocale(): Promise<Locale> {

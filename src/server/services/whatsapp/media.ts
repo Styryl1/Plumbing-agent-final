@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 /**
  * WhatsApp Media Fetcher Service (S1)
  * Handles secure download and storage of WhatsApp media files

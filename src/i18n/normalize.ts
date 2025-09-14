@@ -1,5 +1,5 @@
 // src/i18n/normalize.ts
-import type { AbstractIntlMessages } from "next-intl";
+import type { AbstractIntlMessages, useTranslations } from "next-intl";
 
 type AnyRecord = Record<string, unknown>;
 

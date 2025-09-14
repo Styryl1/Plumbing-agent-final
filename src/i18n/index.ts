@@ -1,4 +1,4 @@
-import type { AbstractIntlMessages } from "next-intl";
+import type { AbstractIntlMessages, useTranslations } from "next-intl";
 import { warnIfFlatKeys } from "./devGuard";
 import enRaw from "./messages/en.json";
 import nlRaw from "./messages/nl.json";

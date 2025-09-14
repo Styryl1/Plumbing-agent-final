@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 /**
  * Control Chat Commands Parser (S4)
  * Handles #approve/#reject/#send/#quote commands for plumber control workflow

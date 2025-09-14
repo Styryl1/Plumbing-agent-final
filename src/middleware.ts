@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { useTranslations } from "next-intl";
 import { env } from "~/lib/env";
 
 const isPublicRoute = createRouteMatcher([

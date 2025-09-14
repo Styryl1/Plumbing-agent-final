@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ProviderInvoiceStatus } from "../types";
 
 /**

@@ -158,7 +158,7 @@ export default function JobDrawer({
 	const utils = api.useUtils();
 	const deleteJobMutation = api.jobs.remove.useMutation({
 		onSuccess: () => {
-			toast.success(t("jobs.jobs.delete.success"));
+			toast.success(t("jobs.delete.success"));
 			setShowDeleteConfirm(false);
 			onOpenChange(false); // Close drawer after successful delete
 			// Invalidate queries to refresh the calendar
@@ -167,7 +167,7 @@ export default function JobDrawer({
 		},
 		onError: (error) => {
 			const msg =
-				error instanceof Error ? error.message : t("jobs.jobs.delete.failed");
+				error instanceof Error ? error.message : t("jobs.delete.failed");
 			toast.error(msg);
 		},
 	});
@@ -416,7 +416,7 @@ export default function JobDrawer({
 									size="sm"
 								>
 									<Trash2 className="h-4 w-4 mr-1" />
-									{t("JobDrawer.delete")}
+									{t("jobs.delete.title")}
 								</Button>
 							</div>
 						)}
@@ -909,9 +909,9 @@ export default function JobDrawer({
 			<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>{t("jobs.jobs.delete.title")}</AlertDialogTitle>
+						<AlertDialogTitle>{t("jobs.delete.title")}</AlertDialogTitle>
 						<AlertDialogDescription>
-							{t("jobs.jobs.delete.description")}
+							{t("jobs.delete.description")}
 							{job && (
 								<span className="font-medium"> &quot;{job.title}&quot;</span>
 							)}
@@ -929,7 +929,7 @@ export default function JobDrawer({
 						>
 							{deleteJobMutation.isPending
 								? t("actions.deleting")
-								: t("JobDrawer.delete")}
+								: t("jobs.delete.title")}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

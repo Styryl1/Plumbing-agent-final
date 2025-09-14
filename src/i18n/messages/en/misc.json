@@ -1,5 +1,27 @@
 {
-	"__": "__TODO__",
+	"app": {
+		"title": "Emergency Plumber Platform"
+	},
+	"cta": {
+		"newJob": "New Job"
+	},
+	"priority": {
+		"normal": "Normal",
+		"urgent": "Urgent",
+		"emergency": "Emergency"
+	},
+	"form": {
+		"title": "Title",
+		"required": "Required",
+		"priority": "Priority",
+		"description": "Description",
+		"startTime": "Start Time",
+		"duration": "Duration",
+		"primaryEmployee": "Primary Employee"
+	},
+	"tabs": {
+		"whatsapp": "WhatsApp"
+	},
 	"action.delete": "Delete",
 	"action.edit": "Edit",
 	"active": "Active",

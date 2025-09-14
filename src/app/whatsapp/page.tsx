@@ -25,7 +25,6 @@ import { mapToLeadDTO } from "~/lib/whatsapp/mappers";
 
 export default function WhatsAppLeadsPage(): JSX.Element {
 	const t = useTranslations();
-	const t = useTranslations();
 	const router = useRouter();
 
 	// Fetch leads using existing tRPC procedure
@@ -129,7 +128,7 @@ export default function WhatsAppLeadsPage(): JSX.Element {
 											<TableCell>
 												<div className="space-y-1">
 													<div className="font-medium">
-														{lead.name ?? t(".common.unnamed")}
+														{lead.name ?? t("common.unnamed")}
 													</div>
 													<div className="text-sm text-muted-foreground">
 														{lead.phoneMasked}

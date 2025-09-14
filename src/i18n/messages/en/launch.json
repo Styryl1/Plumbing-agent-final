@@ -40,6 +40,12 @@
 				"next": "Next",
 				"step_counter": "Step {current} of {total}"
 			},
+			"done": "You're all set!",
+			"autoplay_pause": "Pause Autoplay",
+			"autoplay_start": "Start Autoplay",
+			"keyboard_help": "Use arrow keys to navigate",
+			"time_estimate": "Estimated time: {minutes} minutes",
+			"time_average": "Average time",
 			"back": "Back"
 		},
 		"content": {
@@ -65,7 +71,8 @@
 			},
 			"job_card": {
 				"address": "Address",
-				"phone": "Phone"
+				"phone": "Phone",
+				"notes": "Notes"
 			},
 			"voice_draft": {
 				"voice_transcript": "Voice transcript",
@@ -80,7 +87,9 @@
 				"invoice_sent": "Invoice sent",
 				"payment_status": "Payment status",
 				"pdf": "PDF",
-				"whatsapp_message": "WhatsApp message"
+				"whatsapp_message": "WhatsApp message",
+				"awaiting_payment": "Awaiting Payment",
+				"click_pay": "Click to Pay"
 			},
 			"reminders": {
 				"after_days": "After {days} days",
@@ -88,7 +97,8 @@
 				"automation_active": "Automation active",
 				"opt_out_respected": "Opt-out respected",
 				"email_escalation": "Email escalation",
-				"title": "Payment reminders"
+				"title": "Payment reminders",
+				"whatsapp_series": "WhatsApp Series"
 			},
 			"common": {
 				"loading": "Loading demo data…",
@@ -144,7 +154,10 @@
 	"trust": {
 		"dutch_compliance": "Dutch Compliance",
 		"ideal_payments": "Ideal Payments",
-		"whatsapp_business": "Whatsapp Business"
+		"whatsapp_business": "Whatsapp Business",
+		"avg_compliant": "AVG compliant",
+		"ideal_certified": "IDEAL certified",
+		"kvk_registered": "KVK registered"
 	},
 	"waitlist": {
 		"title": "Join the Pilot Program",
@@ -174,5 +187,30 @@
 		"skipped": "Skipped",
 		"withPaymentLinks": "WithPaymentLinks",
 		"errors": "Errors"
-	}
+	},
+	"hero": {
+		"h1": "Plumbing Agent for pros",
+		"subhead": "Automate scheduling, invoices, and WhatsApp with AI.",
+		"cta_demo": "Book a demo",
+		"cta_waitlist": "Join waitlist",
+		"urgency": "Limited beta access",
+		"social_proof": "Trusted by growing plumbing teams"
+	},
+	"roi_calculator": {
+		"title": "Calculate your ROI",
+		"subtitle": "Estimate your ROI",
+		"input_label": "Hours you want to save per week",
+		"placeholder_text": "e.g. 5–10",
+		"hours_per_week": "Hours saved / week",
+		"rate_per_hour": "Hourly rate (€)",
+		"time_saved": "Time saved",
+		"extra_revenue": "Extra revenue",
+		"yearly_savings": "Yearly savings",
+		"calculate_button": "Calculate",
+		"cta_start_saving": "Start saving now",
+		"results": {
+			"total_value": "Total annual value"
+		}
+	},
+	"current_hours": "Current hours per week"
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import React from "react";
 import { Hero } from "~/components/launch/Hero";

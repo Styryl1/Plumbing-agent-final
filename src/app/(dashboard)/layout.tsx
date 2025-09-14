@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { JSX, ReactNode } from "react";
 
 export default function DashboardLayout({

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type en from "./en.json";
 
 type Locales = "en" | "nl";

@@ -39,6 +39,7 @@ const TOTAL_STEPS = 3;
 
 export default function WhatsAppSettingsPage(): JSX.Element {
 	const t = useTranslations();
+	const tSettings = useTranslations("settings");
 	const [currentStep, setCurrentStep] = useState(1);
 	const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -82,12 +83,12 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 		},
 		onError: (error) => {
 			const errorKey = error.message.includes("Control number not mapped")
-				? "test.error.noControl"
+				? "settings.whatsapp.test.error.noControl"
 				: error.message.includes("No control conversation")
-					? "test.error.noConversation"
+					? "settings.whatsapp.test.error.noConversation"
 					: error.message.includes("WhatsApp API error")
-						? "test.error.apiError"
-						: "test.error.unknown";
+						? "settings.whatsapp.test.error.apiError"
+						: "settings.whatsapp.test.error.unknown";
 			toast.error(t(errorKey));
 		},
 	});
@@ -191,7 +192,10 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 
 			<div className="text-center mb-6">
 				<p className="text-sm text-muted-foreground">
-					{t("wizard.step", { current: currentStep, total: TOTAL_STEPS })}
+					{t("settings.whatsapp.wizard.step", {
+						current: currentStep,
+						total: TOTAL_STEPS,
+					})}
 				</p>
 			</div>
 
@@ -359,7 +363,9 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 															: "secondary"
 													}
 												>
-													{t("numbers.labels.select", { label: number.label })}
+													{t("settings.whatsapp.numbers.labels.select", {
+														label: number.label,
+													})}
 												</Badge>
 												<code className="text-sm">{number.phoneNumberId}</code>
 											</div>
@@ -461,17 +467,20 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 						{/* Requirements */}
 						<div>
 							<h3 className="font-semibold mb-3">
-								{t("settings.whatsapp.test.requirements.title")}
+								{tSettings("whatsapp.test.requirements.title")}
 							</h3>
 							<ul className="text-sm space-y-2">
-								{(t.raw("test.requirements.items") as string[]).map(
-									(item, index) => (
-										<li key={index} className="flex items-start gap-2">
-											<CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
-											{item}
-										</li>
-									),
-								)}
+								{Object.values(
+									tSettings.raw("whatsapp.test.requirements.items") as Record<
+										string,
+										string
+									>,
+								).map((item, index) => (
+									<li key={index} className="flex items-start gap-2">
+										<CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+										{item}
+									</li>
+								))}
 							</ul>
 						</div>
 

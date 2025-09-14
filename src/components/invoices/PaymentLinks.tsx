@@ -7,6 +7,7 @@ import {
 	FileText,
 	MessageCircle,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -42,17 +43,18 @@ export function PaymentLinks({
 	const tNote = useT("notifications");
 	const tErr = useT("errors");
 	const tAct = useT("actions");
-	const tInv = useT("invoice");
+	const tInv = useT("invoices");
+	const tSys = useT("system");
 	const [isCreatingPayment, setIsCreatingPayment] = useState(false);
 
 	const createPaymentMutation = api.invoices.createPaymentLink.useMutation({
 		onSuccess: (result) => {
 			// Open Mollie checkout in new tab
 			window.open(result.checkoutUrl, "_blank", "noopener,noreferrer");
-			toast.success(tPay("mollieCreated"));
+			toast.success(tSys("payment.mollieCreated"));
 		},
 		onError: (error) => {
-			toast.error(tPay("mollieFailed"), {
+			toast.error(tSys("payment.mollieFailed"), {
 				description: error.message,
 			});
 		},
@@ -64,12 +66,12 @@ export function PaymentLinks({
 	const sendWhatsAppMutation = api.invoiceFlow.sendPaymentLink.useMutation({
 		onSuccess: (result) => {
 			toast.success(
-				tNote("paymentLink.sent") +
+				tSys("notifications.paymentLink.sent") +
 					` (${result.mode === "session" ? "session" : "template"})`,
 			);
 		},
 		onError: (error) => {
-			toast.error(tErr("paymentLink.sendFailed") + ": " + error.message);
+			toast.error(tSys("errors.paymentLink.sendFailed") + ": " + error.message);
 		},
 	});
 
@@ -80,10 +82,12 @@ export function PaymentLinks({
 		try {
 			await navigator.clipboard.writeText(url);
 			const message =
-				type === "payment" ? tPay("paymentCopied") : tPay("pdfCopied");
+				type === "payment"
+					? tSys("payment.paymentCopied")
+					: tSys("payment.pdfCopied");
 			toast.success(message);
 		} catch {
-			toast.error(tPay("copyFailed"));
+			toast.error(tSys("payment.copyFailed"));
 		}
 	};
 
@@ -98,11 +102,11 @@ export function PaymentLinks({
 			<Card>
 				<CardHeader>
 					<CardTitle>{tPay("links")}</CardTitle>
-					<CardDescription>{tPay("noLinksAvailable")}</CardDescription>
+					<CardDescription>{tSys("payment.noLinksAvailable")}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="text-sm text-muted-foreground">
-						{tPay("noLinksDescription")}
+						{tSys("payment.noLinksDescription")}
 					</div>
 				</CardContent>
 			</Card>
@@ -113,7 +117,7 @@ export function PaymentLinks({
 		<Card>
 			<CardHeader>
 				<CardTitle>{tPay("links")}</CardTitle>
-				<CardDescription>{tPay("linksDescription")}</CardDescription>
+				<CardDescription>{tSys("payment.linksDescription")}</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-3">
 				{/* Provider Payment URL (preferred) */}
@@ -143,7 +147,7 @@ export function PaymentLinks({
 							</Button>
 						</div>
 						<p className="text-xs text-muted-foreground">
-							{tPay("providerPayment")}
+							{tSys("payment.providerPayment")}
 						</p>
 					</div>
 				) : (
@@ -158,11 +162,11 @@ export function PaymentLinks({
 						>
 							<CreditCard className="mr-2 h-4 w-4" />
 							{isCreatingPayment
-								? tPay("creatingMollie")
-								: tPay("openMollieCheckout")}
+								? tSys("payment.creatingMollie")
+								: tSys("payment.openMollieCheckout")}
 						</Button>
 						<p className="text-xs text-muted-foreground">
-							{tPay("molliePayment")}
+							{tSys("payment.molliePayment")}
 						</p>
 					</div>
 				)}
@@ -179,7 +183,7 @@ export function PaymentLinks({
 									className="flex items-center gap-2"
 								>
 									<FileText className="h-4 w-4" />
-									{tPay("viewPdf")}
+									{tSys("payment.viewPdf")}
 									<ExternalLink className="h-3 w-3" />
 								</a>
 							</Button>
@@ -194,7 +198,7 @@ export function PaymentLinks({
 							</Button>
 						</div>
 						<p className="text-xs text-muted-foreground">
-							{tPay("pdfDescription")}
+							{tSys("payment.pdfDescription")}
 						</p>
 					</div>
 				)}
@@ -218,10 +222,10 @@ export function PaymentLinks({
 							<MessageCircle className="mr-2 h-4 w-4" />
 							{sendWhatsAppMutation.isPending
 								? tAct("sending")
-								: tInv("actions.sendWhatsApp")}
+								: tInv("invoice.actions.sendWhatsApp")}
 						</Button>
 						<p className="text-xs text-muted-foreground">
-							{tInv("actions.sendWhatsAppDescription")}
+							{tInv("invoice.actions.sendWhatsAppDescription")}
 						</p>
 					</div>
 				)}

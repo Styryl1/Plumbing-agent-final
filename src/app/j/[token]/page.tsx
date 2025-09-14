@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 /**
  * Minimal Job Card Page (S2 + S4 Integration)
  * Shows conversation header, last approved suggestion, and quick actions

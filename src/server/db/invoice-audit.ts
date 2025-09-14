@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Audit logging utilities for invoice system
 // Provides type-safe audit trail without PII exposure
 

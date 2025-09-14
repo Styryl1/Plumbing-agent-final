@@ -52,15 +52,15 @@ export default function ProviderBadge({
 	// Map provider names to i18n keys to avoid dynamic template literals
 	const providerKeys: Record<
 		InvoiceProvider,
-		| "providers.moneybird"
-		| "providers.wefact"
-		| "providers.eboekhouden"
-		| "providers.peppol"
+		| "providers.moneybird.title"
+		| "providers.wefact.title"
+		| "providers.eboekhouden.title"
+		| "providers.peppol.title"
 	> = {
-		moneybird: "providers.moneybird",
-		wefact: "providers.wefact",
-		eboekhouden: "providers.eboekhouden",
-		peppol: "providers.peppol",
+		moneybird: "providers.moneybird.title",
+		wefact: "providers.wefact.title",
+		eboekhouden: "providers.eboekhouden.title",
+		peppol: "providers.peppol.title",
 	};
 
 	if (isLegacy) {

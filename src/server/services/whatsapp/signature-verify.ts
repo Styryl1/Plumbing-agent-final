@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "crypto";
+import { useTranslations } from "next-intl";
 
 export function verifyWhatsAppSignature({
 	appSecret,

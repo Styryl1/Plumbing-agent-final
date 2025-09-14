@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 export type EnvClient = {
 	NEXT_PUBLIC_GA_MEASUREMENT_ID: string | undefined;

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import "~/lib/polyfills"; // <-- must come before any Schedule-X imports
 

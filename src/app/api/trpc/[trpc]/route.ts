@@ -1,5 +1,6 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import type { NextRequest } from "next/server";
+import { useTranslations } from "next-intl";
 import { appRouter } from "~/server/api/root";
 import { createContext } from "~/server/api/trpc";
 

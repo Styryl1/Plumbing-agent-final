@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 import type { Database } from "~/types/supabase";
 import { listUnreadCounts } from "./conversation-unread";

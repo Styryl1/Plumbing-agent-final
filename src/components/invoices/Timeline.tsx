@@ -11,7 +11,7 @@ import {
 	Send,
 	UserX,
 } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { JSX } from "react";
 import {
 	Card,

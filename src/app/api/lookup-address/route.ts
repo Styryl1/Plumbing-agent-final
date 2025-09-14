@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { useTranslations } from "next-intl";
 import { env } from "~/lib/env";
 
 type LookupOk = {

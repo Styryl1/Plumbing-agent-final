@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // Calendar adapter for JobDTO → Schedule-X v3 events
 
 import { toZDT } from "~/lib/calendar-temporal";

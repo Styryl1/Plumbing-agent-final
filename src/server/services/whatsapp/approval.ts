@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 /**
  * WhatsApp Approval & Relay Service (S4)
  * Handles approve/reject/send/quote actions from control chat
