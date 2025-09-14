@@ -34,9 +34,9 @@ import { readFile, writeFile } from 'fs/promises';
 
         // Find the last import line
         for (let i = 0; i < lines.length; i++) {
-          if (lines[i].startsWith('import ')) {
+          if (lines[i]?.startsWith('import ')) {
             insertIndex = i + 1;
-          } else if (lines[i].trim() === '' && insertIndex > 0) {
+          } else if (lines[i]?.trim() === '' && insertIndex > 0) {
             // Found empty line after imports
             break;
           }

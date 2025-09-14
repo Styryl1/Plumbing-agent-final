@@ -18,7 +18,15 @@ import {
 	CardTitle,
 } from "~/components/ui/card";
 
-const uspIcons = {
+type UspKey =
+	| "whatsapp"
+	| "ai"
+	| "schedule"
+	| "jobcards"
+	| "invoicing"
+	| "compliance";
+
+const uspIcons: Record<UspKey, React.ComponentType<{ className?: string }>> = {
 	whatsapp: ChatBubbleLeftRightIcon,
 	ai: CpuChipIcon,
 	schedule: CalendarDaysIcon,
@@ -27,36 +35,35 @@ const uspIcons = {
 	compliance: ShieldCheckIcon,
 };
 
-const uspKeys = [
+const uspTitleKeys = {
+	whatsapp: "launch.usp.whatsapp.title",
+	ai: "launch.usp.ai.title",
+	schedule: "launch.usp.schedule.title",
+	jobcards: "launch.usp.jobcards.title",
+	invoicing: "launch.usp.invoicing.title",
+	compliance: "launch.usp.compliance.title",
+} as const;
+
+const uspDescKeys = {
+	whatsapp: "launch.usp.whatsapp.desc",
+	ai: "launch.usp.ai.desc",
+	schedule: "launch.usp.schedule.desc",
+	jobcards: "launch.usp.jobcards.desc",
+	invoicing: "launch.usp.invoicing.desc",
+	compliance: "launch.usp.compliance.desc",
+} as const;
+
+const uspKeys: UspKey[] = [
 	"whatsapp",
 	"ai",
 	"schedule",
 	"jobcards",
 	"invoicing",
 	"compliance",
-] as const;
+];
 
 export function USPGrid(): React.ReactElement {
 	const t = useTranslations();
-
-	// Map USP keys to i18n keys to avoid dynamic template literals
-	const uspTitleKeys: Record<(typeof uspKeys)[number], string> = {
-		whatsapp: "launch.usp.whatsapp.title",
-		ai: "launch.usp.ai.title",
-		schedule: "launch.usp.schedule.title",
-		jobcards: "launch.usp.jobcards.title",
-		invoicing: "launch.usp.invoicing.title",
-		compliance: "launch.usp.compliance.title",
-	};
-
-	const uspDescKeys: Record<(typeof uspKeys)[number], string> = {
-		whatsapp: "launch.usp.whatsapp.desc",
-		ai: "launch.usp.ai.desc",
-		schedule: "launch.usp.schedule.desc",
-		jobcards: "launch.usp.jobcards.desc",
-		invoicing: "launch.usp.invoicing.desc",
-		compliance: "launch.usp.compliance.desc",
-	};
 
 	return (
 		<section className="py-16 sm:py-24">
@@ -83,13 +90,13 @@ export function USPGrid(): React.ReactElement {
 											<IconComponent className="h-6 w-6 text-emerald-600" />
 										</div>
 										<CardTitle className="text-xl">
-											{t(uspTitleKeys[uspKey])}
+											{t(uspTitleKeys[uspKey as keyof typeof uspTitleKeys])}
 										</CardTitle>
 									</div>
 								</CardHeader>
 								<CardContent>
 									<CardDescription className="text-base">
-										{t(uspDescKeys[uspKey])}
+										{t(uspDescKeys[uspKey as keyof typeof uspDescKeys])}
 									</CardDescription>
 								</CardContent>
 							</Card>

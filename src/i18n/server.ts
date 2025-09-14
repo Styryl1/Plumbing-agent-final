@@ -1,10 +1,10 @@
 import { currentUser } from "@clerk/nextjs/server";
 // src/i18n/server.ts
 import { headers } from "next/headers";
-import { DEFAULT_LOCALE, type Locale, SUPPORTED_LOCALES } from "./index";
+import { DEFAULT_LOCALE, type Locale } from "./index";
 
 function normalizeLocale(input?: string | null): Locale {
-	const v = (input || "").toLowerCase();
+	const v = (input ?? "").toLowerCase();
 	if (v.startsWith("nl")) return "nl";
 	return "en";
 }
@@ -18,10 +18,14 @@ function normalizeLocale(input?: string | null): Locale {
 export async function resolveLocale(): Promise<Locale> {
 	try {
 		const user = await currentUser();
-		const fromClerk =
-			(user?.publicMetadata as any)?.locale ??
-			(user as any)?.locale ??
-			(user?.privateMetadata as any)?.locale;
+		const publicLocale = (
+			user?.publicMetadata as { locale?: string } | undefined
+		)?.locale;
+		const userLocale = (user as { locale?: string } | null)?.locale;
+		const privateLocale = (
+			user?.privateMetadata as { locale?: string } | undefined
+		)?.locale;
+		const fromClerk = publicLocale ?? userLocale ?? privateLocale;
 		if (fromClerk) return normalizeLocale(fromClerk);
 	} catch {
 		// not signed-in or serverless edge with no session

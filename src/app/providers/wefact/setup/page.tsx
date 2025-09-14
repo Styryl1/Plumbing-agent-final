@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Key, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -36,8 +38,7 @@ type WeFactSetupForm = z.infer<typeof WeFactSetupSchema>;
 
 export default function WeFactSetupPage(): JSX.Element {
 	const router = useRouter();
-	const t = useTranslations("providers");
-	const tForm = useTranslations("providers.setup");
+	const t = useTranslations();
 
 	const form = useForm<WeFactSetupForm>({
 		resolver: zodResolver(WeFactSetupSchema),
@@ -78,9 +79,11 @@ export default function WeFactSetupPage(): JSX.Element {
 				<CardHeader>
 					<CardTitle className="flex items-center gap-3">
 						<Key className="h-6 w-6 text-blue-600" />
-						{tForm("wefact.title")}
+						{t("providers.setup.wefact.title")}
 					</CardTitle>
-					<CardDescription>{tForm("wefact.description")}</CardDescription>
+					<CardDescription>
+						{t("providers.setup.wefact.description")}
+					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -90,15 +93,17 @@ export default function WeFactSetupPage(): JSX.Element {
 								name="apiKey"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{tForm("apiKey.label")}</FormLabel>
+										<FormLabel>{t("providers.setup.apiKey.label")}</FormLabel>
 										<FormControl>
 											<Input
 												type="password"
-												placeholder={tForm("apiKey.placeholder")}
+												placeholder={t("providers.setup.apiKey.placeholder")}
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>{tForm("apiKey.help")}</FormDescription>
+										<FormDescription>
+											{t("providers.setup.apiKey.help")}
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -109,7 +114,7 @@ export default function WeFactSetupPage(): JSX.Element {
 								name="baseUrl"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{tForm("baseUrl.label")}</FormLabel>
+										<FormLabel>{t("providers.setup.baseUrl.label")}</FormLabel>
 										<FormControl>
 											<Input
 												type="url"
@@ -117,7 +122,9 @@ export default function WeFactSetupPage(): JSX.Element {
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>{tForm("baseUrl.help")}</FormDescription>
+										<FormDescription>
+											{t("providers.setup.baseUrl.help")}
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -133,19 +140,20 @@ export default function WeFactSetupPage(): JSX.Element {
 										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 									)}
 									{connectMutation.isPending
-										? tForm("actions.connecting")
-										: tForm("actions.connect")}
+										? t("providers.setup.actions.connecting")
+										: t("providers.setup.actions.connect")}
 								</Button>
 								<Button asChild variant="outline">
 									<Link href="/settings/providers">
-										{tForm("actions.cancel")}
+										{t("providers.setup.actions.cancel")}
 									</Link>
 								</Button>
 							</div>
 
 							{connectMutation.error && (
 								<div className="rounded-md bg-red-50 p-3 text-sm text-red-800">
-									{tForm("errors.connection")}: {connectMutation.error.message}
+									{t("providers.setup.errors.connection")}:{" "}
+									{connectMutation.error.message}
 								</div>
 							)}
 						</form>

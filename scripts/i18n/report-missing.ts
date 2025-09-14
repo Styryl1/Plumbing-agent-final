@@ -47,9 +47,9 @@ async function main(): Promise<void> {
     let m: RegExpExecArray | null;
     while ((m = tCall.exec(code))) {
       const key = m[1];
-      if (!valid.has(key)) {
+      if (key && !valid.has(key)) {
         if (!missing.has(file)) missing.set(file, new Set());
-        missing.get(file)!.add(key);
+        missing.get(file)?.add(key);
       }
     }
   }

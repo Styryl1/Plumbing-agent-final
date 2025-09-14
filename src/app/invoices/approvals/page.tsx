@@ -1,3 +1,4 @@
+"use client";
 import { Calendar, CheckCircle2, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";

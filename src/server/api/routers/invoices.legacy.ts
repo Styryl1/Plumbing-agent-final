@@ -1,6 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { TRPCError } from "@trpc/server";
-import { useTranslations } from "next-intl";
 import { ZodError, z } from "zod";
 import { assertNonNullish } from "~/lib/assert";
 import { E } from "~/lib/i18n/errors";

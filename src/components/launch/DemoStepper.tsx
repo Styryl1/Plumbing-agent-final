@@ -746,7 +746,7 @@ export function DemoStepper(): React.ReactElement {
 									{stepTitles[currentStep.id] ?? currentStep.id}
 								</CardTitle>
 								<Badge variant="secondary" className="text-xs">
-									{t("launch.demo.page.step_counter", {
+									{t("launch.demo.page.nav.step_counter", {
 										current: currentStepIndex + 1,
 										total: demoSteps.length,
 									})}
@@ -821,7 +821,7 @@ export function DemoStepper(): React.ReactElement {
 											? "bg-emerald-300 hover:bg-emerald-400"
 											: "bg-gray-300 hover:bg-gray-400"
 								}`}
-								title={t("launch.demo.page.jump_to_step", { step: index + 1 })}
+								title={`Jump to step ${index + 1}`}
 							/>
 						))}
 					</div>

@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	CheckCircle2,
 	Copy,
@@ -37,7 +39,6 @@ const TOTAL_STEPS = 3;
 
 export default function WhatsAppSettingsPage(): JSX.Element {
 	const t = useTranslations();
-	const tSettings = useTranslations();
 	const [currentStep, setCurrentStep] = useState(1);
 	const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -465,14 +466,15 @@ export default function WhatsAppSettingsPage(): JSX.Element {
 						{/* Requirements */}
 						<div>
 							<h3 className="font-semibold mb-3">
-								{tSettings("whatsapp.test.requirements.title")}
+								{t("settings.whatsapp.test.requirements.title")}
 							</h3>
 							<ul className="text-sm space-y-2">
 								{Object.values(
-									tSettings.raw("whatsapp.test.requirements.items") as Record<
-										string,
-										string
-									>,
+									t.raw(
+										"settings.whatsapp.test.requirements.items" as Parameters<
+											typeof t.raw
+										>[0],
+									) as Record<string, string>,
 								).map((item, index) => (
 									<li key={index} className="flex items-start gap-2">
 										<CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />

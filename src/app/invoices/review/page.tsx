@@ -1,3 +1,4 @@
+"use client";
 import { Calendar, FileText, Send, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";

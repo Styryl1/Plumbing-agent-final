@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Invoice mapper layer - Transforms between database types and application DTOs
 // Handles snake_case ↔ camelCase conversion and type safety boundaries
 // Ensures UI never imports raw database types directly

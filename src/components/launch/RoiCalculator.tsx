@@ -151,9 +151,7 @@ export function RoiCalculator(): React.ReactElement {
 						<CardHeader>
 							<CardTitle className="text-emerald-700">
 								{showResults && results
-									? t("launch.roi_calculator.admin_reduced", {
-											hours: results.adminReduced.toFixed(1),
-										})
+									? `${results.adminReduced.toFixed(1)} ${t("launch.roi_calculator.hours_per_week")}`
 									: t("launch.current_hours")}
 							</CardTitle>
 						</CardHeader>

@@ -14,7 +14,6 @@ type Props = {
 	messages: Messages;
 	timeZone?: string;
 	formats?: Record<string, unknown>;
-	now?: number | Date | undefined; // Accept number, Date, or undefined
 	children: ReactNode;
 };
 
@@ -23,7 +22,6 @@ export default function SafeNextIntlClientProvider({
 	messages,
 	timeZone,
 	formats,
-	now,
 	children,
 }: Props): JSX.Element {
 	const onError = useCallback((err: unknown) => {
@@ -97,9 +95,7 @@ export default function SafeNextIntlClientProvider({
 		providerProps.formats = formats;
 	}
 
-	if (now !== undefined) {
-		providerProps.now = typeof now === "number" ? new Date(now) : now;
-	}
+	// Omit 'now' to avoid Date usage; next-intl will default safely
 
 	return <NextIntlClientProvider {...providerProps} />;
 }

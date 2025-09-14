@@ -37,14 +37,24 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 	const currentLocale = locale === "nl" ? nl : enUS;
 
 	// Map event kinds to i18n keys to avoid dynamic template literals
-	const eventKindKeys: Record<string, string> = {
-		created: "invoice.timeline.created",
-		sent: "invoice.timeline.sent",
-		paid: "invoice.timeline.paid",
-		reminder_sent: "invoice.timeline.reminder_sent",
-		reminder_error: "invoice.timeline.reminder_error",
-		reminder_skipped: "invoice.timeline.reminder_skipped",
-		manual_follow_up: "invoice.timeline.manual_follow_up",
+	type EventKind =
+		| "created"
+		| "sent"
+		| "paid"
+		| "reminder_sent"
+		| "reminder_error"
+		| "reminder_skipped"
+		| "manual_follow_up";
+
+	type I18nKey = Parameters<typeof t>[0];
+	const eventKindKeys: Record<EventKind, I18nKey> = {
+		created: "invoice.timeline.created" as I18nKey,
+		sent: "invoice.timeline.sent" as I18nKey,
+		paid: "invoice.timeline.paid" as I18nKey,
+		reminder_sent: "invoice.timeline.reminder_sent" as I18nKey,
+		reminder_error: "invoice.timeline.reminder_error" as I18nKey,
+		reminder_skipped: "invoice.timeline.reminder_skipped" as I18nKey,
+		manual_follow_up: "invoice.timeline.manual_follow_up" as I18nKey,
 	};
 
 	const {
@@ -163,10 +173,7 @@ export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
 								<div className="flex-1 min-w-0">
 									<div className="flex items-center gap-2">
 										<span className="text-sm font-medium text-foreground">
-											{t(
-												eventKindKeys[event.kind] ??
-													`invoice.timeline.${event.kind}`,
-											)}
+											{t(eventKindKeys[event.kind as EventKind])}
 										</span>
 										<span className="text-xs text-muted-foreground">
 											{relativeTime}

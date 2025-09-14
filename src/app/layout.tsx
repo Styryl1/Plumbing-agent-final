@@ -8,11 +8,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { JSX } from "react";
-import { Temporal } from "temporal-polyfill";
 import { TrpcProvider } from "~/components/providers/TrpcProvider";
 import PilotModeBanner from "~/components/system/PilotModeBanner";
 import { Toaster } from "~/components/ui/sonner";
-import { type Locale, loadMessages } from "~/i18n";
+import { loadMessages } from "~/i18n";
 import { NextIntlClientProvider } from "~/i18n/client";
 import { resolveLocale } from "~/i18n/server";
 import { DashboardHeader } from "./(dashboard)/DashboardHeader";
@@ -45,9 +44,6 @@ export default async function RootLayout({
 
 	// Pin timezone and formats for invoice consistency (prevents hydration drift)
 	const pinnedTimeZone = "Europe/Amsterdam";
-	const nowDate = new Date(
-		Temporal.Now.zonedDateTimeISO(pinnedTimeZone).toInstant().epochMilliseconds,
-	);
 
 	// Dutch invoice formatting standards
 	const formats = {
@@ -80,7 +76,6 @@ export default async function RootLayout({
 						locale={locale}
 						messages={messages}
 						timeZone={pinnedTimeZone}
-						now={nowDate}
 						formats={formats}
 					>
 						<TrpcProvider>

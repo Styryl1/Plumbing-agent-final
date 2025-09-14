@@ -1,16 +1,17 @@
 import { ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import React from "react";
 import { DemoStepper } from "~/components/launch/DemoStepper";
 import { Button } from "~/components/ui/button";
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getTranslations();
+
 	return {
-		title: "Happy Path Demo - Plumbing Agent",
-		description:
-			"Interactive demo of plumber workflow: WhatsApp to paid invoice in 7 steps",
+		title: t("launch.demo.page.title"),
+		description: t("launch.demo.page.subtitle"),
 		robots: {
 			index: false,
 			follow: true,
@@ -18,8 +19,8 @@ export function generateMetadata(): Metadata {
 	};
 }
 
-export default function DemoPageEN(): React.ReactElement {
-	const t = useTranslations();
+export default async function DemoPageEN(): Promise<React.ReactElement> {
+	const t = await getTranslations();
 	return (
 		<div className="min-h-screen bg-gray-50">
 			{/* Navigation */}
