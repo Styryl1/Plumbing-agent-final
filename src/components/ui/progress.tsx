@@ -1,10 +1,10 @@
-"use client";
-
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
+
+("use client");
 
 function Progress({
 	className,

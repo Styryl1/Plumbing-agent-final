@@ -1,5 +1,3 @@
-"use client";
-
 import { Clock, Gauge, Phone, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -35,6 +33,8 @@ import {
 } from "~/lib/calendar-temporal";
 import { formatDutchDate, formatDutchDateTime } from "~/lib/dates";
 import { api } from "~/lib/trpc/client";
+
+("use client");
 
 type JobPriority = "normal" | "urgent" | "emergency";
 
@@ -311,7 +311,7 @@ export default function Unscheduled({
 													</Badge>
 													{rec.urgency === "high" && (
 														<Badge variant="destructive" className="text-xs">
-															{t("ui.form.priority.urgent")}
+															{t("ui.form.priorityOptions.urgent")}
 														</Badge>
 													)}
 												</div>
@@ -447,13 +447,13 @@ export default function Unscheduled({
 									</SelectTrigger>
 									<SelectContent>
 										<SelectItem value="normal">
-											{t("ui.form.priority.normal")}
+											{t("ui.form.priorityOptions.normal")}
 										</SelectItem>
 										<SelectItem value="urgent">
-											{t("ui.form.priority.urgent")}
+											{t("ui.form.priorityOptions.urgent")}
 										</SelectItem>
 										<SelectItem value="emergency">
-											{t("ui.form.priority.emergency")}
+											{t("ui.form.priorityOptions.emergency")}
 										</SelectItem>
 									</SelectContent>
 								</Select>

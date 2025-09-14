@@ -77,7 +77,7 @@ export default async function JobCardPage({
 	params,
 }: JobCardPageProps): Promise<JSX.Element> {
 	const data = getJobCardData(params.token);
-	const t = await getTranslations("misc.jobCard");
+	const t = await getTranslations();
 
 	if (!data) {
 		notFound();
@@ -98,15 +98,17 @@ export default async function JobCardPage({
 				<Card className="mb-4">
 					<CardHeader className="pb-3">
 						<div className="flex items-center justify-between">
-							<CardTitle className="text-lg">{t("title")}</CardTitle>
+							<CardTitle className="text-lg">
+								{t("misc.jobCard.title")}
+							</CardTitle>
 							<Badge variant="outline" className="text-xs">
-								{t("jobNumber")} #{job.id.slice(0, 8)}
+								{t("misc.jobCard.jobNumber")} #{job.id.slice(0, 8)}
 							</Badge>
 						</div>
 						<div className="text-sm text-gray-600">
 							<div className="font-medium">{customer.name}</div>
 							<div className="text-xs">
-								{t("phone")}: {maskedPhone}
+								{t("misc.jobCard.phone")}: {maskedPhone}
 							</div>
 							{customer.address && (
 								<div className="text-xs">{customer.address}</div>
@@ -120,8 +122,10 @@ export default async function JobCardPage({
 					<CardContent className="pt-4">
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
-								<span className="text-sm font-medium">{t("jobStatus")}</span>
-								<Badge variant="secondary">{t("active")}</Badge>
+								<span className="text-sm font-medium">
+									{t("misc.jobCard.jobStatus")}
+								</span>
+								<Badge variant="secondary">{t("misc.jobCard.active")}</Badge>
 							</div>
 							{job.description && (
 								<div className="mt-3">
@@ -137,9 +141,9 @@ export default async function JobCardPage({
 					<Card className="mb-6">
 						<CardHeader className="pb-3">
 							<CardTitle className="text-base flex items-center gap-2">
-								💬 {t("lastResponse")}
+								💬 {t("misc.jobCard.lastResponse")}
 								<Badge variant="outline" className="text-xs">
-									{t("approved")}
+									{t("misc.jobCard.approved")}
 								</Badge>
 							</CardTitle>
 						</CardHeader>
@@ -160,7 +164,9 @@ export default async function JobCardPage({
 							)}
 							{Boolean(lastSuggestion.urgency) && (
 								<div className="mt-2 flex items-center gap-2">
-									<span className="text-xs text-gray-500">{t("urgency")}:</span>
+									<span className="text-xs text-gray-500">
+										{t("misc.jobCard.urgency")}:
+									</span>
 									<Badge
 										variant={
 											lastSuggestion.urgency === "high"
@@ -183,21 +189,21 @@ export default async function JobCardPage({
 						href={`/jobs/schedule?customer=${customer.id}&token=${params.token}`}
 					>
 						<Button className="w-full" size="lg">
-							📅 {t("schedule")} →
+							📅 {t("misc.jobCard.schedule")} →
 						</Button>
 					</Link>
 					<Link
 						href={`/invoices/draft?customer=${customer.id}&job=${job.id}&token=${params.token}`}
 					>
 						<Button variant="outline" className="w-full" size="lg">
-							💰 {t("draftInvoice")}
+							💰 {t("misc.jobCard.draftInvoice")}
 						</Button>
 					</Link>
 				</div>
 
 				{/* Footer */}
 				<div className="mt-8 text-center text-xs text-gray-500">
-					<p>{t("tokenExpires")}</p>
+					<p>{t("misc.jobCard.tokenExpires")}</p>
 					<p>
 						{Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")
 							.add({ hours: 24 })

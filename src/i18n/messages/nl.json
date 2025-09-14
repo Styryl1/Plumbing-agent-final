@@ -226,6 +226,9 @@
       "clearAll": "Alles wissen"
     }
   },
+  "error": {
+    "load": "Laden mislukt"
+  },
   "errors": {
     "title": "Fout",
     "general": "Er is iets misgegaan",
@@ -271,6 +274,7 @@
   },
   "invoices": {
     "actions": {
+      "cancel": "Annuleren",
       "pay": "Betalen",
       "markReviewed": "Markeer als Beoordeeld",
       "saveDraft": "Concept Opslaan",
@@ -471,7 +475,8 @@
         "title": "Veilige Modus"
       },
       "switchToFast": "Naar Snelle Modus",
-      "switchToSafe": "Naar Veilige Modus"
+      "switchToSafe": "Naar Veilige Modus",
+      "title": "Concept Factuur"
     },
     "errors": {
       "loadFailed": "Laden factuur mislukt"
@@ -486,7 +491,15 @@
         "description": "Beschrijving",
         "duration": "Duur",
         "employee": "Medewerker"
-      }
+      },
+      "title": "Importeren uit klus",
+      "description": "Klusgegevens importeren om factuur te maken",
+      "selectJob": "Klus selecteren",
+      "selectJobPlaceholder": "Kies een klus om uit te importeren...",
+      "laborConfig": "Arbeidsconfiguratie",
+      "laborHours": "Arbeidsuren",
+      "hourlyRate": "Uurtarief",
+      "import": "Klusgegevens importeren"
     },
     "lineAdded": "Regelitem toegevoegd",
     "lineItems": {
@@ -561,6 +574,50 @@
       "subtotal": "Subtotaal",
       "total": "Totaal",
       "vat": "BTW"
+    },
+    "createError": "Factuur aanmaken mislukt",
+    "importFromJob": "Importeren uit klus",
+    "form": {
+      "customer": {
+        "title": "Klantinformatie",
+        "label": "Klant",
+        "placeholder": "Selecteer een klant...",
+        "required": "Klant is verplicht"
+      },
+      "paymentTerms": {
+        "title": "Betalingstermijn",
+        "label": "Betalingstermijn (dagen)"
+      },
+      "lineItems": {
+        "title": "Factuurregels",
+        "add": "Regel toevoegen",
+        "empty": "Nog geen factuurregels",
+        "description": "Omschrijving",
+        "quantity": "Aantal",
+        "unitPrice": "Eenheidsprijs",
+        "vatRate": "BTW-tarief",
+        "lineTotal": "Regeltotaal",
+        "required": "Minimaal één factuurregel is verplicht"
+      },
+      "discount": {
+        "title": "Korting",
+        "percentage": "Korting %"
+      },
+      "totals": {
+        "title": "Totalen",
+        "subtotal": "Subtotaal",
+        "discount": "Korting",
+        "subtotalAfterDiscount": "Subtotaal na korting",
+        "vat": "BTW",
+        "total": "Totaal"
+      },
+      "notes": {
+        "title": "Opmerkingen",
+        "public": "Publieke opmerkingen",
+        "publicPlaceholder": "Opmerkingen zichtbaar voor klant...",
+        "internal": "Interne opmerkingen",
+        "internalPlaceholder": "Interne opmerkingen voor eigen gebruik..."
+      }
     }
   },
   "JobDrawer": {
@@ -927,6 +984,11 @@
       "withPaymentLinks": "WithPaymentLinks",
       "errors": "Errors"
     }
+  },
+  "meta": {
+    "title": "Paginatitel",
+    "description": "Paginabeschrijving",
+    "keywords": "trefwoorden"
   },
   "misc": {
     "app": {
@@ -1318,6 +1380,9 @@
       "whatsapp": "WhatsApp notificaties"
     }
   },
+  "panel": {
+    "title": "Paneel"
+  },
   "payment": {
     "status": "Betalingsstatus",
     "awaiting": "Wachtend op betaling",
@@ -1431,7 +1496,9 @@
         "invalid_token": "Ongeldig token",
         "not_connected": "Niet verbonden",
         "webhook_ok": "Webhook OK",
-        "webhook_error": "Webhook-fout"
+        "webhook_error": "Webhook-fout",
+        "security": "Beveiliging",
+        "webhook": "Webhook"
       },
       "onboard": {
         "back": "Terug",
@@ -1616,6 +1683,15 @@
       }
     }
   },
+  "states": {
+    "needs_action": "Actie vereist"
+  },
+  "stats": {
+    "total": "Totaal",
+    "thisMonth": "Deze maand",
+    "active": "Actief",
+    "archived": "Gearchiveerd"
+  },
   "system": {
     "app": {
       "title": "Loodgieter Agent"
@@ -1660,6 +1736,29 @@
       "locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen.",
       "legacy": "Oudere factuur"
     },
+    "common": {
+      "title": "Titel",
+      "description": "Beschrijving",
+      "back": "Terug",
+      "status": "Status",
+      "active": "Actief",
+      "approved": "Goedgekeurd",
+      "schedule": "Planning",
+      "when": "Wanneer",
+      "where": "Waar",
+      "customer": "Klant",
+      "issue": "Probleem",
+      "lastResponse": "Laatste reactie",
+      "comingSoon": "Binnenkort beschikbaar",
+      "draftInvoice": "Conceptfactuur",
+      "tokenExpires": "Token verloopt",
+      "dateUnknown": "Datum onbekend",
+      "timeUnknown": "Tijd onbekend",
+      "phoneUnknown": "Telefoon onbekend",
+      "addressUnknown": "Adres onbekend",
+      "urgency": "Urgentie",
+      "loading": "Laden..."
+    },
     "field": {
       "status": "Status",
       "customer": "Klant",
@@ -1680,7 +1779,8 @@
       "noEmployee": "Geen medewerker",
       "notes": "Opmerkingen",
       "primaryEmployee": "Hoofdmonteur",
-      "priority": {
+      "priority": "Prioriteit",
+      "priorityOptions": {
         "normal": "Normaal",
         "urgent": "Dringend",
         "emergency": "Noodgeval"

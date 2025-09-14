@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // src/app/layout.tsx
 import "~/lib/polyfills"; // must be first
 
@@ -8,14 +7,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { getLocale, getMessages } from "next-intl/server";
 import type { JSX } from "react";
 import { Temporal } from "temporal-polyfill";
 import { TrpcProvider } from "~/components/providers/TrpcProvider";
 import PilotModeBanner from "~/components/system/PilotModeBanner";
 import { Toaster } from "~/components/ui/sonner";
-import type { Locale } from "~/i18n";
-import SafeNextIntlClientProvider from "~/lib/i18n/SafeNextIntlClientProvider";
+import { type Locale, loadMessages } from "~/i18n";
+import { NextIntlClientProvider } from "~/i18n/client";
+import { resolveLocale } from "~/i18n/server";
 import { DashboardHeader } from "./(dashboard)/DashboardHeader";
 import TemporalPolyfill from "./TemporalPolyfill";
 
@@ -40,13 +39,15 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>): Promise<JSX.Element> {
-	// Get all serializable i18n config from server functions (configured via request.ts)
-	const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
+	// Get locale from Clerk user preference (with fallback chain) and load messages
+	const locale = await resolveLocale();
+	const messages = loadMessages(locale);
 
 	// Pin timezone and formats for invoice consistency (prevents hydration drift)
 	const pinnedTimeZone = "Europe/Amsterdam";
-	const nowMs =
-		Temporal.Now.zonedDateTimeISO(pinnedTimeZone).toInstant().epochMilliseconds;
+	const nowDate = new Date(
+		Temporal.Now.zonedDateTimeISO(pinnedTimeZone).toInstant().epochMilliseconds
+	);
 
 	// Dutch invoice formatting standards
 	const formats = {
@@ -75,23 +76,23 @@ export default async function RootLayout({
 				>
 					<TemporalPolyfill />
 					{/* Client: receives serializable props from server, adds function props */}
-					<SafeNextIntlClientProvider
+					<NextIntlClientProvider
 						locale={locale}
 						messages={messages}
 						timeZone={pinnedTimeZone}
-						now={nowMs}
+						now={nowDate}
 						formats={formats}
 					>
 						<TrpcProvider>
 							<div className="min-h-screen bg-background">
 								<PilotModeBanner />
-								<DashboardHeader initialLocale={locale as Locale} />
+								<DashboardHeader initialLocale={locale} />
 								<main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 									{children}
 								</main>
 							</div>
 						</TrpcProvider>
-					</SafeNextIntlClientProvider>
+					</NextIntlClientProvider>
 					<Toaster />
 				</body>
 			</html>

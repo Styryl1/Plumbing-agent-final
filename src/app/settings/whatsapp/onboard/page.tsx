@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -28,14 +26,14 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
+
+("use client");
 
 type Step = "prereqs" | "numbers" | "test" | "done";
 
 export default function WhatsAppOnboardPage(): JSX.Element {
-	const t = useT("settings.whatsapp.onboard");
-	const tHealth = useT("misc.health");
+	const t = useTranslations();
 
 	// Wizard state
 	const [currentStep, setCurrentStep] = useState<Step>("prereqs");
@@ -54,22 +52,28 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 	// Mutations
 	const seedMutation = api.waAdmin.seedTwoNumbers.useMutation({
 		onSuccess: () => {
-			toast.success(t("numbers.success"));
+			toast.success(t("settings.whatsapp.onboard.numbers.success"));
 			void refetchNumbers();
 			setCurrentStep("test");
 		},
 		onError: (error) => {
-			toast.error(`${t("numbers.error")}: ${error.message}`);
+			toast.error(
+				`${t("settings.whatsapp.onboard.numbers.error")}: ${error.message}`,
+			);
 		},
 	});
 
 	const sendMessageMutation = api.waAdmin.sendTestMessage.useMutation({
 		onSuccess: (result) => {
-			toast.success(`${t("test.success")}: ${result.message}`);
+			toast.success(
+				`${t("settings.whatsapp.onboard.test.success")}: ${result.message}`,
+			);
 			setCurrentStep("done");
 		},
 		onError: (error) => {
-			toast.error(`${t("test.error")}: ${error.message}`);
+			toast.error(
+				`${t("settings.whatsapp.onboard.test.error")}: ${error.message}`,
+			);
 		},
 	});
 
@@ -118,7 +122,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 	// Handle form submissions
 	const handleSeedNumbers = async (): Promise<void> => {
 		if (!businessId.trim() || !controlId.trim()) {
-			toast.error(t("numbers.validation"));
+			toast.error(t("settings.whatsapp.onboard.numbers.validation"));
 			return;
 		}
 
@@ -130,7 +134,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 
 	const handleTestMessage = async (): Promise<void> => {
 		if (!testPhone.trim()) {
-			toast.error(t("test.validation"));
+			toast.error(t("settings.whatsapp.onboard.test.validation"));
 			return;
 		}
 
@@ -142,10 +146,16 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 
 	// Step progress indicator
 	const steps: Array<{ id: Step; title: string }> = [
-		{ id: "prereqs", title: t("steps.prereqs.title") },
-		{ id: "numbers", title: t("steps.numbers.title") },
-		{ id: "test", title: t("steps.test.title") },
-		{ id: "done", title: t("steps.done.title") },
+		{
+			id: "prereqs",
+			title: t("settings.whatsapp.onboard.steps.prereqs.title"),
+		},
+		{
+			id: "numbers",
+			title: t("settings.whatsapp.onboard.steps.numbers.title"),
+		},
+		{ id: "test", title: t("settings.whatsapp.onboard.steps.test.title") },
+		{ id: "done", title: t("settings.whatsapp.onboard.steps.done.title") },
 	];
 
 	const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
@@ -158,12 +168,16 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 					<Link href="/settings/whatsapp">
 						<Button variant="ghost" size="sm">
 							<ArrowLeft className="h-4 w-4 mr-2" />
-							{t("back")}
+							{t("settings.whatsapp.onboard.back")}
 						</Button>
 					</Link>
 				</div>
-				<h1 className="text-3xl font-bold">{t("title")}</h1>
-				<p className="text-muted-foreground mt-2">{t("description")}</p>
+				<h1 className="text-3xl font-bold">
+					{t("settings.whatsapp.onboard.title")}
+				</h1>
+				<p className="text-muted-foreground mt-2">
+					{t("settings.whatsapp.onboard.description")}
+				</p>
 			</div>
 
 			{/* Progress Steps */}
@@ -198,16 +212,20 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<Shield className="h-5 w-5" />
-							{t("prereqs.title")}
+							{t("settings.whatsapp.onboard.prereqs.title")}
 						</CardTitle>
-						<CardDescription>{t("prereqs.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.onboard.prereqs.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						{health && (
 							<>
 								{/* Webhook URL */}
 								<div className="space-y-2">
-									<Label>{t("prereqs.webhookUrl")}</Label>
+									<Label>
+										{t("settings.whatsapp.onboard.prereqs.webhookUrl")}
+									</Label>
 									<div className="flex gap-2">
 										<Input
 											value={health.webhookUrl ?? ""}
@@ -231,13 +249,15 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 										</Button>
 									</div>
 									<p className="text-xs text-muted-foreground">
-										{t("prereqs.webhookHelp")}
+										{t("settings.whatsapp.onboard.prereqs.webhookHelp")}
 									</p>
 								</div>
 
 								{/* Verify Token */}
 								<div className="space-y-2">
-									<Label>{t("prereqs.verifyToken")}</Label>
+									<Label>
+										{t("settings.whatsapp.onboard.prereqs.verifyToken")}
+									</Label>
 									<div className="flex gap-2">
 										<Input
 											value={health.verifyToken ?? ""}
@@ -261,7 +281,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 										</Button>
 									</div>
 									<p className="text-xs text-muted-foreground">
-										{t("prereqs.tokenHelp")}
+										{t("settings.whatsapp.onboard.prereqs.tokenHelp")}
 									</p>
 								</div>
 
@@ -269,7 +289,9 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 
 								{/* Health Status */}
 								<div className="space-y-3">
-									<h4 className="font-medium">{tHealth("title")}</h4>
+									<h4 className="font-medium">
+										{t("settings.whatsapp.onboard.done.healthSummary")}
+									</h4>
 
 									<div className="flex items-center justify-between p-3 border rounded-lg">
 										<div className="flex items-center gap-3">
@@ -278,12 +300,16 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 											) : (
 												<div className="h-5 w-5 rounded-full bg-red-500" />
 											)}
-											<span className="font-medium">{tHealth("secret")}</span>
+											<span className="font-medium">
+												{t("settings.whatsapp.health.security")}
+											</span>
 										</div>
 										<Badge
 											variant={health.secretOk ? "default" : "destructive"}
 										>
-											{health.secretOk ? tHealth("ok") : tHealth("missing")}
+											{health.secretOk
+												? t("settings.whatsapp.health.ok")
+												: t("settings.whatsapp.health.invalid_token")}
 										</Badge>
 									</div>
 
@@ -294,14 +320,16 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 											) : (
 												<div className="h-5 w-5 rounded-full bg-red-500" />
 											)}
-											<span className="font-medium">{tHealth("webhook")}</span>
+											<span className="font-medium">
+												{t("settings.whatsapp.health.webhook")}
+											</span>
 										</div>
 										<Badge
 											variant={health.webhookOk ? "default" : "destructive"}
 										>
 											{health.webhookOk
-												? tHealth("ok")
-												: tHealth("unreachable")}
+												? t("settings.whatsapp.health.webhook_ok")
+												: t("settings.whatsapp.health.webhook_error")}
 										</Badge>
 									</div>
 								</div>
@@ -313,7 +341,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 								onClick={goNext}
 								disabled={!health || !health.secretOk || !health.webhookOk}
 							>
-								{t("next")}
+								{t("settings.whatsapp.onboard.next")}
 								<ArrowRight className="h-4 w-4 ml-2" />
 							</Button>
 						</div>
@@ -326,14 +354,18 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<Phone className="h-5 w-5" />
-							{t("numbers.title")}
+							{t("settings.whatsapp.onboard.numbers.title")}
 						</CardTitle>
-						<CardDescription>{t("numbers.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.onboard.numbers.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="space-y-3">
 							<div>
-								<Label htmlFor="businessId">{t("numbers.businessLabel")}</Label>
+								<Label htmlFor="businessId">
+									{t("settings.whatsapp.onboard.numbers.businessLabel")}
+								</Label>
 								<Input
 									id="businessId"
 									value={businessId}
@@ -344,12 +376,14 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 									className="mt-1"
 								/>
 								<p className="text-xs text-muted-foreground mt-1">
-									{t("numbers.businessHelp")}
+									{t("settings.whatsapp.onboard.numbers.businessHelp")}
 								</p>
 							</div>
 
 							<div>
-								<Label htmlFor="controlId">{t("numbers.controlLabel")}</Label>
+								<Label htmlFor="controlId">
+									{t("settings.whatsapp.onboard.numbers.controlLabel")}
+								</Label>
 								<Input
 									id="controlId"
 									value={controlId}
@@ -360,7 +394,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 									className="mt-1"
 								/>
 								<p className="text-xs text-muted-foreground mt-1">
-									{t("numbers.controlHelp")}
+									{t("settings.whatsapp.onboard.numbers.controlHelp")}
 								</p>
 							</div>
 						</div>
@@ -373,7 +407,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 								variant="outline"
 							>
 								<ArrowLeft className="h-4 w-4 mr-2" />
-								{t("back")}
+								{t("settings.whatsapp.onboard.back")}
 							</Button>
 							<Button
 								onClick={() => {
@@ -388,7 +422,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 								{seedMutation.isPending && (
 									<div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
 								)}
-								{t("numbers.save")}
+								{t("settings.whatsapp.onboard.numbers.save")}
 								<ArrowRight className="h-4 w-4 ml-2" />
 							</Button>
 						</div>
@@ -401,14 +435,18 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<Send className="h-5 w-5" />
-							{t("test.title")}
+							{t("settings.whatsapp.onboard.test.title")}
 						</CardTitle>
-						<CardDescription>{t("test.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.onboard.test.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="space-y-3">
 							<div>
-								<Label htmlFor="testPhone">{t("test.phoneLabel")}</Label>
+								<Label htmlFor="testPhone">
+									{t("settings.whatsapp.onboard.test.phoneLabel")}
+								</Label>
 								<Input
 									id="testPhone"
 									value={testPhone}
@@ -419,23 +457,27 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 									className="mt-1"
 								/>
 								<p className="text-xs text-muted-foreground mt-1">
-									{t("test.phoneHelp")}
+									{t("settings.whatsapp.onboard.test.phoneHelp")}
 								</p>
 							</div>
 
 							<div>
-								<Label htmlFor="testMessage">{t("test.messageLabel")}</Label>
+								<Label htmlFor="testMessage">
+									{t("settings.whatsapp.onboard.test.messageLabel")}
+								</Label>
 								<Input
 									id="testMessage"
 									value={testMessage}
 									onChange={(e) => {
 										setTestMessage(e.target.value);
 									}}
-									placeholder={t("test.messagePlaceholder")}
+									placeholder={t(
+										"settings.whatsapp.onboard.test.messagePlaceholder",
+									)}
 									className="mt-1"
 								/>
 								<p className="text-xs text-muted-foreground mt-1">
-									{t("test.messageHelp")}
+									{t("settings.whatsapp.onboard.test.messageHelp")}
 								</p>
 							</div>
 						</div>
@@ -444,7 +486,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 						{numbers && numbers.items.length > 0 && (
 							<div className="border rounded-lg p-3 bg-muted/50">
 								<h4 className="text-sm font-medium mb-2">
-									{t("test.configured")}
+									{t("settings.whatsapp.onboard.test.configured")}
 								</h4>
 								<div className="space-y-1">
 									{numbers.items.map((num) => (
@@ -475,7 +517,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 								variant="outline"
 							>
 								<ArrowLeft className="h-4 w-4 mr-2" />
-								{t("back")}
+								{t("settings.whatsapp.onboard.back")}
 							</Button>
 							<Button
 								onClick={() => {
@@ -487,7 +529,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 									<div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
 								)}
 								<Send className="h-4 w-4 mr-2" />
-								{t("test.send")}
+								{t("settings.whatsapp.onboard.test.send")}
 							</Button>
 						</div>
 					</CardContent>
@@ -499,18 +541,20 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
 							<CheckCircle2 className="h-5 w-5 text-green-500" />
-							{t("done.title")}
+							{t("settings.whatsapp.onboard.done.title")}
 						</CardTitle>
-						<CardDescription>{t("done.description")}</CardDescription>
+						<CardDescription>
+							{t("settings.whatsapp.onboard.done.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="text-center py-6">
 							<Wifi className="h-12 w-12 mx-auto text-green-500 mb-4" />
 							<h3 className="text-lg font-semibold mb-2">
-								{t("done.success")}
+								{t("settings.whatsapp.onboard.done.success")}
 							</h3>
 							<p className="text-muted-foreground mb-4">
-								{t("done.successDescription")}
+								{t("settings.whatsapp.onboard.done.successDescription")}
 							</p>
 						</div>
 
@@ -518,25 +562,25 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 						{health && (
 							<div className="border rounded-lg p-4 bg-green-50 dark:bg-green-950/20">
 								<h4 className="font-medium text-green-800 dark:text-green-200 mb-3">
-									{t("done.healthSummary")}
+									{t("settings.whatsapp.onboard.done.healthSummary")}
 								</h4>
 								<div className="grid grid-cols-3 gap-4 text-sm">
 									<div className="text-center">
 										<CheckCircle2 className="h-5 w-5 text-green-500 mx-auto mb-1" />
 										<div className="text-green-700 dark:text-green-300">
-											{t("done.environment")}
+											{t("settings.whatsapp.onboard.done.environment")}
 										</div>
 									</div>
 									<div className="text-center">
 										<CheckCircle2 className="h-5 w-5 text-green-500 mx-auto mb-1" />
 										<div className="text-green-700 dark:text-green-300">
-											{t("done.webhook")}
+											{t("settings.whatsapp.onboard.done.webhook")}
 										</div>
 									</div>
 									<div className="text-center">
 										<CheckCircle2 className="h-5 w-5 text-green-500 mx-auto mb-1" />
 										<div className="text-green-700 dark:text-green-300">
-											{t("done.security")}
+											{t("settings.whatsapp.onboard.done.security")}
 										</div>
 									</div>
 								</div>
@@ -547,7 +591,7 @@ export default function WhatsAppOnboardPage(): JSX.Element {
 							<Button asChild>
 								<Link href="/settings/whatsapp">
 									<ExternalLink className="h-4 w-4 mr-2" />
-									{t("done.goToSettings")}
+									{t("settings.whatsapp.onboard.done.goToSettings")}
 								</Link>
 							</Button>
 						</div>

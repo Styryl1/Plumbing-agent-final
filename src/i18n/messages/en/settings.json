@@ -179,7 +179,9 @@
 			"invalid_token": "Invalid token",
 			"not_connected": "Not connected",
 			"webhook_ok": "Webhook OK",
-			"webhook_error": "Webhook error"
+			"webhook_error": "Webhook error",
+			"security": "Security",
+			"webhook": "Webhook"
 		}
 	}
 }

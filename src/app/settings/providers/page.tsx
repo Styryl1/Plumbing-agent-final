@@ -1,5 +1,3 @@
-"use client";
-
 import { Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -11,11 +9,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
 
+("use client");
+
 export default function ProvidersSettingsPage(): JSX.Element {
-	const t = useT("providers");
+	const t = useTranslations();
 
 	// Get Moneybird health status
 	const {
@@ -74,16 +73,18 @@ export default function ProvidersSettingsPage(): JSX.Element {
 			<div>
 				<h1 className="text-3xl font-bold flex items-center gap-2">
 					<Settings className="h-8 w-8" />
-					{t("panel.title")}
+					{t("providers.panel.title")}
 				</h1>
-				<p className="text-muted-foreground mt-2">{t("panel.description")}</p>
+				<p className="text-muted-foreground mt-2">
+					{t("providers.panel.description")}
+				</p>
 			</div>
 
 			{/* Overview Card */}
 			<Card>
 				<CardHeader>
-					<CardTitle>{t("panel.title")}</CardTitle>
-					<CardDescription>{t("panel.note")}</CardDescription>
+					<CardTitle>{t("providers.panel.title")}</CardTitle>
+					<CardDescription>{t("providers.panel.note")}</CardDescription>
 				</CardHeader>
 			</Card>
 
@@ -103,30 +104,38 @@ export default function ProvidersSettingsPage(): JSX.Element {
 				<Card className="opacity-60">
 					<CardHeader>
 						<CardTitle className="flex items-center justify-between">
-							{t("wefact.title")}
+							{t("providers.wefact.title")}
 							<span className="text-sm text-muted-foreground">
-								{t("states.needs_action")}
+								{t("providers.states.needs_action")}
 							</span>
 						</CardTitle>
-						<CardDescription>{t("wefact.description")}</CardDescription>
+						<CardDescription>
+							{t("providers.wefact.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<p className="text-sm text-muted-foreground">{t("comingSoon")}</p>
+						<p className="text-sm text-muted-foreground">
+							{t("providers.comingSoon")}
+						</p>
 					</CardContent>
 				</Card>
 
 				<Card className="opacity-60">
 					<CardHeader>
 						<CardTitle className="flex items-center justify-between">
-							{t("eboekhouden.title")}
+							{t("providers.eboekhouden.title")}
 							<span className="text-sm text-muted-foreground">
-								{t("states.needs_action")}
+								{t("providers.states.needs_action")}
 							</span>
 						</CardTitle>
-						<CardDescription>{t("eboekhouden.description")}</CardDescription>
+						<CardDescription>
+							{t("providers.eboekhouden.description")}
+						</CardDescription>
 					</CardHeader>
 					<CardContent>
-						<p className="text-sm text-muted-foreground">{t("comingSoon")}</p>
+						<p className="text-sm text-muted-foreground">
+							{t("providers.comingSoon")}
+						</p>
 					</CardContent>
 				</Card>
 			</div>

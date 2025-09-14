@@ -1,9 +1,9 @@
-"use client";
-
 import { SignIn } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useT } from "~/i18n/client";
+
+("use client");
 
 export default function SignInPage(): JSX.Element {
 	const tMisc = useT("misc");

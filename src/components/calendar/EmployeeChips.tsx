@@ -1,6 +1,4 @@
-"use client";
-import { useTranslations } from "next-intl";
-
+'use client';
 import type { JSX } from "react";
 import { useEffect } from "react";
 import { cn } from "~/lib/utils";

@@ -1,5 +1,3 @@
-"use client";
-
 import { AlertTriangle, ExternalLink, Lock, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -16,6 +14,8 @@ import {
 } from "~/components/ui/card";
 import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
+
+("use client");
 
 interface IssueActionsProps {
 	invoiceId: string;

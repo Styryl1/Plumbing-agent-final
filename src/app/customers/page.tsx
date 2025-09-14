@@ -1,5 +1,3 @@
-"use client";
-
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -14,16 +12,16 @@ import {
 	CardTitle,
 } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
 import type { CustomerDTO } from "~/types/customer";
 import CustomerCreateDialog from "./CustomerCreateDialog";
 import CustomerEditDialog from "./CustomerEditDialog";
 import CustomersTable from "./CustomersTable";
 
+("use client");
+
 export default function CustomersPage(): JSX.Element {
-	const t = useT("customers");
-	const tCommon = useT("common");
+	const t = useTranslations();
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 	const [editingCustomer, setEditingCustomer] = useState<
 		CustomerDTO | undefined
@@ -103,8 +101,12 @@ export default function CustomersPage(): JSX.Element {
 			{/* Header */}
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
-					<p className="mt-2 text-muted-foreground">{t("description")}</p>
+					<h1 className="text-3xl font-bold text-foreground">
+						{t("customers.title")}
+					</h1>
+					<p className="mt-2 text-muted-foreground">
+						{t("customers.description")}
+					</p>
 				</div>
 
 				<Button
@@ -113,7 +115,7 @@ export default function CustomersPage(): JSX.Element {
 					}}
 				>
 					<Plus className="mr-2 h-4 w-4" />
-					{t("addNew")}
+					{t("customers.addNew")}
 				</Button>
 			</div>
 
@@ -198,25 +200,25 @@ export default function CustomersPage(): JSX.Element {
 			<Tabs defaultValue="active" className="space-y-4">
 				<TabsList>
 					<TabsTrigger value="active">
-						{t("title")} ({stats.active})
+						{t("customers.title")} ({stats.active})
 					</TabsTrigger>
 					<TabsTrigger value="archived">
-						{t("archived.tab")} ({stats.archived})
+						{t("customers.archived.tab")} ({stats.archived})
 					</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="active" className="space-y-4">
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("title")}</CardTitle>
-							<CardDescription>{t("description")}</CardDescription>
+							<CardTitle>{t("customers.title")}</CardTitle>
+							<CardDescription>{t("customers.description")}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{isLoading ? (
 								<div className="flex h-48 items-center justify-center">
 									<div className="text-center">
 										<div className="text-lg font-medium text-muted-foreground">
-											{tCommon("loading")}
+											{t("ui.common.loading")}
 										</div>
 									</div>
 								</div>
@@ -236,8 +238,10 @@ export default function CustomersPage(): JSX.Element {
 				<TabsContent value="archived" className="space-y-4">
 					<Card>
 						<CardHeader>
-							<CardTitle>{t("archived.title")}</CardTitle>
-							<CardDescription>{t("archived.description")}</CardDescription>
+							<CardTitle>{t("customers.archived.title")}</CardTitle>
+							<CardDescription>
+								{t("customers.archived.description")}
+							</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{errorArchived ? (
@@ -255,7 +259,7 @@ export default function CustomersPage(): JSX.Element {
 								<div className="flex h-48 items-center justify-center">
 									<div className="text-center">
 										<div className="text-lg font-medium text-muted-foreground">
-											{tCommon("loading")}
+											{t("ui.common.loading")}
 										</div>
 									</div>
 								</div>

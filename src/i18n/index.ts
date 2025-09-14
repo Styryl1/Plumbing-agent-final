@@ -22,7 +22,7 @@ function deepMergeMessages(
 		if (value !== null && typeof value === "object" && !Array.isArray(value)) {
 			// Recursively merge nested objects
 			result[key] = deepMergeMessages(
-				(source[key] as Record<string, unknown>) || {},
+				(source[key] as Record<string, unknown> | undefined) ?? {},
 				value as Record<string, unknown>,
 			);
 		} else {

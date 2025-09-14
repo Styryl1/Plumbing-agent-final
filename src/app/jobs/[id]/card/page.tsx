@@ -16,7 +16,7 @@ interface JobCardPageProps {
 export default async function JobCardPage({
 	params,
 }: JobCardPageProps): Promise<JSX.Element> {
-	const t = await getTranslations("misc.job_card_mobile");
+	const t = await getTranslations();
 	const jobId = params.id;
 
 	try {
@@ -34,18 +34,18 @@ export default async function JobCardPage({
 			? format(startTime.toPlainDate().toString(), "EEEE d MMMM yyyy", {
 					locale: nl,
 				})
-			: t("dateUnknown");
+			: t("misc.job_card_mobile.dateUnknown");
 		const timeStr =
 			startTime && endTime
 				? `${format(startTime.toString(), "HH:mm")} - ${format(endTime.toString(), "HH:mm")}`
-				: t("timeUnknown");
+				: t("misc.job_card_mobile.timeUnknown");
 
 		// Extract customer info
 		const customer = job.customer;
-		const maskedPhone = t("phoneUnknown"); // Phone not available in JobDTO customer
+		const maskedPhone = t("misc.job_card_mobile.phoneUnknown"); // Phone not available in JobDTO customer
 
 		// Build complete address - use job address
-		const fullAddress = job.address || t("addressUnknown");
+		const fullAddress = job.address || t("misc.job_card_mobile.addressUnknown");
 
 		// Extract urgency from job description or title
 		const isUrgent = job.title.includes("⚡") || job.priority === "urgent";
@@ -57,7 +57,7 @@ export default async function JobCardPage({
 					<div className="text-center">
 						<h1 className="text-2xl font-bold text-gray-900">
 							{isUrgent && "⚡ "}
-							{t("title")}
+							{t("misc.job_card_mobile.title")}
 						</h1>
 						<p className="text-sm text-gray-600">#{jobId.substring(0, 8)}...</p>
 					</div>
@@ -70,14 +70,18 @@ export default async function JobCardPage({
 						<CardContent className="space-y-4">
 							{/* When */}
 							<div>
-								<h3 className="font-semibold text-gray-700">{t("when")}</h3>
+								<h3 className="font-semibold text-gray-700">
+									{t("misc.job_card_mobile.when")}
+								</h3>
 								<p className="text-gray-900">{dateStr}</p>
 								<p className="text-gray-600">{timeStr}</p>
 							</div>
 
 							{/* Where */}
 							<div>
-								<h3 className="font-semibold text-gray-700">{t("where")}</h3>
+								<h3 className="font-semibold text-gray-700">
+									{t("misc.job_card_mobile.where")}
+								</h3>
 								<p className="text-gray-900">{fullAddress}</p>
 							</div>
 
@@ -85,7 +89,7 @@ export default async function JobCardPage({
 							{customer && (
 								<div>
 									<h3 className="font-semibold text-gray-700">
-										{t("customer")}
+										{t("misc.job_card_mobile.customer")}
 									</h3>
 									<p className="text-gray-900">{customer.name}</p>
 									<p className="text-gray-600">{maskedPhone}</p>
@@ -95,7 +99,9 @@ export default async function JobCardPage({
 							{/* Issue Summary */}
 							{job.description && (
 								<div>
-									<h3 className="font-semibold text-gray-700">{t("issue")}</h3>
+									<h3 className="font-semibold text-gray-700">
+										{t("misc.job_card_mobile.issue")}
+									</h3>
 									<p className="text-gray-900 text-sm leading-relaxed">
 										{job.description
 											.split("\n")
@@ -113,7 +119,9 @@ export default async function JobCardPage({
 
 							{/* Status */}
 							<div>
-								<h3 className="font-semibold text-gray-700">{t("status")}</h3>
+								<h3 className="font-semibold text-gray-700">
+									{t("misc.job_card_mobile.status")}
+								</h3>
 								<span
 									className={`inline-block px-2 py-1 text-xs rounded-full ${
 										job.status === "planned"
@@ -126,12 +134,12 @@ export default async function JobCardPage({
 									}`}
 								>
 									{job.status === "planned"
-										? t("statusValues.planned")
+										? t("misc.job_card_mobile.statusValues.planned")
 										: job.status === "in_progress"
-											? t("statusValues.in_progress")
+											? t("misc.job_card_mobile.statusValues.in_progress")
 											: job.status === "done"
-												? t("statusValues.done")
-												: t("statusValues.unknown")}
+												? t("misc.job_card_mobile.statusValues.done")
+												: t("misc.job_card_mobile.statusValues.unknown")}
 								</span>
 							</div>
 						</CardContent>
@@ -145,19 +153,19 @@ export default async function JobCardPage({
 									href={`/jobs?date=${startTime.toPlainDate().toString()}&focus=${jobId}`}
 									className="flex items-center justify-center gap-2"
 								>
-									{t("openCalendar")}
+									{t("misc.job_card_mobile.openCalendar")}
 								</a>
 							</Button>
 						)}
 
 						<Button variant="outline" asChild className="w-full" size="lg">
-							<a href="/jobs">{t("backToJobs")}</a>
+							<a href="/jobs">{t("misc.job_card_mobile.backToJobs")}</a>
 						</Button>
 					</div>
 
 					{/* Footer info */}
 					<div className="text-center text-xs text-gray-500 pt-4">
-						{t("readOnlyNotice")}
+						{t("misc.job_card_mobile.readOnlyNotice")}
 					</div>
 				</div>
 			</main>

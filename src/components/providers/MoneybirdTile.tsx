@@ -1,5 +1,3 @@
-"use client";
-
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -12,7 +10,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
+
+("use client");
 
 interface MoneybirdTileProps {
 	status: "ok" | "invalid_token" | "not_connected";
@@ -42,11 +41,11 @@ export function MoneybirdTile({
 	onDisconnect,
 	details,
 }: MoneybirdTileProps): JSX.Element {
-	const t = useT("providers.moneybird");
+	const t = useTranslations();
 
 	const renderStatusBadge = (): JSX.Element => {
 		const variant = getStatusBadgeVariant(status);
-		const statusKey = `health.${status}` as const;
+		const statusKey = `providers.moneybird.health.${status}` as const;
 
 		return <Badge variant={variant}>{t(statusKey)}</Badge>;
 	};
@@ -57,7 +56,7 @@ export function MoneybirdTile({
 				return (
 					<Button onClick={onConnect} className="flex items-center gap-2">
 						<ExternalLink className="h-4 w-4" />
-						{t("connect")}
+						{t("providers.moneybird.connect")}
 					</Button>
 				);
 			case "invalid_token":
@@ -69,10 +68,10 @@ export function MoneybirdTile({
 							className="flex items-center gap-2"
 						>
 							<ExternalLink className="h-4 w-4" />
-							{t("reconnect")}
+							{t("providers.moneybird.reconnect")}
 						</Button>
 						<p className="text-sm text-muted-foreground">
-							{t("reconnectHelper")}
+							{t("providers.moneybird.reconnectHelper")}
 						</p>
 					</div>
 				);
@@ -86,11 +85,11 @@ export function MoneybirdTile({
 								className="flex items-center gap-2"
 							>
 								<ExternalLink className="h-4 w-4" />
-								{t("openDashboard")}
+								{t("providers.moneybird.openDashboard")}
 							</Button>
 							{onDisconnect && (
 								<Button variant="ghost" onClick={onDisconnect} size="sm">
-									{t("disconnect")}
+									{t("providers.moneybird.disconnect")}
 								</Button>
 							)}
 						</div>
@@ -107,10 +106,12 @@ export function MoneybirdTile({
 			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 				<div>
 					<CardTitle className="flex items-center gap-2">
-						{t("title")}
+						{t("providers.moneybird.title")}
 						{renderStatusBadge()}
 					</CardTitle>
-					<CardDescription>{t("description")}</CardDescription>
+					<CardDescription>
+						{t("providers.moneybird.description")}
+					</CardDescription>
 				</div>
 			</CardHeader>
 			<CardContent>{renderActions()}</CardContent>

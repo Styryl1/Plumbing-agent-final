@@ -226,6 +226,9 @@
       "clearAll": "Clear all"
     }
   },
+  "error": {
+    "load": "Failed to load"
+  },
   "errors": {
     "title": "Error",
     "general": "Something went wrong",
@@ -271,6 +274,7 @@
   },
   "invoices": {
     "actions": {
+      "cancel": "Cancel",
       "pay": "Pay",
       "markReviewed": "Mark as Reviewed",
       "saveDraft": "Save Draft",
@@ -471,7 +475,8 @@
         "title": "Safe Mode"
       },
       "switchToFast": "Switch to Fast Mode",
-      "switchToSafe": "Switch to Safe Mode"
+      "switchToSafe": "Switch to Safe Mode",
+      "title": "Draft Invoice"
     },
     "errors": {
       "loadFailed": "Failed to load invoice"
@@ -486,7 +491,15 @@
         "description": "Description",
         "duration": "Duration",
         "employee": "Employee"
-      }
+      },
+      "title": "Import from Job",
+      "description": "Import job details to create invoice",
+      "selectJob": "Select job",
+      "selectJobPlaceholder": "Choose a job to import from...",
+      "laborConfig": "Labor Configuration",
+      "laborHours": "Labor hours",
+      "hourlyRate": "Hourly rate",
+      "import": "Import job data"
     },
     "lineAdded": "Line item added",
     "lineItems": {
@@ -561,6 +574,50 @@
       "subtotal": "Subtotal",
       "total": "Total",
       "vat": "VAT"
+    },
+    "createError": "Failed to create invoice",
+    "importFromJob": "Import from job",
+    "form": {
+      "customer": {
+        "title": "Customer Information",
+        "label": "Customer",
+        "placeholder": "Select a customer...",
+        "required": "Customer is required"
+      },
+      "paymentTerms": {
+        "title": "Payment Terms",
+        "label": "Payment terms (days)"
+      },
+      "lineItems": {
+        "title": "Line Items",
+        "add": "Add line item",
+        "empty": "No line items yet",
+        "description": "Description",
+        "quantity": "Quantity",
+        "unitPrice": "Unit price",
+        "vatRate": "VAT rate",
+        "lineTotal": "Line total",
+        "required": "At least one line item is required"
+      },
+      "discount": {
+        "title": "Discount",
+        "percentage": "Discount %"
+      },
+      "totals": {
+        "title": "Totals",
+        "subtotal": "Subtotal",
+        "discount": "Discount",
+        "subtotalAfterDiscount": "Subtotal after discount",
+        "vat": "VAT",
+        "total": "Total"
+      },
+      "notes": {
+        "title": "Notes",
+        "public": "Public notes",
+        "publicPlaceholder": "Notes visible to customer...",
+        "internal": "Internal notes",
+        "internalPlaceholder": "Internal notes for your reference..."
+      }
     }
   },
   "JobDrawer": {
@@ -927,6 +984,11 @@
       }
     },
     "current_hours": "Current hours per week"
+  },
+  "meta": {
+    "title": "Page title",
+    "description": "Page description",
+    "keywords": "keywords"
   },
   "misc": {
     "app": {
@@ -1318,6 +1380,9 @@
       "whatsapp": "WhatsApp notifications"
     }
   },
+  "panel": {
+    "title": "Panel"
+  },
   "payment": {
     "status": "Payment Status",
     "awaiting": "Awaiting Payment",
@@ -1612,9 +1677,20 @@
         "invalid_token": "Invalid token",
         "not_connected": "Not connected",
         "webhook_ok": "Webhook OK",
-        "webhook_error": "Webhook error"
+        "webhook_error": "Webhook error",
+        "security": "Security",
+        "webhook": "Webhook"
       }
     }
+  },
+  "states": {
+    "needs_action": "Needs action"
+  },
+  "stats": {
+    "total": "Total",
+    "thisMonth": "This month",
+    "active": "Active",
+    "archived": "Archived"
   },
   "system": {
     "app": {
@@ -1660,6 +1736,29 @@
       "locked_tooltip": "Feature locked for your plan. Enable it in Settings.",
       "legacy": "Legacy"
     },
+    "common": {
+      "title": "Title",
+      "description": "Description",
+      "back": "Back",
+      "status": "Status",
+      "active": "Active",
+      "approved": "Approved",
+      "schedule": "Schedule",
+      "when": "When",
+      "where": "Where",
+      "customer": "Customer",
+      "issue": "Issue",
+      "lastResponse": "Last response",
+      "comingSoon": "Coming soon",
+      "draftInvoice": "Draft invoice",
+      "tokenExpires": "Token expires",
+      "dateUnknown": "Date unknown",
+      "timeUnknown": "Time unknown",
+      "phoneUnknown": "Phone unknown",
+      "addressUnknown": "Address unknown",
+      "urgency": "Urgency",
+      "loading": "Loading..."
+    },
     "field": {
       "status": "Status",
       "customer": "Customer",
@@ -1680,7 +1779,8 @@
       "noEmployee": "No employee",
       "notes": "Notes",
       "primaryEmployee": "Primary Employee",
-      "priority": {
+      "priority": "Priority",
+      "priorityOptions": {
         "normal": "Normal",
         "urgent": "Urgent",
         "emergency": "Emergency"

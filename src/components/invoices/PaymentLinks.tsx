@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Copy,
 	CreditCard,
@@ -22,6 +20,8 @@ import {
 import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
 
+("use client");
+
 interface PaymentLinksProps {
 	paymentUrl?: string | null | undefined;
 	pdfUrl?: string | null | undefined;
@@ -40,8 +40,6 @@ export function PaymentLinks({
 	customerPhone,
 }: PaymentLinksProps): JSX.Element {
 	const tPay = useT("payment");
-	const tNote = useT("notifications");
-	const tErr = useT("errors");
 	const tAct = useT("actions");
 	const tInv = useT("invoices");
 	const tSys = useT("system");

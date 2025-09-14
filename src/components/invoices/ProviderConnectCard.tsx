@@ -1,5 +1,3 @@
-"use client";
-
 import { AlertCircle, CheckCircle, Settings, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -13,7 +11,8 @@ import {
 	CardTitle,
 } from "~/components/ui/card";
 import { useProviderHealth } from "~/hooks/useProviderHealth";
-import { useT } from "~/i18n/client";
+
+("use client");
 
 type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";
 
@@ -28,29 +27,29 @@ interface ProviderConnectCardProps {
 export default function ProviderConnectCard({
 	id,
 }: ProviderConnectCardProps): JSX.Element {
-	const t = useT("providers");
+	const t = useTranslations();
 	const health = useProviderHealth(id);
 
 	// Provider metadata
 	const providerConfig = {
 		moneybird: {
 			name: "Moneybird",
-			description: t("moneybird.description"),
+			description: t("providers.moneybird.description"),
 			connectUrl: "/api/providers/moneybird/oauth/start",
 		},
 		wefact: {
 			name: "WeFact",
-			description: t("wefact.description"),
+			description: t("providers.wefact.description"),
 			connectUrl: "/providers/wefact/setup", // Would be implemented later
 		},
 		eboekhouden: {
 			name: "e-Boekhouden.nl",
-			description: t("eboekhouden.description"),
+			description: t("providers.eboekhouden.description"),
 			connectUrl: "/providers/eboekhouden/setup", // Would be implemented later
 		},
 		peppol: {
 			name: "Peppol",
-			description: t("peppol.description"),
+			description: t("providers.peppol.description"),
 			connectUrl: "/providers/peppol/setup", // Would be implemented later
 		},
 	};
@@ -67,7 +66,7 @@ export default function ProviderConnectCard({
 			return {
 				state: "connected",
 				icon: <CheckCircle className="h-5 w-5 text-green-600" />,
-				actionText: t("actions.configure"),
+				actionText: t("providers.actions.configure"),
 			};
 		}
 
@@ -75,14 +74,14 @@ export default function ProviderConnectCard({
 			return {
 				state: "needs_action",
 				icon: <AlertCircle className="h-5 w-5 text-yellow-600" />,
-				actionText: t("actions.connect"),
+				actionText: t("providers.actions.connect"),
 			};
 		}
 
 		return {
 			state: "error",
 			icon: <XCircle className="h-5 w-5 text-red-600" />,
-			actionText: t("actions.fix"),
+			actionText: t("providers.actions.fix"),
 		};
 	};
 
@@ -127,7 +126,7 @@ export default function ProviderConnectCard({
 					{/* Additional info for connected providers */}
 					{state === "connected" && (
 						<div className="text-xs text-muted-foreground">
-							{t("connected.description")}
+							{t("providers.connected.description")}
 						</div>
 					)}
 				</div>

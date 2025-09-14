@@ -144,11 +144,18 @@ export default [
         "name": "Date", 
         "message": "Use Temporal.* instead - required for Europe/Amsterdam timezone handling" 
       }],
-      "no-restricted-imports": ["error", { 
-        "paths": [{ 
-          "name": "moment", 
-          "message": "Use Temporal.* instead - moment.js is deprecated for new projects" 
-        }] 
+      "no-restricted-imports": ["error", {
+        "paths": [
+          {
+            "name": "moment",
+            "message": "Use Temporal.* instead - moment.js is deprecated for new projects"
+          },
+          {
+            "name": "next-intl",
+            "importNames": ["useT"],
+            "message": "useT is banned. Use a single root translator: const t = useTranslations();"
+          }
+        ]
       }],
 
       // ESLint comments guard (BAN ALL DISABLES)
@@ -198,7 +205,7 @@ export default [
       "logical-assignment-operators": ["error", "always", { enforceForIfStatements: true }],
 
       // Ban || as a defaulting operator in assignments & var inits (still allowed in explicit boolean logic)
-      "no-restricted-syntax": ["error", 
+      "no-restricted-syntax": ["error",
         {
           selector: "CallExpression[callee.property.name='toLocaleDateString'][arguments.0.value!='nl-NL']",
           message: "Must use nl-NL locale for Dutch market compliance"
@@ -210,6 +217,15 @@ export default [
         {
           selector: "AssignmentExpression > LogicalExpression[operator=\"||\"]",
           message: "Use ??= for defaulting instead of || (or justify with a comment)."
+        },
+        // i18n enforcement rules
+        {
+          selector: "VariableDeclarator[id.name=/^t[A-Z]/] CallExpression[callee.name=/^(useTranslations|useT)$/]",
+          message: "Alias translators (tForm, tUi, ...) are banned. Use const t = useTranslations()."
+        },
+        {
+          selector: "CallExpression[callee.name='t'] Literal[value=/^(form\\.|jobs\\.jobs\\.|paymentLink\\.)/]",
+          message: "Use full-root keys: ui.form.*, jobs.*, system.notifications.paymentLink.*."
         },
         // ANTI-PLACEHOLDER PROTECTION: Hardcoded ID detection
         {

@@ -3,6 +3,29 @@
 		"locked_tooltip": "Feature locked for your plan. Enable it in Settings.",
 		"legacy": "Legacy"
 	},
+	"common": {
+		"title": "Title",
+		"description": "Description",
+		"back": "Back",
+		"status": "Status",
+		"active": "Active",
+		"approved": "Approved",
+		"schedule": "Schedule",
+		"when": "When",
+		"where": "Where",
+		"customer": "Customer",
+		"issue": "Issue",
+		"lastResponse": "Last response",
+		"comingSoon": "Coming soon",
+		"draftInvoice": "Draft invoice",
+		"tokenExpires": "Token expires",
+		"dateUnknown": "Date unknown",
+		"timeUnknown": "Time unknown",
+		"phoneUnknown": "Phone unknown",
+		"addressUnknown": "Address unknown",
+		"urgency": "Urgency",
+		"loading": "Loading..."
+	},
 	"field": {
 		"status": "Status",
 		"customer": "Customer",
@@ -23,7 +46,8 @@
 		"noEmployee": "No employee",
 		"notes": "Notes",
 		"primaryEmployee": "Primary Employee",
-		"priority": {
+		"priority": "Priority",
+		"priorityOptions": {
 			"normal": "Normal",
 			"urgent": "Urgent",
 			"emergency": "Emergency"

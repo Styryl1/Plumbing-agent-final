@@ -1,5 +1,3 @@
-"use client";
-
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -12,6 +10,8 @@ import {
 	DialogTitle,
 } from "~/components/ui/dialog";
 import { cn } from "~/lib/utils";
+
+("use client");
 
 function Command({
 	className,

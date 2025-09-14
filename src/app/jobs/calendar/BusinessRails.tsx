@@ -1,6 +1,4 @@
-"use client";
 import { useTranslations } from "next-intl";
-
 import type { JSX } from "react";
 import {
 	businessHoursEnd,
@@ -8,6 +6,8 @@ import {
 	lunchEnd,
 	lunchStart,
 } from "~/lib/calendar-temporal";
+
+("use client");
 
 interface BusinessRailsProps {
 	readonly view: "week" | "day" | "month";

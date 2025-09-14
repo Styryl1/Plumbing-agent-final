@@ -1,9 +1,9 @@
-"use client";
-
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { cn } from "~/lib/utils";
+
+("use client");
 
 interface OptimizedImageProps {
 	src: string;

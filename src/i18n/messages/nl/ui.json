@@ -3,6 +3,29 @@
 		"locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen.",
 		"legacy": "Oudere factuur"
 	},
+	"common": {
+		"title": "Titel",
+		"description": "Beschrijving",
+		"back": "Terug",
+		"status": "Status",
+		"active": "Actief",
+		"approved": "Goedgekeurd",
+		"schedule": "Planning",
+		"when": "Wanneer",
+		"where": "Waar",
+		"customer": "Klant",
+		"issue": "Probleem",
+		"lastResponse": "Laatste reactie",
+		"comingSoon": "Binnenkort beschikbaar",
+		"draftInvoice": "Conceptfactuur",
+		"tokenExpires": "Token verloopt",
+		"dateUnknown": "Datum onbekend",
+		"timeUnknown": "Tijd onbekend",
+		"phoneUnknown": "Telefoon onbekend",
+		"addressUnknown": "Adres onbekend",
+		"urgency": "Urgentie",
+		"loading": "Laden..."
+	},
 	"field": {
 		"status": "Status",
 		"customer": "Klant",
@@ -23,7 +46,8 @@
 		"noEmployee": "Geen medewerker",
 		"notes": "Opmerkingen",
 		"primaryEmployee": "Hoofdmonteur",
-		"priority": {
+		"priority": "Prioriteit",
+		"priorityOptions": {
 			"normal": "Normaal",
 			"urgent": "Dringend",
 			"emergency": "Noodgeval"

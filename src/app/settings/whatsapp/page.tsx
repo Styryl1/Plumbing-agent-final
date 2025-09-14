@@ -39,7 +39,7 @@ const TOTAL_STEPS = 3;
 
 export default function WhatsAppSettingsPage(): JSX.Element {
 	const t = useTranslations();
-	const tSettings = useTranslations("settings");
+	const tSettings = useTranslations();
 	const [currentStep, setCurrentStep] = useState(1);
 	const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 

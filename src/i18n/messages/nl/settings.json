@@ -10,7 +10,9 @@
 			"invalid_token": "Ongeldig token",
 			"not_connected": "Niet verbonden",
 			"webhook_ok": "Webhook OK",
-			"webhook_error": "Webhook-fout"
+			"webhook_error": "Webhook-fout",
+			"security": "Beveiliging",
+			"webhook": "Webhook"
 		},
 		"seed": {},
 		"onboard": {

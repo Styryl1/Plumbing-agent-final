@@ -230,6 +230,67 @@
 	"totals.subtotal": "Subtotaal",
 	"totals.total": "Totaal",
 	"totals.vat": "BTW",
+	"createError": "Factuur aanmaken mislukt",
+	"importFromJob": "Importeren uit klus",
+	"draft": {
+		"title": "Concept Factuur"
+	},
+	"form": {
+		"customer": {
+			"title": "Klantinformatie",
+			"label": "Klant",
+			"placeholder": "Selecteer een klant...",
+			"required": "Klant is verplicht"
+		},
+		"paymentTerms": {
+			"title": "Betalingstermijn",
+			"label": "Betalingstermijn (dagen)"
+		},
+		"lineItems": {
+			"title": "Factuurregels",
+			"add": "Regel toevoegen",
+			"empty": "Nog geen factuurregels",
+			"description": "Omschrijving",
+			"quantity": "Aantal",
+			"unitPrice": "Eenheidsprijs",
+			"vatRate": "BTW-tarief",
+			"lineTotal": "Regeltotaal",
+			"required": "Minimaal één factuurregel is verplicht"
+		},
+		"discount": {
+			"title": "Korting",
+			"percentage": "Korting %"
+		},
+		"totals": {
+			"title": "Totalen",
+			"subtotal": "Subtotaal",
+			"discount": "Korting",
+			"subtotalAfterDiscount": "Subtotaal na korting",
+			"vat": "BTW",
+			"total": "Totaal"
+		},
+		"notes": {
+			"title": "Opmerkingen",
+			"public": "Publieke opmerkingen",
+			"publicPlaceholder": "Opmerkingen zichtbaar voor klant...",
+			"internal": "Interne opmerkingen",
+			"internalPlaceholder": "Interne opmerkingen voor eigen gebruik..."
+		}
+	},
+	"import": {
+		"title": "Importeren uit klus",
+		"description": "Klusgegevens importeren om factuur te maken",
+		"selectJob": "Klus selecteren",
+		"selectJobPlaceholder": "Kies een klus om uit te importeren...",
+		"laborConfig": "Arbeidsconfiguratie",
+		"laborHours": "Arbeidsuren",
+		"hourlyRate": "Uurtarief",
+		"import": "Klusgegevens importeren"
+	},
+	"actions": {
+		"cancel": "Annuleren",
+		"pay": "Betalen"
+	},
 	"voiceMode.active": "Voice Modus Actief",
 	"voiceMode.approve": "Goedkeuren",
 	"voiceMode.approved": "Factuur Goedgekeurd!",

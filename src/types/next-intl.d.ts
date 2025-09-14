@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 // next-intl type augmentation (correct)
 import type en from "~/i18n/messages/en.json";
 

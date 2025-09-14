@@ -1,5 +1,3 @@
-"use client";
-
 import { Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -10,8 +8,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import ProviderConnectCard from "./ProviderConnectCard";
+
+("use client");
 
 type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";
 
@@ -20,7 +19,7 @@ type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";
  * Displays 4 providers with their connection state and action buttons
  */
 export default function ProvidersPanel(): JSX.Element {
-	const t = useT("providers.panel");
+	const t = useTranslations();
 
 	// Fixed list of supported providers for S1
 	const providers: InvoiceProviderId[] = [
@@ -36,8 +35,10 @@ export default function ProvidersPanel(): JSX.Element {
 				<div className="flex items-center gap-3">
 					<Zap className="h-5 w-5 text-primary" />
 					<div>
-						<CardTitle>{t("title")}</CardTitle>
-						<CardDescription>{t("description")}</CardDescription>
+						<CardTitle>{t("providers.panel.title")}</CardTitle>
+						<CardDescription>
+							{t("providers.panel.description")}
+						</CardDescription>
 					</div>
 				</div>
 			</CardHeader>
@@ -50,7 +51,9 @@ export default function ProvidersPanel(): JSX.Element {
 
 				{/* Info note */}
 				<div className="mt-4 p-3 rounded-lg bg-muted/50">
-					<p className="text-sm text-muted-foreground">{t("note")}</p>
+					<p className="text-sm text-muted-foreground">
+						{t("providers.panel.note")}
+					</p>
 				</div>
 			</CardContent>
 		</Card>

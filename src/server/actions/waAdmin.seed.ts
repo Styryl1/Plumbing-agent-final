@@ -1,6 +1,4 @@
-"use server";
 import { useTranslations } from "next-intl";
-
 // WhatsApp Admin Server Actions - Secure number seeding with auth
 // Uses Next.js server actions for type-safe mutations
 
@@ -9,6 +7,8 @@ import { createClient } from "@supabase/supabase-js";
 import { env } from "~/lib/env";
 import { type SeedNumbersInput, seedNumbersSchema } from "~/server/dto/waAdmin";
 import type { Database } from "~/types/supabase";
+
+("use server");
 
 /**
  * Server action to seed two WhatsApp numbers for the current organization

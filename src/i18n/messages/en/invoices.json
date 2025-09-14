@@ -230,6 +230,67 @@
 	"totals.subtotal": "Subtotal",
 	"totals.total": "Total",
 	"totals.vat": "VAT",
+	"createError": "Failed to create invoice",
+	"importFromJob": "Import from job",
+	"draft": {
+		"title": "Draft Invoice"
+	},
+	"form": {
+		"customer": {
+			"title": "Customer Information",
+			"label": "Customer",
+			"placeholder": "Select a customer...",
+			"required": "Customer is required"
+		},
+		"paymentTerms": {
+			"title": "Payment Terms",
+			"label": "Payment terms (days)"
+		},
+		"lineItems": {
+			"title": "Line Items",
+			"add": "Add line item",
+			"empty": "No line items yet",
+			"description": "Description",
+			"quantity": "Quantity",
+			"unitPrice": "Unit price",
+			"vatRate": "VAT rate",
+			"lineTotal": "Line total",
+			"required": "At least one line item is required"
+		},
+		"discount": {
+			"title": "Discount",
+			"percentage": "Discount %"
+		},
+		"totals": {
+			"title": "Totals",
+			"subtotal": "Subtotal",
+			"discount": "Discount",
+			"subtotalAfterDiscount": "Subtotal after discount",
+			"vat": "VAT",
+			"total": "Total"
+		},
+		"notes": {
+			"title": "Notes",
+			"public": "Public notes",
+			"publicPlaceholder": "Notes visible to customer...",
+			"internal": "Internal notes",
+			"internalPlaceholder": "Internal notes for your reference..."
+		}
+	},
+	"import": {
+		"title": "Import from Job",
+		"description": "Import job details to create invoice",
+		"selectJob": "Select job",
+		"selectJobPlaceholder": "Choose a job to import from...",
+		"laborConfig": "Labor Configuration",
+		"laborHours": "Labor hours",
+		"hourlyRate": "Hourly rate",
+		"import": "Import job data"
+	},
+	"actions": {
+		"cancel": "Cancel",
+		"pay": "Pay"
+	},
 	"voiceMode.active": "Voice Mode Active",
 	"voiceMode.approve": "Approve",
 	"voiceMode.approved": "Approved",

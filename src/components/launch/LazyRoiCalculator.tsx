@@ -1,8 +1,8 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import React from "react";
+
+("use client");
 
 // Lazy load the ROI Calculator since it's not immediately visible
 const RoiCalculator = dynamic(

@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+
 export function toErrorMessage(e: unknown): string {
 	if (typeof e === "string") return e;
 	if (e instanceof Error && typeof e.message === "string") return e.message;

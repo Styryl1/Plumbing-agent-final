@@ -5,6 +5,7 @@ import { IntlErrorCode, NextIntlClientProvider } from "next-intl";
 import type { JSX, ReactNode } from "react";
 import { useCallback } from "react";
 import type { Locale } from "~/i18n/config";
+import { envClient } from "~/lib/env-client";
 
 type Messages = AbstractIntlMessages;
 
@@ -33,7 +34,7 @@ export default function SafeNextIntlClientProvider({
 			(err as { code: unknown }).code === IntlErrorCode.MISSING_MESSAGE
 		) {
 			// In development, log missing message details for debugging
-			if (process.env.NODE_ENV === "development") {
+			if (envClient.NODE_ENV === "development") {
 				console.warn(
 					"[i18n] Missing translation key:",
 					(err as { message?: string }).message,
@@ -64,7 +65,7 @@ export default function SafeNextIntlClientProvider({
 				(error as { code: unknown }).code === IntlErrorCode.MISSING_MESSAGE;
 
 			if (isMissingMessage) {
-				if (process.env.NODE_ENV === "development") {
+				if (envClient.NODE_ENV === "development") {
 					// Visual warning in development - makes missing keys obvious
 					return `🚨 ${path}`;
 				} else {

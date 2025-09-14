@@ -1,12 +1,10 @@
-"use client";
-
+'use client';
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
 import type { Locale } from "~/i18n";
-import { useT } from "~/i18n/client";
 
 interface DashboardHeaderProps {
 	initialLocale: Locale;
@@ -15,8 +13,8 @@ interface DashboardHeaderProps {
 export function DashboardHeader({
 	initialLocale,
 }: DashboardHeaderProps): JSX.Element {
-	const tSys = useT("system");
-	const tUi = useT("ui");
+	const tSys = useTranslations("system");
+	const tUi = useTranslations("ui");
 
 	return (
 		<header className="border-b bg-card shadow-soft">

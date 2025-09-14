@@ -1,5 +1,3 @@
-"use client";
-
 import { useAuth } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -13,6 +11,8 @@ import {
 } from "~/components/ui/card";
 import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
+
+("use client");
 
 export default function DashboardPage(): JSX.Element {
 	const auth = useAuth();

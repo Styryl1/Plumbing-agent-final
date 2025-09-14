@@ -249,6 +249,9 @@ importers:
       eslint-plugin-unicorn:
         specifier: ^61.0.2
         version: 61.0.2(eslint@9.35.0(jiti@2.5.1))
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
       fs-extra:
         specifier: ^11.3.1
         version: 11.3.1

@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Key, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -28,6 +26,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
+
+("use client");
 
 // Form schema with Zod v4 patterns
 const WeFactSetupSchema = z.object({
