@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { Temporal } from "temporal-polyfill";
 import { z } from "zod";
 import { MetaStatusSchema } from "./zod";

@@ -46,7 +46,7 @@ export default async function RootLayout({
 	// Pin timezone and formats for invoice consistency (prevents hydration drift)
 	const pinnedTimeZone = "Europe/Amsterdam";
 	const nowDate = new Date(
-		Temporal.Now.zonedDateTimeISO(pinnedTimeZone).toInstant().epochMilliseconds
+		Temporal.Now.zonedDateTimeISO(pinnedTimeZone).toInstant().epochMilliseconds,
 	);
 
 	// Dutch invoice formatting standards

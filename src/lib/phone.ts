@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * Dutch phone number formatting utilities
  */

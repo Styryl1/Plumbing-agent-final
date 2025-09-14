@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Invoice Flow DTOs - Type definitions for Job → Invoice → Payment → WhatsApp flow
 // Enforces strict typing for end-to-end payment processing
 

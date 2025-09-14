@@ -1,3 +1,4 @@
+"use client";
 import {
 	Copy,
 	CreditCard,
@@ -17,10 +18,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 interface PaymentLinksProps {
 	paymentUrl?: string | null | undefined;
@@ -39,10 +37,10 @@ export function PaymentLinks({
 	invoiceId,
 	customerPhone,
 }: PaymentLinksProps): JSX.Element {
-	const tPay = useT("payment");
-	const tAct = useT("actions");
-	const tInv = useT("invoices");
-	const tSys = useT("system");
+	const tPay = useTranslations("payment");
+	const tAct = useTranslations("actions");
+	const tInv = useTranslations("invoices");
+	const tSys = useTranslations("system");
 	const [isCreatingPayment, setIsCreatingPayment] = useState(false);
 
 	const createPaymentMutation = api.invoices.createPaymentLink.useMutation({

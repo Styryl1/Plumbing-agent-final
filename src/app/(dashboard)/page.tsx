@@ -9,16 +9,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 export default function DashboardPage(): JSX.Element {
 	const auth = useAuth();
-	const tUi = useT("ui");
-	const tMisc = useT("misc");
-	const tAuth = useT("auth");
+	const tUi = useTranslations("ui");
+	const tMisc = useTranslations("misc");
+	const tAuth = useTranslations("auth");
 
 	// Fetch stats from API
 	const { data: jobsToday } = api.jobs.list.useQuery({

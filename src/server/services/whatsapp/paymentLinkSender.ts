@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // WhatsApp Payment Link Sender - Pure orchestrator for session vs template message delivery
 // Handles 24h window detection and appropriate message type selection
 

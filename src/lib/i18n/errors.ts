@@ -1,5 +1,3 @@
-import { useTranslations } from "next-intl";
-
 export const E = {
 	nameRequired: "customers.errors.name.required",
 	phoneRequired: "customers.errors.phone.required",

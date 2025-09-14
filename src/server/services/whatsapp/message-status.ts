@@ -1,5 +1,4 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { useTranslations } from "next-intl";
 import type { Database } from "~/types/supabase";
 import type { NormalizedStatus } from "./message-normalizer";
 

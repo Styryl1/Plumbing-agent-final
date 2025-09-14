@@ -1,9 +1,7 @@
+"use client";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState, useTransition } from "react";
-
-("use client");
 
 type Locale = "en" | "nl";
 

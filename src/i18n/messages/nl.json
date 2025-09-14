@@ -1,1911 +1,1911 @@
 {
-  "actions": {
-    "back": "Terug",
-    "cancel": "Annuleren",
-    "configure": "Configureren",
-    "connect": "Verbinden",
-    "create": "Aanmaken",
-    "creating": "Bezig...",
-    "delete": "Verwijderen",
-    "deleting": "Verwijderen...",
-    "edit": "Bewerken",
-    "fix": "Repareren",
-    "openActions": "Acties openen",
-    "pay": "Betalen",
-    "saving": "Opslaan...",
-    "sending": "Versturen...",
-    "update": "Bijwerken",
-    "cta": {
-      "applySuggestion": "Voorstel toepassen",
-      "button": "Knop",
-      "createInvoice": "Factuur maken",
-      "finalizeVoiceInvoice": "Afronden → Voice-factuur",
-      "headline": "Koptekst",
-      "newJob": "Nieuwe klus",
-      "subtitle": "Ondertitel"
-    }
-  },
-  "auth": {
-    "context": {
-      "description": "Huidige gebruiker- en organisatie-informatie",
-      "title": "Authenticatie Context"
-    },
-    "noOrganization": "Geen organisatie geselecteerd",
-    "noRole": "Geen rol toegewezen",
-    "notSignedIn": "Niet ingelogd",
-    "orgId": "Organisatie ID",
-    "role": "Rol",
-    "signInSubtitle": "Inloggen voor uw loodgieter dashboard",
-    "signUpSubtitle": "Registreer uw loodgieterbedrijf",
-    "tip": "Tip: Selecteer of maak een organisatie met de organisatieschakelaar in de header om aan de slag te gaan.",
-    "userId": "Gebruiker ID"
-  },
-  "common": {
-    "cancel": "Annuleren",
-    "error": "Fout",
-    "loading": "Laden...",
-    "unnamed": "Naamloos",
-    "unknown": "Onbekend",
-    "due_date": "Vervaldatum",
-    "alternative_payment": "Alternatieve betaling",
-    "email": "E-mail",
-    "step_data_unavailable": "Stap gegevens niet beschikbaar",
-    "yes": "Ja",
-    "no": "Nee",
-    "priority": {
-      "emergency": "Spoed",
-      "normal": "Normaal",
-      "urgent": "Urgent"
-    },
-    "status": {
-      "cancelled": "Geannuleerd",
-      "done": "Voltooid",
-      "draft": "Concept",
-      "in_progress": "Bezig",
-      "planned": "Ingepland"
-    }
-  },
-  "customers": {
-    "selectCustomer": "Klant selecteren",
-    "recent": "Recent",
-    "allOthers": "Alle anderen",
-    "title": "Klanten",
-    "description": "Beheer klantinformatie en contactgegevens",
-    "errors": {
-      "name": {
-        "required": "Naam is verplicht"
-      },
-      "phone": {
-        "required": "Telefoon is verplicht",
-        "invalid": "Voer een geldig telefoonnummer in"
-      },
-      "email": {
-        "invalid": "Voer een geldig e-mailadres in"
-      },
-      "postalCode": {
-        "invalid": "Ongeldige postcode (bijv. 1234 AB)"
-      },
-      "houseNumber": {
-        "required": "Huisnummer verplicht"
-      },
-      "address": {
-        "required": "Adres is verplicht"
-      },
-      "notFoundOrNoPermission": "Klant niet gevonden of geen permissie",
-      "serverError": "Server fout opgetreden",
-      "emailAlreadyExists": "Klant met dit e-mailadres bestaat al"
-    },
-    "searchPlaceholder": "Zoek klanten...",
-    "noCustomersFound": "Geen klanten gevonden",
-    "addNew": "Nieuwe klant",
-    "actions": {
-      "creating": "Aanmaken...",
-      "create": "Klant aanmaken",
-      "cancel": "Annuleren"
-    },
-    "archived": {
-      "title": "Gearchiveerde klanten",
-      "description": "Bekijk gearchiveerde klanten",
-      "badge": "Gearchiveerde klant",
-      "noArchivedFound": "Geen gearchiveerde klanten gevonden",
-      "tab": "Gearchiveerd"
-    },
-    "unarchive": {
-      "action": "Herstellen",
-      "tooltip": "Klant herstellen",
-      "success": "Klant succesvol hersteld",
-      "error": "Fout bij herstellen klant"
-    },
-    "create": {
-      "title": "Nieuwe klant aanmaken",
-      "description": "Voeg een nieuwe klant toe aan het systeem"
-    },
-    "edit": {
-      "title": "Klant bewerken",
-      "description": "Wijzig klantinformatie"
-    },
-    "form": {
-      "name": {
-        "label": "Naam",
-        "placeholder": "Volledige naam"
-      },
-      "email": {
-        "label": "E-mailadres",
-        "placeholder": "naam@voorbeeld.nl"
-      },
-      "phone": {
-        "label": "Telefoonnummer",
-        "placeholder": "06 12345678"
-      },
-      "address": {
-        "label": "Adres",
-        "placeholder": "Straat 123",
-        "autoFill": {
-          "title": "Nederlandse Adres Opzoeken",
-          "loading": "Adres opzoeken…"
-        }
-      },
-      "postalCode": {
-        "label": "Postcode",
-        "placeholder": "1234 AB"
-      },
-      "houseNumber": {
-        "label": "Huisnummer",
-        "placeholder": "123"
-      },
-      "street": {
-        "label": "Straat",
-        "placeholder": "Straatnaam"
-      },
-      "city": {
-        "label": "Plaats",
-        "placeholder": "Plaatsnaam"
-      },
-      "language": {
-        "label": "Taal"
-      },
-      "validation": {
-        "nameRequired": "Naam is verplicht",
-        "nameTooLong": "Naam te lang",
-        "emailInvalid": "Voer een geldig e-mailadres in",
-        "emailTooLong": "E-mailadres te lang",
-        "phoneRequired": "Telefoonnummer is verplicht",
-        "phoneTooLong": "Telefoonnummer te lang",
-        "addressTooLong": "Adres te lang",
-        "postalCodeRequired": "Postcode is verplicht",
-        "postalCodeInvalid": "Ongeldige Nederlandse postcode (bijv. 1234 AB)",
-        "postalCodeTooLong": "Postcode te lang"
-      },
-      "requiredSymbol": "*"
-    },
-    "table": {
-      "columns": {
-        "name": "Naam",
-        "contact": "Contact",
-        "address": "Adres",
-        "created": "Aangemaakt",
-        "actions": "Acties"
-      }
-    },
-    "stats": {
-      "total": "Totaal aantal",
-      "thisMonth": "Deze maand",
-      "active": "Actieve klanten",
-      "archived": "Gearchiveerde klanten"
-    },
-    "delete": {
-      "title": "Klant verwijderen",
-      "description": "Weet je zeker dat je deze klant wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "archive": {
-        "title": "Klant archiveren",
-        "cannotDelete": "Kan klant niet verwijderen: er zijn nog klussen of facturen gekoppeld.",
-        "linkedData": "Gekoppelde gegevens:",
-        "jobs": "klus(sen)",
-        "invoices": "factuur/facturen",
-        "archiveInstead": "Wil je de klant {name} archiveren in plaats daarvan?"
-      }
-    },
-    "error": {
-      "load": "Kan klanten niet laden",
-      "create": "Kan klant niet aanmaken",
-      "update": "Kan klant niet bijwerken",
-      "delete": "Kan klant niet verwijderen",
-      "deleteLinked": "Klant heeft gekoppelde klussen/facturen. Je kunt archiveren.",
-      "archive": "Kon klant niet archiveren"
-    },
-    "success": {
-      "created": "Klant succesvol aangemaakt",
-      "updated": "Klant succesvol bijgewerkt",
-      "deleted": "Klant succesvol verwijderd",
-      "archived": "Klant succesvol gearchiveerd"
-    }
-  },
-  "employees": {
-    "filter": {
-      "all": "Alles",
-      "clearAll": "Alles wissen"
-    }
-  },
-  "error": {
-    "load": "Laden mislukt"
-  },
-  "errors": {
-    "title": "Fout",
-    "general": "Er is iets misgegaan",
-    "tryAgain": "Probeer opnieuw",
-    "contactSupport": "Contact opnemen met support",
-    "notFound": "Niet gevonden",
-    "unauthorized": "Ongeautoriseerde toegang",
-    "forbidden": "Toegang geweigerd",
-    "validation": "Validatiefout",
-    "network": "Netwerkfout",
-    "timeout": "Verzoek verlopen",
-    "serverError": "Serverfout",
-    "unknown": "Onbekende fout",
-    "fieldRequired": "Dit veld is verplicht",
-    "invalidFormat": "Ongeldige format",
-    "tooShort": "Te kort",
-    "tooLong": "Te lang",
-    "mustBeNumber": "Moet een nummer zijn",
-    "mustBeEmail": "Moet een geldig e-mailadres zijn",
-    "passwordTooWeak": "Wachtwoord te zwak"
-  },
-  "invoice": {
-    "issuedSuccessfully": "Factuur succesvol uitgegeven!",
-    "issueFailed": "Kon factuur niet uitgeven",
-    "issueActions": "Uitgifteacties",
-    "lockedBadge": "Uitgegeven door {provider}",
-    "lockedDescription": "Deze factuur is uitgegeven en nu vergrendeld. De provider is de bron van de waarheid voor alle wijzigingen.",
-    "providerPdfNote": "PDF en betaallinks worden beheerd door de provider",
-    "needsProvider": "Provider Vereist",
-    "needsProviderDescription": "Verbind een factuurprovider om facturen uit te geven.",
-    "issueActionsDescription": "Acties om deze factuur uit te geven en te beheren",
-    "issuing": "Uitgeven...",
-    "issueViaMoneybird": "Uitgeven via Moneybird",
-    "issueViaProviderNote": "Dit zal de factuur aanmaken en verzenden via uw verbonden provider",
-    "timeline": {
-      "heading": "Tijdlijn",
-      "description": "Factuur levenscyclus gebeurtenissen",
-      "loadError": "Kon tijdlijn niet laden",
-      "loadErrorDescription": "Kan factuur tijdlijn gebeurtenissen niet ophalen.",
-      "noEvents": "Geen tijdlijn gebeurtenissen beschikbaar",
-      "noEventsDescription": "Tijdlijn gebeurtenissen zullen hier verschijnen naarmate de factuur vordert."
-    }
-  },
-  "invoices": {
-    "actions": {
-      "cancel": "Annuleren",
-      "pay": "Betalen",
-      "markReviewed": "Markeer als Beoordeeld",
-      "saveDraft": "Concept Opslaan",
-      "send": "Verzenden"
-    },
-    "badges": {
-      "legacy": "Oudere factuur",
-      "locked_tooltip": "Vergrendeld na verzending - Provider is bron van waarheid"
-    },
-    "status": {
-      "draft": "Concept",
-      "draftUnsent": "Concept • niet verzonden"
-    },
-    "providers": {
-      "moneybird": "Moneybird",
-      "wefact": "WeFact",
-      "eboekhouden": "e-Boekhouden",
-      "peppol": "Peppol",
-      "oauth": {
-        "success": "Verbinding geslaagd",
-        "error": "Verbindingsfout",
-        "moneybirdConnected": "Moneybird is succesvol verbonden en klaar voor gebruik",
-        "selectAdmin": "Moneybird is verbonden. U kunt nu een administratie selecteren in uw factuurinstellingen",
-        "genericError": "Er is iets misgegaan tijdens het verbinden. Probeer het opnieuw",
-        "authError": "Autorisatie geweigerd of mislukt",
-        "csrfError": "Beveiligingsfout: ongeldige sessiestatus",
-        "stateError": "Ongeldige verbindingsstatus",
-        "userMismatch": "Gebruiker komt niet overeen met verwachte account",
-        "stateExpired": "Verbindingssessie is verlopen, probeer opnieuw",
-        "tokenError": "Kon toegangstoken niet ophalen",
-        "adminError": "Kon administraties niet ophalen van provider",
-        "callbackError": "Onbekende fout tijdens verbindingsproces"
-      }
-    },
-    "voiceMode": {
-      "steps": {
-        "review": "Review",
-        "confirm": "Confirm",
-        "changes": "Changes",
-        "final": "Final"
-      },
-      "active": "Voice Modus Actief",
-      "approve": "Goedkeuren",
-      "approved": "Factuur Goedgekeurd!",
-      "changesNotes": "Wat moet er aangepast worden?",
-      "changesPlaceholder": "Beschrijf de gewenste wijzigingen...",
-      "changesRequested": "Wijzigingen aangevraagd",
-      "confirmPrompt": "Goedkeuren of wijzigingen nodig?",
-      "requestChanges": "Wijzigingen",
-      "reviewing": "Factuur wordt beoordeeld...",
-      "safeActive": "Veilige Voice Modus Actief",
-      "safeInstructions": "Spreek duidelijk voor beste resultaten",
-      "submitChanges": "Wijzigingen Verzenden",
-      "toggle": "Voice Modus"
-    },
-    "invoice": {
-      "notFound": "Factuur niet gevonden",
-      "notFoundDescription": "De factuur die je zoekt bestaat niet of je hebt er geen toegang toe.",
-      "customer": "Klant",
-      "details": "Factuurdetails",
-      "detailsDescription": "Factuurinformatie en regelitems",
-      "job": "Klus",
-      "amounts": "Bedragen",
-      "subtotalExVat": "Subtotaal (ex BTW)",
-      "vatAmount": "BTW Bedrag",
-      "totalIncVat": "Totaal (inc BTW)",
-      "notes": "Notities",
-      "status": "Status",
-      "provider": "Provider",
-      "issuedOn": "Verzonden op",
-      "issuedSuccessfully": "Factuur succesvol verzonden!",
-      "issueFailed": "Verzenden factuur mislukt",
-      "needsProvider": "Provider Vereist",
-      "needsProviderDescription": "Verbind een factuur provider om facturen te verzenden.",
-      "issueActionsDescription": "Acties om deze factuur te verzenden en beheren",
-      "issuing": "Bezig met verzenden...",
-      "issueViaMoneybird": "Verzend via Moneybird",
-      "issueViaProviderNote": "Dit zal de factuur aanmaken en verzenden via je verbonden provider",
-      "lockedBadge": "Uitgegeven via {provider}",
-      "lockedDescription": "Deze factuur is uitgegeven en nu vergrendeld. De provider is de bron van waarheid voor alle wijzigingen.",
-      "providerPdfNote": "PDF en betaallinks worden beheerd door de provider",
-      "timeline": {
-        "heading": "Tijdlijn",
-        "description": "Factuur gebeurtenissen",
-        "loadError": "Laden tijdlijn mislukt",
-        "loadErrorDescription": "Kan factuur gebeurtenissen niet ophalen.",
-        "noEvents": "Geen gebeurtenissen beschikbaar",
-        "noEventsDescription": "Tijdlijn gebeurtenissen verschijnen hier naarmate de factuur vordert.",
-        "created": "Aangemaakt",
-        "sent": "Verzonden",
-        "paid": "Betaald",
-        "reminder_sent": "Herinnering Verzonden",
-        "reminder_error": "Herinnering Mislukt",
-        "reminder_skipped": "Klant Uitgeschreven",
-        "manual_follow_up": "Handmatige Follow-up Vereist"
-      },
-      "issueActions": "Verstuur Acties",
-      "alreadyIssued": "Reeds Verzonden",
-      "alreadyIssuedDescription": "Deze factuur is al naar de klant verstuurd.",
-      "actions": {
-        "sendWhatsApp": "Verstuur via WhatsApp",
-        "sendWhatsAppDescription": "Stuur betaallink direct via WhatsApp naar de klant",
-        "updateCustomerAddress": "Klantadres bijwerken"
-      },
-      "average": "Gemiddeld",
-      "backToInvoices": "Terug naar facturen",
-      "confirmed": "Bevestigd",
-      "connectMoneybird": "Moneybird Aansluiten",
-      "connectProvider": "Factuurbeheer Aansluiten",
-      "connectProviderDesc": "Sluit een factuurprovider aan om automatisch facturen te versturen en betalingen te ontvangen",
-      "create": {
-        "addressError": "Adres fout bij aanmaken factuur",
-        "description": "Factuur maken voor {customer}",
-        "error": "Fout bij maken factuur",
-        "title": "Factuur Maken"
-      },
-      "createFromJob": "Factuur maken van klus",
-      "draft": "Concept",
-      "draftLabel": "Concept",
-      "drafts": "Concepten",
-      "draftsReady": "concepten gereed",
-      "edit": {
-        "description": "Bewerk factuur voor {customer}",
-        "error": "Fout bij laden factuur",
-        "title": "Factuur Bewerken"
-      },
-      "errors": {
-        "addressGuidance": "Voeg straat, huisnummer en postcode toe aan klantgegevens",
-        "addressRequired": "Volledig klantadres is verplicht voor factuur",
-        "invalidId": "Ongeldig factuur ID. Controleer de link of kies een andere factuur.",
-        "notFound": "Factuur niet gevonden"
-      },
-      "issued": "Verzonden",
-      "manage": "Beheer alle facturen en betalingen",
-      "managePending": "Beheer openstaande en betaalde facturen",
-      "modes": {
-        "fast": "Snel",
-        "safe": "Veilig"
-      },
-      "moreProvidersComingSoon": "Meer providers binnenkort beschikbaar",
-      "noDrafts": "Geen conceptfacturen gevonden",
-      "noOverdue": "Geen achterstallige facturen",
-      "noPendingDrafts": "Geen concepten in behandeling",
-      "noSentInvoices": "Geen verzonden facturen gevonden",
-      "overdue": "Achterstallig",
-      "overview": "Facturoverzicht",
-      "paid": "Betaald",
-      "payOnline": "Online Betalen",
-      "perInvoiceYear": "Per factuur dit jaar",
-      "requiresAttention": "Aandacht vereist",
-      "sent": "Verzonden",
-      "summary": {
-        "items": "items",
-        "title": "Overzicht"
-      },
-      "thisMonth": "Deze Maand",
-      "title": "Facturen",
-      "totalInvoices": "facturen totaal",
-      "totalOutstanding": "Totaal Openstaand",
-      "unknown": "Onbekend",
-      "viewPdf": "PDF Bekijken",
-      "approvals": "Goedkeuringen",
-      "empty": {
-        "title": "Nog geen facturen",
-        "description": "Maak uw eerste factuur van een voltooide klus",
-        "getStarted": "Zodra u een klus voltooit, kunt u een factuur voor uw klant maken"
-      }
-    },
-    "autosave": {
-      "error": "Fout bij opslaan",
-      "saved": "Opgeslagen",
-      "saving": "Opslaan..."
-    },
-    "compliance": {
-      "applied": "Toegepast",
-      "btwId": "BTW Identificatienummer",
-      "complete": "Compleet",
-      "customerAddress": "Klant Volledig Adres",
-      "dutchVat": "Nederlandse BTW Tarief",
-      "incomplete": "Incompleet",
-      "kvkNumber": "KVK Nummer",
-      "title": "Nederlandse Regelgeving",
-      "verified": "Geverifieerd"
-    },
-    "confirmSuccess": "Factuur bevestigd",
-    "draft": {
-      "fastMode": {
-        "badge": "Snel",
-        "description": "Snelle factuur bevestiging via spraak",
-        "title": "Snelle Modus",
-        "warning": "Snelle modus kan details missen"
-      },
-      "safeMode": {
-        "addLineHint": "Voeg regelitems één voor één toe",
-        "badge": "Veilig",
-        "description": "Gedetailleerde factuur aanmaak",
-        "info": "Veilige modus zorgt voor nauwkeurigheid",
-        "title": "Veilige Modus"
-      },
-      "switchToFast": "Naar Snelle Modus",
-      "switchToSafe": "Naar Veilige Modus",
-      "title": "Concept Factuur"
-    },
-    "errors": {
-      "loadFailed": "Laden factuur mislukt"
-    },
-    "import": {
-      "estimate": {
-        "calculation": "{hours} uur × €{rate}/uur = €{total}",
-        "title": "Geschat bedrag (excl. BTW)"
-      },
-      "jobDetails": {
-        "date": "Datum",
-        "description": "Beschrijving",
-        "duration": "Duur",
-        "employee": "Medewerker"
-      },
-      "title": "Importeren uit klus",
-      "description": "Klusgegevens importeren om factuur te maken",
-      "selectJob": "Klus selecteren",
-      "selectJobPlaceholder": "Kies een klus om uit te importeren...",
-      "laborConfig": "Arbeidsconfiguratie",
-      "laborHours": "Arbeidsuren",
-      "hourlyRate": "Uurtarief",
-      "import": "Klusgegevens importeren"
-    },
-    "lineAdded": "Regelitem toegevoegd",
-    "lineItems": {
-      "addNew": "Nieuw Item Toevoegen",
-      "description": "Beschrijving",
-      "multiplier": "{qty} x {price}",
-      "quantity": "Hoeveelheid",
-      "summary": "Overzicht Regelitems",
-      "title": "Regelitems",
-      "type": "Type",
-      "unitPrice": "Eenheidsprijs",
-      "vatRate": "BTW Tarief"
-    },
-    "notes": {
-      "title": "Notities"
-    },
-    "review": {
-      "bulkActions": {
-        "alsoWhatsApp": "Verstuur ook WhatsApp betaallinks",
-        "description": "Selecteer facturen om in bulk te versturen",
-        "selectedCount": "{count} facturen geselecteerd",
-        "send": "{count} facturen versturen",
-        "sending": "Facturen versturen...",
-        "title": "Bulk versturen"
-      },
-      "controls": {
-        "createDrafts": "Concepten maken van klussen",
-        "creating": "Concepten maken...",
-        "description": "Maak factuurconcepten van voltooide klussen",
-        "sinceDate": "Sinds datum",
-        "title": "Concepten genereren"
-      },
-      "created": "Gemaakt",
-      "customer": "Klant",
-      "job": "Klus",
-      "list": {
-        "count": "{count} conceptfacturen",
-        "loading": "Concepten laden...",
-        "title": "Conceptfacturen"
-      },
-      "noInvoices": "Geen conceptfacturen gevonden",
-      "noJob": "Geen klus",
-      "noProvider": "Geen provider",
-      "provider": "Provider",
-      "results": {
-        "errors": "Fouten",
-        "sent": "Verstuurd",
-        "skipped": "Overgeslagen",
-        "title": "Verzendresultaten",
-        "total": "Totaal",
-        "withPaymentLinks": "Met betaallinks"
-      },
-      "select": "Selecteren",
-      "selectAll": "Alles selecteren",
-      "selected": "geselecteerd",
-      "subtitle": "Review conceptfacturen en verstuur ze via providers",
-      "title": "Facturen reviewen & versturen",
-      "total": "Totaal"
-    },
-    "saveSuccess": "Factuur succesvol opgeslagen",
-    "sendError": "Fout bij verzenden factuur",
-    "sendSuccess": "Factuur {number} succesvol verzonden",
-    "summary": {
-      "lineItems": "Regelitems",
-      "paymentTerms": "Betalingstermijn",
-      "title": "Factuur Samenvatting",
-      "totalAmount": "Totaalbedrag"
-    },
-    "totals": {
-      "breakdown": "Totaaloverzicht",
-      "includingVat": "Inclusief BTW",
-      "subtotal": "Subtotaal",
-      "total": "Totaal",
-      "vat": "BTW"
-    },
-    "createError": "Factuur aanmaken mislukt",
-    "importFromJob": "Importeren uit klus",
-    "form": {
-      "customer": {
-        "title": "Klantinformatie",
-        "label": "Klant",
-        "placeholder": "Selecteer een klant...",
-        "required": "Klant is verplicht"
-      },
-      "paymentTerms": {
-        "title": "Betalingstermijn",
-        "label": "Betalingstermijn (dagen)"
-      },
-      "lineItems": {
-        "title": "Factuurregels",
-        "add": "Regel toevoegen",
-        "empty": "Nog geen factuurregels",
-        "description": "Omschrijving",
-        "quantity": "Aantal",
-        "unitPrice": "Eenheidsprijs",
-        "vatRate": "BTW-tarief",
-        "lineTotal": "Regeltotaal",
-        "required": "Minimaal één factuurregel is verplicht"
-      },
-      "discount": {
-        "title": "Korting",
-        "percentage": "Korting %"
-      },
-      "totals": {
-        "title": "Totalen",
-        "subtotal": "Subtotaal",
-        "discount": "Korting",
-        "subtotalAfterDiscount": "Subtotaal na korting",
-        "vat": "BTW",
-        "total": "Totaal"
-      },
-      "notes": {
-        "title": "Opmerkingen",
-        "public": "Publieke opmerkingen",
-        "publicPlaceholder": "Opmerkingen zichtbaar voor klant...",
-        "internal": "Interne opmerkingen",
-        "internalPlaceholder": "Interne opmerkingen voor eigen gebruik..."
-      }
-    }
-  },
-  "JobDrawer": {
-    "details": "Klus Details",
-    "edit": "Bewerken",
-    "delete": {
-      "title": "Klus Verwijderen",
-      "description": "Weet je zeker dat je deze klus wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "success": "Klus succesvol verwijderd",
-      "failed": "Fout bij verwijderen klus"
-    },
-    "cancel": "Annuleren",
-    "save": "Opslaan",
-    "saving": "Bezig met opslaan...",
-    "creating": "Bezig met aanmaken...",
-    "deleting": "Bezig met verwijderen...",
-    "title": "Titel",
-    "description": "Beschrijving",
-    "priority": "Prioriteit",
-    "status": "Status",
-    "customer": "Klant",
-    "startTime": "Starttijd: {time}",
-    "endTime": "Eindtijd",
-    "duration": "{minutes} minuten",
-    "primaryEmployee": "Hoofdmonteur",
-    "secondaryEmployees": "Extra monteurs",
-    "assignments": "Toewijzingen",
-    "calendar": "Planning",
-    "requiredSymbol": "*",
-    "selectEmployee": "Selecteer monteur",
-    "selectCustomer": "Selecteer klant",
-    "selectStatus": "Selecteer status",
-    "priorities": {
-      "normal": "Normaal",
-      "urgent": "Urgent",
-      "emergency": "Spoed"
-    },
-    "statuses": {
-      "planned": "Gepland",
-      "in_progress": "Bezig",
-      "done": "Voltooid",
-      "cancelled": "Geannuleerd"
-    },
-    "invoice": {
-      "create": "Factuur Aanmaken",
-      "creating": "Factuur aanmaken...",
-      "success": "Factuurconcept succesvol aangemaakt",
-      "error": "Fout bij aanmaken factuurconcept"
-    }
-  },
-  "jobs": {
-    "invoice": {
-      "createDraft": {
-        "label": "Factuur Maken",
-        "creating": "Factuur maken...",
-        "success": "Factuurconcept aangemaakt",
-        "error": "Kon factuurconcept niet aanmaken"
-      }
-    },
-    "delete": {
-      "success": "Klus verwijderd",
-      "failed": "Verwijderen mislukt",
-      "title": "Klus verwijderen",
-      "description": "Weet je zeker dat je deze klus wilt verwijderen?"
-    },
-    "job": {
-      "createDescription": "Maak een nieuwe klus aan.",
-      "deleteDescription": "Weet je zeker dat je deze klus wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "deleteTitle": "Klus verwijderen",
-      "editDescription": "Bewerk de details van deze klus.",
-      "editJob": "Klus bewerken",
-      "newJob": "Nieuwe klus"
-    },
-    "aiSuggestions": "AI voorstellen",
-    "assignments": {
-      "title": "Toewijzingen"
-    },
-    "calendar": {
-      "desc": "Sleep klussen om ze te verplaatsen of vergroten/verkleinen",
-      "title": "Planning kalender"
-    },
-    "create": {
-      "failed": "Aanmaken mislukt",
-      "success": "Klus succesvol aangemaakt"
-    },
-    "description": "Beheer alle loodgieter opdrachten en planning",
-    "empty": {
-      "title": "Geen klussen ingepland",
-      "description": "Maak uw eerste klus om te beginnen"
-    },
-    "details": "Klus details",
-    "error": {
-      "load": "Fout bij laden van klussen"
-    },
-    "errors": {
-      "notFoundOrNoPermission": "Klus niet gevonden of geen permissie",
-      "serverError": "Server fout opgetreden",
-      "title": {
-        "required": "Titel is verplicht"
-      }
-    },
-    "filter": {
-      "status": {
-        "all": "Alle statussen"
-      }
-    },
-    "generateInvoice": "Factuur Aanmaken",
-    "legend": {
-      "header": "Medewerkers",
-      "none": "Geen medewerkers beschikbaar"
-    },
-    "noAiSuggestions": "Geen AI-aanbevelingen beschikbaar",
-    "source": "Bron:",
-    "stats": {
-      "emergency": {
-        "desc": "Vereist directe actie",
-        "title": "Spoedklussen"
-      },
-      "monthCompleted": {
-        "desc": "Afgerond deze maand",
-        "title": "Afgerond"
-      },
-      "today": {
-        "desc": "Totaal klussen vandaag",
-        "title": "Vandaag"
-      },
-      "week": {
-        "desc": "Klussen deze week",
-        "title": "Deze Week"
-      }
-    },
-    "table": {
-      "desc": "Alle klussen in tabelweergave met bewerkingsmogelijkheden",
-      "title": "Klussen overzicht"
-    },
-    "title": "Klussen & planning",
-    "unscheduled": {
-      "ai": {
-        "assign": "Toewijzen aan kalender",
-        "confidence": "Zekerheid",
-        "customer": "Klant",
-        "empty": "Geen AI suggesties beschikbaar",
-        "minutes": "min",
-        "title": "AI Suggesties"
-      }
-    },
-    "update": {
-      "failed": "Bijwerken mislukt",
-      "success": "Klus succesvol bijgewerkt"
-    }
-  },
-  "launch": {
-    "meta": {
-      "title": "Plumbing Agent - Noodloodgieter Platform",
-      "description": "Transformeer spoed loodgieterswerk met WhatsApp intake, AI diagnose, en directe facturatie",
-      "keywords": "noodloodgieter, loodgieter software, WhatsApp business, Nederlandse loodgieter, emergency plumber"
-    },
-    "demo": {
-      "page": {
-        "title": "Productdemo",
-        "headline": "Bekijk Plumbing Agent in actie",
-        "subtitle": "Van WhatsApp-intake naar betaalde factuur in minuten",
-        "benefits": {
-          "faster": {
-            "title": "Snellere Reactietijden",
-            "description": "WhatsApp intake en AI-analyse verkorten reactietijd van uren naar minuten"
-          },
-          "smarter": {
-            "title": "Slimmere Diagnose",
-            "description": "AI-gestuurde probleemanalyse helpt je beter voorbereiden en efficiënter werken"
-          },
-          "better_paid": {
-            "title": "Sneller Betaald",
-            "description": "Directe facturatie en geautomatiseerde betalingsherinneringen verbeteren cashflow"
-          }
-        },
-        "cta": {
-          "headline": "Klaar om te proberen?",
-          "subtitle": "Doe mee aan de pilot en krijg vroege toegang",
-          "button": "Aanmelden"
-        },
-        "nav": {
-          "previous": "Vorige",
-          "next": "Volgende",
-          "step_counter": "Stap {current} van {total}"
-        },
-        "done": "Helemaal klaar!",
-        "autoplay_pause": "Autoplay pauzeren",
-        "autoplay_start": "Autoplay starten",
-        "keyboard_help": "Gebruik pijltjestoetsen om te navigeren",
-        "time_estimate": "Geschatte tijd: {minutes} minuten",
-        "time_average": "Gemiddelde tijd",
-        "back": "Terug"
-      },
-      "content": {
-        "whatsapp": {
-          "photo_attached": "Foto toegevoegd",
-          "ai_analyzing": "Bericht analyseren."
-        },
-        "ai_suggestion": {
-          "diagnosis": "Diagnose",
-          "reliable": "Betrouwbaar",
-          "urgency": "Urgentie",
-          "emergency": "Spoed",
-          "estimated_time": "Geschatte tijd",
-          "minutes": "min",
-          "required_materials": "Benodigde materialen",
-          "quantity_format": "{qty}×"
-        },
-        "schedule": {
-          "assigned_to": "Toegewezen aan",
-          "start_time": "Starttijd",
-          "end_time": "Eindtijd",
-          "auto_assigned": "Automatisch toegewezen"
-        },
-        "job_card": {
-          "address": "Adres",
-          "phone": "Telefoon",
-          "notes": "Notities"
-        },
-        "voice_draft": {
-          "voice_transcript": "Spraaktranscript",
-          "invoice_lines": "Factuurregels",
-          "line_format": "{qty}× {item}",
-          "subtotal_ex_vat": "Subtotaal (excl. btw)",
-          "vat_total": "Btw-totaal",
-          "total": "Totaal"
-        },
-        "send_pay": {
-          "invoice_id": "Factuurnummer",
-          "invoice_sent": "Factuur verzonden",
-          "payment_status": "Betaalstatus",
-          "pdf": "PDF",
-          "whatsapp_message": "WhatsApp-bericht",
-          "awaiting_payment": "Wacht op betaling",
-          "click_pay": "Klik om te betalen"
-        },
-        "reminders": {
-          "after_days": "Na {days} dagen",
-          "scheduled": "Ingepland",
-          "automation_active": "Automatisering actief",
-          "opt_out_respected": "Uitschrijven gerespecteerd",
-          "email_escalation": "E-mail-escalatie",
-          "title": "Betaalherinneringen",
-          "whatsapp_series": "WhatsApp Serie"
-        },
-        "common": {
-          "loading": "Demogegevens laden.",
-          "alternative_payment": "Alternatieve betaling",
-          "due_date": "Vervaldatum",
-          "email": "E-mail",
-          "step_data_unavailable": "Stapgegevens niet beschikbaar"
-        },
-        "step_previous": "Vorige",
-        "step_next": "Volgende",
-        "step_jump": "Ga naar stap",
-        "demo_started": "Demo gestart",
-        "demo_completed": "Demo voltooid"
-      }
-    },
-    "usp": {
-      "title": "Title",
-      "subtitle": "Subtitle",
-      "whatsapp": {
-        "title": "Title",
-        "desc": "Desc"
-      },
-      "ai": {
-        "title": "Title",
-        "desc": "Desc"
-      },
-      "schedule": {
-        "title": "Title",
-        "desc": "Desc"
-      },
-      "jobcards": {
-        "title": "Title",
-        "desc": "Desc"
-      },
-      "invoicing": {
-        "title": "Title",
-        "desc": "Desc"
-      },
-      "compliance": {
-        "title": "Title",
-        "desc": "Desc"
-      }
-    },
-    "cookie_consent": {
-      "title": "We gebruiken cookies",
-      "description": "We gebruiken essentiële cookies en analytics om je ervaring te verbeteren.",
-      "accept_all": "Alles accepteren",
-      "reject_all": "Alles weigeren",
-      "essential_only": "Alleen essentieel",
-      "privacy_policy": "Privacybeleid",
-      "close": "Sluiten"
-    },
-    "trust": {
-      "dutch_compliance": "Dutch Compliance",
-      "ideal_payments": "Ideal Payments",
-      "whatsapp_business": "Whatsapp Business",
-      "avg_compliant": "AVG-conform",
-      "ideal_certified": "iDEAL-gecertificeerd",
-      "kvk_registered": "KVK-geregistreerd"
-    },
-    "waitlist": {
-      "title": "Word Pilot Deelnemer",
-      "subtitle": "Krijg vroege toegang tot Plumbing Agent en transformeer uw spoedloodgieter bedrijf",
-      "email": "E-mailadres",
-      "phone": "Telefoonnummer (optioneel)",
-      "org": "Organisatienaam (optioneel)",
-      "success": "Dank je wel! We nemen binnenkort contact op met toegangsgegevens voor de pilot.",
-      "error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
-      "submit": "Meld je aan",
-      "gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
-    },
-    "hero": {
-      "h1": "Plumbing Agent voor vakmensen",
-      "subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
-      "cta_demo": "Plan een demo",
-      "cta_waitlist": "Op wachtlijst",
-      "urgency": "Beperkte beta-toegang",
-      "social_proof": "Vertrouwd door groeiende loodgietersteams"
-    },
-    "roi_calculator": {
-      "title": "Bereken je ROI",
-      "subtitle": "Bereken je ROI",
-      "input_label": "Uren die je per week wilt besparen",
-      "placeholder_text": "bijv. 5–10",
-      "hours_per_week": "Uren bespaard / week",
-      "rate_per_hour": "Uurtarief (€)",
-      "time_saved": "Tijd bespaard",
-      "extra_revenue": "Extra omzet",
-      "yearly_savings": "Jaarlijkse besparingen",
-      "calculate_button": "Berekenen",
-      "cta_start_saving": "Begin nu met besparen",
-      "results": {
-        "total_value": "Totale jaarlijkse waarde"
-      }
-    },
-    "current_hours": "Huidige uren per week",
-    "controls": {
-      "title": "Title",
-      "description": "Description",
-      "sinceDate": "SinceDate",
-      "creating": "Creating",
-      "createDrafts": "CreateDrafts"
-    },
-    "list": {
-      "title": "Title",
-      "loading": "Loading"
-    },
-    "pilot": {
-      "banner": {
-        "title": "Pilotmodus",
-        "subtitle": "Bepaalde functies zijn ingeschakeld voor testen."
-      }
-    },
-    "results": {
-      "title": "Title",
-      "total": "Total",
-      "sent": "Sent",
-      "skipped": "Skipped",
-      "withPaymentLinks": "WithPaymentLinks",
-      "errors": "Errors"
-    }
-  },
-  "meta": {
-    "title": "Paginatitel",
-    "description": "Paginabeschrijving",
-    "keywords": "trefwoorden"
-  },
-  "misc": {
-    "app": {
-      "title": "Spoedloodgieter Platform"
-    },
-    "cta": {
-      "newJob": "Nieuwe Klus"
-    },
-    "priority": {
-      "normal": "Normaal",
-      "urgent": "Urgent",
-      "emergency": "Noodgeval"
-    },
-    "form": {
-      "title": "Titel",
-      "required": "Verplicht",
-      "priority": "Prioriteit",
-      "description": "Beschrijving",
-      "startTime": "Starttijd",
-      "duration": "Duur",
-      "primaryEmployee": "Hoofdmedewerker"
-    },
-    "tabs": {
-      "whatsapp": "WhatsApp"
-    },
-    "action": {
-      "delete": "Verwijderen",
-      "edit": "Bewerken"
-    },
-    "active": "Active",
-    "ai_suggestion": {
-      "diagnosis": "Diagnosis",
-      "reliable": "Reliable",
-      "urgency": "Urgency",
-      "emergency": "Emergency",
-      "estimated_time": "Estimated Time",
-      "minutes": "Minutes",
-      "required_materials": "Required Materials"
-    },
-    "approvals": {
-      "title": "Daily Invoice Approvals",
-      "subtitle": "Review and send draft invoices created today",
-      "selectAll": "Select all",
-      "selected": "selected",
-      "select": "Select",
-      "number": "Number",
-      "customer": "Customer",
-      "total": "Total",
-      "created": "Created",
-      "empty": "No draft invoices found for this date",
-      "dateFilter": {
-        "title": "Date Filter",
-        "description": "Select the date to view draft invoices",
-        "label": "Target date"
-      },
-      "actions": {
-        "title": "Batch Actions",
-        "description": "Select invoices to send in batch",
-        "selectedCount": "{count} invoices selected",
-        "sendSelected": "Send {count} selected",
-        "sending": "Sending invoices..."
-      },
-      "list": {
-        "title": "Draft Invoices",
-        "loading": "Loading drafts...",
-        "count": "{count} draft invoices"
-      },
-      "results": {
-        "title": "Send Results",
-        "total": "Total",
-        "sent": "Sent",
-        "skipped": "Skipped",
-        "withPaymentLinks": "With Payment Links",
-        "errors": "Errors"
-      }
-    },
-    "approved": "Approved",
-    "back": "Back",
-    "badge": {
-      "accepted": "Geaccepteerd"
-    },
-    "bulkActions": {
-      "title": "Title",
-      "description": "Description",
-      "alsoWhatsApp": "AlsoWhatsApp",
-      "sending": "Sending"
-    },
-    "connected": {
-      "description": "Description"
-    },
-    "created": "Created",
-    "customer": "Customer",
-    "dashboard": {
-      "welcome": "Welkom bij uw loodgieter beheerplatform"
-    },
-    "description": "Description",
-    "done": {
-      "title": "Title",
-      "description": "Description",
-      "success": "Success",
-      "successDescription": "SuccessDescription",
-      "healthSummary": "HealthSummary",
-      "environment": "Environment",
-      "webhook": "Webhook",
-      "security": "Security",
-      "goToSettings": "GoToSettings"
-    },
-    "draftInvoice": "DraftInvoice",
-    "eboekhouden": {
-      "description": "Description"
-    },
-    "employees": {
-      "filter": {
-        "all": "Alles",
-        "clearAll": "Alles wissen"
-      }
-    },
-    "headline": "Headline",
-    "health": {
-      "title": "Title",
-      "description": "Description",
-      "env": "Env",
-      "ok": "Ok",
-      "missing": "Missing",
-      "webhook": "Webhook",
-      "unreachable": "Unreachable",
-      "secret": "Secret",
-      "refresh": "Refresh"
-    },
-    "houseNumber": "Huisnummer",
-    "id": "ID",
-    "job_card": {
-      "address": "Address",
-      "phone": "Phone",
-      "notes": "Notes"
-    },
-    "job_card_mobile": {
-      "title": "Klus Details",
-      "when": "Wanneer",
-      "where": "Waar",
-      "customer": "Klant",
-      "issue": "Probleem",
-      "status": "Status",
-      "statusValues": {
-        "planned": "Gepland",
-        "scheduled": "Ingepland",
-        "in_progress": "Bezig",
-        "done": "Klaar",
-        "cancelled": "Geannuleerd",
-        "unknown": "Onbekend"
-      },
-      "openCalendar": "📅 Open in kalender",
-      "backToJobs": "← Terug naar klussen",
-      "readOnlyNotice": "Alleen-lezen weergave voor mobiel",
-      "phoneUnknown": "Telefoon onbekend",
-      "addressUnknown": "Adres niet bekend",
-      "dateUnknown": "Datum onbekend",
-      "timeUnknown": "Tijd onbekend"
-    },
-    "jobCard": {
-      "title": "Werkbon",
-      "phone": "Telefoon",
-      "jobStatus": "Werkstatus",
-      "jobNumber": "Werk",
-      "active": "Actief",
-      "scheduled": "Gepland",
-      "lastResponse": "Laatste AI Reactie",
-      "approved": "Goedgekeurd",
-      "urgency": "Urgentie",
-      "schedule": "Inplannen",
-      "draftInvoice": "Concept Factuur",
-      "tokenExpires": "Toegang verloopt"
-    },
-    "jobNumber": "JobNumber",
-    "jobStatus": "JobStatus",
-    "label": {
-      "durationMinutes": "{minutes} minuten"
-    },
-    "lastResponse": "LastResponse",
-    "mappings": {
-      "title": "Title",
-      "description": "Description",
-      "empty": "Empty",
-      "label": {
-        "business": "Business",
-        "control": "Control"
-      }
-    },
-    "money": {
-      "euro": "€"
-    },
-    "moneybird": {
-      "description": "Description"
-    },
-    "next": "Next",
-    "noInvoices": "NoInvoices",
-    "noJob": "NoJob",
-    "noProvider": "NoProvider",
-    "note": "Note",
-    "numbers": {
-      "success": "Success",
-      "error": "Error",
-      "validation": "Validation",
-      "title": "Title",
-      "description": "Description",
-      "businessLabel": "BusinessLabel",
-      "businessHelp": "BusinessHelp",
-      "controlLabel": "ControlLabel",
-      "controlHelp": "ControlHelp",
-      "save": "Save",
-      "labels": {
-        "select": "{label, select, customer {Klantnummer} control {Beheernummer} other {label}}"
-      }
-    },
-    "onboard": {
-      "title": "Title",
-      "quickTitle": "QuickTitle",
-      "quickDescription": "QuickDescription",
-      "start": "Start"
-    },
-    "peppol": {
-      "description": "Description"
-    },
-    "phone": "Phone",
-    "postalCode": "Postcode",
-    "prereqs": {
-      "title": "Title",
-      "description": "Description",
-      "webhookUrl": "WebhookUrl",
-      "webhookHelp": "WebhookHelp",
-      "verifyToken": "VerifyToken",
-      "tokenHelp": "TokenHelp"
-    },
-    "provider": "Provider",
-    "reminders": {
-      "title": "Title",
-      "whatsapp_series": "Whatsapp Series",
-      "scheduled": "Scheduled",
-      "automation_active": "Automation Active",
-      "opt_out_respected": "Opt Out Respected",
-      "email_escalation": "Email Escalation"
-    },
-    "schedule": {
-      "assigned_to": "Toegewezen aan",
-      "auto_assigned": "Automatisch toegewezen",
-      "end_time": "Eindtijd",
-      "start_time": "Starttijd"
-    },
-    "seed": {
-      "success": "Success",
-      "error": "Error",
-      "validation": "Validation",
-      "title": "Title",
-      "description": "Description",
-      "businessId": "BusinessId",
-      "controlId": "ControlId",
-      "submit": "Submit"
-    },
-    "select": "Select",
-    "selectAll": "SelectAll",
-    "selected": "Selected",
-    "send_pay": {
-      "invoice_sent": "Invoice Sent",
-      "invoice_id": "Invoice Id",
-      "payment_status": "Payment Status",
-      "awaiting_payment": "Awaiting Payment",
-      "click_pay": "Click Pay",
-      "pdf": "Pdf",
-      "whatsapp_message": "Whatsapp Message"
-    },
-    "states": {
-      "connected": "Connected",
-      "needs_action": "Needs Action",
-      "error": "Error"
-    },
-    "steps": {
-      "prereqs": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "numbers": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "test": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "done": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "whatsapp": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "ai_suggestion": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "schedule": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "job_card": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "voice_draft": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "send_pay": {
-        "title": "Title",
-        "description": "Description"
-      },
-      "reminders": {
-        "title": "Title",
-        "description": "Description"
-      }
-    },
-    "subtitle": "Subtitle",
-    "test": {
-      "success": "Success",
-      "error": "Error",
-      "validation": "Validation",
-      "title": "Title",
-      "description": "Description",
-      "phoneLabel": "PhoneLabel",
-      "phoneHelp": "PhoneHelp",
-      "messageLabel": "MessageLabel",
-      "messagePlaceholder": "MessagePlaceholder",
-      "messageHelp": "MessageHelp",
-      "configured": "Configured",
-      "send": "Send"
-    },
-    "title": "Title",
-    "toast": {
-      "deleteError": "Kan klus niet verwijderen:",
-      "jobDeleted": "Klus succesvol verwijderd"
-    },
-    "tokenExpires": "TokenExpires",
-    "total": "Total",
-    "ui": {
-      "tip": "Tip"
-    },
-    "upsert": {
-      "success": "Success",
-      "error": "Error",
-      "validation": "Validation",
-      "title": "Title",
-      "phoneNumberId": "PhoneNumberId",
-      "label": "Label",
-      "submit": "Submit"
-    },
-    "urgency": "Urgency",
-    "voice_draft": {
-      "voice_transcript": "Voice Transcript",
-      "invoice_lines": "Invoice Lines",
-      "subtotal_ex_vat": "Subtotal Ex Vat",
-      "vat_total": "Vat Total",
-      "total": "Total"
-    },
-    "wefact": {
-      "description": "Description"
-    }
-  },
-  "notifications": {
-    "title": "Notificaties",
-    "empty": "Geen notificaties",
-    "markAllRead": "Alle markeren als gelezen",
-    "markAsRead": "Markeren als gelezen",
-    "markAsUnread": "Markeren als ongelezen",
-    "delete": "Notificatie verwijderen",
-    "types": {
-      "info": "Informatie",
-      "success": "Gelukt",
-      "warning": "Waarschuwing",
-      "error": "Fout",
-      "invoice": "Factuur",
-      "job": "Klus",
-      "customer": "Klant",
-      "payment": "Betaling"
-    },
-    "settings": {
-      "title": "Notificatie-instellingen",
-      "email": "E-mail notificaties",
-      "push": "Push notificaties",
-      "whatsapp": "WhatsApp notificaties"
-    }
-  },
-  "panel": {
-    "title": "Paneel"
-  },
-  "payment": {
-    "status": "Betalingsstatus",
-    "awaiting": "Wachtend op betaling",
-    "paid": "Betaald",
-    "overdue": "Achterstallig",
-    "failed": "Betaling mislukt",
-    "refunded": "Terugbetaald",
-    "links": "Betaallinks",
-    "method": "Betaalmethode",
-    "amount": "Bedrag",
-    "dueDate": "Vervaldatum",
-    "payNow": "Nu betalen",
-    "payOnline": "Online betalen",
-    "ideal": "iDEAL",
-    "creditCard": "Creditcard",
-    "bankTransfer": "Bankoverschrijving"
-  },
-  "providers": {
-    "actions": {
-      "back": "Terug",
-      "configure": "Configureren",
-      "connect": "Koppelen",
-      "fix": "Verbinding herstellen"
-    },
-    "comingSoon": "Binnenkort beschikbaar",
-    "moneybird": {
-      "title": "Moneybird",
-      "description": "Professionele Nederlandse boekhouding met API integratie",
-      "connect": "Koppelen",
-      "reconnect": "Opnieuw koppelen",
-      "disconnect": "Ontkoppelen",
-      "connected": "Verbonden",
-      "openDashboard": "Dashboard openen",
-      "reconnectHelper": "Uw token is verlopen. Koppel opnieuw om door te gaan.",
-      "health": {
-        "ok": "Verbonden",
-        "invalid_token": "Token verlopen",
-        "not_connected": "Niet verbonden"
-      }
-    },
-    "wefact": {
-      "title": "WeFact",
-      "description": "Eenvoudige facturatie met betalingsverwerking"
-    },
-    "eboekhouden": {
-      "title": "e-Boekhouden",
-      "description": "Populaire keuze voor Nederlandse kleine ondernemers"
-    },
-    "peppol": {
-      "title": "Peppol",
-      "description": "Europese B2B elektronische facturatie standaard"
-    },
-    "panel": {
-      "title": "Factuur Providers",
-      "description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
-      "note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance."
-    },
-    "states": {
-      "connected": "Verbonden",
-      "needs_action": "Instelling vereist",
-      "error": "Fout"
-    },
-    "connected": {
-      "description": "Provider is klaar voor het uitgeven van facturen"
-    },
-    "oauth": {
-      "adminError": "Kon administraties niet ophalen",
-      "authError": "Autorisatie geweigerd of mislukt",
-      "callbackError": "Onbekende fout tijdens verbindingsproces",
-      "csrfError": "Beveiligingsfout: ongeldige sessiestatus",
-      "error": "Verbindingsfout",
-      "genericError": "Er is iets misgegaan tijdens het verbinden",
-      "moneybirdConnected": "Moneybird succesvol verbonden",
-      "selectAdmin": "Selecteer administratie",
-      "stateError": "Ongeldige verbindingsstatus",
-      "stateExpired": "Verbindingssessie is verlopen",
-      "success": "Verbinding geslaagd",
-      "tokenError": "Kon toegangstoken niet ophalen",
-      "userMismatch": "Gebruiker komt niet overeen met verwachte account"
-    },
-    "setup": {
-      "actions": {
-        "back": "Terug naar providers",
-        "cancel": "Annuleren",
-        "connect": "WeFact verbinden",
-        "connecting": "Verbinden..."
-      },
-      "apiKey": {
-        "help": "U kunt uw API sleutel vinden in uw WeFact account instellingen onder API toegang",
-        "label": "API Sleutel",
-        "placeholder": "Voer uw WeFact API sleutel in"
-      },
-      "baseUrl": {
-        "help": "Laat standaard tenzij u een aangepaste WeFact installatie gebruikt",
-        "label": "API Basis URL"
-      },
-      "errors": {
-        "connection": "Verbinding mislukt"
-      },
-      "wefact": {
-        "description": "Configureer uw WeFact account voor geautomatiseerde factuurverwerking",
-        "title": "WeFact koppelen"
-      }
-    }
-  },
-  "settings": {
-    "whatsapp": {
-      "title": "WhatsApp Configuratie",
-      "health": {
-        "ok": "OK",
-        "invalid_token": "Ongeldig token",
-        "not_connected": "Niet verbonden",
-        "webhook_ok": "Webhook OK",
-        "webhook_error": "Webhook-fout",
-        "security": "Beveiliging",
-        "webhook": "Webhook"
-      },
-      "onboard": {
-        "back": "Terug",
-        "next": "Doorgaan",
-        "title": "WhatsApp-onboarding",
-        "description": "Configureer nummers en verifieer webhooks",
-        "steps": {
-          "prereqs": {
-            "title": "Vereisten"
-          },
-          "numbers": {
-            "title": "Nummers"
-          },
-          "test": {
-            "title": "Test"
-          },
-          "done": {
-            "title": "Klaar"
-          }
-        },
-        "prereqs": {
-          "title": "Vereisten",
-          "description": "Controleer token en webhook-URL in Meta Business",
-          "verifyToken": "Token verifiëren",
-          "tokenHelp": "Gebruik dit token in je webhookconfiguratie.",
-          "webhookUrl": "Webhook-URL",
-          "webhookHelp": "Stel deze URL in bij Meta Business."
-        },
-        "numbers": {
-          "title": "Nummers",
-          "description": "Koppel nummer-ID's aan kanalen",
-          "businessLabel": "Klantnummer",
-          "businessHelp": "Gebruikt voor klantchats",
-          "controlLabel": "Controlenummer",
-          "controlHelp": "Gebruikt voor systeemberichten",
-          "save": "Koppeling opslaan",
-          "success": "Nummers opgeslagen",
-          "error": "Opslaan mislukt",
-          "validation": "Selecteer beide nummers"
-        },
-        "test": {
-          "title": "Verstuur een test",
-          "description": "Verstuur een testbericht om levering te verifiëren",
-          "phoneLabel": "Telefoon",
-          "phoneHelp": "Vul een WhatsApp-telefoon in",
-          "messageLabel": "Bericht",
-          "messagePlaceholder": "Hallo van Plumbing Agent!",
-          "messageHelp": "Dit wordt naar je toestel gestuurd",
-          "configured": "Geconfigureerd",
-          "send": "Test versturen",
-          "success": "Testbericht verzonden",
-          "error": "Verzenden mislukt",
-          "validation": "Vul telefoon en bericht in"
-        },
-        "done": {
-          "title": "Alles gereed!",
-          "description": "Je WhatsApp-integratie is geconfigureerd",
-          "success": "Configuratie voltooid",
-          "successDescription": "Je kunt nu berichten ontvangen en versturen",
-          "healthSummary": "Gezondheidsstatus",
-          "environment": "Omgeving",
-          "webhook": "Webhook",
-          "security": "Beveiliging",
-          "goToSettings": "Naar WhatsApp-instellingen"
-        }
-      },
-      "subtitle": "Configure your WhatsApp Business integration",
-      "wizard": {
-        "step": "Step {current} of {total}",
-        "next": "Continue",
-        "previous": "Back",
-        "finish": "Complete Setup",
-        "skip": "Skip for now"
-      },
-      "prereqs": {
-        "title": "Prerequisites",
-        "description": "Verify your WhatsApp Business account configuration",
-        "webhookUrls": {
-          "title": "Webhook URLs",
-          "description": "Configure these URLs in your Meta App webhook settings",
-          "customer": "Customer webhook",
-          "control": "Control webhook",
-          "copy": "Copy URL",
-          "copied": "Copied!"
-        },
-        "credentials": {
-          "title": "API Credentials",
-          "description": "Server-side credentials configured via environment variables",
-          "verifyToken": "Verify Token",
-          "hmacSecret": "HMAC Secret",
-          "configured": "✅ Configured",
-          "missing": "❌ Missing",
-          "note": "These are managed by your system administrator and are not visible for security reasons."
-        }
-      },
-      "numbers": {
-        "title": "Phone Numbers",
-        "description": "Map your WhatsApp Business phone number IDs to customer and control channels",
-        "table": {
-          "phoneNumberId": "Phone Number ID",
-          "label": "Type",
-          "createdAt": "Added",
-          "actions": "Actions"
-        },
-        "labels": {
-          "customer": "Customer",
-          "control": "Control",
-          "select": "{label, select, customer {Customer} control {Control}}"
-        },
-        "empty": {
-          "title": "No numbers configured",
-          "description": "Add your WhatsApp Business phone number IDs to get started"
-        },
-        "add": {
-          "title": "Add Phone Number",
-          "phoneNumberId": {
-            "label": "Phone Number ID",
-            "placeholder": "Enter WhatsApp Business phone number ID",
-            "helper": "Found in your Meta Business account"
-          },
-          "label": {
-            "label": "Channel Type",
-            "helper": "Customer for public inquiries, Control for internal management"
-          },
-          "submit": "Add Number",
-          "submitting": "Adding...",
-          "success": "Phone number added successfully",
-          "error": "Failed to add phone number"
-        },
-        "remove": {
-          "confirm": "Remove this phone number mapping?",
-          "success": "Phone number removed successfully",
-          "error": "Failed to remove phone number"
-        }
-      },
-      "test": {
-        "title": "Test Connection",
-        "description": "Send a test message to verify your control channel is working",
-        "button": "Send Test Message",
-        "sending": "Sending...",
-        "success": {
-          "title": "Test Successful!",
-          "message": "Test message sent to control channel",
-          "nextSteps": "Your WhatsApp integration is now ready to use."
-        },
-        "error": {
-          "noControl": "Control number not configured",
-          "noConversation": "No control conversation found. Please send a message from your control phone first.",
-          "apiError": "WhatsApp API error",
-          "unknown": "An error occurred while sending the test message"
-        },
-        "requirements": {
-          "title": "Requirements for testing",
-          "items": {
-            "0": "Control phone number must be mapped",
-            "1": "Send at least one message from control phone to establish conversation",
-            "2": "Valid API credentials must be configured"
-          }
-        }
-      },
-      "completion": {
-        "title": "Setup Complete!",
-        "description": "Your WhatsApp Business integration is configured and ready to use.",
-        "summary": {
-          "webhooks": "Webhook URLs configured",
-          "credentials": "API credentials verified",
-          "numbers": "{count} phone numbers mapped",
-          "test": "Connection test passed"
-        },
-        "nextSteps": {
-          "title": "What's next?",
-          "items": {
-            "0": "Visit the WhatsApp dashboard to manage conversations",
-            "1": "Configure automated responses and templates",
-            "2": "Train your team on the control channel commands"
-          }
-        },
-        "actions": {
-          "dashboard": "Go to WhatsApp Dashboard",
-          "settings": "Manage Settings"
-        }
-      }
-    }
-  },
-  "states": {
-    "needs_action": "Actie vereist"
-  },
-  "stats": {
-    "total": "Totaal",
-    "thisMonth": "Deze maand",
-    "active": "Actief",
-    "archived": "Gearchiveerd"
-  },
-  "system": {
-    "app": {
-      "title": "Loodgieter Agent"
-    },
-    "errors": {
-      "paymentLink": {
-        "sendFailed": "Versturen betaallink mislukt"
-      }
-    },
-    "locale": "nl",
-    "meta": {
-      "created": "Gemaakt:"
-    },
-    "notifications": {
-      "paymentLink": {
-        "sent": "Betaallink verstuurd via WhatsApp"
-      }
-    },
-    "payment": {
-      "links": "Betaling & Documenten",
-      "linksDescription": "Betaallinks en officiële documenten",
-      "noLinksDescription": "Betaallinks verschijnen nadat de factuur is verzonden",
-      "noLinksAvailable": "Geen betaallinks beschikbaar",
-      "payOnline": "Online Betalen",
-      "providerPayment": "Officiële betaallink van provider",
-      "openMollieCheckout": "iDEAL Betaling Aanmaken",
-      "creatingMollie": "Betaallink aanmaken...",
-      "molliePayment": "Backup betaling via iDEAL",
-      "mollieCreated": "Betaallink aangemaakt en geopend",
-      "mollieFailed": "Kon geen betaallink aanmaken",
-      "downloadPdf": "PDF Downloaden",
-      "viewPdf": "PDF Bekijken",
-      "pdfDescription": "Officieel factuur document",
-      "officialInvoice": "Officieel factuur document",
-      "paymentCopied": "Betaallink gekopieerd naar klembord",
-      "pdfCopied": "PDF link gekopieerd naar klembord",
-      "copyFailed": "Kopiëren naar klembord mislukt"
-    }
-  },
-  "ui": {
-    "badges": {
-      "locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen.",
-      "legacy": "Oudere factuur"
-    },
-    "common": {
-      "title": "Titel",
-      "description": "Beschrijving",
-      "back": "Terug",
-      "status": "Status",
-      "active": "Actief",
-      "approved": "Goedgekeurd",
-      "schedule": "Planning",
-      "when": "Wanneer",
-      "where": "Waar",
-      "customer": "Klant",
-      "issue": "Probleem",
-      "lastResponse": "Laatste reactie",
-      "comingSoon": "Binnenkort beschikbaar",
-      "draftInvoice": "Conceptfactuur",
-      "tokenExpires": "Token verloopt",
-      "dateUnknown": "Datum onbekend",
-      "timeUnknown": "Tijd onbekend",
-      "phoneUnknown": "Telefoon onbekend",
-      "addressUnknown": "Adres onbekend",
-      "urgency": "Urgentie",
-      "loading": "Laden..."
-    },
-    "field": {
-      "status": "Status",
-      "customer": "Klant",
-      "description": "Beschrijving",
-      "primaryEmployee": "Hoofdmonteur *",
-      "priority": "Prioriteit",
-      "secondaryEmployees": "Hulpmonteurs (komt binnenkort)",
-      "start": "Start"
-    },
-    "form": {
-      "address": "Adres",
-      "customer": "Klant",
-      "description": "Beschrijving",
-      "duration": "Duur (min)",
-      "employee": "Medewerker",
-      "endDate": "Einddatum",
-      "endTime": "Eindtijd",
-      "noEmployee": "Geen medewerker",
-      "notes": "Opmerkingen",
-      "primaryEmployee": "Hoofdmonteur",
-      "priority": "Prioriteit",
-      "priorityOptions": {
-        "normal": "Normaal",
-        "urgent": "Dringend",
-        "emergency": "Noodgeval"
-      },
-      "required": "Vereist",
-      "requiredSymbol": "*",
-      "startDate": "Startdatum",
-      "startTime": "Start tijd",
-      "status": "Status",
-      "title": "Titel"
-    },
-    "nav": {
-      "customers": "Klanten",
-      "dashboard": "Dashboard",
-      "invoices": "Facturen",
-      "jobs": "Klussen"
-    },
-    "stats": {
-      "activeJobs": "Actieve Klussen",
-      "newCustomers": "Nieuwe Klanten",
-      "outstandingInvoices": "Openstaande Facturen",
-      "revenue": "Omzet",
-      "thisMonth": "Deze maand",
-      "thisWeek": "Deze week",
-      "toCollect": "Te incasseren",
-      "today": "Vandaag"
-    },
-    "table": {
-      "actions": "Acties",
-      "amount": "Bedrag",
-      "customer": "Klant",
-      "date": "Datum",
-      "draft": "Concept",
-      "dueDate": "Vervaldatum",
-      "invoice": "Factuur",
-      "issuedOn": "Verzonden Op",
-      "job": "Klus",
-      "method": "Methode",
-      "noJobs": "Geen klussen gevonden",
-      "paidOn": "Betaald Op",
-      "provider": "Provider",
-      "status": "Status",
-      "time": "Tijd",
-      "title": "Titel"
-    },
-    "tabs": {
-      "whatsapp": "WhatsApp"
-    }
-  },
-  "whatsapp": {
-    "leads": {
-      "title": "WhatsApp Leads",
-      "description": "Beheer inkomende WhatsApp gesprekken",
-      "count": "leads",
-      "table": {
-        "contact": "Contact",
-        "lastMessage": "Laatste Bericht",
-        "unread": "Ongelezen",
-        "session": "Sessie",
-        "lastActivity": "Laatste Activiteit"
-      },
-      "empty": {
-        "title": "Geen actieve leads",
-        "description": "Nieuwe WhatsApp gesprekken verschijnen hier"
-      }
-    },
-    "session": {
-      "active": "Actief",
-      "expired": "Verlopen",
-      "expiresAt": "Verloopt om",
-      "expiresIn": "Verloopt over"
-    },
-    "conversation": {
-      "title": "Berichten",
-      "empty": {
-        "title": "Nog geen berichten",
-        "description": "Start een gesprek om berichten hier te zien"
-      }
-    },
-    "message": {
-      "media": "Media bijlage"
-    },
-    "composer": {
-      "placeholder": "Typ een bericht...",
-      "templatePlaceholder": "Typ een sjabloonbericht...",
-      "send": "Verstuur",
-      "useTemplate": "Verstuur Sjabloon",
-      "sending": "Versturen...",
-      "sent": "Bericht verstuurd",
-      "templateSent": "Sjabloon verstuurd",
-      "error": "Versturen mislukt",
-      "templateError": "Sjabloon versturen mislukt",
-      "sessionExpiredWarning": "24-uurs sessie verlopen. Gebruik sjabloonberichten om het gesprek voort te zetten."
-    },
-    "actions": {
-      "title": "Acties",
-      "createJob": "Klus Aanmaken",
-      "sendPaylink": "Betaallink Versturen",
-      "close": "Gesprek Sluiten",
-      "jobCreated": "Klus succesvol aangemaakt",
-      "jobError": "Klus aanmaken mislukt",
-      "paylinkNotImplemented": "Betaallink functie komt binnenkort",
-      "paylinkError": "Betaallink versturen mislukt",
-      "conversationClosed": "Gesprek gesloten",
-      "closeError": "Gesprek sluiten mislukt"
-    },
-    "control": {
-      "title": "Controle Chat",
-      "description": "Snelle goedkeuringsacties",
-      "approve": "Goedkeuren",
-      "close": "Sluiten",
-      "approved": "Gesprek goedgekeurd",
-      "approveError": "Goedkeuren mislukt"
-    },
-    "info": {
-      "title": "Info",
-      "status": "Status",
-      "created": "Aangemaakt",
-      "linkedCustomer": "Klant"
-    },
-    "photo_attached": "Foto bijgevoegd",
-    "ai_analyzing": "AI analyseert...",
-    "createJob": "Klus aanmaken",
-    "lastActivity": "Laatste activiteit",
-    "messages": "berichten",
-    "noMessages": "Geen WhatsApp-berichten beschikbaar"
-  }
+	"actions": {
+		"back": "Terug",
+		"cancel": "Annuleren",
+		"configure": "Configureren",
+		"connect": "Verbinden",
+		"create": "Aanmaken",
+		"creating": "Bezig...",
+		"delete": "Verwijderen",
+		"deleting": "Verwijderen...",
+		"edit": "Bewerken",
+		"fix": "Repareren",
+		"openActions": "Acties openen",
+		"pay": "Betalen",
+		"saving": "Opslaan...",
+		"sending": "Versturen...",
+		"update": "Bijwerken",
+		"cta": {
+			"applySuggestion": "Voorstel toepassen",
+			"button": "Knop",
+			"createInvoice": "Factuur maken",
+			"finalizeVoiceInvoice": "Afronden → Voice-factuur",
+			"headline": "Koptekst",
+			"newJob": "Nieuwe klus",
+			"subtitle": "Ondertitel"
+		}
+	},
+	"auth": {
+		"context": {
+			"description": "Huidige gebruiker- en organisatie-informatie",
+			"title": "Authenticatie Context"
+		},
+		"noOrganization": "Geen organisatie geselecteerd",
+		"noRole": "Geen rol toegewezen",
+		"notSignedIn": "Niet ingelogd",
+		"orgId": "Organisatie ID",
+		"role": "Rol",
+		"signInSubtitle": "Inloggen voor uw loodgieter dashboard",
+		"signUpSubtitle": "Registreer uw loodgieterbedrijf",
+		"tip": "Tip: Selecteer of maak een organisatie met de organisatieschakelaar in de header om aan de slag te gaan.",
+		"userId": "Gebruiker ID"
+	},
+	"common": {
+		"cancel": "Annuleren",
+		"error": "Fout",
+		"loading": "Laden...",
+		"unnamed": "Naamloos",
+		"unknown": "Onbekend",
+		"due_date": "Vervaldatum",
+		"alternative_payment": "Alternatieve betaling",
+		"email": "E-mail",
+		"step_data_unavailable": "Stap gegevens niet beschikbaar",
+		"yes": "Ja",
+		"no": "Nee",
+		"priority": {
+			"emergency": "Spoed",
+			"normal": "Normaal",
+			"urgent": "Urgent"
+		},
+		"status": {
+			"cancelled": "Geannuleerd",
+			"done": "Voltooid",
+			"draft": "Concept",
+			"in_progress": "Bezig",
+			"planned": "Ingepland"
+		}
+	},
+	"customers": {
+		"selectCustomer": "Klant selecteren",
+		"recent": "Recent",
+		"allOthers": "Alle anderen",
+		"title": "Klanten",
+		"description": "Beheer klantinformatie en contactgegevens",
+		"errors": {
+			"name": {
+				"required": "Naam is verplicht"
+			},
+			"phone": {
+				"required": "Telefoon is verplicht",
+				"invalid": "Voer een geldig telefoonnummer in"
+			},
+			"email": {
+				"invalid": "Voer een geldig e-mailadres in"
+			},
+			"postalCode": {
+				"invalid": "Ongeldige postcode (bijv. 1234 AB)"
+			},
+			"houseNumber": {
+				"required": "Huisnummer verplicht"
+			},
+			"address": {
+				"required": "Adres is verplicht"
+			},
+			"notFoundOrNoPermission": "Klant niet gevonden of geen permissie",
+			"serverError": "Server fout opgetreden",
+			"emailAlreadyExists": "Klant met dit e-mailadres bestaat al"
+		},
+		"searchPlaceholder": "Zoek klanten...",
+		"noCustomersFound": "Geen klanten gevonden",
+		"addNew": "Nieuwe klant",
+		"actions": {
+			"creating": "Aanmaken...",
+			"create": "Klant aanmaken",
+			"cancel": "Annuleren"
+		},
+		"archived": {
+			"title": "Gearchiveerde klanten",
+			"description": "Bekijk gearchiveerde klanten",
+			"badge": "Gearchiveerde klant",
+			"noArchivedFound": "Geen gearchiveerde klanten gevonden",
+			"tab": "Gearchiveerd"
+		},
+		"unarchive": {
+			"action": "Herstellen",
+			"tooltip": "Klant herstellen",
+			"success": "Klant succesvol hersteld",
+			"error": "Fout bij herstellen klant"
+		},
+		"create": {
+			"title": "Nieuwe klant aanmaken",
+			"description": "Voeg een nieuwe klant toe aan het systeem"
+		},
+		"edit": {
+			"title": "Klant bewerken",
+			"description": "Wijzig klantinformatie"
+		},
+		"form": {
+			"name": {
+				"label": "Naam",
+				"placeholder": "Volledige naam"
+			},
+			"email": {
+				"label": "E-mailadres",
+				"placeholder": "naam@voorbeeld.nl"
+			},
+			"phone": {
+				"label": "Telefoonnummer",
+				"placeholder": "06 12345678"
+			},
+			"address": {
+				"label": "Adres",
+				"placeholder": "Straat 123",
+				"autoFill": {
+					"title": "Nederlandse Adres Opzoeken",
+					"loading": "Adres opzoeken…"
+				}
+			},
+			"postalCode": {
+				"label": "Postcode",
+				"placeholder": "1234 AB"
+			},
+			"houseNumber": {
+				"label": "Huisnummer",
+				"placeholder": "123"
+			},
+			"street": {
+				"label": "Straat",
+				"placeholder": "Straatnaam"
+			},
+			"city": {
+				"label": "Plaats",
+				"placeholder": "Plaatsnaam"
+			},
+			"language": {
+				"label": "Taal"
+			},
+			"validation": {
+				"nameRequired": "Naam is verplicht",
+				"nameTooLong": "Naam te lang",
+				"emailInvalid": "Voer een geldig e-mailadres in",
+				"emailTooLong": "E-mailadres te lang",
+				"phoneRequired": "Telefoonnummer is verplicht",
+				"phoneTooLong": "Telefoonnummer te lang",
+				"addressTooLong": "Adres te lang",
+				"postalCodeRequired": "Postcode is verplicht",
+				"postalCodeInvalid": "Ongeldige Nederlandse postcode (bijv. 1234 AB)",
+				"postalCodeTooLong": "Postcode te lang"
+			},
+			"requiredSymbol": "*"
+		},
+		"table": {
+			"columns": {
+				"name": "Naam",
+				"contact": "Contact",
+				"address": "Adres",
+				"created": "Aangemaakt",
+				"actions": "Acties"
+			}
+		},
+		"stats": {
+			"total": "Totaal aantal",
+			"thisMonth": "Deze maand",
+			"active": "Actieve klanten",
+			"archived": "Gearchiveerde klanten"
+		},
+		"delete": {
+			"title": "Klant verwijderen",
+			"description": "Weet je zeker dat je deze klant wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"archive": {
+				"title": "Klant archiveren",
+				"cannotDelete": "Kan klant niet verwijderen: er zijn nog klussen of facturen gekoppeld.",
+				"linkedData": "Gekoppelde gegevens:",
+				"jobs": "klus(sen)",
+				"invoices": "factuur/facturen",
+				"archiveInstead": "Wil je de klant {name} archiveren in plaats daarvan?"
+			}
+		},
+		"error": {
+			"load": "Kan klanten niet laden",
+			"create": "Kan klant niet aanmaken",
+			"update": "Kan klant niet bijwerken",
+			"delete": "Kan klant niet verwijderen",
+			"deleteLinked": "Klant heeft gekoppelde klussen/facturen. Je kunt archiveren.",
+			"archive": "Kon klant niet archiveren"
+		},
+		"success": {
+			"created": "Klant succesvol aangemaakt",
+			"updated": "Klant succesvol bijgewerkt",
+			"deleted": "Klant succesvol verwijderd",
+			"archived": "Klant succesvol gearchiveerd"
+		}
+	},
+	"employees": {
+		"filter": {
+			"all": "Alles",
+			"clearAll": "Alles wissen"
+		}
+	},
+	"error": {
+		"load": "Laden mislukt"
+	},
+	"errors": {
+		"title": "Fout",
+		"general": "Er is iets misgegaan",
+		"tryAgain": "Probeer opnieuw",
+		"contactSupport": "Contact opnemen met support",
+		"notFound": "Niet gevonden",
+		"unauthorized": "Ongeautoriseerde toegang",
+		"forbidden": "Toegang geweigerd",
+		"validation": "Validatiefout",
+		"network": "Netwerkfout",
+		"timeout": "Verzoek verlopen",
+		"serverError": "Serverfout",
+		"unknown": "Onbekende fout",
+		"fieldRequired": "Dit veld is verplicht",
+		"invalidFormat": "Ongeldige format",
+		"tooShort": "Te kort",
+		"tooLong": "Te lang",
+		"mustBeNumber": "Moet een nummer zijn",
+		"mustBeEmail": "Moet een geldig e-mailadres zijn",
+		"passwordTooWeak": "Wachtwoord te zwak"
+	},
+	"invoice": {
+		"issuedSuccessfully": "Factuur succesvol uitgegeven!",
+		"issueFailed": "Kon factuur niet uitgeven",
+		"issueActions": "Uitgifteacties",
+		"lockedBadge": "Uitgegeven door {provider}",
+		"lockedDescription": "Deze factuur is uitgegeven en nu vergrendeld. De provider is de bron van de waarheid voor alle wijzigingen.",
+		"providerPdfNote": "PDF en betaallinks worden beheerd door de provider",
+		"needsProvider": "Provider Vereist",
+		"needsProviderDescription": "Verbind een factuurprovider om facturen uit te geven.",
+		"issueActionsDescription": "Acties om deze factuur uit te geven en te beheren",
+		"issuing": "Uitgeven...",
+		"issueViaMoneybird": "Uitgeven via Moneybird",
+		"issueViaProviderNote": "Dit zal de factuur aanmaken en verzenden via uw verbonden provider",
+		"timeline": {
+			"heading": "Tijdlijn",
+			"description": "Factuur levenscyclus gebeurtenissen",
+			"loadError": "Kon tijdlijn niet laden",
+			"loadErrorDescription": "Kan factuur tijdlijn gebeurtenissen niet ophalen.",
+			"noEvents": "Geen tijdlijn gebeurtenissen beschikbaar",
+			"noEventsDescription": "Tijdlijn gebeurtenissen zullen hier verschijnen naarmate de factuur vordert."
+		}
+	},
+	"invoices": {
+		"actions": {
+			"cancel": "Annuleren",
+			"pay": "Betalen",
+			"markReviewed": "Markeer als Beoordeeld",
+			"saveDraft": "Concept Opslaan",
+			"send": "Verzenden"
+		},
+		"badges": {
+			"legacy": "Oudere factuur",
+			"locked_tooltip": "Vergrendeld na verzending - Provider is bron van waarheid"
+		},
+		"status": {
+			"draft": "Concept",
+			"draftUnsent": "Concept • niet verzonden"
+		},
+		"providers": {
+			"moneybird": "Moneybird",
+			"wefact": "WeFact",
+			"eboekhouden": "e-Boekhouden",
+			"peppol": "Peppol",
+			"oauth": {
+				"success": "Verbinding geslaagd",
+				"error": "Verbindingsfout",
+				"moneybirdConnected": "Moneybird is succesvol verbonden en klaar voor gebruik",
+				"selectAdmin": "Moneybird is verbonden. U kunt nu een administratie selecteren in uw factuurinstellingen",
+				"genericError": "Er is iets misgegaan tijdens het verbinden. Probeer het opnieuw",
+				"authError": "Autorisatie geweigerd of mislukt",
+				"csrfError": "Beveiligingsfout: ongeldige sessiestatus",
+				"stateError": "Ongeldige verbindingsstatus",
+				"userMismatch": "Gebruiker komt niet overeen met verwachte account",
+				"stateExpired": "Verbindingssessie is verlopen, probeer opnieuw",
+				"tokenError": "Kon toegangstoken niet ophalen",
+				"adminError": "Kon administraties niet ophalen van provider",
+				"callbackError": "Onbekende fout tijdens verbindingsproces"
+			}
+		},
+		"voiceMode": {
+			"steps": {
+				"review": "Review",
+				"confirm": "Confirm",
+				"changes": "Changes",
+				"final": "Final"
+			},
+			"active": "Voice Modus Actief",
+			"approve": "Goedkeuren",
+			"approved": "Factuur Goedgekeurd!",
+			"changesNotes": "Wat moet er aangepast worden?",
+			"changesPlaceholder": "Beschrijf de gewenste wijzigingen...",
+			"changesRequested": "Wijzigingen aangevraagd",
+			"confirmPrompt": "Goedkeuren of wijzigingen nodig?",
+			"requestChanges": "Wijzigingen",
+			"reviewing": "Factuur wordt beoordeeld...",
+			"safeActive": "Veilige Voice Modus Actief",
+			"safeInstructions": "Spreek duidelijk voor beste resultaten",
+			"submitChanges": "Wijzigingen Verzenden",
+			"toggle": "Voice Modus"
+		},
+		"invoice": {
+			"notFound": "Factuur niet gevonden",
+			"notFoundDescription": "De factuur die je zoekt bestaat niet of je hebt er geen toegang toe.",
+			"customer": "Klant",
+			"details": "Factuurdetails",
+			"detailsDescription": "Factuurinformatie en regelitems",
+			"job": "Klus",
+			"amounts": "Bedragen",
+			"subtotalExVat": "Subtotaal (ex BTW)",
+			"vatAmount": "BTW Bedrag",
+			"totalIncVat": "Totaal (inc BTW)",
+			"notes": "Notities",
+			"status": "Status",
+			"provider": "Provider",
+			"issuedOn": "Verzonden op",
+			"issuedSuccessfully": "Factuur succesvol verzonden!",
+			"issueFailed": "Verzenden factuur mislukt",
+			"needsProvider": "Provider Vereist",
+			"needsProviderDescription": "Verbind een factuur provider om facturen te verzenden.",
+			"issueActionsDescription": "Acties om deze factuur te verzenden en beheren",
+			"issuing": "Bezig met verzenden...",
+			"issueViaMoneybird": "Verzend via Moneybird",
+			"issueViaProviderNote": "Dit zal de factuur aanmaken en verzenden via je verbonden provider",
+			"lockedBadge": "Uitgegeven via {provider}",
+			"lockedDescription": "Deze factuur is uitgegeven en nu vergrendeld. De provider is de bron van waarheid voor alle wijzigingen.",
+			"providerPdfNote": "PDF en betaallinks worden beheerd door de provider",
+			"timeline": {
+				"heading": "Tijdlijn",
+				"description": "Factuur gebeurtenissen",
+				"loadError": "Laden tijdlijn mislukt",
+				"loadErrorDescription": "Kan factuur gebeurtenissen niet ophalen.",
+				"noEvents": "Geen gebeurtenissen beschikbaar",
+				"noEventsDescription": "Tijdlijn gebeurtenissen verschijnen hier naarmate de factuur vordert.",
+				"created": "Aangemaakt",
+				"sent": "Verzonden",
+				"paid": "Betaald",
+				"reminder_sent": "Herinnering Verzonden",
+				"reminder_error": "Herinnering Mislukt",
+				"reminder_skipped": "Klant Uitgeschreven",
+				"manual_follow_up": "Handmatige Follow-up Vereist"
+			},
+			"issueActions": "Verstuur Acties",
+			"alreadyIssued": "Reeds Verzonden",
+			"alreadyIssuedDescription": "Deze factuur is al naar de klant verstuurd.",
+			"actions": {
+				"sendWhatsApp": "Verstuur via WhatsApp",
+				"sendWhatsAppDescription": "Stuur betaallink direct via WhatsApp naar de klant",
+				"updateCustomerAddress": "Klantadres bijwerken"
+			},
+			"average": "Gemiddeld",
+			"backToInvoices": "Terug naar facturen",
+			"confirmed": "Bevestigd",
+			"connectMoneybird": "Moneybird Aansluiten",
+			"connectProvider": "Factuurbeheer Aansluiten",
+			"connectProviderDesc": "Sluit een factuurprovider aan om automatisch facturen te versturen en betalingen te ontvangen",
+			"create": {
+				"addressError": "Adres fout bij aanmaken factuur",
+				"description": "Factuur maken voor {customer}",
+				"error": "Fout bij maken factuur",
+				"title": "Factuur Maken"
+			},
+			"createFromJob": "Factuur maken van klus",
+			"draft": "Concept",
+			"draftLabel": "Concept",
+			"drafts": "Concepten",
+			"draftsReady": "concepten gereed",
+			"edit": {
+				"description": "Bewerk factuur voor {customer}",
+				"error": "Fout bij laden factuur",
+				"title": "Factuur Bewerken"
+			},
+			"errors": {
+				"addressGuidance": "Voeg straat, huisnummer en postcode toe aan klantgegevens",
+				"addressRequired": "Volledig klantadres is verplicht voor factuur",
+				"invalidId": "Ongeldig factuur ID. Controleer de link of kies een andere factuur.",
+				"notFound": "Factuur niet gevonden"
+			},
+			"issued": "Verzonden",
+			"manage": "Beheer alle facturen en betalingen",
+			"managePending": "Beheer openstaande en betaalde facturen",
+			"modes": {
+				"fast": "Snel",
+				"safe": "Veilig"
+			},
+			"moreProvidersComingSoon": "Meer providers binnenkort beschikbaar",
+			"noDrafts": "Geen conceptfacturen gevonden",
+			"noOverdue": "Geen achterstallige facturen",
+			"noPendingDrafts": "Geen concepten in behandeling",
+			"noSentInvoices": "Geen verzonden facturen gevonden",
+			"overdue": "Achterstallig",
+			"overview": "Facturoverzicht",
+			"paid": "Betaald",
+			"payOnline": "Online Betalen",
+			"perInvoiceYear": "Per factuur dit jaar",
+			"requiresAttention": "Aandacht vereist",
+			"sent": "Verzonden",
+			"summary": {
+				"items": "items",
+				"title": "Overzicht"
+			},
+			"thisMonth": "Deze Maand",
+			"title": "Facturen",
+			"totalInvoices": "facturen totaal",
+			"totalOutstanding": "Totaal Openstaand",
+			"unknown": "Onbekend",
+			"viewPdf": "PDF Bekijken",
+			"approvals": "Goedkeuringen",
+			"empty": {
+				"title": "Nog geen facturen",
+				"description": "Maak uw eerste factuur van een voltooide klus",
+				"getStarted": "Zodra u een klus voltooit, kunt u een factuur voor uw klant maken"
+			}
+		},
+		"autosave": {
+			"error": "Fout bij opslaan",
+			"saved": "Opgeslagen",
+			"saving": "Opslaan..."
+		},
+		"compliance": {
+			"applied": "Toegepast",
+			"btwId": "BTW Identificatienummer",
+			"complete": "Compleet",
+			"customerAddress": "Klant Volledig Adres",
+			"dutchVat": "Nederlandse BTW Tarief",
+			"incomplete": "Incompleet",
+			"kvkNumber": "KVK Nummer",
+			"title": "Nederlandse Regelgeving",
+			"verified": "Geverifieerd"
+		},
+		"confirmSuccess": "Factuur bevestigd",
+		"draft": {
+			"fastMode": {
+				"badge": "Snel",
+				"description": "Snelle factuur bevestiging via spraak",
+				"title": "Snelle Modus",
+				"warning": "Snelle modus kan details missen"
+			},
+			"safeMode": {
+				"addLineHint": "Voeg regelitems één voor één toe",
+				"badge": "Veilig",
+				"description": "Gedetailleerde factuur aanmaak",
+				"info": "Veilige modus zorgt voor nauwkeurigheid",
+				"title": "Veilige Modus"
+			},
+			"switchToFast": "Naar Snelle Modus",
+			"switchToSafe": "Naar Veilige Modus",
+			"title": "Concept Factuur"
+		},
+		"errors": {
+			"loadFailed": "Laden factuur mislukt"
+		},
+		"import": {
+			"estimate": {
+				"calculation": "{hours} uur × €{rate}/uur = €{total}",
+				"title": "Geschat bedrag (excl. BTW)"
+			},
+			"jobDetails": {
+				"date": "Datum",
+				"description": "Beschrijving",
+				"duration": "Duur",
+				"employee": "Medewerker"
+			},
+			"title": "Importeren uit klus",
+			"description": "Klusgegevens importeren om factuur te maken",
+			"selectJob": "Klus selecteren",
+			"selectJobPlaceholder": "Kies een klus om uit te importeren...",
+			"laborConfig": "Arbeidsconfiguratie",
+			"laborHours": "Arbeidsuren",
+			"hourlyRate": "Uurtarief",
+			"import": "Klusgegevens importeren"
+		},
+		"lineAdded": "Regelitem toegevoegd",
+		"lineItems": {
+			"addNew": "Nieuw Item Toevoegen",
+			"description": "Beschrijving",
+			"multiplier": "{qty} x {price}",
+			"quantity": "Hoeveelheid",
+			"summary": "Overzicht Regelitems",
+			"title": "Regelitems",
+			"type": "Type",
+			"unitPrice": "Eenheidsprijs",
+			"vatRate": "BTW Tarief"
+		},
+		"notes": {
+			"title": "Notities"
+		},
+		"review": {
+			"bulkActions": {
+				"alsoWhatsApp": "Verstuur ook WhatsApp betaallinks",
+				"description": "Selecteer facturen om in bulk te versturen",
+				"selectedCount": "{count} facturen geselecteerd",
+				"send": "{count} facturen versturen",
+				"sending": "Facturen versturen...",
+				"title": "Bulk versturen"
+			},
+			"controls": {
+				"createDrafts": "Concepten maken van klussen",
+				"creating": "Concepten maken...",
+				"description": "Maak factuurconcepten van voltooide klussen",
+				"sinceDate": "Sinds datum",
+				"title": "Concepten genereren"
+			},
+			"created": "Gemaakt",
+			"customer": "Klant",
+			"job": "Klus",
+			"list": {
+				"count": "{count} conceptfacturen",
+				"loading": "Concepten laden...",
+				"title": "Conceptfacturen"
+			},
+			"noInvoices": "Geen conceptfacturen gevonden",
+			"noJob": "Geen klus",
+			"noProvider": "Geen provider",
+			"provider": "Provider",
+			"results": {
+				"errors": "Fouten",
+				"sent": "Verstuurd",
+				"skipped": "Overgeslagen",
+				"title": "Verzendresultaten",
+				"total": "Totaal",
+				"withPaymentLinks": "Met betaallinks"
+			},
+			"select": "Selecteren",
+			"selectAll": "Alles selecteren",
+			"selected": "geselecteerd",
+			"subtitle": "Review conceptfacturen en verstuur ze via providers",
+			"title": "Facturen reviewen & versturen",
+			"total": "Totaal"
+		},
+		"saveSuccess": "Factuur succesvol opgeslagen",
+		"sendError": "Fout bij verzenden factuur",
+		"sendSuccess": "Factuur {number} succesvol verzonden",
+		"summary": {
+			"lineItems": "Regelitems",
+			"paymentTerms": "Betalingstermijn",
+			"title": "Factuur Samenvatting",
+			"totalAmount": "Totaalbedrag"
+		},
+		"totals": {
+			"breakdown": "Totaaloverzicht",
+			"includingVat": "Inclusief BTW",
+			"subtotal": "Subtotaal",
+			"total": "Totaal",
+			"vat": "BTW"
+		},
+		"createError": "Factuur aanmaken mislukt",
+		"importFromJob": "Importeren uit klus",
+		"form": {
+			"customer": {
+				"title": "Klantinformatie",
+				"label": "Klant",
+				"placeholder": "Selecteer een klant...",
+				"required": "Klant is verplicht"
+			},
+			"paymentTerms": {
+				"title": "Betalingstermijn",
+				"label": "Betalingstermijn (dagen)"
+			},
+			"lineItems": {
+				"title": "Factuurregels",
+				"add": "Regel toevoegen",
+				"empty": "Nog geen factuurregels",
+				"description": "Omschrijving",
+				"quantity": "Aantal",
+				"unitPrice": "Eenheidsprijs",
+				"vatRate": "BTW-tarief",
+				"lineTotal": "Regeltotaal",
+				"required": "Minimaal één factuurregel is verplicht"
+			},
+			"discount": {
+				"title": "Korting",
+				"percentage": "Korting %"
+			},
+			"totals": {
+				"title": "Totalen",
+				"subtotal": "Subtotaal",
+				"discount": "Korting",
+				"subtotalAfterDiscount": "Subtotaal na korting",
+				"vat": "BTW",
+				"total": "Totaal"
+			},
+			"notes": {
+				"title": "Opmerkingen",
+				"public": "Publieke opmerkingen",
+				"publicPlaceholder": "Opmerkingen zichtbaar voor klant...",
+				"internal": "Interne opmerkingen",
+				"internalPlaceholder": "Interne opmerkingen voor eigen gebruik..."
+			}
+		}
+	},
+	"JobDrawer": {
+		"details": "Klus Details",
+		"edit": "Bewerken",
+		"delete": {
+			"title": "Klus Verwijderen",
+			"description": "Weet je zeker dat je deze klus wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"success": "Klus succesvol verwijderd",
+			"failed": "Fout bij verwijderen klus"
+		},
+		"cancel": "Annuleren",
+		"save": "Opslaan",
+		"saving": "Bezig met opslaan...",
+		"creating": "Bezig met aanmaken...",
+		"deleting": "Bezig met verwijderen...",
+		"title": "Titel",
+		"description": "Beschrijving",
+		"priority": "Prioriteit",
+		"status": "Status",
+		"customer": "Klant",
+		"startTime": "Starttijd: {time}",
+		"endTime": "Eindtijd",
+		"duration": "{minutes} minuten",
+		"primaryEmployee": "Hoofdmonteur",
+		"secondaryEmployees": "Extra monteurs",
+		"assignments": "Toewijzingen",
+		"calendar": "Planning",
+		"requiredSymbol": "*",
+		"selectEmployee": "Selecteer monteur",
+		"selectCustomer": "Selecteer klant",
+		"selectStatus": "Selecteer status",
+		"priorities": {
+			"normal": "Normaal",
+			"urgent": "Urgent",
+			"emergency": "Spoed"
+		},
+		"statuses": {
+			"planned": "Gepland",
+			"in_progress": "Bezig",
+			"done": "Voltooid",
+			"cancelled": "Geannuleerd"
+		},
+		"invoice": {
+			"create": "Factuur Aanmaken",
+			"creating": "Factuur aanmaken...",
+			"success": "Factuurconcept succesvol aangemaakt",
+			"error": "Fout bij aanmaken factuurconcept"
+		}
+	},
+	"jobs": {
+		"invoice": {
+			"createDraft": {
+				"label": "Factuur Maken",
+				"creating": "Factuur maken...",
+				"success": "Factuurconcept aangemaakt",
+				"error": "Kon factuurconcept niet aanmaken"
+			}
+		},
+		"delete": {
+			"success": "Klus verwijderd",
+			"failed": "Verwijderen mislukt",
+			"title": "Klus verwijderen",
+			"description": "Weet je zeker dat je deze klus wilt verwijderen?"
+		},
+		"job": {
+			"createDescription": "Maak een nieuwe klus aan.",
+			"deleteDescription": "Weet je zeker dat je deze klus wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"deleteTitle": "Klus verwijderen",
+			"editDescription": "Bewerk de details van deze klus.",
+			"editJob": "Klus bewerken",
+			"newJob": "Nieuwe klus"
+		},
+		"aiSuggestions": "AI voorstellen",
+		"assignments": {
+			"title": "Toewijzingen"
+		},
+		"calendar": {
+			"desc": "Sleep klussen om ze te verplaatsen of vergroten/verkleinen",
+			"title": "Planning kalender"
+		},
+		"create": {
+			"failed": "Aanmaken mislukt",
+			"success": "Klus succesvol aangemaakt"
+		},
+		"description": "Beheer alle loodgieter opdrachten en planning",
+		"empty": {
+			"title": "Geen klussen ingepland",
+			"description": "Maak uw eerste klus om te beginnen"
+		},
+		"details": "Klus details",
+		"error": {
+			"load": "Fout bij laden van klussen"
+		},
+		"errors": {
+			"notFoundOrNoPermission": "Klus niet gevonden of geen permissie",
+			"serverError": "Server fout opgetreden",
+			"title": {
+				"required": "Titel is verplicht"
+			}
+		},
+		"filter": {
+			"status": {
+				"all": "Alle statussen"
+			}
+		},
+		"generateInvoice": "Factuur Aanmaken",
+		"legend": {
+			"header": "Medewerkers",
+			"none": "Geen medewerkers beschikbaar"
+		},
+		"noAiSuggestions": "Geen AI-aanbevelingen beschikbaar",
+		"source": "Bron:",
+		"stats": {
+			"emergency": {
+				"desc": "Vereist directe actie",
+				"title": "Spoedklussen"
+			},
+			"monthCompleted": {
+				"desc": "Afgerond deze maand",
+				"title": "Afgerond"
+			},
+			"today": {
+				"desc": "Totaal klussen vandaag",
+				"title": "Vandaag"
+			},
+			"week": {
+				"desc": "Klussen deze week",
+				"title": "Deze Week"
+			}
+		},
+		"table": {
+			"desc": "Alle klussen in tabelweergave met bewerkingsmogelijkheden",
+			"title": "Klussen overzicht"
+		},
+		"title": "Klussen & planning",
+		"unscheduled": {
+			"ai": {
+				"assign": "Toewijzen aan kalender",
+				"confidence": "Zekerheid",
+				"customer": "Klant",
+				"empty": "Geen AI suggesties beschikbaar",
+				"minutes": "min",
+				"title": "AI Suggesties"
+			}
+		},
+		"update": {
+			"failed": "Bijwerken mislukt",
+			"success": "Klus succesvol bijgewerkt"
+		}
+	},
+	"launch": {
+		"meta": {
+			"title": "Plumbing Agent - Noodloodgieter Platform",
+			"description": "Transformeer spoed loodgieterswerk met WhatsApp intake, AI diagnose, en directe facturatie",
+			"keywords": "noodloodgieter, loodgieter software, WhatsApp business, Nederlandse loodgieter, emergency plumber"
+		},
+		"demo": {
+			"page": {
+				"title": "Productdemo",
+				"headline": "Bekijk Plumbing Agent in actie",
+				"subtitle": "Van WhatsApp-intake naar betaalde factuur in minuten",
+				"benefits": {
+					"faster": {
+						"title": "Snellere Reactietijden",
+						"description": "WhatsApp intake en AI-analyse verkorten reactietijd van uren naar minuten"
+					},
+					"smarter": {
+						"title": "Slimmere Diagnose",
+						"description": "AI-gestuurde probleemanalyse helpt je beter voorbereiden en efficiënter werken"
+					},
+					"better_paid": {
+						"title": "Sneller Betaald",
+						"description": "Directe facturatie en geautomatiseerde betalingsherinneringen verbeteren cashflow"
+					}
+				},
+				"cta": {
+					"headline": "Klaar om te proberen?",
+					"subtitle": "Doe mee aan de pilot en krijg vroege toegang",
+					"button": "Aanmelden"
+				},
+				"nav": {
+					"previous": "Vorige",
+					"next": "Volgende",
+					"step_counter": "Stap {current} van {total}"
+				},
+				"done": "Helemaal klaar!",
+				"autoplay_pause": "Autoplay pauzeren",
+				"autoplay_start": "Autoplay starten",
+				"keyboard_help": "Gebruik pijltjestoetsen om te navigeren",
+				"time_estimate": "Geschatte tijd: {minutes} minuten",
+				"time_average": "Gemiddelde tijd",
+				"back": "Terug"
+			},
+			"content": {
+				"whatsapp": {
+					"photo_attached": "Foto toegevoegd",
+					"ai_analyzing": "Bericht analyseren."
+				},
+				"ai_suggestion": {
+					"diagnosis": "Diagnose",
+					"reliable": "Betrouwbaar",
+					"urgency": "Urgentie",
+					"emergency": "Spoed",
+					"estimated_time": "Geschatte tijd",
+					"minutes": "min",
+					"required_materials": "Benodigde materialen",
+					"quantity_format": "{qty}×"
+				},
+				"schedule": {
+					"assigned_to": "Toegewezen aan",
+					"start_time": "Starttijd",
+					"end_time": "Eindtijd",
+					"auto_assigned": "Automatisch toegewezen"
+				},
+				"job_card": {
+					"address": "Adres",
+					"phone": "Telefoon",
+					"notes": "Notities"
+				},
+				"voice_draft": {
+					"voice_transcript": "Spraaktranscript",
+					"invoice_lines": "Factuurregels",
+					"line_format": "{qty}× {item}",
+					"subtotal_ex_vat": "Subtotaal (excl. btw)",
+					"vat_total": "Btw-totaal",
+					"total": "Totaal"
+				},
+				"send_pay": {
+					"invoice_id": "Factuurnummer",
+					"invoice_sent": "Factuur verzonden",
+					"payment_status": "Betaalstatus",
+					"pdf": "PDF",
+					"whatsapp_message": "WhatsApp-bericht",
+					"awaiting_payment": "Wacht op betaling",
+					"click_pay": "Klik om te betalen"
+				},
+				"reminders": {
+					"after_days": "Na {days} dagen",
+					"scheduled": "Ingepland",
+					"automation_active": "Automatisering actief",
+					"opt_out_respected": "Uitschrijven gerespecteerd",
+					"email_escalation": "E-mail-escalatie",
+					"title": "Betaalherinneringen",
+					"whatsapp_series": "WhatsApp Serie"
+				},
+				"common": {
+					"loading": "Demogegevens laden.",
+					"alternative_payment": "Alternatieve betaling",
+					"due_date": "Vervaldatum",
+					"email": "E-mail",
+					"step_data_unavailable": "Stapgegevens niet beschikbaar"
+				},
+				"step_previous": "Vorige",
+				"step_next": "Volgende",
+				"step_jump": "Ga naar stap",
+				"demo_started": "Demo gestart",
+				"demo_completed": "Demo voltooid"
+			}
+		},
+		"usp": {
+			"title": "Title",
+			"subtitle": "Subtitle",
+			"whatsapp": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"ai": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"schedule": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"jobcards": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"invoicing": {
+				"title": "Title",
+				"desc": "Desc"
+			},
+			"compliance": {
+				"title": "Title",
+				"desc": "Desc"
+			}
+		},
+		"cookie_consent": {
+			"title": "We gebruiken cookies",
+			"description": "We gebruiken essentiële cookies en analytics om je ervaring te verbeteren.",
+			"accept_all": "Alles accepteren",
+			"reject_all": "Alles weigeren",
+			"essential_only": "Alleen essentieel",
+			"privacy_policy": "Privacybeleid",
+			"close": "Sluiten"
+		},
+		"trust": {
+			"dutch_compliance": "Dutch Compliance",
+			"ideal_payments": "Ideal Payments",
+			"whatsapp_business": "Whatsapp Business",
+			"avg_compliant": "AVG-conform",
+			"ideal_certified": "iDEAL-gecertificeerd",
+			"kvk_registered": "KVK-geregistreerd"
+		},
+		"waitlist": {
+			"title": "Word Pilot Deelnemer",
+			"subtitle": "Krijg vroege toegang tot Plumbing Agent en transformeer uw spoedloodgieter bedrijf",
+			"email": "E-mailadres",
+			"phone": "Telefoonnummer (optioneel)",
+			"org": "Organisatienaam (optioneel)",
+			"success": "Dank je wel! We nemen binnenkort contact op met toegangsgegevens voor de pilot.",
+			"error": "Er is iets misgegaan. Probeer het opnieuw of neem direct contact op.",
+			"submit": "Meld je aan",
+			"gdpr": "Door te verzenden, ga je akkoord met ons privacybeleid en onze servicevoorwaarden."
+		},
+		"hero": {
+			"h1": "Plumbing Agent voor vakmensen",
+			"subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
+			"cta_demo": "Plan een demo",
+			"cta_waitlist": "Op wachtlijst",
+			"urgency": "Beperkte beta-toegang",
+			"social_proof": "Vertrouwd door groeiende loodgietersteams"
+		},
+		"roi_calculator": {
+			"title": "Bereken je ROI",
+			"subtitle": "Bereken je ROI",
+			"input_label": "Uren die je per week wilt besparen",
+			"placeholder_text": "bijv. 5–10",
+			"hours_per_week": "Uren bespaard / week",
+			"rate_per_hour": "Uurtarief (€)",
+			"time_saved": "Tijd bespaard",
+			"extra_revenue": "Extra omzet",
+			"yearly_savings": "Jaarlijkse besparingen",
+			"calculate_button": "Berekenen",
+			"cta_start_saving": "Begin nu met besparen",
+			"results": {
+				"total_value": "Totale jaarlijkse waarde"
+			}
+		},
+		"current_hours": "Huidige uren per week",
+		"controls": {
+			"title": "Title",
+			"description": "Description",
+			"sinceDate": "SinceDate",
+			"creating": "Creating",
+			"createDrafts": "CreateDrafts"
+		},
+		"list": {
+			"title": "Title",
+			"loading": "Loading"
+		},
+		"pilot": {
+			"banner": {
+				"title": "Pilotmodus",
+				"subtitle": "Bepaalde functies zijn ingeschakeld voor testen."
+			}
+		},
+		"results": {
+			"title": "Title",
+			"total": "Total",
+			"sent": "Sent",
+			"skipped": "Skipped",
+			"withPaymentLinks": "WithPaymentLinks",
+			"errors": "Errors"
+		}
+	},
+	"meta": {
+		"title": "Paginatitel",
+		"description": "Paginabeschrijving",
+		"keywords": "trefwoorden"
+	},
+	"misc": {
+		"app": {
+			"title": "Spoedloodgieter Platform"
+		},
+		"cta": {
+			"newJob": "Nieuwe Klus"
+		},
+		"priority": {
+			"normal": "Normaal",
+			"urgent": "Urgent",
+			"emergency": "Noodgeval"
+		},
+		"form": {
+			"title": "Titel",
+			"required": "Verplicht",
+			"priority": "Prioriteit",
+			"description": "Beschrijving",
+			"startTime": "Starttijd",
+			"duration": "Duur",
+			"primaryEmployee": "Hoofdmedewerker"
+		},
+		"tabs": {
+			"whatsapp": "WhatsApp"
+		},
+		"action": {
+			"delete": "Verwijderen",
+			"edit": "Bewerken"
+		},
+		"active": "Active",
+		"ai_suggestion": {
+			"diagnosis": "Diagnosis",
+			"reliable": "Reliable",
+			"urgency": "Urgency",
+			"emergency": "Emergency",
+			"estimated_time": "Estimated Time",
+			"minutes": "Minutes",
+			"required_materials": "Required Materials"
+		},
+		"approvals": {
+			"title": "Daily Invoice Approvals",
+			"subtitle": "Review and send draft invoices created today",
+			"selectAll": "Select all",
+			"selected": "selected",
+			"select": "Select",
+			"number": "Number",
+			"customer": "Customer",
+			"total": "Total",
+			"created": "Created",
+			"empty": "No draft invoices found for this date",
+			"dateFilter": {
+				"title": "Date Filter",
+				"description": "Select the date to view draft invoices",
+				"label": "Target date"
+			},
+			"actions": {
+				"title": "Batch Actions",
+				"description": "Select invoices to send in batch",
+				"selectedCount": "{count} invoices selected",
+				"sendSelected": "Send {count} selected",
+				"sending": "Sending invoices..."
+			},
+			"list": {
+				"title": "Draft Invoices",
+				"loading": "Loading drafts...",
+				"count": "{count} draft invoices"
+			},
+			"results": {
+				"title": "Send Results",
+				"total": "Total",
+				"sent": "Sent",
+				"skipped": "Skipped",
+				"withPaymentLinks": "With Payment Links",
+				"errors": "Errors"
+			}
+		},
+		"approved": "Approved",
+		"back": "Back",
+		"badge": {
+			"accepted": "Geaccepteerd"
+		},
+		"bulkActions": {
+			"title": "Title",
+			"description": "Description",
+			"alsoWhatsApp": "AlsoWhatsApp",
+			"sending": "Sending"
+		},
+		"connected": {
+			"description": "Description"
+		},
+		"created": "Created",
+		"customer": "Customer",
+		"dashboard": {
+			"welcome": "Welkom bij uw loodgieter beheerplatform"
+		},
+		"description": "Description",
+		"done": {
+			"title": "Title",
+			"description": "Description",
+			"success": "Success",
+			"successDescription": "SuccessDescription",
+			"healthSummary": "HealthSummary",
+			"environment": "Environment",
+			"webhook": "Webhook",
+			"security": "Security",
+			"goToSettings": "GoToSettings"
+		},
+		"draftInvoice": "DraftInvoice",
+		"eboekhouden": {
+			"description": "Description"
+		},
+		"employees": {
+			"filter": {
+				"all": "Alles",
+				"clearAll": "Alles wissen"
+			}
+		},
+		"headline": "Headline",
+		"health": {
+			"title": "Title",
+			"description": "Description",
+			"env": "Env",
+			"ok": "Ok",
+			"missing": "Missing",
+			"webhook": "Webhook",
+			"unreachable": "Unreachable",
+			"secret": "Secret",
+			"refresh": "Refresh"
+		},
+		"houseNumber": "Huisnummer",
+		"id": "ID",
+		"job_card": {
+			"address": "Address",
+			"phone": "Phone",
+			"notes": "Notes"
+		},
+		"job_card_mobile": {
+			"title": "Klus Details",
+			"when": "Wanneer",
+			"where": "Waar",
+			"customer": "Klant",
+			"issue": "Probleem",
+			"status": "Status",
+			"statusValues": {
+				"planned": "Gepland",
+				"scheduled": "Ingepland",
+				"in_progress": "Bezig",
+				"done": "Klaar",
+				"cancelled": "Geannuleerd",
+				"unknown": "Onbekend"
+			},
+			"openCalendar": "📅 Open in kalender",
+			"backToJobs": "← Terug naar klussen",
+			"readOnlyNotice": "Alleen-lezen weergave voor mobiel",
+			"phoneUnknown": "Telefoon onbekend",
+			"addressUnknown": "Adres niet bekend",
+			"dateUnknown": "Datum onbekend",
+			"timeUnknown": "Tijd onbekend"
+		},
+		"jobCard": {
+			"title": "Werkbon",
+			"phone": "Telefoon",
+			"jobStatus": "Werkstatus",
+			"jobNumber": "Werk",
+			"active": "Actief",
+			"scheduled": "Gepland",
+			"lastResponse": "Laatste AI Reactie",
+			"approved": "Goedgekeurd",
+			"urgency": "Urgentie",
+			"schedule": "Inplannen",
+			"draftInvoice": "Concept Factuur",
+			"tokenExpires": "Toegang verloopt"
+		},
+		"jobNumber": "JobNumber",
+		"jobStatus": "JobStatus",
+		"label": {
+			"durationMinutes": "{minutes} minuten"
+		},
+		"lastResponse": "LastResponse",
+		"mappings": {
+			"title": "Title",
+			"description": "Description",
+			"empty": "Empty",
+			"label": {
+				"business": "Business",
+				"control": "Control"
+			}
+		},
+		"money": {
+			"euro": "€"
+		},
+		"moneybird": {
+			"description": "Description"
+		},
+		"next": "Next",
+		"noInvoices": "NoInvoices",
+		"noJob": "NoJob",
+		"noProvider": "NoProvider",
+		"note": "Note",
+		"numbers": {
+			"success": "Success",
+			"error": "Error",
+			"validation": "Validation",
+			"title": "Title",
+			"description": "Description",
+			"businessLabel": "BusinessLabel",
+			"businessHelp": "BusinessHelp",
+			"controlLabel": "ControlLabel",
+			"controlHelp": "ControlHelp",
+			"save": "Save",
+			"labels": {
+				"select": "{label, select, customer {Klantnummer} control {Beheernummer} other {label}}"
+			}
+		},
+		"onboard": {
+			"title": "Title",
+			"quickTitle": "QuickTitle",
+			"quickDescription": "QuickDescription",
+			"start": "Start"
+		},
+		"peppol": {
+			"description": "Description"
+		},
+		"phone": "Phone",
+		"postalCode": "Postcode",
+		"prereqs": {
+			"title": "Title",
+			"description": "Description",
+			"webhookUrl": "WebhookUrl",
+			"webhookHelp": "WebhookHelp",
+			"verifyToken": "VerifyToken",
+			"tokenHelp": "TokenHelp"
+		},
+		"provider": "Provider",
+		"reminders": {
+			"title": "Title",
+			"whatsapp_series": "Whatsapp Series",
+			"scheduled": "Scheduled",
+			"automation_active": "Automation Active",
+			"opt_out_respected": "Opt Out Respected",
+			"email_escalation": "Email Escalation"
+		},
+		"schedule": {
+			"assigned_to": "Toegewezen aan",
+			"auto_assigned": "Automatisch toegewezen",
+			"end_time": "Eindtijd",
+			"start_time": "Starttijd"
+		},
+		"seed": {
+			"success": "Success",
+			"error": "Error",
+			"validation": "Validation",
+			"title": "Title",
+			"description": "Description",
+			"businessId": "BusinessId",
+			"controlId": "ControlId",
+			"submit": "Submit"
+		},
+		"select": "Select",
+		"selectAll": "SelectAll",
+		"selected": "Selected",
+		"send_pay": {
+			"invoice_sent": "Invoice Sent",
+			"invoice_id": "Invoice Id",
+			"payment_status": "Payment Status",
+			"awaiting_payment": "Awaiting Payment",
+			"click_pay": "Click Pay",
+			"pdf": "Pdf",
+			"whatsapp_message": "Whatsapp Message"
+		},
+		"states": {
+			"connected": "Connected",
+			"needs_action": "Needs Action",
+			"error": "Error"
+		},
+		"steps": {
+			"prereqs": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"numbers": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"test": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"done": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"whatsapp": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"ai_suggestion": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"schedule": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"job_card": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"voice_draft": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"send_pay": {
+				"title": "Title",
+				"description": "Description"
+			},
+			"reminders": {
+				"title": "Title",
+				"description": "Description"
+			}
+		},
+		"subtitle": "Subtitle",
+		"test": {
+			"success": "Success",
+			"error": "Error",
+			"validation": "Validation",
+			"title": "Title",
+			"description": "Description",
+			"phoneLabel": "PhoneLabel",
+			"phoneHelp": "PhoneHelp",
+			"messageLabel": "MessageLabel",
+			"messagePlaceholder": "MessagePlaceholder",
+			"messageHelp": "MessageHelp",
+			"configured": "Configured",
+			"send": "Send"
+		},
+		"title": "Title",
+		"toast": {
+			"deleteError": "Kan klus niet verwijderen:",
+			"jobDeleted": "Klus succesvol verwijderd"
+		},
+		"tokenExpires": "TokenExpires",
+		"total": "Total",
+		"ui": {
+			"tip": "Tip"
+		},
+		"upsert": {
+			"success": "Success",
+			"error": "Error",
+			"validation": "Validation",
+			"title": "Title",
+			"phoneNumberId": "PhoneNumberId",
+			"label": "Label",
+			"submit": "Submit"
+		},
+		"urgency": "Urgency",
+		"voice_draft": {
+			"voice_transcript": "Voice Transcript",
+			"invoice_lines": "Invoice Lines",
+			"subtotal_ex_vat": "Subtotal Ex Vat",
+			"vat_total": "Vat Total",
+			"total": "Total"
+		},
+		"wefact": {
+			"description": "Description"
+		}
+	},
+	"notifications": {
+		"title": "Notificaties",
+		"empty": "Geen notificaties",
+		"markAllRead": "Alle markeren als gelezen",
+		"markAsRead": "Markeren als gelezen",
+		"markAsUnread": "Markeren als ongelezen",
+		"delete": "Notificatie verwijderen",
+		"types": {
+			"info": "Informatie",
+			"success": "Gelukt",
+			"warning": "Waarschuwing",
+			"error": "Fout",
+			"invoice": "Factuur",
+			"job": "Klus",
+			"customer": "Klant",
+			"payment": "Betaling"
+		},
+		"settings": {
+			"title": "Notificatie-instellingen",
+			"email": "E-mail notificaties",
+			"push": "Push notificaties",
+			"whatsapp": "WhatsApp notificaties"
+		}
+	},
+	"panel": {
+		"title": "Paneel"
+	},
+	"payment": {
+		"status": "Betalingsstatus",
+		"awaiting": "Wachtend op betaling",
+		"paid": "Betaald",
+		"overdue": "Achterstallig",
+		"failed": "Betaling mislukt",
+		"refunded": "Terugbetaald",
+		"links": "Betaallinks",
+		"method": "Betaalmethode",
+		"amount": "Bedrag",
+		"dueDate": "Vervaldatum",
+		"payNow": "Nu betalen",
+		"payOnline": "Online betalen",
+		"ideal": "iDEAL",
+		"creditCard": "Creditcard",
+		"bankTransfer": "Bankoverschrijving"
+	},
+	"providers": {
+		"actions": {
+			"back": "Terug",
+			"configure": "Configureren",
+			"connect": "Koppelen",
+			"fix": "Verbinding herstellen"
+		},
+		"comingSoon": "Binnenkort beschikbaar",
+		"moneybird": {
+			"title": "Moneybird",
+			"description": "Professionele Nederlandse boekhouding met API integratie",
+			"connect": "Koppelen",
+			"reconnect": "Opnieuw koppelen",
+			"disconnect": "Ontkoppelen",
+			"connected": "Verbonden",
+			"openDashboard": "Dashboard openen",
+			"reconnectHelper": "Uw token is verlopen. Koppel opnieuw om door te gaan.",
+			"health": {
+				"ok": "Verbonden",
+				"invalid_token": "Token verlopen",
+				"not_connected": "Niet verbonden"
+			}
+		},
+		"wefact": {
+			"title": "WeFact",
+			"description": "Eenvoudige facturatie met betalingsverwerking"
+		},
+		"eboekhouden": {
+			"title": "e-Boekhouden",
+			"description": "Populaire keuze voor Nederlandse kleine ondernemers"
+		},
+		"peppol": {
+			"title": "Peppol",
+			"description": "Europese B2B elektronische facturatie standaard"
+		},
+		"panel": {
+			"title": "Factuur Providers",
+			"description": "Koppel boekhoudpakketten om professionele facturen uit te geven",
+			"note": "Koppel ten minste één provider om facturen uit te kunnen geven. Elke provider verzorgt nummering, PDF's en compliance."
+		},
+		"states": {
+			"connected": "Verbonden",
+			"needs_action": "Instelling vereist",
+			"error": "Fout"
+		},
+		"connected": {
+			"description": "Provider is klaar voor het uitgeven van facturen"
+		},
+		"oauth": {
+			"adminError": "Kon administraties niet ophalen",
+			"authError": "Autorisatie geweigerd of mislukt",
+			"callbackError": "Onbekende fout tijdens verbindingsproces",
+			"csrfError": "Beveiligingsfout: ongeldige sessiestatus",
+			"error": "Verbindingsfout",
+			"genericError": "Er is iets misgegaan tijdens het verbinden",
+			"moneybirdConnected": "Moneybird succesvol verbonden",
+			"selectAdmin": "Selecteer administratie",
+			"stateError": "Ongeldige verbindingsstatus",
+			"stateExpired": "Verbindingssessie is verlopen",
+			"success": "Verbinding geslaagd",
+			"tokenError": "Kon toegangstoken niet ophalen",
+			"userMismatch": "Gebruiker komt niet overeen met verwachte account"
+		},
+		"setup": {
+			"actions": {
+				"back": "Terug naar providers",
+				"cancel": "Annuleren",
+				"connect": "WeFact verbinden",
+				"connecting": "Verbinden..."
+			},
+			"apiKey": {
+				"help": "U kunt uw API sleutel vinden in uw WeFact account instellingen onder API toegang",
+				"label": "API Sleutel",
+				"placeholder": "Voer uw WeFact API sleutel in"
+			},
+			"baseUrl": {
+				"help": "Laat standaard tenzij u een aangepaste WeFact installatie gebruikt",
+				"label": "API Basis URL"
+			},
+			"errors": {
+				"connection": "Verbinding mislukt"
+			},
+			"wefact": {
+				"description": "Configureer uw WeFact account voor geautomatiseerde factuurverwerking",
+				"title": "WeFact koppelen"
+			}
+		}
+	},
+	"settings": {
+		"whatsapp": {
+			"title": "WhatsApp Configuratie",
+			"health": {
+				"ok": "OK",
+				"invalid_token": "Ongeldig token",
+				"not_connected": "Niet verbonden",
+				"webhook_ok": "Webhook OK",
+				"webhook_error": "Webhook-fout",
+				"security": "Beveiliging",
+				"webhook": "Webhook"
+			},
+			"onboard": {
+				"back": "Terug",
+				"next": "Doorgaan",
+				"title": "WhatsApp-onboarding",
+				"description": "Configureer nummers en verifieer webhooks",
+				"steps": {
+					"prereqs": {
+						"title": "Vereisten"
+					},
+					"numbers": {
+						"title": "Nummers"
+					},
+					"test": {
+						"title": "Test"
+					},
+					"done": {
+						"title": "Klaar"
+					}
+				},
+				"prereqs": {
+					"title": "Vereisten",
+					"description": "Controleer token en webhook-URL in Meta Business",
+					"verifyToken": "Token verifiëren",
+					"tokenHelp": "Gebruik dit token in je webhookconfiguratie.",
+					"webhookUrl": "Webhook-URL",
+					"webhookHelp": "Stel deze URL in bij Meta Business."
+				},
+				"numbers": {
+					"title": "Nummers",
+					"description": "Koppel nummer-ID's aan kanalen",
+					"businessLabel": "Klantnummer",
+					"businessHelp": "Gebruikt voor klantchats",
+					"controlLabel": "Controlenummer",
+					"controlHelp": "Gebruikt voor systeemberichten",
+					"save": "Koppeling opslaan",
+					"success": "Nummers opgeslagen",
+					"error": "Opslaan mislukt",
+					"validation": "Selecteer beide nummers"
+				},
+				"test": {
+					"title": "Verstuur een test",
+					"description": "Verstuur een testbericht om levering te verifiëren",
+					"phoneLabel": "Telefoon",
+					"phoneHelp": "Vul een WhatsApp-telefoon in",
+					"messageLabel": "Bericht",
+					"messagePlaceholder": "Hallo van Plumbing Agent!",
+					"messageHelp": "Dit wordt naar je toestel gestuurd",
+					"configured": "Geconfigureerd",
+					"send": "Test versturen",
+					"success": "Testbericht verzonden",
+					"error": "Verzenden mislukt",
+					"validation": "Vul telefoon en bericht in"
+				},
+				"done": {
+					"title": "Alles gereed!",
+					"description": "Je WhatsApp-integratie is geconfigureerd",
+					"success": "Configuratie voltooid",
+					"successDescription": "Je kunt nu berichten ontvangen en versturen",
+					"healthSummary": "Gezondheidsstatus",
+					"environment": "Omgeving",
+					"webhook": "Webhook",
+					"security": "Beveiliging",
+					"goToSettings": "Naar WhatsApp-instellingen"
+				}
+			},
+			"subtitle": "Configure your WhatsApp Business integration",
+			"wizard": {
+				"step": "Step {current} of {total}",
+				"next": "Continue",
+				"previous": "Back",
+				"finish": "Complete Setup",
+				"skip": "Skip for now"
+			},
+			"prereqs": {
+				"title": "Prerequisites",
+				"description": "Verify your WhatsApp Business account configuration",
+				"webhookUrls": {
+					"title": "Webhook URLs",
+					"description": "Configure these URLs in your Meta App webhook settings",
+					"customer": "Customer webhook",
+					"control": "Control webhook",
+					"copy": "Copy URL",
+					"copied": "Copied!"
+				},
+				"credentials": {
+					"title": "API Credentials",
+					"description": "Server-side credentials configured via environment variables",
+					"verifyToken": "Verify Token",
+					"hmacSecret": "HMAC Secret",
+					"configured": "✅ Configured",
+					"missing": "❌ Missing",
+					"note": "These are managed by your system administrator and are not visible for security reasons."
+				}
+			},
+			"numbers": {
+				"title": "Phone Numbers",
+				"description": "Map your WhatsApp Business phone number IDs to customer and control channels",
+				"table": {
+					"phoneNumberId": "Phone Number ID",
+					"label": "Type",
+					"createdAt": "Added",
+					"actions": "Actions"
+				},
+				"labels": {
+					"customer": "Customer",
+					"control": "Control",
+					"select": "{label, select, customer {Customer} control {Control}}"
+				},
+				"empty": {
+					"title": "No numbers configured",
+					"description": "Add your WhatsApp Business phone number IDs to get started"
+				},
+				"add": {
+					"title": "Add Phone Number",
+					"phoneNumberId": {
+						"label": "Phone Number ID",
+						"placeholder": "Enter WhatsApp Business phone number ID",
+						"helper": "Found in your Meta Business account"
+					},
+					"label": {
+						"label": "Channel Type",
+						"helper": "Customer for public inquiries, Control for internal management"
+					},
+					"submit": "Add Number",
+					"submitting": "Adding...",
+					"success": "Phone number added successfully",
+					"error": "Failed to add phone number"
+				},
+				"remove": {
+					"confirm": "Remove this phone number mapping?",
+					"success": "Phone number removed successfully",
+					"error": "Failed to remove phone number"
+				}
+			},
+			"test": {
+				"title": "Test Connection",
+				"description": "Send a test message to verify your control channel is working",
+				"button": "Send Test Message",
+				"sending": "Sending...",
+				"success": {
+					"title": "Test Successful!",
+					"message": "Test message sent to control channel",
+					"nextSteps": "Your WhatsApp integration is now ready to use."
+				},
+				"error": {
+					"noControl": "Control number not configured",
+					"noConversation": "No control conversation found. Please send a message from your control phone first.",
+					"apiError": "WhatsApp API error",
+					"unknown": "An error occurred while sending the test message"
+				},
+				"requirements": {
+					"title": "Requirements for testing",
+					"items": {
+						"0": "Control phone number must be mapped",
+						"1": "Send at least one message from control phone to establish conversation",
+						"2": "Valid API credentials must be configured"
+					}
+				}
+			},
+			"completion": {
+				"title": "Setup Complete!",
+				"description": "Your WhatsApp Business integration is configured and ready to use.",
+				"summary": {
+					"webhooks": "Webhook URLs configured",
+					"credentials": "API credentials verified",
+					"numbers": "{count} phone numbers mapped",
+					"test": "Connection test passed"
+				},
+				"nextSteps": {
+					"title": "What's next?",
+					"items": {
+						"0": "Visit the WhatsApp dashboard to manage conversations",
+						"1": "Configure automated responses and templates",
+						"2": "Train your team on the control channel commands"
+					}
+				},
+				"actions": {
+					"dashboard": "Go to WhatsApp Dashboard",
+					"settings": "Manage Settings"
+				}
+			}
+		}
+	},
+	"states": {
+		"needs_action": "Actie vereist"
+	},
+	"stats": {
+		"total": "Totaal",
+		"thisMonth": "Deze maand",
+		"active": "Actief",
+		"archived": "Gearchiveerd"
+	},
+	"system": {
+		"app": {
+			"title": "Loodgieter Agent"
+		},
+		"errors": {
+			"paymentLink": {
+				"sendFailed": "Versturen betaallink mislukt"
+			}
+		},
+		"locale": "nl",
+		"meta": {
+			"created": "Gemaakt:"
+		},
+		"notifications": {
+			"paymentLink": {
+				"sent": "Betaallink verstuurd via WhatsApp"
+			}
+		},
+		"payment": {
+			"links": "Betaling & Documenten",
+			"linksDescription": "Betaallinks en officiële documenten",
+			"noLinksDescription": "Betaallinks verschijnen nadat de factuur is verzonden",
+			"noLinksAvailable": "Geen betaallinks beschikbaar",
+			"payOnline": "Online Betalen",
+			"providerPayment": "Officiële betaallink van provider",
+			"openMollieCheckout": "iDEAL Betaling Aanmaken",
+			"creatingMollie": "Betaallink aanmaken...",
+			"molliePayment": "Backup betaling via iDEAL",
+			"mollieCreated": "Betaallink aangemaakt en geopend",
+			"mollieFailed": "Kon geen betaallink aanmaken",
+			"downloadPdf": "PDF Downloaden",
+			"viewPdf": "PDF Bekijken",
+			"pdfDescription": "Officieel factuur document",
+			"officialInvoice": "Officieel factuur document",
+			"paymentCopied": "Betaallink gekopieerd naar klembord",
+			"pdfCopied": "PDF link gekopieerd naar klembord",
+			"copyFailed": "Kopiëren naar klembord mislukt"
+		}
+	},
+	"ui": {
+		"badges": {
+			"locked_tooltip": "Functie vergrendeld voor jouw abonnement. Schakel in bij Instellingen.",
+			"legacy": "Oudere factuur"
+		},
+		"common": {
+			"title": "Titel",
+			"description": "Beschrijving",
+			"back": "Terug",
+			"status": "Status",
+			"active": "Actief",
+			"approved": "Goedgekeurd",
+			"schedule": "Planning",
+			"when": "Wanneer",
+			"where": "Waar",
+			"customer": "Klant",
+			"issue": "Probleem",
+			"lastResponse": "Laatste reactie",
+			"comingSoon": "Binnenkort beschikbaar",
+			"draftInvoice": "Conceptfactuur",
+			"tokenExpires": "Token verloopt",
+			"dateUnknown": "Datum onbekend",
+			"timeUnknown": "Tijd onbekend",
+			"phoneUnknown": "Telefoon onbekend",
+			"addressUnknown": "Adres onbekend",
+			"urgency": "Urgentie",
+			"loading": "Laden..."
+		},
+		"field": {
+			"status": "Status",
+			"customer": "Klant",
+			"description": "Beschrijving",
+			"primaryEmployee": "Hoofdmonteur *",
+			"priority": "Prioriteit",
+			"secondaryEmployees": "Hulpmonteurs (komt binnenkort)",
+			"start": "Start"
+		},
+		"form": {
+			"address": "Adres",
+			"customer": "Klant",
+			"description": "Beschrijving",
+			"duration": "Duur (min)",
+			"employee": "Medewerker",
+			"endDate": "Einddatum",
+			"endTime": "Eindtijd",
+			"noEmployee": "Geen medewerker",
+			"notes": "Opmerkingen",
+			"primaryEmployee": "Hoofdmonteur",
+			"priority": "Prioriteit",
+			"priorityOptions": {
+				"normal": "Normaal",
+				"urgent": "Dringend",
+				"emergency": "Noodgeval"
+			},
+			"required": "Vereist",
+			"requiredSymbol": "*",
+			"startDate": "Startdatum",
+			"startTime": "Start tijd",
+			"status": "Status",
+			"title": "Titel"
+		},
+		"nav": {
+			"customers": "Klanten",
+			"dashboard": "Dashboard",
+			"invoices": "Facturen",
+			"jobs": "Klussen"
+		},
+		"stats": {
+			"activeJobs": "Actieve Klussen",
+			"newCustomers": "Nieuwe Klanten",
+			"outstandingInvoices": "Openstaande Facturen",
+			"revenue": "Omzet",
+			"thisMonth": "Deze maand",
+			"thisWeek": "Deze week",
+			"toCollect": "Te incasseren",
+			"today": "Vandaag"
+		},
+		"table": {
+			"actions": "Acties",
+			"amount": "Bedrag",
+			"customer": "Klant",
+			"date": "Datum",
+			"draft": "Concept",
+			"dueDate": "Vervaldatum",
+			"invoice": "Factuur",
+			"issuedOn": "Verzonden Op",
+			"job": "Klus",
+			"method": "Methode",
+			"noJobs": "Geen klussen gevonden",
+			"paidOn": "Betaald Op",
+			"provider": "Provider",
+			"status": "Status",
+			"time": "Tijd",
+			"title": "Titel"
+		},
+		"tabs": {
+			"whatsapp": "WhatsApp"
+		}
+	},
+	"whatsapp": {
+		"leads": {
+			"title": "WhatsApp Leads",
+			"description": "Beheer inkomende WhatsApp gesprekken",
+			"count": "leads",
+			"table": {
+				"contact": "Contact",
+				"lastMessage": "Laatste Bericht",
+				"unread": "Ongelezen",
+				"session": "Sessie",
+				"lastActivity": "Laatste Activiteit"
+			},
+			"empty": {
+				"title": "Geen actieve leads",
+				"description": "Nieuwe WhatsApp gesprekken verschijnen hier"
+			}
+		},
+		"session": {
+			"active": "Actief",
+			"expired": "Verlopen",
+			"expiresAt": "Verloopt om",
+			"expiresIn": "Verloopt over"
+		},
+		"conversation": {
+			"title": "Berichten",
+			"empty": {
+				"title": "Nog geen berichten",
+				"description": "Start een gesprek om berichten hier te zien"
+			}
+		},
+		"message": {
+			"media": "Media bijlage"
+		},
+		"composer": {
+			"placeholder": "Typ een bericht...",
+			"templatePlaceholder": "Typ een sjabloonbericht...",
+			"send": "Verstuur",
+			"useTemplate": "Verstuur Sjabloon",
+			"sending": "Versturen...",
+			"sent": "Bericht verstuurd",
+			"templateSent": "Sjabloon verstuurd",
+			"error": "Versturen mislukt",
+			"templateError": "Sjabloon versturen mislukt",
+			"sessionExpiredWarning": "24-uurs sessie verlopen. Gebruik sjabloonberichten om het gesprek voort te zetten."
+		},
+		"actions": {
+			"title": "Acties",
+			"createJob": "Klus Aanmaken",
+			"sendPaylink": "Betaallink Versturen",
+			"close": "Gesprek Sluiten",
+			"jobCreated": "Klus succesvol aangemaakt",
+			"jobError": "Klus aanmaken mislukt",
+			"paylinkNotImplemented": "Betaallink functie komt binnenkort",
+			"paylinkError": "Betaallink versturen mislukt",
+			"conversationClosed": "Gesprek gesloten",
+			"closeError": "Gesprek sluiten mislukt"
+		},
+		"control": {
+			"title": "Controle Chat",
+			"description": "Snelle goedkeuringsacties",
+			"approve": "Goedkeuren",
+			"close": "Sluiten",
+			"approved": "Gesprek goedgekeurd",
+			"approveError": "Goedkeuren mislukt"
+		},
+		"info": {
+			"title": "Info",
+			"status": "Status",
+			"created": "Aangemaakt",
+			"linkedCustomer": "Klant"
+		},
+		"photo_attached": "Foto bijgevoegd",
+		"ai_analyzing": "AI analyseert...",
+		"createJob": "Klus aanmaken",
+		"lastActivity": "Laatste activiteit",
+		"messages": "berichten",
+		"noMessages": "Geen WhatsApp-berichten beschikbaar"
+	}
 }

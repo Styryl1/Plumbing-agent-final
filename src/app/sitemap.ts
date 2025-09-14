@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { useTranslations } from "next-intl";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const baseUrl = "https://loodgieter-agent.nl";

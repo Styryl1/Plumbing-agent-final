@@ -1,5 +1,3 @@
-import { useTranslations } from "next-intl";
-
 /**
  * Central logging utility with structured output
  * Use instead of console.log to maintain consistent logging

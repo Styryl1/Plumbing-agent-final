@@ -1,3 +1,4 @@
+"use client";
 import { Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -9,8 +10,6 @@ import {
 	CardTitle,
 } from "~/components/ui/card";
 import ProviderConnectCard from "./ProviderConnectCard";
-
-("use client");
 
 type InvoiceProviderId = "moneybird" | "wefact" | "eboekhouden" | "peppol";
 

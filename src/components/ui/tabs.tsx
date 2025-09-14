@@ -1,10 +1,8 @@
+"use client";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { useTranslations } from "next-intl";
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
-
-("use client");
 
 function Tabs({
 	className,

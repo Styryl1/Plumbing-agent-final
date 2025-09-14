@@ -79,15 +79,21 @@ for (const filePath of files) {
       const named = imp.getNamedImports();
       const usesUT = named.some((n) => n.getName() === 'useTranslations');
       if (usesUT) {
-        const id = sf.getDescendantsOfKind(SyntaxKind.Identifier).find(id => id.getText() === 'useTranslations');
-        const usedElsewhere = id && id.getReferences().some(ref => !ref.getNode().getFirstAncestorByKind(SyntaxKind.ImportSpecifier));
+        // Check if useTranslations is actually used in the file (beyond imports)
+        const useTranslationsUsages = sf.getDescendantsOfKind(SyntaxKind.Identifier)
+          .filter(id => id.getText() === 'useTranslations')
+          .filter(id => !id.getFirstAncestorByKind(SyntaxKind.ImportSpecifier)); // exclude import declarations
+        const usedElsewhere = useTranslationsUsages.length > 0;
         const shouldRemove = isServerPath(filePath) || !usedElsewhere;
         if (shouldRemove) {
-          imp.removeNamedImport('useTranslations');
-          changed = true;
+          const namedToRemove = imp.getNamedImports().find(n => n.getName() === 'useTranslations');
+          if (namedToRemove) {
+            namedToRemove.remove();
+            changed = true;
+          }
         }
         // If the import ends empty, remove it entirely
-        if (imp.getNamedImports().length === 0 && !imp.getDefaultImport() && imp.getNamespaceImport() == null) {
+        if (imp.getNamedImports().length === 0 && !imp.getDefaultImport() && !imp.getNamespaceImport()) {
           imp.remove();
           changed = true;
         }
@@ -101,8 +107,9 @@ for (const filePath of files) {
     const mod = imp.getModuleSpecifierValue();
     if (mod.endsWith('/i18n/client')) {
       // if it imported useT, drop it
-      if (imp.getNamedImports().some(n => n.getName() === 'useT')) {
-        imp.removeNamedImport('useT');
+      const useTImport = imp.getNamedImports().find(n => n.getName() === 'useT');
+      if (useTImport) {
+        useTImport.remove();
         // ensure we have a next-intl import with useTranslations
         const existingNextIntl = sf.getImportDeclarations().find(d => d.getModuleSpecifierValue() === 'next-intl');
         if (existingNextIntl) {
@@ -115,7 +122,7 @@ for (const filePath of files) {
         changed = true;
       }
       // if now empty, remove import
-      if (imp.getNamedImports().length === 0 && !imp.getDefaultImport() && imp.getNamespaceImport() == null) {
+      if (imp.getNamedImports().length === 0 && !imp.getDefaultImport() && !imp.getNamespaceImport()) {
         imp.remove();
         changed = true;
       }

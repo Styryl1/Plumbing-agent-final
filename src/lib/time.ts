@@ -1,5 +1,3 @@
-import { useTranslations } from "next-intl";
-
 // Minimal Temporal helper - Unifies date handling across calendar/invoices
 // Global polyfill loaded via layout, using globalThis.Temporal
 // Single source of truth for the "three fighting date systems" problem

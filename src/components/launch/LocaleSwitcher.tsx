@@ -1,10 +1,8 @@
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
 import React from "react";
 import { Button } from "~/components/ui/button";
-
-("use client");
 
 export function LocaleSwitcher(): React.ReactElement {
 	const pathname = usePathname();

@@ -1,13 +1,10 @@
 import { SignIn } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
-import { useT } from "~/i18n/client";
-
-("use client");
 
 export default function SignInPage(): JSX.Element {
-	const tMisc = useT("misc");
-	const tAuth = useT("auth");
+	const tMisc = useTranslations("misc");
+	const tAuth = useTranslations("auth");
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-gray-50">
 			<div className="w-full max-w-md">

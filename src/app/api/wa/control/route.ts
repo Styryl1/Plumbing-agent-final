@@ -1,7 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { useTranslations } from "next-intl";
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";

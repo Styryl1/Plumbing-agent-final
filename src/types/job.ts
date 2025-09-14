@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import type { JobStatusUI } from "~/lib/job-status";
 
 export type JobPriority = "normal" | "urgent" | "emergency";

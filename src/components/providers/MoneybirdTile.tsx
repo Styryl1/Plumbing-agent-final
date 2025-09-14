@@ -1,3 +1,4 @@
+"use client";
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -10,8 +11,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-
-("use client");
 
 interface MoneybirdTileProps {
 	status: "ok" | "invalid_token" | "not_connected";

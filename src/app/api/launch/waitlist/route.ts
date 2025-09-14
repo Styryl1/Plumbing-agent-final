@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { env, serverOnlyEnv } from "~/lib/env";
 

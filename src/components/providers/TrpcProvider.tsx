@@ -1,12 +1,10 @@
+"use client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import superjson from "superjson";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 function getUrl(): string {
 	const base = (() => {

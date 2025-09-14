@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { Temporal } from "temporal-polyfill";
 
 export function isWithin24h(

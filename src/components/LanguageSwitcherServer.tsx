@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 

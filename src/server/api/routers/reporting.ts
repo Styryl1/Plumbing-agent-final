@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Reporting tRPC router - Daily/weekly invoice snapshots and aggregates
 // Returns PII-free aggregated data for reporting dashboards
 

@@ -1,3 +1,4 @@
+"use client";
 import { AlertTriangle, ExternalLink, Lock, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -12,10 +13,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 interface IssueActionsProps {
 	invoiceId: string;
@@ -36,7 +34,7 @@ export function IssueActions({
 	externalId,
 	issuedAt,
 }: IssueActionsProps): JSX.Element {
-	const t = useT();
+	const t = useTranslations();
 	const [isIssuing, setIsIssuing] = useState(false);
 
 	const utils = api.useUtils();

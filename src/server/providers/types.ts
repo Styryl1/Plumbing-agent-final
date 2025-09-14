@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { z } from "zod";
 
 // Keep aligned with S1 schema; provider list is fixed for now.

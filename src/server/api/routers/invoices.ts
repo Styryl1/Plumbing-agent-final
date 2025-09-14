@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // V2 Invoice Router (S1) - Minimal implementation for provider-based invoicing
 // This router replaces the legacy invoice system with a clean provider-focused approach
 

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import "server-only";
 import type { ProviderInvoiceStatus } from "../types";
 

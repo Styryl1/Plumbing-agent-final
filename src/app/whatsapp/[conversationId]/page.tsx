@@ -1,5 +1,3 @@
-"use client";
-
 import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";

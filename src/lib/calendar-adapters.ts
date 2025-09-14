@@ -1,6 +1,5 @@
 // src/lib/calendar-adapters.ts
 import type { CalendarEventExternal } from "@schedule-x/calendar";
-import { useTranslations } from "next-intl";
 import type { Tables } from "~/types/supabase";
 import { toZDT } from "./calendar-temporal";
 

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Canonical UI status ↔ DB status maps and helpers
 export type JobStatusUI = "planned" | "in_progress" | "done" | "cancelled";
 export type JobStatusDB =

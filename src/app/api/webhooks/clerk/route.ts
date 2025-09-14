@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * Clerk Webhook Handler
  *

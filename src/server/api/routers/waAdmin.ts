@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // WhatsApp Admin Router - Organization-scoped WhatsApp number management
 // Provides CRUD operations for wa_numbers and health monitoring
 

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * WhatsApp Message Analyzer Service (S2)
  * Provides AI analysis of inbound WhatsApp messages with rule-based and OpenAI modes

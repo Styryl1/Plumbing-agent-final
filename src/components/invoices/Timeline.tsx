@@ -20,7 +20,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { useT } from "~/i18n/client";
 import { parseZdt } from "~/lib/time";
 import { api } from "~/lib/trpc/client";
 
@@ -33,7 +32,7 @@ export interface TimelineProps {
  * Shows chronologically ordered events with i18n labels and relative time
  */
 export function Timeline({ invoiceId }: TimelineProps): JSX.Element {
-	const t = useT();
+	const t = useTranslations();
 	const locale = useLocale();
 	const currentLocale = locale === "nl" ? nl : enUS;
 

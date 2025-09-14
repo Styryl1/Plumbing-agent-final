@@ -11,8 +11,6 @@ import {
 } from "~/components/ui/card";
 import { api } from "~/lib/trpc/client";
 
-("use client");
-
 export default function ProvidersSettingsPage(): JSX.Element {
 	const t = useTranslations();
 

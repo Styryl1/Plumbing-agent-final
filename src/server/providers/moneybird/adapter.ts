@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import "server-only";
 import type { ProviderCredential } from "~/server/db/provider-credentials";
 import type {

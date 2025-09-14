@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * Type assertion utilities for runtime invariant checking.
  * Used to satisfy TypeScript strict mode while maintaining ESLint compliance.

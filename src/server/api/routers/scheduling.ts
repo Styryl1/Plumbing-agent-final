@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
 	getTravelAwareSlots,

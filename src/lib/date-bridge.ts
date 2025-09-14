@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // src/lib/date-bridge.ts
 import "temporal-polyfill";
 

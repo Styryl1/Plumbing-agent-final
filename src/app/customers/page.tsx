@@ -18,8 +18,6 @@ import CustomerCreateDialog from "./CustomerCreateDialog";
 import CustomerEditDialog from "./CustomerEditDialog";
 import CustomersTable from "./CustomersTable";
 
-("use client");
-
 export default function CustomersPage(): JSX.Element {
 	const t = useTranslations();
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);

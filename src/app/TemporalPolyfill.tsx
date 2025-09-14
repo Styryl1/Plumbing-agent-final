@@ -1,4 +1,4 @@
-'use client';
+"use client";
 // makes globalThis.Temporal available in the browser
 import "temporal-polyfill/global";
 

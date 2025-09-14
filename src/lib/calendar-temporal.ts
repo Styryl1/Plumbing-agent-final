@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // src/lib/calendar-temporal.ts
 // Global polyfill loaded via layout, using globalThis.Temporal
 

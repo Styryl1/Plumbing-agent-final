@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * Error handling utilities for type-safe error management
  * Ensures no unsafe assignments and proper error narrowing

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * Deprecated: Custom RLS JWT minting.
  * We now rely on Clerk Third-Party JWTs (via getToken({ template: "supabase" })).

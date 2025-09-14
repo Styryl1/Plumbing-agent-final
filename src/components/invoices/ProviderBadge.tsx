@@ -1,6 +1,6 @@
+"use client";
 // V2 Invoice Provider Badge - provider label/status chip with lock indicator
 // NOTE: uses next-intl to avoid i18n literal strings
-"use client";
 import { Lock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Badge } from "~/components/ui/badge";

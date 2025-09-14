@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Invoice Timeline Router (S10) - Read-only timeline for invoice lifecycle events
 // Leverages invoice_timeline view for unified event aggregation
 

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // src/i18n/devGuard.ts
 import { env } from "~/lib/env";
 

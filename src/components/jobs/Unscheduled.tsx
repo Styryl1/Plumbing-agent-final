@@ -1,3 +1,4 @@
+"use client";
 import { Clock, Gauge, Phone, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
@@ -24,7 +25,6 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Textarea } from "~/components/ui/textarea";
-import { useT } from "~/i18n/client";
 import {
 	businessHoursStart,
 	snapTo15Min,
@@ -33,8 +33,6 @@ import {
 } from "~/lib/calendar-temporal";
 import { formatDutchDate, formatDutchDateTime } from "~/lib/dates";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 type JobPriority = "normal" | "urgent" | "emergency";
 
@@ -83,7 +81,7 @@ export default function Unscheduled({
 	employees,
 	onJobCreated,
 }: UnscheduledProps): JSX.Element {
-	const t = useT();
+	const t = useTranslations();
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeRecommendation, setActiveRecommendation] =
 		useState<AiRecommendationDTO | null>(null);

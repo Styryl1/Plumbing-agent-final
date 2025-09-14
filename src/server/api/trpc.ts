@@ -2,7 +2,6 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { cookies } from "next/headers";
-import { useTranslations } from "next-intl";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import type { Locale } from "~/i18n";

@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import { useTranslations } from "next-intl";
 
 export async function getAuthContext(): Promise<{
 	readonly userId: string | null;

@@ -24,10 +24,7 @@ import {
 	FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useT } from "~/i18n/client";
 import { api } from "~/lib/trpc/client";
-
-("use client");
 
 // Form schema with Zod v4 patterns
 const WeFactSetupSchema = z.object({
@@ -39,8 +36,8 @@ type WeFactSetupForm = z.infer<typeof WeFactSetupSchema>;
 
 export default function WeFactSetupPage(): JSX.Element {
 	const router = useRouter();
-	const t = useT("providers");
-	const tForm = useT("providers.setup");
+	const t = useTranslations("providers");
+	const tForm = useTranslations("providers.setup");
 
 	const form = useForm<WeFactSetupForm>({
 		resolver: zodResolver(WeFactSetupSchema),

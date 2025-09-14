@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /** @server-only */
 
 import type { SupabaseClient } from "@supabase/supabase-js";

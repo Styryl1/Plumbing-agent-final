@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 /**
  * RLS-Aware Supabase Client
  * Creates per-request Supabase clients with a verified Third-Party JWT (Clerk)

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 export type Json =
 	| string
 	| number

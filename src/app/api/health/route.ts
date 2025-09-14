@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { useTranslations } from "next-intl";
 import { Temporal } from "temporal-polyfill";
 // Health check endpoints are allowed to use service-role for database verification
 import { getAdminDb } from "~/lib/supabase"; // Health check exception - service-role allowed

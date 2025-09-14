@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import "server-only";
 import { z } from "zod";
 import { serverOnlyEnv } from "~/lib/env";

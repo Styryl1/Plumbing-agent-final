@@ -1,5 +1,4 @@
 import { TRPCClientError } from "@trpc/client";
-import { useTranslations } from "next-intl";
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { isZodFlatten, type ZodFlatten } from "~/lib/zodError";
 

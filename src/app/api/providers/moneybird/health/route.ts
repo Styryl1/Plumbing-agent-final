@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { useTranslations } from "next-intl";
 import "server-only";
 import { auth } from "@clerk/nextjs/server";
 import { createProviderCredentialsService } from "~/server/db/provider-credentials";

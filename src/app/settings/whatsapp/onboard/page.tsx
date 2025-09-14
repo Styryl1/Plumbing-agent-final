@@ -28,8 +28,6 @@ import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { api } from "~/lib/trpc/client";
 
-("use client");
-
 type Step = "prereqs" | "numbers" | "test" | "done";
 
 export default function WhatsAppOnboardPage(): JSX.Element {

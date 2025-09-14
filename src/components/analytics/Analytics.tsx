@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Script from "next/script";
 import React, { useEffect } from "react";
 import { envClient } from "~/lib/env-client";

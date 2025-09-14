@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // WhatsApp Admin DTOs - Type definitions for WhatsApp number management
 // Enforces strict typing for org-scoped WhatsApp configuration
 

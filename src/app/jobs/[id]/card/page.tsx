@@ -1,7 +1,6 @@
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { notFound } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { JSX } from "react";
 import { Button } from "~/components/ui/button";

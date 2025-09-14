@@ -1,5 +1,4 @@
 import type { PostgrestError } from "@supabase/supabase-js";
-import { useTranslations } from "next-intl";
 
 // For SELECT returning multiple rows
 type ArrayResp<T> = { data: T[] | null; error: PostgrestError | null };

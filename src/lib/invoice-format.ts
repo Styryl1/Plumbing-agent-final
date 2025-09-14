@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 // Centralized invoice formatting for Dutch market compliance
 // Ensures consistent EUR currency, nl-NL locale, and Europe/Amsterdam timezone
 

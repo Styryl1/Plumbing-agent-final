@@ -1,5 +1,4 @@
 import { TRPCError } from "@trpc/server";
-import { useTranslations } from "next-intl";
 import { z } from "zod";
 
 import { logAuditEvent } from "~/lib/audit";
