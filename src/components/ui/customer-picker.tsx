@@ -96,8 +96,9 @@ export function CustomerPicker({
 		if (!search) return true;
 		const searchLower = search.toLowerCase();
 		const nameMatch = customer.name.toLowerCase().includes(searchLower);
-		const phoneMatch =
-			customer.phone?.toLowerCase().includes(searchLower) ?? false;
+		const phoneMatch = customer.phones.some((phone) =>
+			phone.toLowerCase().includes(searchLower),
+		);
 		const emailMatch =
 			customer.email?.toLowerCase().includes(searchLower) ?? false;
 		return nameMatch || phoneMatch || emailMatch;
@@ -122,7 +123,7 @@ export function CustomerPicker({
 
 		createCustomerMutation.mutate({
 			name: createFormData.name.trim(),
-			phone: createFormData.phone.trim(),
+			phones: [createFormData.phone.trim()],
 			email: createFormData.email.trim() || undefined,
 			language: "nl", // Default to Dutch for Netherlands plumber
 		});
@@ -151,11 +152,19 @@ export function CustomerPicker({
 					{value ? (
 						<div className="flex items-center gap-2 truncate">
 							<span className="truncate">{selectedCustomer?.name}</span>
-							{selectedCustomer?.phone && (
-								<span className="text-xs text-muted-foreground">
-									({selectedCustomer.phone})
-								</span>
-							)}
+							{(() => {
+								const preferredPhone =
+									selectedCustomer?.primaryPhone ?? selectedCustomer?.phones[0];
+								if (!preferredPhone) {
+									return null;
+								}
+
+								return (
+									<span className="text-xs text-muted-foreground">
+										({formatPhoneNumber(preferredPhone)})
+									</span>
+								);
+							})()}
 						</div>
 					) : (
 						<span>{placeholder ?? t("customers.selectCustomer")}</span>
@@ -307,9 +316,13 @@ export function CustomerPicker({
 										<div className="flex flex-col">
 											<span className="font-medium">{customer.name}</span>
 											<div className="flex gap-3 text-xs text-muted-foreground">
-												{customer.phone && (
-													<span>{formatPhoneNumber(customer.phone)}</span>
-												)}
+												{(() => {
+													const preferredPhone =
+														customer.primaryPhone ?? customer.phones[0];
+													return preferredPhone ? (
+														<span>{formatPhoneNumber(preferredPhone)}</span>
+													) : null;
+												})()}
 												{customer.email && <span>{customer.email}</span>}
 											</div>
 										</div>
@@ -346,9 +359,13 @@ export function CustomerPicker({
 										<div className="flex flex-col">
 											<span className="font-medium">{customer.name}</span>
 											<div className="flex gap-3 text-xs text-muted-foreground">
-												{customer.phone && (
-													<span>{formatPhoneNumber(customer.phone)}</span>
-												)}
+												{(() => {
+													const preferredPhone =
+														customer.primaryPhone ?? customer.phones[0];
+													return preferredPhone ? (
+														<span>{formatPhoneNumber(preferredPhone)}</span>
+													) : null;
+												})()}
 												{customer.email && <span>{customer.email}</span>}
 											</div>
 										</div>

@@ -6,43 +6,53 @@ export interface CustomerDTO {
 	readonly id: string;
 	readonly orgId: string;
 	readonly name: string;
-	readonly phone: string; // Required for field service operations
-	readonly email?: string;
-	readonly address?: string; // Legacy flat address field
-	readonly postalCode?: string; // Optional in customer, required for jobs/invoices
-	readonly houseNumber?: string; // For Dutch address auto-fill
-	readonly street?: string; // Auto-filled from postcode + house number
-	readonly city?: string; // Auto-filled from postcode + house number
-	readonly language: "nl" | "en"; // Default: 'nl' for Dutch market
+	readonly phones: string[]; // Primary phone = phones[0]
+	readonly primaryPhone: string | null; // Convenience alias for first phone
+	readonly email?: string | undefined;
+	readonly kvk?: string | undefined;
+	readonly btw?: string | undefined;
+	readonly address?: string | undefined; // Legacy flat address field
+	readonly postalCode?: string | undefined;
+	readonly houseNumber?: string | undefined; // Derived from custom fields when available
+	readonly street?: string | undefined;
+	readonly city?: string | undefined;
+	readonly language: "nl" | "en";
+	readonly customFields: Record<string, unknown>;
 	readonly createdAt: string; // ISO timestamp
 	readonly archivedAt?: string; // ISO timestamp when customer was archived
-	readonly isArchived: boolean; // Computed field for easy filtering
+	readonly isArchived: boolean;
 }
 
 // Create customer input (excludes auto-generated fields)
 export interface CreateCustomerInput {
 	name: string;
-	phone: string; // Required for field service operations
+	phones: string[]; // Must contain at least one phone number
 	email?: string;
-	address?: string; // Legacy flat address field
-	postalCode?: string; // Optional in customer creation, required for jobs/invoices
-	houseNumber?: string; // For Dutch address auto-fill
-	street?: string; // Auto-filled from postcode + house number
-	city?: string; // Auto-filled from postcode + house number
-	language?: "nl" | "en"; // Optional, defaults to 'nl'
+	kvk?: string;
+	btw?: string;
+	address?: string;
+	postalCode?: string;
+	houseNumber?: string;
+	street?: string;
+	city?: string;
+	language?: "nl" | "en";
+	customFields?: Record<string, unknown>;
 }
 
-// Update customer input (all fields optional except id)
+// Update customer input (all fields optional except id in router layer)
 export interface UpdateCustomerInput {
 	name?: string;
-	phone?: string;
-	email?: string;
-	address?: string; // Legacy flat address field
-	postalCode?: string;
-	houseNumber?: string; // For Dutch address auto-fill
-	street?: string; // Auto-filled from postcode + house number
-	city?: string; // Auto-filled from postcode + house number
+	phones?: string[]; // When provided, replaces the full phone list
+	email?: string | null;
+	kvk?: string | null;
+	btw?: string | null;
+	address?: string | null;
+	postalCode?: string | null;
+	houseNumber?: string | null;
+	street?: string | null;
+	city?: string | null;
 	language?: "nl" | "en";
+	customFields?: Record<string, unknown>;
 }
 
 // Customer search/filter options
@@ -56,7 +66,8 @@ export interface CustomerSearchInput {
 export interface CustomerPickerItem {
 	readonly id: string;
 	readonly name: string;
-	readonly phone: string; // Required for field service operations
-	readonly email?: string;
+	readonly phones: string[];
+	readonly primaryPhone: string | null;
+	readonly email?: string | undefined;
 	readonly displayText: string; // Formatted for UI display
 }

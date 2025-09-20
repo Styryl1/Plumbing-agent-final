@@ -1,12 +1,15 @@
-import { getPublicFlags } from "~/lib/feature-flags";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { getPublicFlagsForOrg } from "~/lib/feature-flags";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const settingsRouter = createTRPCRouter({
 	/**
-	 * Get public feature flags safe for client-side exposure
-	 * No sensitive environment configuration is exposed
+	 * Get feature flags scoped to the current organisation
 	 */
-	getPublicFlags: publicProcedure.query(() => {
-		return getPublicFlags();
+	getPublicFlags: protectedProcedure.query(async ({ ctx }) => {
+		const flags = await getPublicFlagsForOrg({
+			db: ctx.db,
+			orgId: ctx.auth.orgId,
+		});
+		return flags;
 	}),
 });

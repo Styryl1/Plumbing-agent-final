@@ -114,6 +114,12 @@ export default function JobDrawer({
 		},
 	);
 
+	const customerPrimaryPhone = (
+		customer?.primaryPhone ??
+		customer?.phones?.[0] ??
+		""
+	).trim();
+
 	// Fetch all customers for picker when editing
 	const { data: customers = [] } = api.customers.list.useQuery(
 		{},
@@ -730,15 +736,15 @@ export default function JobDrawer({
 												</a>
 											</div>
 										)}
-										{customer.phone && (
+										{customerPrimaryPhone !== "" && (
 											<div className="flex items-center gap-2 text-sm text-gray-600">
 												<Phone className="h-3 w-3" />
 												<a
-													href={`tel:${customer.phone}`}
+													href={`tel:${customerPrimaryPhone}`}
 													className="text-blue-600 hover:text-blue-800 underline"
-													title={`Call ${customer.phone}`}
+													title={`Call ${customerPrimaryPhone}`}
 												>
-													{formatPhoneNumber(customer.phone)}
+													{formatPhoneNumber(customerPrimaryPhone)}
 												</a>
 											</div>
 										)}

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { logAuditEvent } from "~/lib/audit";
-import { getFlags } from "~/lib/feature-flags";
+import { getOrgFeatureFlags } from "~/lib/feature-flags";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
 	GetMessagesInput,
@@ -30,7 +30,10 @@ export const whatsappRouter = createTRPCRouter({
 	 * Get WhatsApp integration health and statistics
 	 */
 	health: protectedProcedure.query(async ({ ctx }) => {
-		// Get counts of conversations and messages for the org
+		const flags = await getOrgFeatureFlags({
+			db: ctx.db,
+			orgId: ctx.auth.orgId,
+		});
 		const [conversationsResult, messagesResult] = await Promise.all([
 			ctx.db
 				.from("wa_conversations")
@@ -43,7 +46,7 @@ export const whatsappRouter = createTRPCRouter({
 		]);
 
 		return {
-			enabled: getFlags().whatsappUi,
+			enabled: flags.intakeWhatsApp,
 			dualNumberMode: true, // Always enabled for now
 			conversationCount: conversationsResult.count ?? 0,
 			messageCount: messagesResult.count ?? 0,

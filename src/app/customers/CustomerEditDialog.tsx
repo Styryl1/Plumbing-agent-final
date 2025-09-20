@@ -23,6 +23,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
 import { useAutoFillAddress } from "~/hooks/useAutoFillAddress";
 import { api } from "~/lib/trpc/client";
 import {
@@ -34,14 +35,18 @@ import type { CustomerDTO, UpdateCustomerInput } from "~/types/customer";
 // Form state matches create dialog
 interface UpdateCustomerFormData {
 	name: string;
-	phone?: string | undefined;
-	email?: string | undefined;
-	address?: string | undefined;
-	postalCode?: string | undefined;
-	houseNumber?: string | undefined;
-	street?: string | undefined;
-	city?: string | undefined;
+	primaryPhone: string;
+	additionalPhones?: string;
+	email?: string;
+	address?: string;
+	postalCode?: string;
+	houseNumber?: string;
+	street?: string;
+	city?: string;
 	language: "nl" | "en";
+	kvk?: string;
+	btw?: string;
+	customFields?: string;
 }
 
 interface CustomerEditDialogProps {
@@ -65,7 +70,12 @@ export default function CustomerEditDialog({
 	const form = useForm<UpdateCustomerFormData>({
 		defaultValues: {
 			name: "",
+			primaryPhone: "",
+			additionalPhones: "",
 			language: "nl",
+			kvk: "",
+			btw: "",
+			customFields: "",
 		},
 	});
 
@@ -80,9 +90,17 @@ export default function CustomerEditDialog({
 	// Reset form data when customer changes
 	useEffect(() => {
 		if (customer) {
+			const secondaryPhones = customer.phones.filter(
+				(phone, index) => index > 0,
+			);
+			const customFieldsString =
+				Object.keys(customer.customFields).length > 0
+					? JSON.stringify(customer.customFields, null, 2)
+					: "";
 			form.reset({
 				name: customer.name,
-				phone: customer.phone,
+				primaryPhone: customer.primaryPhone ?? customer.phones.at(0) ?? "",
+				additionalPhones: secondaryPhones.join("\n"),
 				email: customer.email ?? "",
 				address: customer.address ?? "",
 				postalCode: customer.postalCode ?? "",
@@ -90,11 +108,19 @@ export default function CustomerEditDialog({
 				street: customer.street ?? "",
 				city: customer.city ?? "",
 				language: customer.language,
+				kvk: customer.kvk ?? "",
+				btw: customer.btw ?? "",
+				customFields: customFieldsString,
 			});
 		} else {
 			form.reset({
 				name: "",
+				primaryPhone: "",
+				additionalPhones: "",
 				language: "nl",
+				kvk: "",
+				btw: "",
+				customFields: "",
 			});
 		}
 	}, [customer, form]);
@@ -126,64 +152,154 @@ export default function CustomerEditDialog({
 	const handleSubmit = form.handleSubmit((formData) => {
 		if (!customer) return;
 
-		// Build clean form data - only send changed fields
+		const primaryPhone = formData.primaryPhone.trim();
+		const additionalPhones = (formData.additionalPhones ?? "")
+			.split(/[\\s,;]+/)
+			.map((value) => value.trim())
+			.filter((value) => value.length > 0);
+
+		const phones = [primaryPhone, ...additionalPhones].filter(
+			(value) => value.length > 0,
+		);
+		const uniquePhones = Array.from(new Set(phones));
+
+		if (uniquePhones.length === 0) {
+			form.setError("primaryPhone", {
+				type: "manual",
+				message: t("customers.form.validation.phoneRequired"),
+			});
+			return;
+		}
+
+		let customFields: Record<string, unknown> | undefined = undefined;
+		const customFieldsInput = formData.customFields?.trim() ?? "";
+
+		if (customFieldsInput.length > 0) {
+			try {
+				const parsed: unknown = JSON.parse(customFieldsInput);
+				if (
+					parsed === null ||
+					Array.isArray(parsed) ||
+					typeof parsed !== "object"
+				) {
+					throw new Error("Custom fields must be an object");
+				}
+				customFields = parsed as Record<string, unknown>;
+			} catch {
+				form.setError("customFields", {
+					type: "validate",
+					message: t("customers.form.validation.customFieldsInvalid"),
+				});
+				return;
+			}
+		} else if (Object.keys(customer.customFields).length > 0) {
+			customFields = {};
+		}
+
 		const cleanFormData: UpdateCustomerInput = {};
 
-		// Check and add each field if it changed
-		if (formData.name !== customer.name) {
-			cleanFormData.name = formData.name;
+		const trimmedName = formData.name.trim();
+		if (trimmedName !== customer.name) {
+			cleanFormData.name = trimmedName;
 		}
-		if (formData.phone?.trim() !== customer.phone) {
-			cleanFormData.phone = formData.phone?.trim() ?? "";
+
+		const existingPhones = customer.phones;
+		const phonesChanged =
+			uniquePhones.length !== existingPhones.length ||
+			uniquePhones.some((phone, index) => phone !== existingPhones[index]);
+
+		if (phonesChanged) {
+			cleanFormData.phones = uniquePhones;
 		}
-		if ((formData.email?.trim() ?? "") !== (customer.email ?? "")) {
-			const trimmed = formData.email?.trim();
-			if (trimmed) {
-				cleanFormData.email = trimmed;
+
+		const trimmedEmail = formData.email?.trim() ?? "";
+		if (trimmedEmail !== (customer.email ?? "")) {
+			if (trimmedEmail.length > 0) {
+				cleanFormData.email = trimmedEmail;
+			} else {
+				cleanFormData.email = null;
 			}
 		}
-		if ((formData.address?.trim() ?? "") !== (customer.address ?? "")) {
-			const trimmed = formData.address?.trim();
-			if (trimmed) {
-				cleanFormData.address = trimmed;
+
+		const trimmedAddress = formData.address?.trim() ?? "";
+		if (trimmedAddress !== (customer.address ?? "")) {
+			if (trimmedAddress.length > 0) {
+				cleanFormData.address = trimmedAddress;
+			} else {
+				cleanFormData.address = null;
 			}
 		}
-		if ((formData.postalCode?.trim() ?? "") !== (customer.postalCode ?? "")) {
-			const trimmed = formData.postalCode?.trim();
-			if (trimmed) {
-				cleanFormData.postalCode = trimmed;
+
+		const trimmedPostal = formData.postalCode?.trim() ?? "";
+		if (trimmedPostal !== (customer.postalCode ?? "")) {
+			if (trimmedPostal.length > 0) {
+				cleanFormData.postalCode = trimmedPostal;
+			} else {
+				cleanFormData.postalCode = null;
 			}
 		}
-		if ((formData.houseNumber?.trim() ?? "") !== (customer.houseNumber ?? "")) {
-			const trimmed = formData.houseNumber?.trim();
-			if (trimmed) {
-				cleanFormData.houseNumber = trimmed;
+
+		const trimmedHouseNumber = formData.houseNumber?.trim() ?? "";
+		if (trimmedHouseNumber !== (customer.houseNumber ?? "")) {
+			if (trimmedHouseNumber.length > 0) {
+				cleanFormData.houseNumber = trimmedHouseNumber;
+			} else {
+				cleanFormData.houseNumber = null;
 			}
 		}
-		if ((formData.street?.trim() ?? "") !== (customer.street ?? "")) {
-			const trimmed = formData.street?.trim();
-			if (trimmed) {
-				cleanFormData.street = trimmed;
+
+		const trimmedStreet = formData.street?.trim() ?? "";
+		if (trimmedStreet !== (customer.street ?? "")) {
+			if (trimmedStreet.length > 0) {
+				cleanFormData.street = trimmedStreet;
+			} else {
+				cleanFormData.street = null;
 			}
 		}
-		if ((formData.city?.trim() ?? "") !== (customer.city ?? "")) {
-			const trimmed = formData.city?.trim();
-			if (trimmed) {
-				cleanFormData.city = trimmed;
+
+		const trimmedCity = formData.city?.trim() ?? "";
+		if (trimmedCity !== (customer.city ?? "")) {
+			if (trimmedCity.length > 0) {
+				cleanFormData.city = trimmedCity;
+			} else {
+				cleanFormData.city = null;
 			}
 		}
+
+		const trimmedKvk = formData.kvk?.trim() ?? "";
+		if (trimmedKvk !== (customer.kvk ?? "")) {
+			cleanFormData.kvk = trimmedKvk.length > 0 ? trimmedKvk : null;
+		}
+
+		const trimmedBtw = formData.btw?.trim() ?? "";
+		if (trimmedBtw !== (customer.btw ?? "")) {
+			cleanFormData.btw = trimmedBtw.length > 0 ? trimmedBtw : null;
+		}
+
+		if (customFields !== undefined) {
+			const nextSerialized = JSON.stringify(customFields ?? {});
+			const existingSerialized = JSON.stringify(customer.customFields ?? {});
+			if (nextSerialized !== existingSerialized) {
+				cleanFormData.customFields = customFields ?? {};
+			}
+		}
+
 		if (formData.language !== customer.language) {
 			cleanFormData.language = formData.language;
 		}
 
-		// Only update if there are actual changes
 		if (Object.keys(cleanFormData).length > 0) {
+			const updatePayload: UpdateCustomerInput & { phones: string[] } = {
+				phones: cleanFormData.phones ?? customer.phones,
+				...cleanFormData,
+			};
+
 			updateCustomerMutation.mutate({
 				id: customer.id,
-				data: cleanFormData,
+				data: updatePayload,
 			});
 		} else {
-			onCustomerUpdated(); // Close dialog if no changes
+			onCustomerUpdated();
 		}
 	});
 
@@ -238,23 +354,107 @@ export default function CustomerEditDialog({
 							)}
 						</div>
 
-						{/* Phone */}
+						{/* Primary Phone */}
 						<div className="space-y-2">
-							<Label htmlFor="phone">{t("customers.form.phone.label")}</Label>
+							<Label htmlFor="primaryPhone">
+								{t("customers.form.phone.label")}
+							</Label>
 							<Input
-								id="phone"
+								id="primaryPhone"
 								type="tel"
 								placeholder={t("customers.form.phone.placeholder")}
-								{...form.register("phone")}
-								className={form.formState.errors.phone ? "border-red-500" : ""}
+								{...form.register("primaryPhone")}
+								className={
+									form.formState.errors.primaryPhone ? "border-red-500" : ""
+								}
+								required
 							/>
-							{form.formState.errors.phone && (
+							{form.formState.errors.primaryPhone && (
 								<p className="text-sm text-red-500">
-									{form.formState.errors.phone.message}
+									{form.formState.errors.primaryPhone.message}
 								</p>
 							)}
 						</div>
 
+						{/* Additional Phones */}
+						<div className="space-y-2">
+							<Label htmlFor="additionalPhones">
+								{t("customers.form.additionalPhones.label")}
+							</Label>
+							<Textarea
+								id="additionalPhones"
+								placeholder={t("customers.form.additionalPhones.placeholder")}
+								{...form.register("additionalPhones")}
+								className={
+									form.formState.errors.additionalPhones ? "border-red-500" : ""
+								}
+							/>
+							<p className="text-xs text-muted-foreground">
+								{t("customers.form.additionalPhones.help")}
+							</p>
+							{form.formState.errors.additionalPhones && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.additionalPhones.message}
+								</p>
+							)}
+						</div>
+
+						{/* KVK */}
+						<div className="space-y-2">
+							<Label htmlFor="kvk">{t("customers.form.kvk.label")}</Label>
+							<Input
+								id="kvk"
+								type="text"
+								placeholder={t("customers.form.kvk.placeholder")}
+								{...form.register("kvk")}
+								className={form.formState.errors.kvk ? "border-red-500" : ""}
+							/>
+							{form.formState.errors.kvk && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.kvk.message}
+								</p>
+							)}
+						</div>
+
+						{/* BTW */}
+						<div className="space-y-2">
+							<Label htmlFor="btw">{t("customers.form.btw.label")}</Label>
+							<Input
+								id="btw"
+								type="text"
+								placeholder={t("customers.form.btw.placeholder")}
+								{...form.register("btw")}
+								className={form.formState.errors.btw ? "border-red-500" : ""}
+							/>
+							{form.formState.errors.btw && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.btw.message}
+								</p>
+							)}
+						</div>
+
+						{/* Custom Fields */}
+						<div className="space-y-2">
+							<Label htmlFor="customFields">
+								{t("customers.form.customFields.label")}
+							</Label>
+							<Textarea
+								id="customFields"
+								placeholder={t("customers.form.customFields.placeholder")}
+								{...form.register("customFields")}
+								className={
+									form.formState.errors.customFields ? "border-red-500" : ""
+								}
+							/>
+							<p className="text-xs text-muted-foreground">
+								{t("customers.form.customFields.help")}
+							</p>
+							{form.formState.errors.customFields && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.customFields.message}
+								</p>
+							)}
+						</div>
 						{/* Address */}
 						<div className="space-y-2">
 							<Label htmlFor="address">
@@ -399,7 +599,8 @@ export default function CustomerEditDialog({
 							disabled={
 								!form.formState.isValid ||
 								updateCustomerMutation.isPending ||
-								isLooking
+								isLooking ||
+								form.watch("primaryPhone").trim().length === 0
 							}
 						>
 							{updateCustomerMutation.isPending

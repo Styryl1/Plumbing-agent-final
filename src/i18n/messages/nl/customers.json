@@ -89,5 +89,16 @@
 	"success.created": "Klant succesvol aangemaakt",
 	"success.updated": "Klant succesvol bijgewerkt",
 	"success.deleted": "Klant succesvol verwijderd",
-	"success.archived": "Klant succesvol gearchiveerd"
+	"success.archived": "Klant succesvol gearchiveerd",
+	"form.additionalPhones.label": "Extra telefoonnummers",
+	"form.additionalPhones.placeholder": "06 87654321, 070 1234567",
+	"form.additionalPhones.help": "Scheid nummers met komma's of nieuwe regels",
+	"form.kvk.label": "KVK-nummer",
+	"form.kvk.placeholder": "12345678",
+	"form.btw.label": "BTW-nummer",
+	"form.btw.placeholder": "NL123456789B01",
+	"form.customFields.label": "Aangepaste velden (JSON)",
+	"form.customFields.placeholder": "{ \"preferredTech\": \"Alice\" }",
+	"form.customFields.help": "Gebruik een JSON-object met sleutel/waarde-paren",
+	"form.validation.customFieldsInvalid": "Aangepaste velden moeten geldige JSON zijn"
 }

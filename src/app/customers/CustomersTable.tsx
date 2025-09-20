@@ -38,7 +38,7 @@ import {
 import { formatPhoneNumber } from "~/lib/phone";
 import { epochMs, parseZdt } from "~/lib/time";
 import { api } from "~/lib/trpc/client";
-import type { CustomerDTO } from "~/types/customer";
+import type { CustomerDTO, UpdateCustomerInput } from "~/types/customer";
 
 interface CustomersTableProps {
 	customers: CustomerDTO[];
@@ -201,12 +201,14 @@ export default function CustomersTable({
 	// Filter customers based on search
 	const filteredCustomers = customers.filter((customer) => {
 		const query = searchQuery.toLowerCase();
-		return (
-			customer.name.toLowerCase().includes(query) ||
-			(customer.email?.toLowerCase().includes(query) ?? false) ||
-			customer.phone.toLowerCase().includes(query) ||
-			(customer.address?.toLowerCase().includes(query) ?? false)
+		const nameMatch = customer.name.toLowerCase().includes(query);
+		const emailMatch = customer.email?.toLowerCase().includes(query) ?? false;
+		const phoneMatch = customer.phones.some((phone) =>
+			phone.toLowerCase().includes(query),
 		);
+		const addressMatch =
+			customer.address?.toLowerCase().includes(query) ?? false;
+		return nameMatch || emailMatch || phoneMatch || addressMatch;
 	});
 
 	const handleDeleteConfirm = (): void => {
@@ -253,15 +255,42 @@ export default function CustomersTable({
 	const saveEdit = (): void => {
 		if (!editingCustomer) return;
 
-		const updateData: { phone?: string; email?: string } = {};
-		updateData[editingCustomer.field] = editingCustomer.value.trim();
+		const customer = customers.find((c) => c.id === editingCustomer.id);
+		if (!customer) {
+			return;
+		}
+
+		const updateData: UpdateCustomerInput = {};
+		if (editingCustomer.field === "phone") {
+			const trimmedPhone = editingCustomer.value.trim();
+			if (trimmedPhone.length === 0) {
+				toast.error(t("customers.form.validation.phoneRequired"));
+				return;
+			}
+
+			const [, ...restPhones] = customer.phones;
+			const nextPhones = [trimmedPhone, ...restPhones]
+				.map((value) => value.trim())
+				.filter(
+					(value, index, array) =>
+						value.length > 0 && array.indexOf(value) === index,
+				);
+			updateData.phones = nextPhones;
+		} else {
+			const trimmedEmail = editingCustomer.value.trim();
+			updateData.email = trimmedEmail.length > 0 ? trimmedEmail : null;
+		}
+
+		const updatePayload: UpdateCustomerInput & { phones: string[] } = {
+			phones: updateData.phones ?? customer.phones,
+			...updateData,
+		};
 
 		updateCustomerMutation.mutate({
 			id: editingCustomer.id,
-			data: updateData,
+			data: updatePayload,
 		});
 	};
-
 	// Determine if customer has linked data
 	const hasLinkedData =
 		linkedCounts && (linkedCounts.jobs > 0 || linkedCounts.invoices > 0);
@@ -408,73 +437,81 @@ export default function CustomersTable({
 											)}
 
 											{/* Phone field - inline editable */}
-											{customer.phone.trim().length > 0 && (
-												<div className="flex items-center gap-1 text-sm">
-													<Phone className="h-3 w-3 text-muted-foreground" />
-													{editingCustomer?.id === customer.id &&
-													editingCustomer.field === "phone" ? (
-														<div className="flex items-center gap-1 flex-1">
-															<Input
-																value={editingCustomer.value}
-																onChange={(e) => {
-																	setEditingCustomer({
-																		...editingCustomer,
-																		value: e.target.value,
-																	});
-																}}
-																className="h-6 text-xs max-w-[150px]"
-																onKeyDown={(e) => {
-																	if (e.key === "Enter") saveEdit();
-																	if (e.key === "Escape") cancelEdit();
-																}}
-																autoFocus
-															/>
-															<Button
-																variant="ghost"
-																size="sm"
-																className="h-6 w-6 p-0"
-																onClick={saveEdit}
-																disabled={updateCustomerMutation.isPending}
-															>
-																<Check className="h-3 w-3 text-green-600" />
-															</Button>
-															<Button
-																variant="ghost"
-																size="sm"
-																className="h-6 w-6 p-0"
-																onClick={cancelEdit}
-															>
-																<X className="h-3 w-3 text-red-600" />
-															</Button>
-														</div>
-													) : (
-														<div className="flex items-center gap-1 flex-1">
-															<a
-																href={`tel:${customer.phone}`}
-																className="text-blue-600 hover:text-blue-800 underline"
-																title={`Call ${customer.phone}`}
-															>
-																{formatPhoneNumber(customer.phone)}
-															</a>
-															<Button
-																variant="ghost"
-																size="sm"
-																className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
-																onClick={() => {
-																	startEdit(
-																		customer.id,
-																		"phone",
-																		customer.phone,
-																	);
-																}}
-																title="Edit phone"
-															>
-																<Edit className="h-3 w-3" />
-															</Button>
-														</div>
-													)}
-												</div>
-											)}
+											{customer.primaryPhone ??
+												customer.phones.at(0) ??
+												("".trim().length > 0 && (
+													<div className="flex items-center gap-1 text-sm">
+														<Phone className="h-3 w-3 text-muted-foreground" />
+														{editingCustomer?.id === customer.id &&
+														editingCustomer.field === "phone" ? (
+															<div className="flex items-center gap-1 flex-1">
+																<Input
+																	value={editingCustomer.value}
+																	onChange={(e) => {
+																		setEditingCustomer({
+																			...editingCustomer,
+																			value: e.target.value,
+																		});
+																	}}
+																	className="h-6 text-xs max-w-[150px]"
+																	onKeyDown={(e) => {
+																		if (e.key === "Enter") saveEdit();
+																		if (e.key === "Escape") cancelEdit();
+																	}}
+																	autoFocus
+																/>
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	className="h-6 w-6 p-0"
+																	onClick={saveEdit}
+																	disabled={updateCustomerMutation.isPending}
+																>
+																	<Check className="h-3 w-3 text-green-600" />
+																</Button>
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	className="h-6 w-6 p-0"
+																	onClick={cancelEdit}
+																>
+																	<X className="h-3 w-3 text-red-600" />
+																</Button>
+															</div>
+														) : (
+															<div className="flex items-center gap-1 flex-1">
+																<a
+																	href={`tel:${customer.primaryPhone ?? customer.phones.at(0) ?? ""}`}
+																	className="text-blue-600 hover:text-blue-800 underline"
+																	title={`Call ${customer.primaryPhone ?? customer.phones.at(0) ?? ""}`}
+																>
+																	{formatPhoneNumber(
+																		customer.primaryPhone ??
+																			customer.phones.at(0) ??
+																			"",
+																	)}
+																</a>
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+																	onClick={() => {
+																		startEdit(
+																			customer.id,
+																			"phone",
+																			customer.primaryPhone ??
+																				customer.phones.at(0) ??
+																				"",
+																		);
+																	}}
+																	title="Edit phone"
+																>
+																	<Edit className="h-3 w-3" />
+																</Button>
+															</div>
+														)}
+													</div>
+												))}
 										</div>
 									</TableCell>
 									<TableCell>

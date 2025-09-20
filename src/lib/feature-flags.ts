@@ -1,108 +1,132 @@
 import "server-only";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { env } from "~/lib/env";
+import type { Database } from "~/types/supabase";
 
-/**
- * Centralized feature flags with PILOT_MODE cascade
- * PILOT_MODE=true enables all MVP features for pilot testing
- */
+const FLAG_KEY_TO_CODE = {
+	intakeWhatsApp: "INTAKE_WHATSAPP",
+	intakeVoice: "INTAKE_VOICE",
+	jobCards: "JOB_CARDS",
+	projectsCore: "PROJECTS_CORE",
+	projectsAdvanced: "PROJECTS_ADVANCED",
+	manualsCopilot: "MANUALS_COPILOT",
+	copilotGlobal: "COPILOT_GLOBAL",
+	notificationsCore: "NOTIFICATIONS_CORE",
+	gdprConsole: "GDPR_CONSOLE",
+} as const;
+
+type OrgFeatureFlagRow = {
+	flag: string;
+	enabled: boolean;
+};
+
+const FLAG_CODE_TO_KEY = Object.fromEntries(
+	Object.entries(FLAG_KEY_TO_CODE).map(([key, value]) => [value, key]),
+) as Record<
+	(typeof FLAG_KEY_TO_CODE)[keyof typeof FLAG_KEY_TO_CODE],
+	keyof typeof FLAG_KEY_TO_CODE
+>;
+
+export type FeatureFlagKey = keyof typeof FLAG_KEY_TO_CODE;
 
 export type FeatureFlags = {
-	whatsappUi: boolean;
-	canIssueInvoices: boolean;
-	showMollieLinks: boolean;
-	calendarEnabled: boolean;
-	dunningMinimal: boolean;
+	[K in FeatureFlagKey]: boolean;
+} & {
 	pilotMode: boolean;
 };
 
-/**
- * Compute base feature flags from environment
- */
-function computeBaseFlags(): FeatureFlags {
-	const pilotMode = env.PILOT_MODE === "true";
+function pilotModeEnabled(): boolean {
+	return env.PILOT_MODE === "true";
+}
 
-	// Base flags (defaults when pilot mode is off)
-	const baseFlags: FeatureFlags = {
-		whatsappUi: env.WHATSAPP_VERIFY_TOKEN.length > 0, // Enable if WhatsApp configured
-		canIssueInvoices:
-			env.INVOICING_MONEYBIRD === "true" ||
-			env.INVOICING_WEFACT === "true" ||
-			env.INVOICING_EB === "true",
-		showMollieLinks: env.MOLLIE_API_KEY ? env.MOLLIE_API_KEY.length > 0 : false,
-		calendarEnabled: true, // Calendar is generally available
-		dunningMinimal: env.EMAIL_PROVIDER !== "disabled",
+function getDefaultFlags(): FeatureFlags {
+	const pilotMode = pilotModeEnabled();
+
+	return {
+		intakeWhatsApp: true,
+		intakeVoice: true,
+		jobCards: true,
+		projectsCore: true,
+		projectsAdvanced: pilotMode,
+		manualsCopilot: true,
+		copilotGlobal: true,
+		notificationsCore: true,
+		gdprConsole: true,
+		pilotMode,
+	};
+}
+
+function applyPilotCascade(flags: FeatureFlags): FeatureFlags {
+	if (flags.pilotMode) {
+		flags.projectsAdvanced = true;
+	}
+
+	return flags;
+}
+
+export async function getOrgFeatureFlags({
+	db,
+	orgId,
+}: {
+	db: SupabaseClient<Database>;
+	orgId: string;
+}): Promise<FeatureFlags> {
+	const pilotMode = pilotModeEnabled();
+	const defaults = getDefaultFlags();
+	const flags: FeatureFlags = { ...defaults };
+
+	const { data, error } = await db.rpc("get_org_feature_flags", {
+		p_org_id: orgId,
+		p_pilot_mode: pilotMode,
+	});
+
+	if (error) {
+		console.error("Failed to load feature flags", error);
+		return applyPilotCascade(flags);
+	}
+
+	for (const record of data ?? []) {
+		const key = FLAG_CODE_TO_KEY[record.flag as keyof typeof FLAG_CODE_TO_KEY];
+		if (!key) {
+			continue;
+		}
+
+		flags[key] = Boolean(record.enabled);
+	}
+
+	flags.pilotMode = pilotMode;
+	return applyPilotCascade(flags);
+}
+
+export async function getPublicFlagsForOrg(args: {
+	db: SupabaseClient<Database>;
+	orgId: string;
+}): Promise<FeatureFlags> {
+	return getOrgFeatureFlags(args);
+}
+
+export function computeFlags(config: {
+	pilotMode: boolean;
+	overrides?: Partial<Record<FeatureFlagKey, boolean>>;
+}): FeatureFlags {
+	const pilotMode = config.pilotMode;
+	const defaults: FeatureFlags = {
+		intakeWhatsApp: true,
+		intakeVoice: true,
+		jobCards: true,
+		projectsCore: true,
+		projectsAdvanced: pilotMode,
+		manualsCopilot: true,
+		copilotGlobal: true,
+		notificationsCore: true,
+		gdprConsole: true,
 		pilotMode,
 	};
 
-	return baseFlags;
-}
-
-/**
- * Apply PILOT_MODE cascade to enable MVP features
- */
-export function getFlags(): FeatureFlags {
-	const base = computeBaseFlags();
-
-	if (base.pilotMode) {
-		// Override all flags when in pilot mode
-		return {
-			...base,
-			whatsappUi: true,
-			canIssueInvoices: true,
-			showMollieLinks: true,
-			calendarEnabled: true,
-			dunningMinimal: true,
-		};
-	}
-
-	return base;
-}
-
-/**
- * Get public flags safe for client-side exposure
- * Never exposes sensitive environment configuration
- */
-export function getPublicFlags(): Pick<
-	FeatureFlags,
-	| "whatsappUi"
-	| "canIssueInvoices"
-	| "showMollieLinks"
-	| "calendarEnabled"
-	| "pilotMode"
-> {
-	const flags = getFlags();
-	return {
-		whatsappUi: flags.whatsappUi,
-		canIssueInvoices: flags.canIssueInvoices,
-		showMollieLinks: flags.showMollieLinks,
-		calendarEnabled: flags.calendarEnabled,
-		pilotMode: flags.pilotMode,
-	};
-}
-
-/**
- * Pure computation function for testing (no env dependency)
- */
-export function computeFlags(config: { pilotMode: boolean }): FeatureFlags {
-	const baseFlags: FeatureFlags = {
-		whatsappUi: false,
-		canIssueInvoices: false,
-		showMollieLinks: false,
-		calendarEnabled: true,
-		dunningMinimal: false,
-		pilotMode: config.pilotMode,
+	const withOverrides = {
+		...defaults,
+		...(config.overrides ?? {}),
 	};
 
-	if (config.pilotMode) {
-		return {
-			...baseFlags,
-			whatsappUi: true,
-			canIssueInvoices: true,
-			showMollieLinks: true,
-			calendarEnabled: true,
-			dunningMinimal: true,
-		};
-	}
-
-	return baseFlags;
+	return applyPilotCascade(withOverrides);
 }

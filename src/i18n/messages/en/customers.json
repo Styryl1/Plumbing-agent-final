@@ -89,5 +89,16 @@
 	"success.created": "Customer created successfully",
 	"success.updated": "Customer updated successfully",
 	"success.deleted": "Customer deleted successfully",
-	"success.archived": "Customer archived successfully"
+	"success.archived": "Customer archived successfully",
+	"form.additionalPhones.label": "Additional phone numbers",
+	"form.additionalPhones.placeholder": "06 87654321, 070 1234567",
+	"form.additionalPhones.help": "Separate numbers with commas or new lines",
+	"form.kvk.label": "KVK number",
+	"form.kvk.placeholder": "12345678",
+	"form.btw.label": "VAT number (BTW)",
+	"form.btw.placeholder": "NL123456789B01",
+	"form.customFields.label": "Custom fields (JSON)",
+	"form.customFields.placeholder": "{ \"preferredTech\": \"Alice\" }",
+	"form.customFields.help": "Provide a JSON object with key/value pairs",
+	"form.validation.customFieldsInvalid": "Custom fields must be valid JSON"
 }

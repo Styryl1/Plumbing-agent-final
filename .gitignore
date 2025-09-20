@@ -94,3 +94,9 @@ NUL
 .claude/mcp.json
 .mcp.json
 cloudflared.exe
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

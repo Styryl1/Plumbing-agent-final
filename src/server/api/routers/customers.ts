@@ -31,37 +31,109 @@ import type { Tables } from "~/types/supabase";
 export const LANG = ["nl", "en"] as const;
 export const LanguageEnum = z.enum(LANG); // ZodEnum<["nl","en"]>
 
-// Minimal customer for "lead"/first save - only name + phone required
-export const customerCreateMinimal = z.object({
+const phoneNumberSchema = z
+	.string()
+	.min(1, zMsg(E.phoneRequired))
+	.refine(isValidPhone, zMsg(E.phoneInvalid))
+	.transform(normalizePhone);
+
+const phoneListSchema = z.preprocess(
+	(value) => {
+		if (Array.isArray(value)) {
+			return value;
+		}
+		if (typeof value === "string" && value.length > 0) {
+			return [value];
+		}
+		return value;
+	},
+	z.array(phoneNumberSchema).min(1, zMsg(E.phoneRequired)),
+);
+
+const optionalPhoneListSchema = z.preprocess((value) => {
+	if (value === undefined || value === null) {
+		return value;
+	}
+	if (Array.isArray(value)) {
+		return value;
+	}
+	if (typeof value === "string" && value.length > 0) {
+		return [value];
+	}
+	return value;
+}, z.array(phoneNumberSchema).min(1, zMsg(E.phoneRequired)).optional());
+
+const customFieldsSchema = z.record(z.string(), z.unknown()).optional();
+
+export const customerCreateSchema = z.object({
 	name: z.string().min(1, zMsg(E.nameRequired)),
-	phone: z
+	phones: phoneListSchema,
+	email: z.email(zMsg(E.emailInvalid)).nullable().optional(),
+	kvk: z.string().trim().max(32).nullable().optional(),
+	btw: z.string().trim().max(32).nullable().optional(),
+	address: z.string().nullable().optional(), // Legacy flat address field
+	postalCode: z
 		.string()
-		.min(1, zMsg(E.phoneRequired))
-		.refine(isValidPhone, zMsg(E.phoneInvalid))
-		.transform(normalizePhone),
-	email: z.email(zMsg(E.emailInvalid)).optional(),
-	address: z.string().optional(), // Legacy flat address field
-	postalCode: z.string().regex(NL_POSTCODE, zMsg(E.postalInvalid)).optional(),
-	houseNumber: z.string().optional(), // For Dutch address auto-fill
-	street: z.string().optional(), // Auto-filled from postcode + house number
-	city: z.string().optional(), // Auto-filled from postcode + house number
+		.regex(NL_POSTCODE, zMsg(E.postalInvalid))
+		.nullable()
+		.optional(),
+	houseNumber: z.string().nullable().optional(), // For Dutch address auto-fill
+	street: z.string().nullable().optional(), // Auto-filled from postcode + house number
+	city: z.string().nullable().optional(), // Auto-filled from postcode + house number
 	language: LanguageEnum.default("nl"),
+	customFields: customFieldsSchema,
 });
 
-// Legacy schema functions for backward compatibility
-export function createCustomerSchema(): typeof customerCreateMinimal {
-	return customerCreateMinimal;
+export const customerUpdateSchema = z.object({
+	name: z.string().min(1, zMsg(E.nameRequired)).optional(),
+	phones: optionalPhoneListSchema,
+	email: z.email(zMsg(E.emailInvalid)).nullable().optional(),
+	kvk: z.string().trim().max(32).nullable().optional(),
+	btw: z.string().trim().max(32).nullable().optional(),
+	address: z.string().nullable().optional(),
+	postalCode: z
+		.string()
+		.regex(NL_POSTCODE, zMsg(E.postalInvalid))
+		.nullable()
+		.optional(),
+	houseNumber: z.string().nullable().optional(),
+	street: z.string().nullable().optional(),
+	city: z.string().nullable().optional(),
+	language: LanguageEnum.optional(),
+	customFields: customFieldsSchema,
+});
+
+export function createCustomerSchema(): typeof customerCreateSchema {
+	return customerCreateSchema;
 }
 
-export function updateCustomerSchema(): ReturnType<
-	typeof customerCreateMinimal.partial
-> {
-	return customerCreateMinimal.partial();
+export function updateCustomerSchema(): typeof customerUpdateSchema {
+	return customerUpdateSchema;
 }
 
 const uuidSchema = z.uuid();
 
 export const customersRouter = createTRPCRouter({
+	/**
+	 * Debug JWT authentication
+	 */
+	debugAuth: protectedProcedure.query(async ({ ctx }) => {
+		const { db } = ctx;
+
+		// Call the debug function in Supabase
+		const { data, error } = await db.rpc("debug_current_auth");
+
+		if (error) {
+			console.error("Debug auth error:", error);
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: `Debug auth failed: ${error.message}`,
+			});
+		}
+
+		console.log("🔍 Supabase Auth Debug:", data);
+		return data;
+	}),
 	/**
 	 * List customers with optional search and pagination
 	 * Enhanced with DTO mapping and proper error handling
@@ -102,7 +174,7 @@ export const customersRouter = createTRPCRouter({
 			// Add search filter if provided
 			if (query) {
 				dbQuery = dbQuery.or(
-					`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`,
+					`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%,kvk.ilike.%${query}%,btw.ilike.%${query}%`,
 				);
 			}
 
@@ -149,7 +221,9 @@ export const customersRouter = createTRPCRouter({
 				.select("*")
 				.eq("org_id", orgId)
 				.is("archived_at", null) // Only show active customers in search
-				.or(`name.ilike.%${q}%,email.ilike.%${q}%,phone.ilike.%${q}%`)
+				.or(
+					`name.ilike.%${q}%,email.ilike.%${q}%,phone.ilike.%${q}%,kvk.ilike.%${q}%,btw.ilike.%${q}%`,
+				)
 				.order("name", { ascending: true })
 				.limit(limit);
 
@@ -208,22 +282,19 @@ export const customersRouter = createTRPCRouter({
 	 * Create new customer
 	 */
 	create: protectedProcedure
-		.input(createCustomerSchema()) // Default schema for TypeScript typing - re-validated with user locale below
+		.input(createCustomerSchema())
 		.mutation(async ({ ctx, input }): Promise<CustomerDTO> => {
-			// Re-validate with user's current locale to show localized error messages
-			const localeSchema = createCustomerSchema();
-			const validatedInput = localeSchema.parse(input);
+			const schema = createCustomerSchema();
+			const validatedInput = schema.parse(input);
 			const { db } = ctx;
 			const { orgId } = ctx.auth;
 
-			// Build clean input object with required fields
 			const processedInput: CreateCustomerInput = {
 				name: validatedInput.name,
-				phone: validatedInput.phone, // Required field (normalized by Zod transform)
+				phones: validatedInput.phones,
 				language: validatedInput.language,
 			};
 
-			// Only add optional properties if they have actual values
 			if (validatedInput.email) {
 				processedInput.email = validatedInput.email;
 			}
@@ -235,10 +306,32 @@ export const customersRouter = createTRPCRouter({
 					validatedInput.postalCode,
 				);
 			}
+			if (validatedInput.houseNumber) {
+				processedInput.houseNumber = validatedInput.houseNumber;
+			}
+			if (validatedInput.street) {
+				processedInput.street = validatedInput.street;
+			}
+			if (validatedInput.city) {
+				processedInput.city = validatedInput.city;
+			}
+			if (validatedInput.kvk) {
+				processedInput.kvk = validatedInput.kvk;
+			}
+			if (validatedInput.btw) {
+				processedInput.btw = validatedInput.btw;
+			}
+			if (
+				validatedInput.customFields &&
+				Object.keys(validatedInput.customFields).length > 0
+			) {
+				processedInput.customFields = validatedInput.customFields;
+			}
 
 			const customerData = mapCreateCustomerInputToDb(processedInput, orgId);
 
-			logger.warn("customers.create attempting to create customer", {
+			logger.info("customers.create", {
+				originalInput: input,
 				processedInput,
 				customerData,
 				orgId,
@@ -251,22 +344,16 @@ export const customersRouter = createTRPCRouter({
 				.single();
 
 			if (error) {
-				// Log detailed error information for debugging
-				console.error("🔴 Customer creation failed:", {
+				console.error("?? Customer creation failed", {
 					error: error,
-					code: error.code,
-					message: error.message,
-					details: error.details,
-					hint: error.hint,
-					customerData: customerData,
-					orgId: orgId,
+					orgId,
+					customerData,
 				});
 
-				// Handle unique constraint violations
 				if (error.code === "23505") {
 					throw new TRPCError({
 						code: "CONFLICT",
-						message: "Klant met dit e-mailadres bestaat al",
+						message: "Klant bestaat al",
 					});
 				}
 
@@ -306,21 +393,45 @@ export const customersRouter = createTRPCRouter({
 			// Build clean update patch without undefined values
 			const processedInput: Partial<UpdateCustomerInput> = {};
 
-			// TypeScript understands narrowing after these guards
-			if (updateData.name !== undefined) processedInput.name = updateData.name;
-			if (updateData.email !== undefined)
+			if (updateData.name !== undefined) {
+				processedInput.name = updateData.name;
+			}
+			if (updateData.phones !== undefined) {
+				processedInput.phones = updateData.phones;
+			}
+			if (updateData.email !== undefined) {
 				processedInput.email = updateData.email;
-			if (updateData.phone !== undefined)
-				processedInput.phone = updateData.phone;
-			if (updateData.address !== undefined)
+			}
+			if (updateData.kvk !== undefined) {
+				processedInput.kvk = updateData.kvk;
+			}
+			if (updateData.btw !== undefined) {
+				processedInput.btw = updateData.btw;
+			}
+			if (updateData.address !== undefined) {
 				processedInput.address = updateData.address;
-			if (updateData.language !== undefined)
+			}
+			if (updateData.language !== undefined) {
 				processedInput.language = updateData.language;
+			}
 			if (updateData.postalCode !== undefined) {
+				const nextPostal = updateData.postalCode;
 				processedInput.postalCode =
-					updateData.postalCode !== ""
-						? formatDutchPostalCode(updateData.postalCode)
-						: updateData.postalCode; // stays undefined if they explicitly cleared it
+					nextPostal && nextPostal.trim().length > 0
+						? formatDutchPostalCode(nextPostal)
+						: null;
+			}
+			if (updateData.houseNumber !== undefined) {
+				processedInput.houseNumber = updateData.houseNumber;
+			}
+			if (updateData.street !== undefined) {
+				processedInput.street = updateData.street;
+			}
+			if (updateData.city !== undefined) {
+				processedInput.city = updateData.city;
+			}
+			if (updateData.customFields !== undefined) {
+				processedInput.customFields = updateData.customFields ?? {};
 			}
 
 			const dbUpdateData = mapUpdateCustomerInputToDb(processedInput);
@@ -592,7 +703,7 @@ export const customersRouter = createTRPCRouter({
 			// Add search filter if provided
 			if (query) {
 				dbQuery = dbQuery.or(
-					`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`,
+					`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%,kvk.ilike.%${query}%,btw.ilike.%${query}%`,
 				);
 			}
 

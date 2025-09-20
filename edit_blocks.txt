@@ -1,0 +1,296 @@
+/// EDIT file: src/app/customers/CustomerEditDialog.tsx
+//// FIND:
+		defaultValues: {
+			name: "",
+			primaryPhone: "",
+			additionalPhones: "",
+			language: "nl",
+			kvk: "",
+			bwt: "",
+			customFields: "",
+		},
+//// REPLACE WITH:
+		defaultValues: {
+			name: "",
+			primaryPhone: "",
+			additionalPhones: "",
+			language: "nl",
+			kvk: "",
+			btw: "",
+			customFields: "",
+		},
+
+/// EDIT file: src/app/customers/CustomerEditDialog.tsx
+//// FIND:
+			form.reset({
+				name: customer.name,
+				primaryPhone: customer.primaryPhone ?? customer.phones[0] ?? "",
+				additionalPhones: secondaryPhones.join("\n"),
+				email: customer.email ?? "",
+				address: customer.address ?? "",
+				postalCode: customer.postalCode ?? "",
+				houseNumber: customer.houseNumber ?? "",
+				street: customer.street ?? "",
+				city: customer.city ?? "",
+				language: customer.language,
+				kvk: customer.kvk ?? "",
+				bwt: customer.btw ?? "",
+				customFields: customFieldsString,
+			});
+//// REPLACE WITH:
+			form.reset({
+				name: customer.name,
+				primaryPhone:
+					customer.primaryPhone ?? customer.phones.at(0) ?? "",
+				additionalPhones: secondaryPhones.join("\n"),
+				email: customer.email ?? "",
+				address: customer.address ?? "",
+				postalCode: customer.postalCode ?? "",
+				houseNumber: customer.houseNumber ?? "",
+				street: customer.street ?? "",
+				city: customer.city ?? "",
+				language: customer.language,
+				kvk: customer.kvk ?? "",
+				btw: customer.btw ?? "",
+				customFields: customFieldsString,
+			});
+
+/// EDIT file: src/app/customers/CustomerEditDialog.tsx
+//// FIND:
+		} else {
+			form.reset({
+				name: "",
+				primaryPhone: "",
+				additionalPhones: "",
+				language: "nl",
+				kvk: "",
+				bwt: "",
+				customFields: "",
+			});
+		}
+//// REPLACE WITH:
+		} else {
+			form.reset({
+				name: "",
+				primaryPhone: "",
+				additionalPhones: "",
+				language: "nl",
+				kvk: "",
+				btw: "",
+				customFields: "",
+			});
+		}
+
+/// EDIT file: src/app/customers/CustomerEditDialog.tsx
+//// FIND:
+		onSuccess: (updatedCustomer) => {
+			// Update cache with new customer data
+			utils.customers.byId.setData({ id: updatedCustomer.id }, updatedCustomer);
+
+			// Invalidate list queries to ensure consistency
+			void utils.customers.list.invalidate();
+			void utils.customers.search.invalidate();
+
+			onCustomerUpdated();
+			tost.success(t("customers.success.updated"));
+		},
+		onError: (error) => {
+			const zodFlatten = getZodFlattenFromTRPC(error);
+			if (zodFlatten) {
+				applyZodFlattenToForm(zodFlatten, form);
+				return;
+			}
+			// Show error toast
+			tost.error(t("customers.error.update"));
+		},
+//// REPLACE WITH:
+		onSuccess: (updatedCustomer) => {
+			// Update cache with new customer data
+			utils.customers.byId.setData({ id: updatedCustomer.id }, updatedCustomer);
+
+			// Invalidate list queries to ensure consistency
+			void utils.customers.list.invalidate();
+			void utils.customers.search.invalidate();
+
+			onCustomerUpdated();
+			toast.success(t("customers.success.updated"));
+		},
+		onError: (error) => {
+			const zodFlatten = getZodFlattenFromTRPC(error);
+			if (zodFlatten) {
+				applyZodFlattenToForm(zodFlatten, form);
+				return;
+			}
+			// Show error toast
+			toast.error(t("customers.error.update"));
+		},
+
+/// EDIT file: src/app/customers/CustomerEditDialog.tsx
+//// FIND:
+		if (customFieldsInput.length > 0) {
+			try {
+				const parsed = JSON.parse(customFieldsInput);
+				if (
+					parsed === null ||
+					Array.isArray(parsed) ||
+					typeof parsed !== "object"
+				) {
+					throw new Error("Custom fields must be an object");
+				}
+				customFields = parsed as Record<string, unknown>;
+			} catch (error) {
+				form.setError("customFields", {
+					type: "validate",
+					message: t("customers.form.validation.customFieldsInvalid"),
+				});
+				return;
+			}
+		} else if (Object.keys(customer.customFields).length > 0) {
+//// REPLACE WITH:
+		if (customFieldsInput.length > 0) {
+			try {
+				const parsed: unknown = JSON.parse(customFieldsInput);
+				if (
+					parsed === null ||
+					Array.isArray(parsed) ||
+					typeof parsed !== "object"
+				) {
+					throw new Error("Custom fields must be an object");
+				}
+				customFields = parsed as Record<string, unknown>;
+			} catch {
+				form.setError("customFields", {
+					type: "validate",
+					message: t("customers.form.validation.customFieldsInvalid"),
+				});
+				return;
+			}
+		} else if (Object.keys(customer.customFields).length > 0) {
+
+/// EDIT file: src/app/customers/CustomersTable.tsx
+//// FIND:
+			{/* Phone field - inline editable */}
+			{customer.primaryPhone ??
+				customer.phones[0] ??
+				("".trim().length > 0 && (
+//// REPLACE WITH:
+			{/* Phone field - inline editable */}
+			{customer.primaryPhone ??
+				customer.phones.at(0) ??
+				("".trim().length > 0 && (
+
+/// EDIT file: src/app/customers/CustomersTable.tsx
+//// FIND:
+					<a
+						href={	el:}
+						className="text-blue-600 hover:text-blue-800 underline"
+						title={Call }
+					>
+						{formatPhoneNumber(
+							customer.primaryPhone ??
+								customer.phones[0] ??
+								"",
+//// REPLACE WITH:
+					<a
+						href={	el:}
+						className="text-blue-600 hover:text-blue-800 underline"
+						title={Call }
+					>
+						{formatPhoneNumber(
+							customer.primaryPhone ??
+								customer.phones.at(0) ??
+								"",
+
+/// EDIT file: src/app/customers/CustomersTable.tsx
+//// FIND:
+					startEdit(
+						customer.id,
+						"phone",
+						customer.primaryPhone ??
+							customer.phones[0] ??
+							"",
+//// REPLACE WITH:
+					startEdit(
+						customer.id,
+						"phone",
+						customer.primaryPhone ??
+							customer.phones.at(0) ??
+							"",
+
+/// EDIT file: src/app/test-auth/page.tsx
+//// FIND:
+"use client";
+
+import { useEffect, useState } from "react";
+import { api } from "~/lib/trpc/client";
+
+export default function TestAuthPage() {
+	const [authDebug, setAuthDebug] = useState<any>(null);
+	const { data, error, isLoading } = api.customers.debugAuth.useQuery();
+
+	useEffect(() => {
+		if (data) {
+			setAuthDebug(data);
+			console.log("Auth debug data:", data);
+		}
+	}, [data]);
+
+	return (
+		<div className="p-8">
+			<h1 className="text-2xl font-bold mb-4">JWT Authentication Debug</h1>
+
+			{isLoading && <p>Loading...</p>}
+
+			{error && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					<p className="font-bold">Error:</p>
+					<p>{error.message}</p>
+				</div>
+			)}
+
+			{authDebug && (
+				<div className="bg-gray-100 p-4 rounded">
+					<h2 className="font-bold mb-2">Supabase Auth Context:</h2>
+					<pre className="text-xs overflow-auto">
+						{JSON.stringify(authDebug, null, 2)}
+					</pre>
+				</div>
+			)}
+		</div>
+	);
+}
+//// REPLACE WITH:
+"use client";
+
+import type { JSX } from "react";
+import { api } from "~/lib/trpc/client";
+
+export default function TestAuthPage(): JSX.Element {
+	const { data: authDebug, error, isLoading } =
+		api.customers.debugAuth.useQuery();
+	const errorMessage = error?.message ?? null;
+
+	return (
+		<div className="p-8">
+			<h1 className="text-2xl font-bold mb-4">JWT Authentication Debug</h1>
+
+			{isLoading && <p>Loading...</p>}
+
+			{errorMessage && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					<p className="font-bold">Error:</p>
+					<p>{errorMessage}</p>
+				</div>
+			)}
+
+			{authDebug && (
+				<div className="bg-gray-100 p-4 rounded">
+					<h2 className="font-bold mb-2">Supabase Auth Context:</h2>
+					<pre className="text-xs overflow-auto">
+						{JSON.stringify(authDebug, null, 2)}
+					</pre>
+				</div>
+			)}
+		</div>
+	);
+}

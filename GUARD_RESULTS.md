@@ -1,53 +1,47 @@
 # Guard-Safe Results
 
 **Overall Status**: FAILED
-**Timestamp**: 2025-09-14T13:33:26.934Z
-**Results**: 6/7 checks passed
+**Timestamp**: 2025-09-20T09:56:42.581Z
+**Results**: 3/6 checks passed
 
 ## Detailed Results
 
 ### biome format
 - **Status**: PASS
 - **Exit Code**: 0
-- **Duration**: 342ms
-- **Time**: 2025-09-14T13:31:39.470Z
+- **Duration**: 355ms
+- **Time**: 2025-09-20T09:55:39.591Z
 
 ### biome check
 - **Status**: PASS
 - **Exit Code**: 0
-- **Duration**: 410ms
-- **Time**: 2025-09-14T13:31:39.881Z
+- **Duration**: 420ms
+- **Time**: 2025-09-20T09:55:40.012Z
 
 ### eslint
-- **Status**: PASS
-- **Exit Code**: 0
-- **Duration**: 6704ms
-- **Time**: 2025-09-14T13:31:46.586Z
+- **Status**: FAIL
+- **Exit Code**: 1
+- **Duration**: 8192ms
+- **Time**: 2025-09-20T09:55:48.204Z
 
 ### typecheck
-- **Status**: PASS
-- **Exit Code**: 0
-- **Duration**: 5771ms
-- **Time**: 2025-09-14T13:31:52.358Z
+- **Status**: FAIL
+- **Exit Code**: 1
+- **Duration**: 6206ms
+- **Time**: 2025-09-20T09:55:54.411Z
 
 ### i18n doctor
 - **Status**: PASS
 - **Exit Code**: 0
-- **Duration**: 5555ms
-- **Time**: 2025-09-14T13:31:57.916Z
+- **Duration**: 5345ms
+- **Time**: 2025-09-20T09:55:59.757Z
 
 ### build
-- **Status**: PASS
-- **Exit Code**: 0
-- **Duration**: 81267ms
-- **Time**: 2025-09-14T13:33:19.183Z
-
-### unit tests
 - **Status**: FAIL
 - **Exit Code**: 1
-- **Duration**: 7750ms
-- **Time**: 2025-09-14T13:33:26.934Z
+- **Duration**: 42824ms
+- **Time**: 2025-09-20T09:56:42.581Z
 
 ## Summary
 
-⚠️  1 checks failed. Review the output above for details.
+⚠️  3 checks failed. Review the output above for details.

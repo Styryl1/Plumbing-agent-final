@@ -1,7 +1,8 @@
 // Customer mapper - Transforms between database types and DTOs
-// Enforces DTO boundary: DB → mapper → DTO → UI (never DB types in UI)
-// Handles snake_case ↔ camelCase and type safety
+// Enforces DTO boundary: DB ↔ mapper ↔ DTO ↔ UI (never expose DB types directly)
+// Handles snake_case ↔ camelCase and type safety across the stack
 
+import { Temporal } from "temporal-polyfill";
 import { zdtToISO } from "~/lib/time";
 import type {
 	CreateCustomerInput,
@@ -9,7 +10,12 @@ import type {
 	CustomerPickerItem,
 	UpdateCustomerInput,
 } from "~/types/customer";
-import type { Tables, TablesInsert, TablesUpdate } from "~/types/supabase";
+import type {
+	Json,
+	Tables,
+	TablesInsert,
+	TablesUpdate,
+} from "~/types/supabase";
 
 // === TYPE ALIASES FOR DATABASE LAYER ===
 
@@ -17,105 +23,133 @@ type DbCustomer = Tables<"customers">;
 type DbCustomerInsert = TablesInsert<"customers">;
 type DbCustomerUpdate = TablesUpdate<"customers">;
 
+function coercePhoneList(value: string[] | null | undefined): string[] {
+	if (!Array.isArray(value)) {
+		return [];
+	}
+
+	return value
+		.map((candidate) => (typeof candidate === "string" ? candidate.trim() : ""))
+		.filter((candidate) => candidate.length > 0);
+}
+
+function coerceCustomFields(
+	value: Json | null | undefined,
+): Record<string, unknown> {
+	if (value === null || value === undefined) {
+		return {};
+	}
+
+	if (typeof value === "object" && !Array.isArray(value)) {
+		return value as Record<string, unknown>;
+	}
+
+	return {};
+}
+
+function resolveCreatedAt(date: string | null | undefined): string {
+	if (date && date.length > 0) {
+		return date;
+	}
+
+	return zdtToISO(Temporal.Now.zonedDateTimeISO("Europe/Amsterdam"));
+}
+
 // === DATABASE TO DTO MAPPERS ===
 
-/**
- * Transform database customer row to CustomerDTO
- */
 export function mapDbCustomerToDto(dbCustomer: DbCustomer): CustomerDTO {
+	const phones = coercePhoneList(
+		dbCustomer.phones ?? (dbCustomer.phone ? [dbCustomer.phone] : []),
+	);
+	const primaryPhone = phones[0] ?? null;
+
 	const dto: CustomerDTO = {
 		id: dbCustomer.id,
 		orgId: dbCustomer.org_id,
 		name: dbCustomer.name,
-		phone: dbCustomer.phone ?? "", // Required field, fallback to empty string
+		phones,
+		primaryPhone,
+		email: dbCustomer.email || undefined,
+		kvk: dbCustomer.kvk || undefined,
+		btw: dbCustomer.btw || undefined,
+		address: dbCustomer.address || undefined,
+		postalCode: dbCustomer.postal_code || undefined,
+		houseNumber: dbCustomer.house_number || undefined,
+		street: dbCustomer.street || undefined,
+		city: dbCustomer.city || undefined,
 		language: dbCustomer.language as "nl" | "en",
-		createdAt:
-			dbCustomer.created_at ??
-			zdtToISO(Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")),
+		customFields: coerceCustomFields(dbCustomer.custom_fields ?? {}),
+		createdAt: resolveCreatedAt(dbCustomer.created_at),
 		isArchived: Boolean(dbCustomer.archived_at),
 	};
 
-	// Add archived timestamp if it exists
 	if (dbCustomer.archived_at) {
 		(dto as { archivedAt: string }).archivedAt = dbCustomer.archived_at;
-	}
-
-	// Only add optional properties if they have actual values
-	if (dbCustomer.email) {
-		(dto as { email: string }).email = dbCustomer.email;
-	}
-	if (dbCustomer.phone) {
-		(dto as { phone: string }).phone = dbCustomer.phone;
-	}
-	if (dbCustomer.address) {
-		(dto as { address: string }).address = dbCustomer.address;
-	}
-	if (dbCustomer.postal_code) {
-		(dto as { postalCode: string }).postalCode = dbCustomer.postal_code;
 	}
 
 	return dto;
 }
 
-/**
- * Transform database customer row to CustomerPickerItem for UI components
- */
 export function mapDbCustomerToPickerItem(
 	dbCustomer: DbCustomer,
 ): CustomerPickerItem {
+	const phones = coercePhoneList(
+		dbCustomer.phones ?? (dbCustomer.phone ? [dbCustomer.phone] : []),
+	);
+	const primaryPhone = phones[0] ?? null;
+
 	const parts: string[] = [dbCustomer.name];
 
+	if (primaryPhone) {
+		parts.push(primaryPhone);
+	}
+
 	if (dbCustomer.email) {
-		parts.push(dbCustomer.email);
+		parts.push(`<${dbCustomer.email}>`);
 	}
 
-	if (dbCustomer.phone) {
-		parts.push(dbCustomer.phone);
-	}
-
-	const displayText = parts.join(" • ");
-
-	const pickerItem: CustomerPickerItem = {
+	return {
 		id: dbCustomer.id,
 		name: dbCustomer.name,
-		phone: dbCustomer.phone ?? "", // Required field, fallback to empty string
-		displayText,
+		phones,
+		primaryPhone,
+		email: dbCustomer.email || undefined,
+		displayText: parts.join(" \u2013 "),
 	};
-
-	// Only add optional properties if they have actual values
-	if (dbCustomer.email) {
-		(pickerItem as { email: string }).email = dbCustomer.email;
-	}
-	if (dbCustomer.phone) {
-		(pickerItem as { phone: string }).phone = dbCustomer.phone;
-	}
-
-	return pickerItem;
 }
 
 // === DTO TO DATABASE MAPPERS ===
 
-/**
- * Transform CreateCustomerInput to database insert format
- */
+function preparePhoneArray(phones: string[]): string[] {
+	return phones
+		.map((phone) => phone.trim())
+		.filter((phone) => phone.length > 0);
+}
+
 export function mapCreateCustomerInputToDb(
 	input: CreateCustomerInput,
 	orgId: string,
 ): DbCustomerInsert {
+	const phones = preparePhoneArray(input.phones);
+
 	return {
 		org_id: orgId,
 		name: input.name,
 		email: input.email ?? null,
-		phone: input.phone,
+		phones,
+		phone: phones[0] ?? null,
+		kvk: input.kvk ?? null,
+		btw: input.btw ?? null,
 		address: input.address ?? null,
 		postal_code: input.postalCode ?? null,
-		language: input.language ?? "nl", // Default to Dutch
+		house_number: input.houseNumber ?? null,
+		street: input.street ?? null,
+		city: input.city ?? null,
+		language: input.language ?? "nl",
+		custom_fields: (input.customFields ?? {}) as Json,
 	};
 }
 
-/**
- * Transform UpdateCustomerInput to database update format
- */
 export function mapUpdateCustomerInputToDb(
 	input: Partial<UpdateCustomerInput>,
 ): DbCustomerUpdate {
@@ -129,8 +163,18 @@ export function mapUpdateCustomerInputToDb(
 		update.email = input.email ?? null;
 	}
 
-	if (input.phone !== undefined) {
-		update.phone = input.phone ?? null;
+	if (input.phones !== undefined) {
+		const phones = preparePhoneArray(input.phones ?? []);
+		update.phones = phones;
+		update.phone = phones[0] ?? null;
+	}
+
+	if (input.kvk !== undefined) {
+		update.kvk = input.kvk ?? null;
+	}
+
+	if (input.btw !== undefined) {
+		update.btw = input.btw ?? null;
 	}
 
 	if (input.address !== undefined) {
@@ -141,8 +185,24 @@ export function mapUpdateCustomerInputToDb(
 		update.postal_code = input.postalCode ?? null;
 	}
 
+	if (input.houseNumber !== undefined) {
+		update.house_number = input.houseNumber ?? null;
+	}
+
+	if (input.street !== undefined) {
+		update.street = input.street ?? null;
+	}
+
+	if (input.city !== undefined) {
+		update.city = input.city ?? null;
+	}
+
 	if (input.language !== undefined) {
 		update.language = input.language;
+	}
+
+	if (input.customFields !== undefined) {
+		update.custom_fields = (input.customFields ?? {}) as Json;
 	}
 
 	return update;
@@ -150,51 +210,49 @@ export function mapUpdateCustomerInputToDb(
 
 // === UTILITY FUNCTIONS ===
 
-/**
- * Format customer for display in UI (short form)
- */
 export function formatCustomerDisplay(customer: CustomerDTO): string {
 	const parts: string[] = [customer.name];
 
-	if (customer.email) {
-		parts.push(`(${customer.email})`);
+	if (customer.primaryPhone) {
+		parts.push(customer.primaryPhone);
 	}
 
-	return parts.join(" ");
+	if (customer.email) {
+		parts.push(`<${customer.email}>`);
+	}
+
+	return parts.join(" \u2013 ");
 }
 
-/**
- * Format customer for search/filtering (includes all searchable fields)
- */
 export function formatCustomerSearchText(customer: CustomerDTO): string {
 	const parts: string[] = [customer.name];
 
-	if (customer.email) {
-		parts.push(customer.email);
+	for (const phone of customer.phones) {
+		if (phone.trim().length > 0) {
+			parts.push(phone);
+		}
 	}
 
-	if (customer.phone.trim() !== "") {
-		parts.push(customer.phone);
+	if (customer.email) {
+		parts.push(customer.email);
 	}
 
 	if (customer.address) {
 		parts.push(customer.address);
 	}
 
+	if (customer.postalCode) {
+		parts.push(customer.postalCode);
+	}
+
 	return parts.join(" ").toLowerCase();
 }
 
-/**
- * Validate Dutch postal code format (1234AB)
- */
 export function validateDutchPostalCode(postalCode: string): boolean {
 	const dutchPostalCodeRegex = /^[1-9][0-9]{3}[A-Z]{2}$/;
 	return dutchPostalCodeRegex.test(postalCode.toUpperCase().replace(/\s/g, ""));
 }
 
-/**
- * Format Dutch postal code (normalize spacing)
- */
 export function formatDutchPostalCode(postalCode: string): string {
 	const cleaned = postalCode.toUpperCase().replace(/\s/g, "");
 	if (cleaned.length === 6) {

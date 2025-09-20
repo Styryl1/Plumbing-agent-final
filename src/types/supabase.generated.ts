@@ -134,41 +134,62 @@ export type Database = {
 				Row: {
 					address: string | null;
 					archived_at: string | null;
+					btw: string | null;
+					city: string | null;
 					created_at: string | null;
+					custom_fields: Json | null;
 					email: string | null;
+					house_number: string | null;
 					id: string;
+					kvk: string | null;
 					language: string;
 					name: string;
 					opt_out_dunning: boolean | null;
 					org_id: string;
 					phone: string | null;
+					phones: string[] | null;
 					postal_code: string | null;
+					street: string | null;
 				};
 				Insert: {
 					address?: string | null;
 					archived_at?: string | null;
+					btw?: string | null;
+					city?: string | null;
 					created_at?: string | null;
+					custom_fields?: Json | null;
 					email?: string | null;
+					house_number?: string | null;
 					id?: string;
+					kvk?: string | null;
 					language?: string;
 					name: string;
 					opt_out_dunning?: boolean | null;
 					org_id: string;
 					phone?: string | null;
+					phones?: string[] | null;
 					postal_code?: string | null;
+					street?: string | null;
 				};
 				Update: {
 					address?: string | null;
 					archived_at?: string | null;
+					btw?: string | null;
+					city?: string | null;
 					created_at?: string | null;
+					custom_fields?: Json | null;
 					email?: string | null;
+					house_number?: string | null;
 					id?: string;
+					kvk?: string | null;
 					language?: string;
 					name?: string;
 					opt_out_dunning?: boolean | null;
 					org_id?: string;
 					phone?: string | null;
+					phones?: string[] | null;
 					postal_code?: string | null;
+					street?: string | null;
 				};
 				Relationships: [
 					{
@@ -1496,6 +1517,10 @@ export type Database = {
 				Args: { issued_at: string; payment_terms?: string };
 				Returns: string;
 			};
+			debug_current_auth: {
+				Args: Record<PropertyKey, never>;
+				Returns: Json;
+			};
 			cleanup_old_webhook_events: {
 				Args: Record<PropertyKey, never>;
 				Returns: undefined;
@@ -1515,6 +1540,10 @@ export type Database = {
 			get_next_invoice_number: {
 				Args: { p_org_id: string; p_year: number };
 				Returns: number;
+			};
+			get_org_feature_flags: {
+				Args: { p_org_id: string; p_pilot_mode: boolean };
+				Returns: { flag: string; enabled: boolean }[];
 			};
 			get_user_org_id: {
 				Args: Record<PropertyKey, never>;

@@ -21,6 +21,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
 import { useAutoFillAddress } from "~/hooks/useAutoFillAddress";
 import { api } from "~/lib/trpc/client";
 import {
@@ -32,14 +33,18 @@ import type { CreateCustomerInput } from "~/types/customer";
 // Form state allows undefined values during editing
 interface CreateCustomerFormData {
 	name: string;
-	phone?: string | undefined;
-	email?: string | undefined;
-	address?: string | undefined; // Legacy flat address field
-	postalCode?: string | undefined;
-	houseNumber?: string | undefined;
-	street?: string | undefined;
-	city?: string | undefined;
+	primaryPhone: string;
+	additionalPhones?: string;
+	email?: string;
+	address?: string; // Legacy flat address field
+	postalCode?: string;
+	houseNumber?: string;
+	street?: string;
+	city?: string;
 	language: "nl" | "en";
+	kvk?: string;
+	btw?: string;
+	customFields?: string; // JSON blob
 }
 
 interface CustomerCreateDialogProps {
@@ -61,7 +66,12 @@ export default function CustomerCreateDialog({
 	const form = useForm<CreateCustomerFormData>({
 		defaultValues: {
 			name: "",
+			primaryPhone: "",
+			additionalPhones: "",
 			language: "nl",
+			kvk: "",
+			btw: "",
+			customFields: "",
 		},
 	});
 
@@ -80,7 +90,18 @@ export default function CustomerCreateDialog({
 			// Reset form and clear errors
 			form.reset({
 				name: "",
+				primaryPhone: "",
+				additionalPhones: "",
 				language: "nl",
+				kvk: "",
+				btw: "",
+				customFields: "",
+				email: "",
+				address: "",
+				postalCode: "",
+				houseNumber: "",
+				street: "",
+				city: "",
 			});
 		},
 		onError: (error) => {
@@ -95,39 +116,79 @@ export default function CustomerCreateDialog({
 	});
 
 	const handleSubmit = form.handleSubmit((formData) => {
-		// Build clean form data with required fields
+		const primaryPhone = formData.primaryPhone.trim();
+		const additionalPhones = (formData.additionalPhones ?? "")
+			.split(/[\s,;]+/)
+			.map((value) => value.trim())
+			.filter((value) => value.length > 0);
+
+		const phones = [primaryPhone, ...additionalPhones].filter(
+			(value) => value.length > 0,
+		);
+		const uniquePhones = Array.from(new Set(phones));
+
+		if (uniquePhones.length === 0) {
+			form.setError("primaryPhone", {
+				type: "manual",
+				message: t("customers.form.validation.phoneRequired"),
+			});
+			return;
+		}
+
+		let customFields: Record<string, unknown> | undefined;
+
+		if (formData.customFields && formData.customFields.trim().length > 0) {
+			try {
+				const parsed: unknown = JSON.parse(formData.customFields);
+				if (
+					parsed === null ||
+					Array.isArray(parsed) ||
+					typeof parsed !== "object"
+				) {
+					throw new Error("Custom fields must be an object");
+				}
+				customFields = parsed as Record<string, unknown>;
+			} catch {
+				form.setError("customFields", {
+					type: "validate",
+					message: t("customers.form.validation.customFieldsInvalid"),
+				});
+				return;
+			}
+		}
+
 		const cleanFormData: CreateCustomerInput = {
-			name: formData.name,
-			phone: formData.phone?.trim() ?? "", // Required field
+			name: formData.name.trim(),
+			phones: uniquePhones,
+			language: formData.language,
 		};
 
-		// Language is always defined in create form
-		cleanFormData.language = formData.language;
-
-		// Only add optional fields if they have values
-		if (formData.email !== undefined && formData.email.trim() !== "") {
+		if (formData.email && formData.email.trim().length > 0) {
 			cleanFormData.email = formData.email.trim();
 		}
-		if (formData.address !== undefined && formData.address.trim() !== "") {
+		if (formData.address && formData.address.trim().length > 0) {
 			cleanFormData.address = formData.address.trim();
 		}
-		if (
-			formData.postalCode !== undefined &&
-			formData.postalCode.trim() !== ""
-		) {
+		if (formData.postalCode && formData.postalCode.trim().length > 0) {
 			cleanFormData.postalCode = formData.postalCode.trim();
 		}
-		if (
-			formData.houseNumber !== undefined &&
-			formData.houseNumber.trim() !== ""
-		) {
+		if (formData.houseNumber && formData.houseNumber.trim().length > 0) {
 			cleanFormData.houseNumber = formData.houseNumber.trim();
 		}
-		if (formData.street !== undefined && formData.street.trim() !== "") {
+		if (formData.street && formData.street.trim().length > 0) {
 			cleanFormData.street = formData.street.trim();
 		}
-		if (formData.city !== undefined && formData.city.trim() !== "") {
+		if (formData.city && formData.city.trim().length > 0) {
 			cleanFormData.city = formData.city.trim();
+		}
+		if (formData.kvk && formData.kvk.trim().length > 0) {
+			cleanFormData.kvk = formData.kvk.trim();
+		}
+		if (formData.btw && formData.btw.trim().length > 0) {
+			cleanFormData.btw = formData.btw.trim();
+		}
+		if (customFields) {
+			cleanFormData.customFields = customFields;
 		}
 
 		createCustomerMutation.mutate(cleanFormData);
@@ -180,23 +241,107 @@ export default function CustomerCreateDialog({
 							)}
 						</div>
 
-						{/* Phone */}
+						{/* Primary Phone */}
 						<div className="space-y-2">
-							<Label htmlFor="phone">{t("customers.form.phone.label")}</Label>
+							<Label htmlFor="primaryPhone">
+								{t("customers.form.phone.label")}
+							</Label>
 							<Input
-								id="phone"
+								id="primaryPhone"
 								type="tel"
 								placeholder={t("customers.form.phone.placeholder")}
-								{...form.register("phone")}
-								className={form.formState.errors.phone ? "border-red-500" : ""}
+								{...form.register("primaryPhone")}
+								className={
+									form.formState.errors.primaryPhone ? "border-red-500" : ""
+								}
+								required
 							/>
-							{form.formState.errors.phone && (
+							{form.formState.errors.primaryPhone && (
 								<p className="text-sm text-red-500">
-									{form.formState.errors.phone.message}
+									{form.formState.errors.primaryPhone.message}
 								</p>
 							)}
 						</div>
 
+						{/* Additional Phones */}
+						<div className="space-y-2">
+							<Label htmlFor="additionalPhones">
+								{t("customers.form.additionalPhones.label")}
+							</Label>
+							<Textarea
+								id="additionalPhones"
+								placeholder={t("customers.form.additionalPhones.placeholder")}
+								{...form.register("additionalPhones")}
+								className={
+									form.formState.errors.additionalPhones ? "border-red-500" : ""
+								}
+							/>
+							<p className="text-xs text-muted-foreground">
+								{t("customers.form.additionalPhones.help")}
+							</p>
+							{form.formState.errors.additionalPhones && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.additionalPhones.message}
+								</p>
+							)}
+						</div>
+
+						{/* KVK */}
+						<div className="space-y-2">
+							<Label htmlFor="kvk">{t("customers.form.kvk.label")}</Label>
+							<Input
+								id="kvk"
+								type="text"
+								placeholder={t("customers.form.kvk.placeholder")}
+								{...form.register("kvk")}
+								className={form.formState.errors.kvk ? "border-red-500" : ""}
+							/>
+							{form.formState.errors.kvk && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.kvk.message}
+								</p>
+							)}
+						</div>
+
+						{/* BTW */}
+						<div className="space-y-2">
+							<Label htmlFor="btw">{t("customers.form.btw.label")}</Label>
+							<Input
+								id="btw"
+								type="text"
+								placeholder={t("customers.form.btw.placeholder")}
+								{...form.register("btw")}
+								className={form.formState.errors.btw ? "border-red-500" : ""}
+							/>
+							{form.formState.errors.btw && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.btw.message}
+								</p>
+							)}
+						</div>
+
+						{/* Custom Fields */}
+						<div className="space-y-2">
+							<Label htmlFor="customFields">
+								{t("customers.form.customFields.label")}
+							</Label>
+							<Textarea
+								id="customFields"
+								placeholder={t("customers.form.customFields.placeholder")}
+								{...form.register("customFields")}
+								className={
+									form.formState.errors.customFields ? "border-red-500" : ""
+								}
+							/>
+							<p className="text-xs text-muted-foreground">
+								{t("customers.form.customFields.help")}
+							</p>
+							{form.formState.errors.customFields && (
+								<p className="text-sm text-red-500">
+									{form.formState.errors.customFields.message}
+								</p>
+							)}
+						</div>
 						{/* Address */}
 						<div className="space-y-2">
 							<Label htmlFor="address">
@@ -348,8 +493,10 @@ export default function CustomerCreateDialog({
 							type="submit"
 							disabled={(() => {
 								const nameValue = form.watch("name").trim();
+								const phoneValue = form.watch("primaryPhone").trim();
 								return (
 									nameValue.length === 0 ||
+									phoneValue.length === 0 ||
 									Boolean(createCustomerMutation.isPending)
 								);
 							})()}
