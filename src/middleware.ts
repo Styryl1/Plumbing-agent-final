@@ -3,7 +3,15 @@ import { NextResponse } from "next/server";
 import { env } from "~/lib/env";
 
 const isPublicRoute = createRouteMatcher([
-	"/", // landing or marketing page
+	"/", // legacy root landing page
+	"/(en|nl)/launch(.*)",
+	"/(en|nl)/product(.*)",
+	"/(en|nl)/pricing",
+	"/(en|nl)/demos",
+	"/(en|nl)/docs",
+	"/(en|nl)/changelog(.*)",
+	"/(en|nl)/about",
+	"/(en|nl)/contact",
 	"/sign-in(.*)", // keep Clerk auth pages public
 	"/sign-up(.*)",
 	"/api/health(.*)", // health checks can remain public
