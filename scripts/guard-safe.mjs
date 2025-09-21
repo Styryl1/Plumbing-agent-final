@@ -2,20 +2,18 @@
 import { spawn } from "node:child_process";
 
 const steps = [
-  { name: "Biome Format", cmd: ["pnpm", ["-s", "exec", "biome", "format", "--write", "."]] },
-  { name: "Biome Check",  cmd: ["pnpm", ["-s", "exec", "biome", "check", "--write", "."]] },
-  { name: "ESLint",       cmd: ["pnpm", ["-s", "lint"]] },
+  { name: "Biome Format", cmd: ["pnpm", ["-s", "exec", "biome", "format", "--write"]] },
+  { name: "Biome Check", cmd: ["pnpm", ["-s", "exec", "biome", "check", "--write"]] },
+  { name: "ESLint", cmd: ["pnpm", ["-s", "lint"]] },
   { name: "Pre-TypeCheck", cmd: ["node", ["scripts/pretypecheck.mjs"]] },
   { name: "TypeScript Check", cmd: ["pnpm", ["-s", "exec", "tsc", "--noEmit"]] },
   { name: "Check Imports", cmd: ["node", ["scripts/check-imports.mjs"]] },
   { name: "Check Routes", cmd: ["node", ["scripts/check-routes.mjs"]] },
   { name: "Check Encoding", cmd: ["node", ["scripts/check-encoding.mjs"]] },
   { name: "Check Placeholders", cmd: ["node", ["scripts/check-placeholders.mjs"]] },
-  { name: "i18n Prune", cmd: ["pnpm", ["-s", "i18n:prune"]] },
-  { name: "i18n Scan", cmd: ["pnpm", ["-s", "i18n:scan"]] },
-  { name: "i18n Check", cmd: ["pnpm", ["-s", "i18n:check"]] },
-  { name: "Audit Rules",  cmd: ["node", ["scripts/audit-production-rules.mjs"]] },
-  { name: "Build",        cmd: ["pnpm", ["-s", "exec", "next", "build"]] }
+  { name: "i18n Doctor", cmd: ["pnpm", ["-s", "i18n:doctor"]] },
+  { name: "Audit Rules", cmd: ["node", ["scripts/audit-production-rules.mjs"]] },
+  { name: "Build", cmd: ["pnpm", ["-s", "exec", "next", "build"]] }
 ];
 
 // Pass-through args (e.g. --scope patterns)
