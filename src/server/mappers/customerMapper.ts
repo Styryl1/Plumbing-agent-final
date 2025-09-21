@@ -55,11 +55,24 @@ function resolveCreatedAt(date: string | null | undefined): string {
 	return zdtToISO(Temporal.Now.zonedDateTimeISO("Europe/Amsterdam"));
 }
 
+function resolvePhoneList(
+	phones: string[] | null | undefined,
+	primary: string | null,
+): string[] {
+	if (Array.isArray(phones) && phones.length > 0) {
+		return phones;
+	}
+	if (typeof primary === "string" && primary.length > 0) {
+		return [primary];
+	}
+	return [];
+}
+
 // === DATABASE TO DTO MAPPERS ===
 
 export function mapDbCustomerToDto(dbCustomer: DbCustomer): CustomerDTO {
 	const phones = coercePhoneList(
-		dbCustomer.phones ?? (dbCustomer.phone ? [dbCustomer.phone] : []),
+		resolvePhoneList(dbCustomer.phones, dbCustomer.phone ?? null),
 	);
 	const primaryPhone = phones[0] ?? null;
 
@@ -94,7 +107,7 @@ export function mapDbCustomerToPickerItem(
 	dbCustomer: DbCustomer,
 ): CustomerPickerItem {
 	const phones = coercePhoneList(
-		dbCustomer.phones ?? (dbCustomer.phone ? [dbCustomer.phone] : []),
+		resolvePhoneList(dbCustomer.phones, dbCustomer.phone ?? null),
 	);
 	const primaryPhone = phones[0] ?? null;
 

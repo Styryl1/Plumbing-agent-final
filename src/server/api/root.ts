@@ -4,6 +4,7 @@ import { employeesRouter } from "./routers/employees";
 import { intakeRouter } from "./routers/intake";
 import { invoiceFlowRouter } from "./routers/invoiceFlow";
 import { invoicesRouter } from "./routers/invoices";
+import { jobCardRouter } from "./routers/job-card";
 import { jobsRouter } from "./routers/jobs";
 import { orgSettingsRouter } from "./routers/orgSettings";
 import { providersRouter } from "./routers/providers";
@@ -33,6 +34,7 @@ export const appRouter = router({
 	whatsapp: whatsappRouter,
 	whatsappSettings: whatsappSettingsRouter,
 	waAdmin: waAdminRouter,
+	jobCard: jobCardRouter,
 });
 
 export type AppRouter = typeof appRouter;
