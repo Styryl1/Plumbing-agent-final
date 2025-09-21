@@ -3,10 +3,10 @@
 **Mission**: Deliver the Plumbing Agent MVP (Docs/plumbing_agent_mvp_epic.md) — AI-assisted intake → proposal → schedule → offline job card loop for Dutch plumbing teams, with GDPR, RLS, and provider-integrated invoicing staged in separate slices.
 
 ## Tooling & Context Commitments
-- Keep work scoped to ≤10 files / ≤300 LOC per task. Prefer additive changes and targeted refactors.
+- Keep work scoped to focused, manageable diffs. Prefer additive changes and targeted refactors.
 - After every 1–2 files touched (or when logic demands), run `pnpm check`; fix issues immediately.
-- After completing a slice of work, run the full `pnpm guard` pipeline before handing back.
-- Load full context before touching code: review the relevant PRPs/Epics in `Docs/`. Docs to open first for most slices: `plumbing_agent_mvp_prp.md`, `plumbing_agent_mvp_epic.md`, `whatsapp_ai_unified_prp.md`, `schedule_x_prp.md`, `invoicing_epic.md`, plus the slice tracker (`Docs/slice-status-s0-s5.md`). Never guess requirements.
+- After completing a slice of work, run the full `pnpm guard` pipeline with a long timeout before handing back.
+- Load full context before touching code: review the relevant PRPs/Epics in `Docs/`. Docs to open first for most slices: `plumbing_agent_mvp_prp.md`, `plumbing_agent_mvp_epic.md`, `whatsapp_ai_unified_prp.md`, `schedule_x_prp.md`, `invoicing_epic.md`. Never guess requirements.
 - Default working dir: `/home/styryl/dev/pa`. Use `rg`, `sed`, `ls` instead of ad-hoc scripts for basic inspection.
 - Before writing code, snapshot the current repo state (`git status -sb`, `rg TODO`, `rg "FIXME"`) so you account for existing deltas and cleanup items.
 - MCP servers (use them, don’t simulate):
@@ -20,13 +20,13 @@
 ## Workflow Quickstart
 1. Read the active PRP/Epic slices and acceptance notes in `Docs/`.
 2. Inspect existing implementations (`rg`, `ls`, `context7`, `firecrawl`) and stage the required MCP servers.
-3. Plan the minimum diff (≤10 files / ≤300 LOC), then edit one file at a time.
+3. Plan the minimum viable diff before editing.
 4. After 1–2 files, run `pnpm check` and fix any failures immediately.
 5. Repeat steps 3–4 until the slice is complete, then run `pnpm guard`.
 6. Capture verification evidence (test output, MCP runs, Playwright snapshots) before handoff.
 
 ## 0) Scope & Diff Budget
-- Limit change-sets per task to ≤10 files / ≤300 LOC.
+- Keep change-sets lean and deliberate; avoid sprawling diffs.
 - Prefer adding new modules or adapters over rewriting wide surfaces.
 - Stop if >3 unresolved TypeScript errors or a gate fails; report blockers with file + line + fix intent.
 - Keep a running checklist; if a dependent PRP/Epic isn’t clear, pause and gather context before coding.
