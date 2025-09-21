@@ -2,9 +2,9 @@
 
 **Mission**: Deliver the Plumbing Agent MVP (Docs/plumbing_agent_mvp_epic.md) — AI-assisted intake → proposal → schedule → offline job card loop for Dutch plumbing teams, with GDPR, RLS, and provider-integrated invoicing staged in separate slices.
 
-**TL;DR — MCP-LITE PLAN**
+- **TL;DR — MCP-LITE PLAN**
 - Regenerate Supabase types via CLI scripts (`pnpm db:types`) and only call the Supabase MCP server for migrations or one-off schema checks.
-- Keep the generated file committed; let the new Husky pre-commit hook refresh types automatically when SQL changes.
+- Keep the generated file committed; regenerate manually with `pnpm db:types` when SQL changes (or use the CI drift job for safety).
 - Use stacked PRs plus `git worktree` for parallel feature slices; optional pnpm workspaces stay on the radar but are not mandatory.
 - Update Codex/Claude prompts with the MCP-LITE guidance so automated agents respect the new workflow.
 
@@ -89,7 +89,7 @@
 - `pnpm context` builds a bundle for handoff; keep it updated before escalation.
 - Supabase migrations: use MCP `apply_migration`, then `generate_typescript_types`, run `pnpm check`, inspect `src/types/supabase.generated.ts`.
 - Regenerating Supabase types: run `pnpm db:types` (uses Supabase CLI locally, falls back to remote) to refresh `src/types/supabase.generated.ts` and keep the shim (`src/types/supabase.ts`) untouched. Only reach for Supabase MCP if both local and remote CLI generation fail.
-- Supabase CLI helpers: `pnpm db:start` boots the local stack; `pnpm db:types:local` / `pnpm db:types:remote` give explicit control when the auto fallback isn’t desired; `pnpm db:types:project` hits the production project (`akuktezoisvblrnkaljb`) when you need the authoritative schema (CLI lives at `/home/linuxbrew/.linuxbrew/bin/supabase`, so the script sets PATH accordingly).
+- Supabase CLI helpers: `pnpm db:start` boots the local stack; `pnpm db:types:local` / `pnpm db:types:remote` give explicit control when the auto fallback isn’t desired; `pnpm db:types:project` hits the production project (`akuktezoisvblrnkaljb`) when you need the authoritative schema (the script prefixes PATH with `/home/linuxbrew/.linuxbrew/bin` so the CLI resolves).
 - Parallel workspaces:
   - `/home/styryl/dev/pa` – primary workspace (branch `main`).
   - `/home/styryl/dev/pa-feature` – branch `feature`, tracks `origin/main`.

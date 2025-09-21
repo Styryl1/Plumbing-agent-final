@@ -7,7 +7,6 @@
 		"dev": "pnpm i18n:aggregate && next dev",
 		"build": "pnpm i18n:doctor && next build",
 		"start": "next start",
-		"prepare": "node .husky/install.mjs",
 		"typecheck": "tsc --noEmit",
 		"lint": "eslint . --max-warnings=0 --cache --cache-location .eslintcache",
 		"check": "pnpm i18n:doctor && pnpm -s typecheck",
