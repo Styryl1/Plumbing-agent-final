@@ -2,15 +2,21 @@
 
 **Mission**: Deliver the Plumbing Agent MVP (Docs/plumbing_agent_mvp_epic.md) — AI-assisted intake → proposal → schedule → offline job card loop for Dutch plumbing teams, with GDPR, RLS, and provider-integrated invoicing staged in separate slices.
 
+**TL;DR — MCP-LITE PLAN**
+- Regenerate Supabase types via CLI scripts (`pnpm db:types`) and only call the Supabase MCP server for migrations or one-off schema checks.
+- Keep the generated file committed; let the new Husky pre-commit hook refresh types automatically when SQL changes.
+- Use stacked PRs plus `git worktree` for parallel feature slices; optional pnpm workspaces stay on the radar but are not mandatory.
+- Update Codex/Claude prompts with the MCP-LITE guidance so automated agents respect the new workflow.
+
 ## Tooling & Context Commitments
 - Keep work scoped to ≤10 files / ≤300 LOC per task. Prefer additive changes and targeted refactors.
 - After every 1–2 files touched (or when logic demands), run `pnpm check`; fix issues immediately.
 - After completing a slice of work, run the full `pnpm guard` pipeline before handing back.
-- Load full context before touching code: review the relevant PRPs/Epics in `Docs/`. Docs to open first for most slices: `plumbing_agent_mvp_prp.md`, `plumbing_agent_mvp_epic.md`, `whatsapp_ai_unified_prp.md`, `schedule_x_prp.md`, `invoicing_epic.md`, plus the slice tracker (`Docs/slice-status-s0-s5.md`). Never guess requirements.
+- Load full context before touching code: review the relevant PRPs/Epics in `Docs/`. Docs to open first for most slices: `plumbing_agent_mvp_prp.md`, `plumbing_agent_mvp_epic.md`, `whatsapp_ai_unified_prp.md`, `schedule_x_prp.md`, `invoicing_epic.md`. Never guess requirements.
 - Default working dir: `/home/styryl/dev/pa`. Use `rg`, `sed`, `ls` instead of ad-hoc scripts for basic inspection.
 - Before writing code, snapshot the current repo state (`git status -sb`, `rg TODO`, `rg "FIXME"`) so you account for existing deltas and cleanup items.
-- MCP servers (use them, don’t simulate):
-  - **supabase**: migrations, schema introspection, regenerate types; always follow with `mcp__supabase__generate_typescript_types()` and commit the refreshed `src/types/supabase.generated.ts` + shim (`src/types/supabase.ts`).
+- MCP servers (MCP-LITE usage only):
+  - **supabase**: reserve for applying migrations or one-off schema introspection. Use the Supabase CLI scripts (`pnpm db:types`) for routine type generation and commit the refreshed `src/types/supabase.generated.ts` via the shim (`src/types/supabase.ts`).
   - **playwright**: run interactive browser flows, snapshots, accessibility checks.
   - **context7**: resolve and fetch live library docs before relying on memory.
   - **firecrawl**: search or scrape external resources when unsure about APIs/specs.
@@ -82,7 +88,8 @@
 - `pnpm dev` (hot reload + i18n aggregation), `pnpm check` (i18n doctor + typecheck), `pnpm guard` (full pipeline) — see `package.json` scripts.
 - `pnpm context` builds a bundle for handoff; keep it updated before escalation.
 - Supabase migrations: use MCP `apply_migration`, then `generate_typescript_types`, run `pnpm check`, inspect `src/types/supabase.generated.ts`.
-- Regenerating Supabase types: call `supabase__generate_typescript_types` and write the response directly to `src/types/supabase.generated.ts` (no manual edits). This keeps the schema aligned without burning tokens.
+- Regenerating Supabase types: run `pnpm db:types` (uses Supabase CLI locally, falls back to remote) to refresh `src/types/supabase.generated.ts` and keep the shim (`src/types/supabase.ts`) untouched. Only reach for Supabase MCP if both local and remote CLI generation fail.
+- Supabase CLI helpers: `pnpm db:start` boots the local stack; `pnpm db:types:local` / `pnpm db:types:remote` give explicit control when the auto fallback isn’t desired; `pnpm db:types:project` hits the production project (`akuktezoisvblrnkaljb`) when you need the authoritative schema (CLI lives at `/home/linuxbrew/.linuxbrew/bin/supabase`, so the script sets PATH accordingly).
 - Parallel workspaces:
   - `/home/styryl/dev/pa` – primary workspace (branch `main`).
   - `/home/styryl/dev/pa-feature` – branch `feature`, tracks `origin/main`.

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+changed_sql=$(git diff --cached --name-only | grep '^src/server/db/sql/' || true)
+if [ -n "$changed_sql" ]; then
+  echo "SQL changed → regenerating Supabase types…"
+  pnpm -s db:types
+  git add src/types/supabase.generated.ts
+fi
