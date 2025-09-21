@@ -1,72 +1,449 @@
 {
-	"controls": {
-		"title": "Title",
-		"description": "Description",
-		"sinceDate": "SinceDate",
-		"creating": "Creating",
-		"createDrafts": "CreateDrafts"
-	},
 	"meta": {
-		"title": "Plumbing Agent - Emergency Plumber Platform",
-		"description": "Transform emergency plumbing with WhatsApp intake, AI diagnosis, and instant invoicing",
-		"keywords": "emergency plumber, plumbing software, WhatsApp business, Dutch plumber, loodgieter"
+		"title": "Plumbing Agent – WhatsApp intake to paid invoice",
+		"description": "WhatsApp AI receptionist, Schedule-X calendar and provider-issued invoicing for Dutch plumbing teams. Approve AI proposals, assign in Schedule-X, chase payment via iDEAL.",
+		"keywords": "plumbing software, whatsapp ai, schedule x, moneybird integration, dutch trades, ideal payments"
+	},
+	"nav": {
+		"automation": "Automation",
+		"how": "How it works",
+		"demos": "Interactive demos",
+		"pricing": "Pricing",
+		"docs": "Docs"
+	},
+	"hero": {
+		"eyebrow": "WhatsApp in. Job booked. Invoice paid.",
+		"title": "The plumbing ops platform that never sleeps.",
+		"subtitle": "Dual-number WhatsApp receptionist, Schedule-X v3 calendar and Moneybird/e-Boekhouden/WeFact invoicing in one loop. Dutch-first, GDPR-proof.",
+		"primaryCta": "Join the waitlist",
+		"secondaryCta": "See demo",
+		"trust": "Built for 10-person Dutch plumbing teams · GDPR + BTW compliant",
+		"note": "Pilot-ready · human approval on every AI action",
+		"h1": "Plumbing Agent for professionals",
+		"subhead": "Automate intake, planning and invoicing with AI.",
+		"cta_demo": "Book a demo",
+		"cta_waitlist": "Join waitlist",
+		"urgency": "Limited beta access",
+		"social_proof": "Trusted by growing plumbing teams",
+		"ticker": [
+			{
+				"label": "Automation",
+				"message": "On-my-way template delivered to Kelly (Haarlem)",
+				"time": "08:12",
+				"tone": "success"
+			},
+			{
+				"label": "Cashflow",
+				"message": "Invoice 240913-18 paid via iDEAL · Moneybird marked as settled",
+				"time": "08:44",
+				"tone": "success"
+			},
+			{
+				"label": "Planning",
+				"message": "AI slotted urgent leak · travel buffer respected · approved by organiser",
+				"time": "09:07",
+				"tone": "info"
+			},
+			{
+				"label": "Dunning",
+				"message": "Reminder #2 scheduled – WhatsApp + e-mail with BTW-safe wording",
+				"time": "09:30",
+				"tone": "neutral"
+			}
+		],
+		"kpis": [
+			{
+				"value": "70%",
+				"label": "Invoices paid <24h via iDEAL"
+			},
+			{
+				"value": "4–8h",
+				"label": "Admin time saved each week"
+			},
+			{
+				"value": "<10%",
+				"label": "Travel conflict rate on urgent jobs"
+			}
+		],
+		"integrations": [
+			{
+				"name": "WhatsApp Business"
+			},
+			{
+				"name": "Schedule-X v3"
+			},
+			{
+				"name": "Google Calendar"
+			},
+			{
+				"name": "Moneybird"
+			},
+			{
+				"name": "e-Boekhouden"
+			},
+			{
+				"name": "WeFact"
+			}
+		]
+	},
+	"integrations": {
+		"title": "Runs on your existing stack"
+	},
+	"automation": {
+		"title": "Set it once. Automation keeps working 24/7.",
+		"subtitle": "Mirror WhatsApp intake, let AI draft the reply, approve the slot and chase payment without leaving the thread.",
+		"bullets": [
+			{
+				"title": "Dual-number receptionist",
+				"body": "Customer number stays templated and compliant; control number loops organiser and plumbers in for approvals."
+			},
+			{
+				"title": "Travel-safe slot offers",
+				"body": "Schedule-X checks buffers, crew load and traffic hints before suggesting a visit. No more double-booking vans."
+			},
+			{
+				"title": "Provider-based invoicing",
+				"body": "Moneybird/e-Boekhouden/WeFact issue the legal PDF & UBL, while we present the timeline, reminders and iDEAL link."
+			}
+		],
+		"chips": [
+			{
+				"label": "Voice & WhatsApp captured",
+				"value": "<60s to console"
+			},
+			{
+				"label": "AI proposal approval rate",
+				"value": "60%+"
+			},
+			{
+				"label": "Reminder opt-outs honoured",
+				"value": "100%"
+			}
+		],
+		"cta": "Book a plumbing ops demo",
+		"metrics": "Launch metrics"
+	},
+	"how": {
+		"title": "How the loop runs",
+		"subtitle": "From WhatsApp photo to paid invoice with organiser sign-off at every step.",
+		"steps": [
+			{
+				"title": "Intake",
+				"description": "AI reads the WhatsApp transcript, photos and location in Dutch – proposes diagnosis, urgency and ETA.",
+				"aria": "Step 1: AI triages the incoming WhatsApp with photos and drafts the organiser reply."
+			},
+			{
+				"title": "Approve & send",
+				"description": "Organiser edits or approves the AI draft. Dual-number model keeps the customer thread human-friendly.",
+				"aria": "Step 2: organiser approves the AI reply before anything reaches the customer."
+			},
+			{
+				"title": "Schedule-X",
+				"description": "Accepted slot drops straight into Schedule-X week/day views with buffers, conflict striping and colour-coded crew lanes.",
+				"aria": "Step 3: job is created in Schedule-X with buffers and colour chips."
+			},
+			{
+				"title": "Invoice & dunning",
+				"description": "Job card feeds Moneybird/WeFact, iDEAL link goes out instantly, reminders follow a BTW-safe cadence.",
+				"aria": "Step 4: provider issues invoice, Mollie iDEAL link and automated reminders close the loop."
+			}
+		]
+	},
+	"features": {
+		"title": "Built for organisers, crews and finance",
+		"subtitle": "Every surface mirrors the MVP PRP: WhatsApp intake, Schedule-X execution, provider-based invoicing.",
+		"cards": [
+			{
+				"title": "WhatsApp AI Receptionist",
+				"description": "Two-number routing, photo intelligence, approvals and compliance with the 24-hour template window.",
+				"bullets": [
+					"Photo-to-diagnosis with confidence gating",
+					"Organiser approvals logged with audit trail",
+					"Automatic intake of new numbers into CRM"
+				]
+			},
+			{
+				"title": "Schedule-X v3 calendar",
+				"description": "Week/day views, drag-to-assign, conflict striping and travel hints optimised for Dutch plumbers.",
+				"bullets": [
+					"Multi-assignee with deterministic colour chips",
+					"Unscheduled drawer fed by AI proposals",
+					"Off-hours guardrails and SLA chips"
+				]
+			},
+			{
+				"title": "Headless invoicing",
+				"description": "Providers own numbering, PDFs and UBL; Plumbing Agent owns UX, reminders and status timeline.",
+				"bullets": [
+					"Moneybird / e-Boekhouden / WeFact connectors",
+					"Mollie iDEAL-first pay links",
+					"AI-powered reminder journeys with opt-out respect"
+				]
+			}
+		]
+	},
+	"demos": {
+		"title": "Try the flow in demo mode",
+		"subtitle": "Click through the same guardrails your organisers will see. No data is stored.",
+		"chat": {
+			"title": "WhatsApp intake",
+			"description": "AI drafts the reply, organiser approves and the customer stays in WhatsApp.",
+			"cta": "Next message",
+			"steps": [
+				{
+					"badge": "Customer",
+					"title": "Sent a leak photo",
+					"body": "Hi, water keeps dripping under the boiler. Can you come today?",
+					"role": "customer"
+				},
+				{
+					"badge": "AI draft",
+					"title": "Diagnosis & duration",
+					"body": "Likely safety valve. Suggest 45 minutes, one tech. Photo + serial captured for the job card.",
+					"role": "ai"
+				},
+				{
+					"badge": "Organiser",
+					"title": "Approve & clarify",
+					"body": "Adds question about access, proposes 09:30 slot and keeps travel buffer intact.",
+					"role": "organiser"
+				},
+				{
+					"badge": "Customer",
+					"title": "Slot confirmed",
+					"body": "Perfect, see you then!",
+					"role": "customer"
+				}
+			],
+			"header": "WhatsApp Control Chat"
+		},
+		"calendar": {
+			"title": "Schedule-X v3",
+			"description": "Drag the proposal from Unscheduled, watch buffers and conflicts update live.",
+			"cta": "Advance step",
+			"steps": [
+				{
+					"badge": "Unscheduled",
+					"title": "Proposal waiting approval",
+					"body": "Organiser reviews photo, suggested duration and priority in the bottom drawer.",
+					"role": "organiser"
+				},
+				{
+					"badge": "Calendar",
+					"title": "Drop into the route",
+					"body": "Slot fits between existing visits. 15 min travel buffer, no conflicts.",
+					"role": "organiser"
+				},
+				{
+					"badge": "Crew",
+					"title": "Push to plumbers",
+					"body": "Crew receives mobile job card with navigation, materials checklist and offline sync.",
+					"role": "system"
+				}
+			],
+			"header": "Schedule-X v3 · Day view",
+			"unscheduledTitle": "Unscheduled",
+			"unscheduledPrimaryTitle": "Photo via WhatsApp",
+			"unscheduledPrimarySubtitle": "Boiler leaking in Haarlem · High risk",
+			"unscheduledSecondaryTitle": "Needs confirmation",
+			"unscheduledSecondarySubtitle": "Tuesday 09:30 proposed",
+			"agendaTitle": "Agenda",
+			"agendaMorningTime": "08:00 – 09:00",
+			"agendaMorningLabel": "Heat pump maintenance",
+			"agendaSuggestedTime": "09:30 – 10:15",
+			"agendaSuggestedLabel": "Proposed slot",
+			"agendaInspectionTime": "11:00 – 12:30",
+			"agendaInspectionLabel": "Inspection crew"
+		},
+		"invoice": {
+			"title": "Provider invoicing",
+			"description": "Providers issue the legal artefacts while we show status, reminders and iDEAL link.",
+			"cta": "Advance step",
+			"steps": [
+				{
+					"badge": "Moneybird",
+					"title": "Draft created",
+					"body": "Job card lines mapped, Moneybird numbers the invoice and stores PDF/UBL.",
+					"role": "system"
+				},
+				{
+					"badge": "Send",
+					"title": "Delivered",
+					"body": "WhatsApp + email with iDEAL link and VAT notes. Timeline logs the send event.",
+					"role": "organiser"
+				},
+				{
+					"badge": "Customer",
+					"title": "Viewed",
+					"body": "Customer opens the payment page; timeline registers the view.",
+					"role": "customer"
+				},
+				{
+					"badge": "Paid",
+					"title": "Settled via iDEAL",
+					"body": "Mollie webhook confirms payment and syncs status back to the provider.",
+					"role": "system"
+				}
+			],
+			"channel": "Moneybird · Mollie iDEAL"
+		},
+		"liveTicker": {
+			"empty": "Automation stream is quiet right now.",
+			"prev": "Previous automation event",
+			"next": "Next automation event"
+		}
+	},
+	"roi": {
+		"title": "ROI calculator",
+		"subtitle": "Model your own team. No guesswork, just Dutch plumber benchmarks.",
+		"body": {
+			"one": "We combine time saved on admin, extra jobs won through instant replies and lower write-offs via compliant reminders.",
+			"two": "Adjust the levers to match your crew size and rates. Numbers below are based on pilot telemetry for 10-person teams."
+		},
+		"points": {
+			"0": "WhatsApp response time drops from hours to minutes",
+			"1": "Schedule-X removes double-booked vans and off-hours errors",
+			"2": "Provider-issued invoices clear cash faster with iDEAL"
+		},
+		"title_internal": "",
+		"subtitle_internal": "",
+		"inputs": {
+			"team_size": "Team size",
+			"hourly_rate": "Average hourly rate (€)",
+			"hours_saved": "Admin hours saved / week",
+			"win_rate": "Win rate uplift",
+			"followups": "Include AI reminders",
+			"followups_hint": "Moneybird/WeFact status sync + WhatsApp reminders",
+			"focus": "Focus",
+			"focus_weekly": "Weekly impact",
+			"focus_annual": "Annual impact"
+		},
+		"outputs": {
+			"weekly_label": "Estimated weekly impact",
+			"annual_label": "Estimated annual impact",
+			"per_plumber": "Hours returned per plumber",
+			"payback": "Payback time with €349/mo subscription ≈ 5 booked urgent jobs",
+			"hours_label": "{value} h"
+		},
+		"cta": "Book a 30-minute consult"
+	},
+	"testimonials": {
+		"title": "Trusted by Dutch plumbing teams",
+		"subtitle": "Organisers, planners and owners across Noord-Holland are piloting the full loop.",
+		"items": [
+			{
+				"name": "Annemarie Jansen",
+				"role": "Planner · Lekkage Direct",
+				"quote": "De AI doet het voorwerk, ik hoef alleen te checken en te versturen. Agenda blijft eindelijk realistisch."
+			},
+			{
+				"name": "Sjoerd Willems",
+				"role": "Owner · Warmtehuis BV",
+				"quote": "Facturen gaan rechtstreeks uit Moneybird met iDEAL-link. Klanten betalen binnen een dag en wij houden het overzicht."
+			},
+			{
+				"name": "Nathalie de Boer",
+				"role": "Servicecoördinator · Noord Plumbing",
+				"quote": "WhatsApp intake staat na 60 seconden in Unscheduled. Geen telefoontjes meer die kwijt raken."
+			}
+		]
+	},
+	"pricing": {
+		"badge": "Pilot pricing",
+		"title": "Tarief voor complete AI intake + planning + facturatie",
+		"subtitle": "€349 per maand per organisatie. Alle monteurs inbegrepen.",
+		"per_month": "per maand",
+		"includes": "Alles inbegrepen, geen onboarding fee.",
+		"points": {
+			"0": "WhatsApp AI receptionist + Schedule-X license",
+			"1": "Provider integrations (Moneybird / e-Boekhouden / WeFact)",
+			"2": "Mollie iDEAL, audit logs en NL support"
+		},
+		"cta": "Reserveer pilotplek",
+		"price": "€349"
+	},
+	"docs": {
+		"title": "Technical readiness",
+		"subtitle": "Security, data flows and implementation guides are ready for review.",
+		"cards": {
+			"whatsapp": {
+				"badge": "WhatsApp",
+				"title": "Dual-number & compliance overview",
+				"description": "Session window logic, template governance, media storage and organiser approvals.",
+				"href": "https://plumbing-agent.notion.site/WhatsApp-AI-Receptionist-v2"
+			},
+			"calendar": {
+				"badge": "Schedule-X",
+				"title": "Calendar integration blueprint",
+				"description": "Resource mapping, Temporal helpers, travel buffers and SLA timers.",
+				"href": "https://plumbing-agent.notion.site/Schedule-X-v3-Calendar"
+			},
+			"invoicing": {
+				"badge": "Invoicing",
+				"title": "Headless invoicing migration plan",
+				"description": "Provider webhooks, Mollie flow and dunning guardrails.",
+				"href": "https://plumbing-agent.notion.site/Headless-Invoicing"
+			},
+			"cta": "Open guide"
+		}
+	},
+	"controls": {
+		"title": "Timeline controls",
+		"description": "Step through the intake → schedule → invoice flow.",
+		"sinceDate": "Since",
+		"creating": "Creating",
+		"createDrafts": "Create drafts"
 	},
 	"demo": {
 		"page": {
-			"title": "Product Demo",
-			"headline": "See Plumbing Agent in action",
-			"subtitle": "From WhatsApp intake to paid invoice in minutes",
+			"title": "Product demo",
+			"subtitle": "See Plumbing Agent automate intake, planning and payment.",
+			"headline": "Watch the full loop",
 			"benefits": {
 				"faster": {
-					"title": "Faster Response Times",
-					"description": "WhatsApp intake and AI analysis cut response time from hours to minutes"
+					"title": "Faster replies",
+					"description": "AI keeps WhatsApp responses under one minute and logs context for the organiser."
 				},
 				"smarter": {
-					"title": "Smarter Diagnosis",
-					"description": "AI-powered issue analysis helps you prepare better and work more efficiently"
+					"title": "Smarter scheduling",
+					"description": "Schedule-X v3 enforces buffers, conflicts and SLA chips automatically."
 				},
 				"better_paid": {
-					"title": "Get Paid Faster",
-					"description": "Instant invoicing and automated payment reminders improve cash flow"
+					"title": "Paid sooner",
+					"description": "Moneybird / WeFact issue the invoice and iDEAL link; our reminders close the balance."
 				}
 			},
 			"cta": {
-				"headline": "Ready to try it?",
-				"subtitle": "Join the pilot and get early access",
-				"button": "Join waitlist"
+				"headline": "Ready to pilot?",
+				"subtitle": "Join the Plumbing Agent beta and onboard with us.",
+				"button": "Join the waitlist"
 			},
 			"nav": {
 				"previous": "Previous",
 				"next": "Next",
 				"step_counter": "Step {current} of {total}"
 			},
-			"done": "You're all set!",
-			"autoplay_pause": "Pause Autoplay",
-			"autoplay_start": "Start Autoplay",
-			"keyboard_help": "Use arrow keys to navigate",
-			"time_estimate": "Estimated time: {minutes} minutes",
-			"time_average": "Average time",
-			"back": "Back"
+			"back": "Back to launch page"
 		},
 		"content": {
 			"whatsapp": {
 				"photo_attached": "Photo attached",
-				"ai_analyzing": "Analyzing message…"
+				"ai_analyzing": "Analysing intake…"
 			},
 			"ai_suggestion": {
 				"diagnosis": "Diagnosis",
-				"reliable": "Reliable",
+				"reliable": "Confidence",
 				"urgency": "Urgency",
 				"emergency": "Emergency",
-				"estimated_time": "Estimated time",
-				"minutes": "minutes",
-				"required_materials": "Required materials",
-				"quantity_format": "{qty}x"
+				"estimated_time": "Estimated duration",
+				"minutes": "min",
+				"required_materials": "Suggested materials",
+				"quantity_format": "{qty}×"
 			},
 			"schedule": {
 				"assigned_to": "Assigned to",
-				"start_time": "Start time",
-				"end_time": "End time",
+				"start_time": "Start",
+				"end_time": "End",
 				"auto_assigned": "Auto-assigned"
 			},
 			"job_card": {
@@ -75,21 +452,21 @@
 				"notes": "Notes"
 			},
 			"voice_draft": {
-				"voice_transcript": "Voice transcript",
+				"voice_transcript": "Transcript",
 				"invoice_lines": "Invoice lines",
 				"line_format": "{qty}× {item}",
 				"subtotal_ex_vat": "Subtotal (ex VAT)",
-				"vat_total": "VAT total",
+				"vat_total": "VAT",
 				"total": "Total"
 			},
 			"send_pay": {
-				"invoice_id": "Invoice ID",
+				"invoice_id": "Invoice no.",
 				"invoice_sent": "Invoice sent",
 				"payment_status": "Payment status",
 				"pdf": "PDF",
 				"whatsapp_message": "WhatsApp message",
-				"awaiting_payment": "Awaiting Payment",
-				"click_pay": "Click to Pay"
+				"awaiting_payment": "Awaiting payment",
+				"click_pay": "Tap to pay"
 			},
 			"reminders": {
 				"after_days": "After {days} days",
@@ -98,7 +475,7 @@
 				"opt_out_respected": "Opt-out respected",
 				"email_escalation": "Email escalation",
 				"title": "Payment reminders",
-				"whatsapp_series": "WhatsApp Series"
+				"whatsapp_series": "WhatsApp series"
 			},
 			"common": {
 				"loading": "Loading demo data…",
@@ -115,102 +492,144 @@
 		}
 	},
 	"usp": {
-		"title": "Title",
-		"subtitle": "Subtitle",
+		"title": "Why Plumbing Agent",
+		"subtitle": "Purpose-built for Dutch plumbing teams.",
 		"whatsapp": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "Dual-number WhatsApp",
+			"desc": "Customer thread + control chat keeps compliance and transparency."
 		},
 		"ai": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "AI with guardrails",
+			"desc": "Every proposal needs organiser approval; audit logs keep score."
 		},
 		"schedule": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "Schedule-X built-in",
+			"desc": "Week/day, buffers, conflict striping and SLA timers."
 		},
 		"jobcards": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "Offline job cards",
+			"desc": "Service workers get notes, photos and signatures even without signal."
 		},
 		"invoicing": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "Provider invoicing",
+			"desc": "Moneybird/e-Boekhouden/WeFact issue the legal invoice; we chase payment."
 		},
 		"compliance": {
-			"title": "Title",
-			"desc": "Desc"
+			"title": "GDPR native",
+			"desc": "Dutch data residency, retention timers and DSAR exports."
 		}
 	},
 	"cookie_consent": {
 		"title": "We use cookies",
-		"description": "We use essential cookies and analytics to improve your experience.",
+		"description": "Only essential cookies and privacy-friendly analytics.",
 		"accept_all": "Accept all",
-		"reject_all": "Reject all",
-		"essential_only": "Essential only",
+		"reject_all": "Reject",
+		"essential_only": "Essentials only",
 		"privacy_policy": "Privacy policy",
 		"close": "Close"
 	},
 	"trust": {
-		"dutch_compliance": "Dutch Compliance",
-		"ideal_payments": "Ideal Payments",
-		"whatsapp_business": "Whatsapp Business",
-		"avg_compliant": "AVG compliant",
-		"ideal_certified": "IDEAL certified",
-		"kvk_registered": "KVK registered"
-	},
-	"waitlist": {
-		"title": "Join the Pilot Program",
-		"subtitle": "Get early access to Plumbing Agent and transform your emergency plumbing business",
-		"email": "Email address",
-		"phone": "Phone number (optional)",
-		"org": "Organization name (optional)",
-		"success": "Thank you! We'll be in touch soon with pilot access details.",
-		"error": "Something went wrong. Please try again or contact us directly.",
-		"submit": "Join Waitlist",
-		"gdpr": "By submitting, you agree to our privacy policy and terms of service."
+		"dutch_compliance": "Dutch compliance",
+		"ideal_payments": "iDEAL payments",
+		"whatsapp_business": "WhatsApp Business",
+		"avg_compliant": "GDPR compliant",
+		"ideal_certified": "iDEAL certified",
+		"kvk_registered": "Chamber of Commerce registered"
 	},
 	"list": {
-		"title": "Title",
+		"title": "Pilot waitlist",
 		"loading": "Loading"
 	},
 	"pilot": {
 		"banner": {
-			"subtitle": "Certain features are enabled for testing.",
-			"title": "Pilot Mode"
+			"title": "Pilot mode",
+			"subtitle": "Some features run under test flags."
 		}
 	},
 	"results": {
-		"title": "Title",
+		"title": "Automation results",
 		"total": "Total",
 		"sent": "Sent",
 		"skipped": "Skipped",
-		"withPaymentLinks": "WithPaymentLinks",
+		"withPaymentLinks": "With payment links",
 		"errors": "Errors"
 	},
-	"hero": {
-		"h1": "Plumbing Agent for pros",
-		"subhead": "Automate scheduling, invoices, and WhatsApp with AI.",
-		"cta_demo": "Book a demo",
-		"cta_waitlist": "Join waitlist",
-		"urgency": "Limited beta access",
-		"social_proof": "Trusted by growing plumbing teams"
-	},
-	"roi_calculator": {
-		"title": "Calculate your ROI",
-		"subtitle": "Estimate your ROI",
-		"input_label": "Hours you want to save per week",
-		"placeholder_text": "e.g. 5–10",
-		"hours_per_week": "Hours saved / week",
-		"rate_per_hour": "Hourly rate (€)",
-		"time_saved": "Time saved",
-		"extra_revenue": "Extra revenue",
-		"yearly_savings": "Yearly savings",
-		"calculate_button": "Calculate",
-		"cta_start_saving": "Start saving now",
-		"results": {
-			"total_value": "Total annual value"
+	"current_hours": "Current hours per week",
+	"waitlist": {
+		"heading": "Join the Plumbing Agent pilot",
+		"subtitle": "We onboard Dutch plumbing teams in cohorts. Share your context and we’ll align success criteria.",
+		"title": "Pilot intake",
+		"email": "Work e-mail",
+		"phone": "Mobile (optional)",
+		"org": "Company name",
+		"team_size": "How many field techs?",
+		"priority": "Biggest scheduling headache",
+		"priority_options": {
+			"emergency": "24/7 emergency routing",
+			"project": "Long-running project coordination",
+			"service": "Service/maintenance recurring work"
+		},
+		"stack": "Current invoicing system",
+		"stack_options": {
+			"moneybird": "Moneybird",
+			"eboekhouden": "e-Boekhouden",
+			"wefact": "WeFact",
+			"paper": "Paper / Excel / other"
+		},
+		"note": "Anything we should know?",
+		"note_placeholder": "Bijv. we draaien op Moneybird + Mollie, willen WhatsApp intake live binnen 30 dagen.",
+		"team": "",
+		"success": "Thanks! We’ll reach out within 24 hours with the pilot checklist.",
+		"error": "Something went wrong. Please try again or e-mail founders@plumbing-agent.nl.",
+		"submit": "Submit pilot request",
+		"submitting": "Sending…",
+		"gdpr": "We keep pilot data in the EU, respect Dutch AVG and honour opt-outs.",
+		"team_size_options": {
+			"2-5": "2 – 5",
+			"6-10": "6 – 10",
+			"11-15": "11 – 15",
+			"16+": "16+"
 		}
 	},
-	"current_hours": "Current hours per week"
+	"footer": {
+		"tagline": "Plumbing Agent – WhatsApp intake → Schedule-X → provider invoicing",
+		"organisation": "Operated by Styryl Ops B.V. · Amsterdam · KvK 92123412 · BTW NL865843210B01",
+		"links": [
+			{
+				"title": "Product",
+				"links": [
+					{
+						"label": "WhatsApp AI Receptionist",
+						"href": "#automation"
+					},
+					{
+						"label": "Schedule-X Calendar",
+						"href": "#demos"
+					},
+					{
+						"label": "Headless invoicing",
+						"href": "#features"
+					}
+				]
+			},
+			{
+				"title": "Company",
+				"links": [
+					{
+						"label": "About",
+						"href": "mailto:founders@plumbing-agent.nl"
+					},
+					{
+						"label": "Security brief",
+						"href": "https://plumbing-agent.notion.site/Security"
+					},
+					{
+						"label": "Status",
+						"href": "https://status.plumbing-agent.nl"
+					}
+				]
+			}
+		],
+		"legal": "© 2025 Styryl Ops B.V. All rights reserved."
+	}
 }
