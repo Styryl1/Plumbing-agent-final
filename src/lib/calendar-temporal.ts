@@ -204,6 +204,13 @@ export function nowZDT(): Temporal.ZonedDateTime {
 }
 
 /**
+ * Get current ZonedDateTime for provided timezone (defaults to Amsterdam)
+ */
+export function nowZoned(timeZone: string = TZ): Temporal.ZonedDateTime {
+	return Temporal.Now.zonedDateTimeISO(timeZone);
+}
+
+/**
  * Convert ZonedDateTime to ISO Instant string for database storage
  */
 export function zdtToISO(zdt: Temporal.ZonedDateTime): string {
@@ -219,4 +226,21 @@ export function dateToPlainDate(date: globalThis.Date): Temporal.PlainDate {
 		month: date.getMonth() + 1,
 		day: date.getDate(),
 	});
+}
+
+/**
+ * Calculate whole minutes between two ZonedDateTime instances
+ */
+export function minutesBetween(
+	start: Temporal.ZonedDateTime,
+	end: Temporal.ZonedDateTime,
+): number {
+	return Math.round(start.until(end).total({ unit: "minutes" }));
+}
+
+/**
+ * Round minutes to nearest 5-minute increment
+ */
+export function round5(value: number): number {
+	return Math.round(value / 5) * 5;
 }

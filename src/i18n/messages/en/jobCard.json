@@ -1,0 +1,133 @@
+{
+	"today": {
+		"title": "Today",
+		"refresh": "Refresh",
+		"emptyTitle": "No jobs scheduled today",
+		"emptyBody": "Tap refresh to load new jobs.",
+		"notScheduled": "Not scheduled",
+		"openCard": "Open card",
+		"whatsapp": "WhatsApp",
+		"call": "Call",
+		"navigate": "Navigate",
+		"loadingLabel": "Loading jobs",
+		"actions": {
+			"whatsapp": "Open WhatsApp",
+			"call": "Call customer",
+			"navigate": "Open navigation"
+		}
+	},
+	"timer": {
+		"title": "Time tracking",
+		"offline": "Offline — actions will sync later",
+		"minutesShort": "min",
+		"badge": {
+			"locked": "Completed",
+			"running": "Running",
+			"paused": "Paused"
+		},
+		"startedAt": "Started at {time}",
+		"total": "Total {minutes} min",
+		"live": {
+			"running": "Timer running since {time}. Total {minutes} minutes.",
+			"paused": "Timer paused at {minutes} minutes."
+		},
+		"buttons": {
+			"start": "Start",
+			"pause": "Pause",
+			"complete": "Complete"
+		}
+	},
+	"materials": {
+		"title": "Materials",
+		"offline": "Offline — materials will sync when you reconnect",
+		"name": "Name",
+		"quantity": "Quantity",
+		"unit": "Unit",
+		"price": "Price ex VAT (€)",
+		"vat": "VAT rate",
+		"vatBadge": "VAT {rate}",
+		"option": {
+			"21": "21% standard",
+			"9": "9% reduced",
+			"0": "0% exempt"
+		},
+		"placeholder": {
+			"name": "e.g. fitting",
+			"quantity": "1",
+			"unit": "pcs",
+			"price": "0.00"
+		},
+		"button": "Add material",
+		"empty": "No materials yet.",
+		"validation": {
+			"name": "Please enter a material name",
+			"qty": "Quantity must be greater than 0",
+			"price": "Invalid ex VAT price"
+		},
+		"totals": {
+			"summary": "Ex {ex} · VAT {vat} · Inc {inc}"
+		},
+		"listLabel": "Added materials",
+		"line": {
+			"summary": "{qty} {unit} · {price} ex VAT",
+			"ex": "{amount} ex VAT",
+			"vat": "{amount} VAT ({rate})",
+			"inc": "{amount} inc VAT"
+		}
+	},
+	"status": {
+		"title": "Status",
+		"helper": {
+			"scheduled": "Mark en route when you leave.",
+			"en_route": "Mark in progress when you arrive.",
+			"in_progress": "Mark completed when the work is done.",
+			"completed": "Job is completed."
+		},
+		"offline": "Offline — status updates will sync later",
+		"notify": "Notify customer",
+		"notifyHelp": "Sends a WhatsApp message when the status changes (staging stub).",
+		"buttons": {
+			"scheduled": "Scheduled",
+			"en_route": "En route",
+			"in_progress": "In progress",
+			"completed": "Done"
+		},
+		"ariaCurrent": "Current status: {status}.",
+		"step": {
+			"active": "◉",
+			"inactive": "○"
+		}
+	},
+	"client": {
+		"offline": "Offline — changes will sync once you're online again.",
+		"toast": {
+			"timerQueued": "Timer action queued for sync",
+			"timerSuccess": "Timer updated",
+			"timerError": "Failed to update timer",
+			"materialQueued": "Material queued for sync",
+			"materialSuccess": "Material added",
+			"materialError": "Failed to add material",
+			"statusQueued": "Status queued for sync",
+			"statusSuccess": "Status updated",
+			"statusError": "Failed to update status",
+			"statusNeedsTimer": "Finish the timer first."
+		},
+		"priority": {
+			"normal": "Normal",
+			"urgent": "Urgent",
+			"emergency": "Emergency"
+		},
+		"syncChip": "Pending sync: {count}",
+		"contact": {
+			"whatsapp": "WhatsApp",
+			"call": "Call",
+			"navigate": "Navigate"
+		},
+		"header": {
+			"addressUnknown": "Address unknown",
+			"customerUnknown": "Unknown customer",
+			"openCard": "Open card",
+			"timeUnknown": "Not scheduled"
+		}
+	}
+}

@@ -682,6 +682,139 @@
       }
     }
   },
+  "jobCard": {
+    "today": {
+      "title": "Vandaag",
+      "refresh": "Verversen",
+      "emptyTitle": "Geen jobs voor vandaag",
+      "emptyBody": "Tik op verversen om nieuwe jobs op te halen.",
+      "notScheduled": "Nog niet gepland",
+      "openCard": "Open kaart",
+      "whatsapp": "WhatsApp",
+      "call": "Bel",
+      "navigate": "Navigatie",
+      "loadingLabel": "Jobs laden",
+      "actions": {
+        "whatsapp": "Open WhatsApp",
+        "call": "Bel klant",
+        "navigate": "Open navigatie"
+      }
+    },
+    "timer": {
+      "title": "Tijdregistratie",
+      "offline": "Offline — acties in wachtrij",
+      "minutesShort": "min",
+      "badge": {
+        "locked": "Afgerond",
+        "running": "Lopend",
+        "paused": "Gepauzeerd"
+      },
+      "startedAt": "Gestart om {time}",
+      "total": "Totaal {minutes} min",
+      "live": {
+        "running": "Timer loopt sinds {time}. Totaal {minutes} minuten.",
+        "paused": "Timer staat stil op {minutes} minuten."
+      },
+      "buttons": {
+        "start": "Start",
+        "pause": "Pauze",
+        "complete": "Klaar"
+      }
+    },
+    "materials": {
+      "title": "Materialen",
+      "offline": "Offline — materialen worden gesynchroniseerd zodra je weer online bent",
+      "name": "Naam",
+      "quantity": "Aantal",
+      "unit": "Eenheid",
+      "price": "Prijs ex BTW (€)",
+      "vat": "BTW tarief",
+      "vatBadge": "BTW {rate}",
+      "option": {
+        "0": "0% vrijgesteld",
+        "9": "9% verlaagd",
+        "21": "21% standaard"
+      },
+      "placeholder": {
+        "name": "bijv. koppeling",
+        "quantity": "1",
+        "unit": "st",
+        "price": "0,00"
+      },
+      "button": "Materiaal toevoegen",
+      "empty": "Nog geen materialen toegevoegd.",
+      "validation": {
+        "name": "Geef een materiaalnaam op",
+        "qty": "Hoeveelheid moet groter dan 0 zijn",
+        "price": "Prijs ex BTW is ongeldig"
+      },
+      "totals": {
+        "summary": "Excl. {ex} · BTW {vat} · Incl. {inc}"
+      },
+      "listLabel": "Toegevoegde materialen",
+      "line": {
+        "summary": "{qty} {unit} · {price} ex BTW",
+        "ex": "{amount} ex BTW",
+        "vat": "{amount} BTW ({rate})",
+        "inc": "{amount} incl. BTW"
+      }
+    },
+    "status": {
+      "title": "Status",
+      "helper": {
+        "scheduled": "Start onderweg wanneer je vertrekt.",
+        "en_route": "Markeer als begonnen zodra je op locatie bent.",
+        "in_progress": "Klaar zetten wanneer werkzaamheden afgerond zijn.",
+        "completed": "Job is afgerond."
+      },
+      "offline": "Offline — wijzigingen worden verstuurd zodra je weer online bent",
+      "notify": "Klant informeren",
+      "notifyHelp": "Stuurt een WhatsApp-bericht zodra de status verandert (staging stub).",
+      "buttons": {
+        "scheduled": "Gepland",
+        "en_route": "Onderweg",
+        "in_progress": "Begonnen",
+        "completed": "Klaar"
+      },
+      "ariaCurrent": "Huidige status: {status}.",
+      "step": {
+        "active": "◉",
+        "inactive": "○"
+      }
+    },
+    "client": {
+      "offline": "Offline — wijzigingen worden verstuurd zodra je weer online bent.",
+      "toast": {
+        "timerQueued": "Timeractie opgeslagen voor synchronisatie",
+        "timerSuccess": "Timer bijgewerkt",
+        "timerError": "Timer bijwerken mislukt",
+        "materialQueued": "Materiaal toegevoegd aan wachtrij",
+        "materialSuccess": "Materiaal toegevoegd",
+        "materialError": "Materiaal toevoegen mislukt",
+        "statusQueued": "Status opgeslagen voor synchronisatie",
+        "statusSuccess": "Status bijgewerkt",
+        "statusError": "Status bijwerken mislukt",
+        "statusNeedsTimer": "Rond eerst de timer af."
+      },
+      "priority": {
+        "normal": "Normaal",
+        "urgent": "Urgent",
+        "emergency": "Spoed"
+      },
+      "syncChip": "Te synchroniseren: {count}",
+      "contact": {
+        "whatsapp": "WhatsApp",
+        "call": "Bel",
+        "navigate": "Navigatie"
+      },
+      "header": {
+        "addressUnknown": "Adres onbekend",
+        "customerUnknown": "Onbekende klant",
+        "openCard": "Open kaart",
+        "timeUnknown": "Nog niet gepland"
+      }
+    }
+  },
   "jobs": {
     "invoice": {
       "createDraft": {
