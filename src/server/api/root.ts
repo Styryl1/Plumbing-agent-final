@@ -1,6 +1,7 @@
 import { aiRouter } from "./routers/ai";
 import { customersRouter } from "./routers/customers";
 import { employeesRouter } from "./routers/employees";
+import { intakeRouter } from "./routers/intake";
 import { invoiceFlowRouter } from "./routers/invoiceFlow";
 import { invoicesRouter } from "./routers/invoices";
 import { jobsRouter } from "./routers/jobs";
@@ -28,6 +29,7 @@ export const appRouter = router({
 	scheduling: schedulingRouter,
 	settings: settingsRouter,
 	ai: aiRouter,
+	intake: intakeRouter,
 	whatsapp: whatsappRouter,
 	whatsappSettings: whatsappSettingsRouter,
 	waAdmin: waAdminRouter,

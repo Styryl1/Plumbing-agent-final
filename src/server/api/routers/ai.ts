@@ -35,7 +35,8 @@ export const aiRouter = createTRPCRouter({
 						conversation:wa_conversations!inner(
 							id,
 							phone_number,
-							customer_id
+							customer_id,
+							intake_event_id
 						)
 					`,
 					)
@@ -59,11 +60,13 @@ export const aiRouter = createTRPCRouter({
 								id: string;
 								phone_number: string;
 								customer_id: string | null;
+								intake_event_id: string | null;
 						  }
 						| {
 								id: string;
 								phone_number: string;
 								customer_id: string | null;
+								intake_event_id: string | null;
 						  }[]
 						| null
 						| undefined;
@@ -79,6 +82,7 @@ export const aiRouter = createTRPCRouter({
 								id: conv.id,
 								phone_number: conv.phone_number,
 								customer_id: conv.customer_id,
+								intake_event_id: conv.intake_event_id ?? null,
 								// Add minimal required fields with defaults
 								org_id: "",
 								wa_contact_id: "",

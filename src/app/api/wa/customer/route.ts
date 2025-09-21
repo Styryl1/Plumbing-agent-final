@@ -2,22 +2,76 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
+import type { AnalyzerResult as IntakeAnalyzerResult } from "~/schema/intake";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";
 import { analyzeAndPersist } from "~/server/services/analyzers/whatsapp";
+import { ensureIntakeForWhatsApp } from "~/server/services/intake/ensure-intake";
+import {
+	isWebhookEventDuplicate,
+	recordWebhookEvent,
+} from "~/server/services/webhooks/events";
 import {
 	parseWhatsAppStatuses,
 	parseWhatsAppWebhook,
 } from "~/server/services/whatsapp/message-normalizer";
 import { applyStatuses } from "~/server/services/whatsapp/message-status";
 import {
-	isWebhookEventDuplicate,
+	type PersistedWhatsAppConversation,
 	persistWhatsAppMessages,
-	recordWebhookEvent,
 } from "~/server/services/whatsapp/message-store";
 import { verifyWhatsAppSignature } from "~/server/services/whatsapp/signature-verify";
+import type { Tables } from "~/types/supabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const DEFAULT_TIME_ESTIMATE_MIN = 60;
+
+const mapAnalyzerUrgency = (
+	value: string | null | undefined,
+): IntakeAnalyzerResult["urgency"] => {
+	const normalized = value?.toLowerCase() ?? "low";
+	if (
+		normalized === "high" ||
+		normalized === "urgent" ||
+		normalized === "emergency"
+	) {
+		return "emergency";
+	}
+	if (normalized === "medium" || normalized === "normal") {
+		return "urgent";
+	}
+	return "normal";
+};
+
+const clampConfidence = (value: number | null | undefined): number => {
+	if (typeof value !== "number" || Number.isNaN(value)) return 0.5;
+	if (value < 0) return 0;
+	if (value > 1) return 1;
+	return value;
+};
+
+const toAnalyzerResult = (
+	suggestion: Tables<"wa_suggestions">,
+	fallbackSummary: string,
+): IntakeAnalyzerResult => {
+	const summaryFallback =
+		fallbackSummary.length > 0 ? fallbackSummary : "Intake";
+	const firstTag = suggestion.tags[0];
+	const issue =
+		typeof firstTag === "string" && firstTag.length > 0
+			? firstTag
+			: summaryFallback;
+	const timeEstimate =
+		suggestion.time_estimate_min ?? DEFAULT_TIME_ESTIMATE_MIN;
+	return {
+		issue,
+		urgency: mapAnalyzerUrgency(suggestion.urgency),
+		timeEstimateMin: Math.max(15, Math.round(timeEstimate)),
+		materials: [],
+		confidence: clampConfidence(suggestion.confidence),
+	};
+};
 
 // GET = Meta challenge
 export function GET(request: NextRequest): Response {
@@ -82,40 +136,79 @@ export async function POST(request: NextRequest): Promise<Response> {
 	}
 
 	// 5) Persist messages
+	let persistedConversations: PersistedWhatsAppConversation[] = [];
 	if (messages.length > 0) {
-		await persistWhatsAppMessages({ messages, orgId, db });
-		await recordWebhookEvent({ eventId, provider: "whatsapp", db, orgId });
+		persistedConversations = await persistWhatsAppMessages({
+			messages,
+			orgId,
+			db,
+		});
 
-		// 5b) Analyze inbound messages with idempotency check
+		const conversationByContact = new Map<
+			string,
+			PersistedWhatsAppConversation
+		>();
+		for (const conversation of persistedConversations) {
+			conversationByContact.set(conversation.waContactId, conversation);
+		}
+
+		const analyzerByConversation = new Map<string, IntakeAnalyzerResult>();
+
 		for (const message of messages) {
-			// Check if suggestion already exists for this message (idempotency)
+			const candidate = conversationByContact.get(message.waContactId);
+			if (!candidate) continue;
+
+			const messageRowId = candidate.messageRowByWaId[message.waMessageId];
+			if (!messageRowId) continue;
+
 			const existingSuggestion = await db
 				.from("wa_suggestions")
-				.select("id")
-				.eq("message_id", message.waMessageId)
+				.select("*")
+				.eq("message_id", messageRowId)
 				.eq("org_id", orgId)
-				.single();
+				.maybeSingle();
 
-			if (!existingSuggestion.data) {
-				// Get conversation ID from the recently persisted conversation
-				const conversation = await db
-					.from("wa_conversations")
-					.select("id")
-					.eq("org_id", orgId)
-					.eq("wa_contact_id", message.waContactId)
-					.single();
+			let suggestion =
+				(existingSuggestion.data as Tables<"wa_suggestions"> | null) ?? null;
 
-				if (conversation.data) {
-					await analyzeAndPersist(db, {
-						orgId,
-						conversationId: conversation.data.id,
-						messageId: message.waMessageId,
-						text: message.content ?? null,
-						mediaKey: message.mediaUrl ?? null,
-					});
-				}
+			if (!suggestion) {
+				const analyzed = await analyzeAndPersist(db, {
+					orgId,
+					conversationId: candidate.conversationId,
+					messageId: message.waMessageId,
+					text: message.content ?? null,
+					mediaKey: message.mediaUrl ?? null,
+				});
+				suggestion = analyzed ?? null;
+			}
+
+			if (suggestion) {
+				analyzerByConversation.set(
+					candidate.conversationId,
+					toAnalyzerResult(suggestion, candidate.summary),
+				);
 			}
 		}
+
+		for (const conversation of persistedConversations) {
+			const analyzer = analyzerByConversation.get(conversation.conversationId);
+			await ensureIntakeForWhatsApp({
+				db,
+				orgId,
+				conversationId: conversation.conversationId,
+				waContactId: conversation.waContactId,
+				waConversationId: conversation.waConversationId,
+				waMessageIds: conversation.waMessageIds,
+				messageRowIds: conversation.messageRowIds,
+				summary: conversation.summary,
+				snippet: conversation.snippet,
+				lastMessageIso: conversation.lastMessageIso,
+				media: conversation.media,
+				...(analyzer ? { analyzer } : {}),
+			});
+		}
+
+		await recordWebhookEvent({ eventId, provider: "whatsapp", db, orgId });
 	}
 
 	// 6) Process status updates

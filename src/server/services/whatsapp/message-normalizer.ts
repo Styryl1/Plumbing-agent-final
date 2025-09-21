@@ -17,6 +17,7 @@ export type NormalizedMessage = {
 		| "unknown";
 	content?: string;
 	mediaUrl?: string;
+	mediaId?: string;
 	timestampIso: string;
 };
 
@@ -118,6 +119,19 @@ export function parseWhatsAppWebhook(payload: unknown): {
 							? m.document?.link
 							: undefined;
 
+		const mediaId =
+			mt === "image"
+				? m.image?.id
+				: mt === "audio"
+					? m.audio?.id
+					: mt === "video"
+						? m.video?.id
+						: mt === "document"
+							? m.document?.id
+							: mt === "sticker"
+								? m.sticker?.id
+								: undefined;
+
 		return {
 			waMessageId: m.id,
 			waContactId: m.from,
@@ -125,6 +139,7 @@ export function parseWhatsAppWebhook(payload: unknown): {
 			messageType: mt,
 			...(content !== undefined && { content }),
 			...(mediaUrl !== undefined && { mediaUrl }),
+			...(mediaId !== undefined && { mediaId }),
 			timestampIso: iso,
 		};
 	});

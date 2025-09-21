@@ -18,7 +18,7 @@ vi.mock('~/server/db/serviceClient', () => ({
 
 vi.mock('~/server/services/whatsapp/message-store', () => ({
   isWebhookEventDuplicate: vi.fn(() => Promise.resolve(false)),
-  persistWhatsAppMessages: vi.fn(() => Promise.resolve()),
+  persistWhatsAppMessages: vi.fn(() => Promise.resolve([])),
   recordWebhookEvent: vi.fn(() => Promise.resolve())
 }));
 

@@ -71,6 +71,9 @@
       "headline": "Koptekst",
       "newJob": "Nieuwe klus",
       "subtitle": "Ondertitel"
+    },
+    "labels": {
+      "dismiss": "Sluiten"
     }
   },
   "auth": {
@@ -776,6 +779,50 @@
         "empty": "Geen AI suggesties beschikbaar",
         "minutes": "min",
         "title": "AI Suggesties"
+      },
+      "intake": {
+        "title": "Intake",
+        "empty": "Geen intake-items",
+        "detailsTitle": "Intake details",
+        "summaryFallback": "Intake",
+        "metadata": {
+          "received": "Ontvangen",
+          "priority": "Prioriteit"
+        },
+        "channel": {
+          "whatsapp": "WhatsApp",
+          "voice": "Telefoon"
+        },
+        "whatsapp": {
+          "messageCount": "{count} WhatsApp-berichten",
+          "media": "Media-bijlagen",
+          "mediaEmpty": "Geen media bijgevoegd"
+        },
+        "voice": {
+          "direction": {
+            "inbound": "Inkomend telefoongesprek",
+            "outbound": "Uitgaand telefoongesprek"
+          },
+          "caller": "Beller",
+          "receiver": "Ontvanger",
+          "duration": "Duur",
+          "recording": "Opname",
+          "noRecording": "Geen opname opgeslagen",
+          "transcript": "Transcript",
+          "noTranscript": "Transcript in verwerking"
+        },
+        "analyzer": {
+          "title": "AI-analyse",
+          "issue": "Probleem",
+          "urgency": "Urgentie",
+          "timeEstimate": "Geschatte duur",
+          "minutesUnit": "{value} min",
+          "materials": {
+            "heading": "Voorgestelde materialen",
+            "empty": "Geen materialen voorgesteld"
+          },
+          "confidence": "Vertrouwen"
+        }
       }
     },
     "update": {

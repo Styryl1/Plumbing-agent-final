@@ -20,5 +20,8 @@
 	"cta.finalizeVoiceInvoice": "Afronden → Voice-factuur",
 	"cta.headline": "Koptekst",
 	"cta.newJob": "Nieuwe klus",
-	"cta.subtitle": "Ondertitel"
+	"cta.subtitle": "Ondertitel",
+	"labels": {
+		"dismiss": "Sluiten"
+	}
 }

@@ -20,5 +20,8 @@
 	"cta.finalizeVoiceInvoice": "Finalize → Voice invoice",
 	"cta.headline": "Headline",
 	"cta.newJob": "New job",
-	"cta.subtitle": "Subtitle"
+	"cta.subtitle": "Subtitle",
+	"labels": {
+		"dismiss": "Dismiss"
+	}
 }

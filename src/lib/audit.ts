@@ -19,7 +19,10 @@ export type AuditResource =
 	| "organization"
 	| "invoice"
 	| "whatsapp_conversation"
-	| "whatsapp_message";
+	| "whatsapp_message"
+	| "intake_event"
+	| "unscheduled_item"
+	| "voice_call";
 
 export interface AuditLogData {
 	orgId: string;

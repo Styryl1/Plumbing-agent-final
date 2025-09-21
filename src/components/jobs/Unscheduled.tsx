@@ -1,5 +1,15 @@
 "use client";
-import { Clock, Gauge, Phone, Zap } from "lucide-react";
+import { skipToken } from "@tanstack/react-query";
+import {
+	Clock,
+	FileText,
+	Gauge,
+	Loader2,
+	MessageSquare,
+	Mic,
+	Phone,
+	Zap,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
@@ -33,8 +43,43 @@ import {
 } from "~/lib/calendar-temporal";
 import { formatDutchDate, formatDutchDateTime } from "~/lib/dates";
 import { api } from "~/lib/trpc/client";
+import type { IntakeDetailDTO, IntakeSummaryDTO } from "~/types/intake";
 
 type JobPriority = "normal" | "urgent" | "emergency";
+
+const formatBytes = (bytes?: number | null): string => {
+	if (!bytes || bytes <= 0) return "0 B";
+	const units = ["B", "kB", "MB", "GB"];
+	let value = bytes;
+	let unitIndex = 0;
+	while (value >= 1024 && unitIndex < units.length - 1) {
+		value /= 1024;
+		unitIndex += 1;
+	}
+	const formatter = new Intl.NumberFormat("nl-NL", {
+		maximumFractionDigits: value < 10 ? 1 : 0,
+	});
+	return `${formatter.format(value)} ${units[unitIndex]}`;
+};
+
+const formatDuration = (seconds?: number | null): string => {
+	if (!seconds || seconds <= 0) return "0s";
+	const totalSeconds = Math.round(seconds);
+	const minutes = Math.floor(totalSeconds / 60);
+	const remainingSeconds = totalSeconds % 60;
+	if (minutes === 0) {
+		return `${remainingSeconds}s`;
+	}
+	return remainingSeconds === 0
+		? `${minutes}m`
+		: `${minutes}m ${remainingSeconds}s`;
+};
+
+const mapIntakePriority = (value: string | null | undefined): JobPriority => {
+	if (value === "emergency") return "emergency";
+	if (value === "urgent") return "urgent";
+	return "normal";
+};
 
 interface Employee {
 	id: string;
@@ -83,21 +128,51 @@ export default function Unscheduled({
 }: UnscheduledProps): JSX.Element {
 	const t = useTranslations();
 	const [isOpen, setIsOpen] = useState(false);
+	const utils = api.useUtils();
 	const [activeRecommendation, setActiveRecommendation] =
 		useState<AiRecommendationDTO | null>(null);
 	const [activeWhatsAppLead, setActiveWhatsAppLead] =
 		useState<WhatsAppLead | null>(null);
+	const [activeIntake, setActiveIntake] = useState<IntakeSummaryDTO | null>(
+		null,
+	);
+
+	const intakeListQuery = api.intake.list.useQuery(
+		{ status: "pending", limit: 25 },
+		{ enabled: isOpen },
+	);
+	const intakeData = intakeListQuery.data as
+		| { items: IntakeSummaryDTO[]; nextCursor: string | null }
+		| undefined;
+	const intakeLoading = intakeListQuery.isLoading;
+	const intakeItems: IntakeSummaryDTO[] = intakeData?.items ?? [];
+
+	const intakeDetailQuery = api.intake.get.useQuery(
+		activeIntake ? { intakeEventId: activeIntake.id } : skipToken,
+		{ enabled: activeIntake !== null },
+	);
+	const intakeDetailData: IntakeDetailDTO | undefined =
+		intakeDetailQuery.data ?? undefined;
+	const isIntakeDetailLoading =
+		intakeDetailQuery.isLoading || intakeDetailQuery.isFetching;
+
+	const setIntakeStatus = api.intake.setStatus.useMutation();
 
 	// Fetch AI recommendations
-	const { data: aiData, isLoading: aiLoading } =
-		api.ai.listRecommendations.useQuery({ limit: 25 }, { enabled: isOpen });
+	const aiRecommendationsQuery = api.ai.listRecommendations.useQuery(
+		{ limit: 25 },
+		{ enabled: isOpen },
+	);
+	const aiData = aiRecommendationsQuery.data;
+	const aiLoading = aiRecommendationsQuery.isLoading;
 	const aiRecommendations = aiData?.items ?? [];
 
 	// Fetch WhatsApp leads
-	const { data: whatsappLeads = [] } = api.whatsapp.listLeads.useQuery(
+	const whatsappLeadsQuery = api.whatsapp.listLeads.useQuery(
 		{ limit: 10 },
 		{ enabled: isOpen },
-	) as { data: WhatsAppLead[] };
+	);
+	const whatsappLeads = (whatsappLeadsQuery.data ?? []) as WhatsAppLead[];
 
 	// Form state for job creation
 	const [formData, setFormData] = useState<{
@@ -145,6 +220,7 @@ export default function Unscheduled({
 		});
 		setActiveRecommendation(null);
 		setActiveWhatsAppLead(null);
+		setActiveIntake(null);
 	};
 
 	const handleApplyAIRecommendation = (rec: AiRecommendationDTO): void => {
@@ -175,6 +251,43 @@ export default function Unscheduled({
 		}));
 	};
 
+	const handleSelectIntake = (item: IntakeSummaryDTO): void => {
+		setActiveIntake(item);
+		setActiveRecommendation(null);
+		setActiveWhatsAppLead(null);
+		setFormData((prev) => ({
+			...prev,
+			title:
+				item.summary && item.summary.trim().length > 0
+					? item.summary
+					: prev.title,
+			description:
+				item.snippet && item.snippet.trim().length > 0
+					? item.snippet
+					: prev.description,
+			priority: mapIntakePriority(item.priority),
+			customerId: "",
+		}));
+	};
+
+	const handleDismissIntake = async (intakeId: string): Promise<void> => {
+		try {
+			await setIntakeStatus.mutateAsync({
+				intakeEventId: intakeId,
+				status: "dismissed",
+			});
+			await utils.intake.list.invalidate();
+			if (activeIntake?.id === intakeId) {
+				setActiveIntake(null);
+			}
+			toast.success("Intake afgehandeld");
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Bijwerken van intake mislukt",
+			);
+		}
+	};
+
 	const handleSubmit = async (): Promise<void> => {
 		if (
 			!formData.title ||
@@ -195,7 +308,10 @@ export default function Unscheduled({
 
 			await createJobMutation.mutateAsync({
 				title: formData.title,
-				description: formData.description || undefined,
+				description:
+					formData.description.trim().length > 0
+						? formData.description
+						: undefined,
 				start: toISO(snappedStart),
 				end: toISO(endZdt),
 				customerId: formData.customerId,
@@ -206,8 +322,25 @@ export default function Unscheduled({
 					street: "",
 					city: "",
 				},
-				employeeId: formData.primaryEmployeeId || undefined,
+				employeeId:
+					formData.primaryEmployeeId === ""
+						? undefined
+						: formData.primaryEmployeeId,
 			});
+
+			if (activeIntake) {
+				try {
+					await setIntakeStatus.mutateAsync({
+						intakeEventId: activeIntake.id,
+						status: "applied",
+					});
+				} catch (statusError) {
+					console.error("Failed to update intake status", statusError);
+				} finally {
+					await utils.intake.list.invalidate();
+					setActiveIntake(null);
+				}
+			}
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : String(error);
 			console.error("Error creating job:", message);
@@ -248,8 +381,16 @@ export default function Unscheduled({
 				</SheetHeader>
 
 				<div className="flex-1 overflow-hidden">
-					<Tabs defaultValue="ai" className="h-full flex flex-col">
-						<TabsList className="grid w-full grid-cols-2 mb-4">
+					<Tabs defaultValue="intake" className="h-full flex flex-col">
+						<TabsList className="grid w-full grid-cols-3 mb-4">
+							<TabsTrigger value="intake">
+								{t("jobs.unscheduled.intake.title")}{" "}
+								{intakeItems.length > 0 && (
+									<span className="ml-1 text-xs opacity-70">
+										({intakeItems.length})
+									</span>
+								)}
+							</TabsTrigger>
 							<TabsTrigger value="ai">
 								{t("jobs.unscheduled.ai.title")}{" "}
 								{aiRecommendations.length > 0 && (
@@ -262,6 +403,90 @@ export default function Unscheduled({
 								{t("ui.tabs.whatsapp")}
 							</TabsTrigger>
 						</TabsList>
+
+						<TabsContent value="intake" className="flex-1 overflow-y-auto">
+							{intakeLoading ? (
+								<div className="space-y-3">
+									{Array.from({ length: 4 }).map((_, idx) => (
+										<Skeleton key={idx} className="h-16 w-full" />
+									))}
+								</div>
+							) : intakeItems.length === 0 ? (
+								<p className="text-sm text-muted-foreground">
+									{t("jobs.unscheduled.intake.empty", {
+										defaultValue: "Geen intake-items",
+									})}
+								</p>
+							) : (
+								<ul className="space-y-2">
+									{intakeItems.map((item) => {
+										const isSelected = activeIntake?.id === item.id;
+										return (
+											<li key={item.id}>
+												<div
+													className={`flex items-start justify-between rounded-lg border p-3 transition-colors ${isSelected ? "border-primary bg-primary/5" : "border-muted"}`}
+												>
+													<button
+														type="button"
+														onClick={() => {
+															handleSelectIntake(item);
+														}}
+														className="text-left flex-1"
+													>
+														<div className="flex items-center gap-2">
+															<Badge
+																variant={
+																	item.channel === "voice"
+																		? "secondary"
+																		: "default"
+																}
+															>
+																{t(
+																	`jobs.unscheduled.intake.channel.${item.channel}`,
+																)}
+															</Badge>
+															<Badge
+																variant={
+																	mapIntakePriority(item.priority) ===
+																	"emergency"
+																		? "destructive"
+																		: mapIntakePriority(item.priority) ===
+																				"urgent"
+																			? "default"
+																			: "outline"
+																}
+															>
+																{t(
+																	`ui.form.priorityOptions.${mapIntakePriority(item.priority)}`,
+																)}
+															</Badge>
+														</div>
+														<p className="mt-2 font-medium">
+															{item.summary ||
+																t("jobs.unscheduled.intake.summaryFallback")}
+														</p>
+														<p className="text-sm text-muted-foreground">
+															{formatDutchDateTime(item.receivedAtIso)}
+														</p>
+													</button>
+													<Button
+														variant="ghost"
+														size="sm"
+														onClick={() => {
+															void handleDismissIntake(item.id);
+														}}
+													>
+														{t("actions.labels.dismiss", {
+															defaultValue: "Sluiten",
+														})}
+													</Button>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
+							)}
+						</TabsContent>
 
 						{/* AI Recommendations Tab */}
 						<TabsContent value="ai" className="flex-1 overflow-y-auto">
@@ -413,8 +638,20 @@ export default function Unscheduled({
 					</Tabs>
 				</div>
 
+				{activeIntake && (
+					<div className="mt-4">
+						<IntakeDetailsCard
+							summary={activeIntake}
+							detail={intakeDetailData}
+							loading={isIntakeDetailLoading}
+						/>
+					</div>
+				)}
+
 				{/* Job Creation Form */}
-				{(activeRecommendation !== null || activeWhatsAppLead !== null) && (
+				{(activeRecommendation !== null ||
+					activeWhatsAppLead !== null ||
+					activeIntake !== null) && (
 					<div className="border-t pt-4 mt-4 space-y-4">
 						<div className="grid grid-cols-2 gap-4">
 							<div>
@@ -484,7 +721,11 @@ export default function Unscheduled({
 								<Input
 									id="startTime"
 									type="datetime-local"
-									value={formData.startTime || getNextAvailableSlot()}
+									value={
+										formData.startTime === ""
+											? getNextAvailableSlot()
+											: formData.startTime
+									}
 									onChange={(e) => {
 										setFormData((prev) => ({
 											...prev,
@@ -565,5 +806,233 @@ export default function Unscheduled({
 				)}
 			</SheetContent>
 		</Sheet>
+	);
+}
+
+type IntakeDetailsCardProps = {
+	summary: IntakeSummaryDTO;
+	detail: IntakeDetailDTO | undefined;
+	loading: boolean;
+};
+
+function IntakeDetailsCard({
+	summary,
+	detail,
+	loading,
+}: IntakeDetailsCardProps): JSX.Element {
+	const t = useTranslations();
+	const detailData: IntakeDetailDTO["details"] | undefined = detail?.details;
+	const priority = mapIntakePriority(summary.priority);
+	const media = detailData?.media ?? summary.media;
+	const attachments = media.filter((item) => item.source !== "voice");
+	const whatsappInfo = detailData?.whatsapp ?? summary.whatsapp;
+	const voiceInfo = detailData?.voice ?? summary.voice;
+	const analyzer = detailData?.analyzer;
+	const analyzerPriority =
+		analyzer !== undefined ? mapIntakePriority(analyzer.urgency) : null;
+	const voiceRecording =
+		voiceInfo?.recording ?? media.find((item) => item.source === "voice");
+	const lastMessageIso = detailData?.lastMessageIso ?? summary.receivedAtIso;
+
+	return (
+		<div className="space-y-4 rounded-lg border bg-card p-4">
+			<div className="flex items-start justify-between gap-3">
+				<div className="space-y-2">
+					<div className="flex items-center gap-2">
+						<Badge
+							variant={summary.channel === "voice" ? "secondary" : "default"}
+						>
+							{t(`jobs.unscheduled.intake.channel.${summary.channel}`)}
+						</Badge>
+						<Badge
+							variant={
+								priority === "emergency"
+									? "destructive"
+									: priority === "urgent"
+										? "default"
+										: "outline"
+							}
+						>
+							{t(`ui.form.priorityOptions.${priority}`)}
+						</Badge>
+					</div>
+					<p className="text-sm text-muted-foreground">
+						{formatDutchDateTime(lastMessageIso)}
+					</p>
+				</div>
+				{loading && (
+					<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+				)}
+			</div>
+
+			<div>
+				<p className="text-base font-medium">
+					{summary.summary && summary.summary.trim().length > 0
+						? summary.summary
+						: t("jobs.unscheduled.intake.summaryFallback")}
+				</p>
+				<p className="mt-1 text-sm text-muted-foreground">
+					{detailData?.snippet ?? summary.snippet}
+				</p>
+			</div>
+
+			{summary.channel === "whatsapp" && (
+				<div className="space-y-3">
+					<div className="flex items-center gap-2 text-sm font-medium">
+						<MessageSquare className="h-4 w-4" />
+						<span>
+							{t("jobs.unscheduled.intake.whatsapp.messageCount", {
+								count: whatsappInfo?.messageIds.length ?? 0,
+							})}
+						</span>
+					</div>
+					<div>
+						<h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+							{t("jobs.unscheduled.intake.whatsapp.media")}
+						</h4>
+						{attachments.length === 0 ? (
+							<p className="text-sm text-muted-foreground">
+								{t("jobs.unscheduled.intake.whatsapp.mediaEmpty")}
+							</p>
+						) : (
+							<ul className="space-y-2">
+								{attachments.map((attachment) => (
+									<li
+										key={attachment.storageKey}
+										className="flex items-start justify-between rounded-md border px-3 py-2 text-sm"
+									>
+										<div className="min-w-0">
+											<p className="font-medium">{attachment.mime}</p>
+											<p className="truncate text-xs text-muted-foreground">
+												{attachment.storageKey}
+											</p>
+										</div>
+										<span className="text-xs text-muted-foreground">
+											{formatBytes(attachment.byteSize)}
+										</span>
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</div>
+			)}
+
+			{summary.channel === "voice" && (
+				<div className="space-y-3">
+					<div className="flex items-center gap-2 text-sm font-medium">
+						<Phone className="h-4 w-4" />
+						<span>
+							{t(
+								`jobs.unscheduled.intake.voice.direction.${voiceInfo?.direction ?? "inbound"}`,
+							)}
+						</span>
+					</div>
+					<dl className="grid gap-3 text-sm sm:grid-cols-2">
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.voice.caller")}
+							</dt>
+							<dd>{voiceInfo?.callerNumber ?? t("ui.common.phoneUnknown")}</dd>
+						</div>
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.voice.receiver")}
+							</dt>
+							<dd>
+								{voiceInfo?.receiverNumber ?? t("ui.common.phoneUnknown")}
+							</dd>
+						</div>
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.voice.duration")}
+							</dt>
+							<dd>{formatDuration(voiceInfo?.durationSeconds)}</dd>
+						</div>
+					</dl>
+					<div className="space-y-1">
+						<div className="flex items-center gap-2 text-sm font-medium">
+							<Mic className="h-4 w-4" />
+							<span>{t("jobs.unscheduled.intake.voice.recording")}</span>
+						</div>
+						<p className="whitespace-pre-line break-all text-sm text-muted-foreground">
+							{voiceRecording
+								? `${voiceRecording.mime} • ${formatBytes(voiceRecording.byteSize)} \n${voiceRecording.storageKey}`
+								: t("jobs.unscheduled.intake.voice.noRecording")}
+						</p>
+					</div>
+					<div className="space-y-1">
+						<div className="flex items-center gap-2 text-sm font-medium">
+							<FileText className="h-4 w-4" />
+							<span>{t("jobs.unscheduled.intake.voice.transcript")}</span>
+						</div>
+						<p className="whitespace-pre-line text-sm text-muted-foreground">
+							{voiceInfo?.transcript?.text ??
+								t("jobs.unscheduled.intake.voice.noTranscript")}
+						</p>
+					</div>
+				</div>
+			)}
+
+			{analyzer && (
+				<div className="space-y-3 rounded-md border p-3">
+					<div className="flex items-center gap-2 text-sm font-semibold">
+						<Gauge className="h-4 w-4" />
+						<span>{t("jobs.unscheduled.intake.analyzer.title")}</span>
+					</div>
+					<div className="grid gap-2 text-sm sm:grid-cols-2">
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.analyzer.issue")}
+							</dt>
+							<dd>{analyzer.issue}</dd>
+						</div>
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.analyzer.urgency")}
+							</dt>
+							<dd>
+								{t(`ui.form.priorityOptions.${analyzerPriority ?? "normal"}`)}
+							</dd>
+						</div>
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.analyzer.timeEstimate")}
+							</dt>
+							<dd>
+								{t("jobs.unscheduled.intake.analyzer.minutesUnit", {
+									value: analyzer.timeEstimateMin,
+								})}
+							</dd>
+						</div>
+						<div>
+							<dt className="text-xs uppercase tracking-wide text-muted-foreground">
+								{t("jobs.unscheduled.intake.analyzer.confidence")}
+							</dt>
+							<dd>{Math.round(analyzer.confidence * 100)}%</dd>
+						</div>
+					</div>
+					<div>
+						<h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+							{t("jobs.unscheduled.intake.analyzer.materials.heading")}
+						</h4>
+						{analyzer.materials.length === 0 ? (
+							<p className="text-sm text-muted-foreground">
+								{t("jobs.unscheduled.intake.analyzer.materials.empty")}
+							</p>
+						) : (
+							<ul className="list-disc space-y-1 pl-5 text-sm">
+								{analyzer.materials.map((material, index) => (
+									<li key={`${material.name}-${index}`}>
+										{material.qty}× {material.name}
+										{material.unit ? ` (${material.unit})` : ""}
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</div>
+			)}
+		</div>
 	);
 }

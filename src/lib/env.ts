@@ -23,7 +23,25 @@ const schema = z.object({
 	WA_GRAPH_TOKEN: z.string().min(1), // Meta access token for API calls (required)
 	WA_CUSTOMER_NUMBER_ID: z.string().min(1), // Phone number ID for customer chat (required)
 	WA_CONTROL_NUMBER_ID: z.string().min(1), // Phone number ID for control chat (required)
-	WA_MEDIA_DOWNLOAD: z.enum(["true", "false"]).default("false"), // Media download feature flag
+	WA_MEDIA_DOWNLOAD: z
+		.preprocess((value) => {
+			if (typeof value === "string") {
+				return value.toLowerCase() === "true";
+			}
+			return value;
+		}, z.boolean())
+		.default(false), // Media download feature flag
+	BUCKET_WA_MEDIA: z.string().default("wa-media"),
+	BUCKET_VOICE_INTAKE: z.string().default("voice-intake"),
+	MESSAGEBIRD_ACCESS_KEY: z.string().min(10).optional(),
+	MESSAGEBIRD_WEBHOOK_SIGNING_KEY: z.string().min(16).optional(),
+	MESSAGEBIRD_SIGNATURE_HEADER: z.string().default("MessageBird-Signature"),
+	MESSAGEBIRD_TIMESTAMP_HEADER: z
+		.string()
+		.default("MessageBird-Request-Timestamp"),
+	VOICE_TRANSCRIBE_PROVIDER: z
+		.enum(["whisper", "messagebird"])
+		.default("whisper"),
 	AI_MODE: z.enum(["rule", "openai"]).default("rule"), // AI analysis mode
 	OPENAI_API_KEY: z.string().optional(), // OpenAI API key (optional, required only if AI_MODE="openai")
 	// Legacy WhatsApp vars (for backward compatibility)
@@ -94,6 +112,13 @@ const parsed = schema.safeParse({
 	WHATSAPP_CONTROL_PHONE_ID: process.env.WHATSAPP_CONTROL_PHONE_ID,
 	WHATSAPP_ACCESS_TOKEN: process.env.WHATSAPP_ACCESS_TOKEN,
 	WHATSAPP_DEBUG: process.env.WHATSAPP_DEBUG,
+	BUCKET_WA_MEDIA: process.env.BUCKET_WA_MEDIA,
+	BUCKET_VOICE_INTAKE: process.env.BUCKET_VOICE_INTAKE,
+	MESSAGEBIRD_ACCESS_KEY: process.env.MESSAGEBIRD_ACCESS_KEY,
+	MESSAGEBIRD_WEBHOOK_SIGNING_KEY: process.env.MESSAGEBIRD_WEBHOOK_SIGNING_KEY,
+	MESSAGEBIRD_SIGNATURE_HEADER: process.env.MESSAGEBIRD_SIGNATURE_HEADER,
+	MESSAGEBIRD_TIMESTAMP_HEADER: process.env.MESSAGEBIRD_TIMESTAMP_HEADER,
+	VOICE_TRANSCRIBE_PROVIDER: process.env.VOICE_TRANSCRIBE_PROVIDER,
 	MONEYBIRD_CLIENT_ID: process.env.MONEYBIRD_CLIENT_ID,
 	MONEYBIRD_CLIENT_SECRET: process.env.MONEYBIRD_CLIENT_SECRET,
 	WEFACT_API_KEY: process.env.WEFACT_API_KEY,
@@ -150,16 +175,24 @@ export const serverOnlyEnv = (() => {
 		WA_GRAPH_TOKEN: env.WA_GRAPH_TOKEN,
 		WA_CUSTOMER_NUMBER_ID: env.WA_CUSTOMER_NUMBER_ID,
 		WA_CONTROL_NUMBER_ID: env.WA_CONTROL_NUMBER_ID,
+		WA_MEDIA_DOWNLOAD: env.WA_MEDIA_DOWNLOAD,
+		BUCKET_WA_MEDIA: env.BUCKET_WA_MEDIA,
+		BUCKET_VOICE_INTAKE: env.BUCKET_VOICE_INTAKE,
 		OPENAI_API_KEY: env.OPENAI_API_KEY,
 		WHATSAPP_APP_SECRET: env.WHATSAPP_APP_SECRET,
 		WHATSAPP_ACCESS_TOKEN: env.WHATSAPP_ACCESS_TOKEN,
 		WHATSAPP_BUSINESS_PHONE_ID: env.WHATSAPP_BUSINESS_PHONE_ID,
+		VOICE_TRANSCRIBE_PROVIDER: env.VOICE_TRANSCRIBE_PROVIDER,
 		EBOEK_API_TOKEN: env.EBOEK_API_TOKEN,
 		EBOEK_BASE_URL: env.EBOEK_BASE_URL,
 		EMAIL_API_KEY: env.EMAIL_API_KEY,
 		EMAIL_PROVIDER: env.EMAIL_PROVIDER,
 		EMAIL_FROM: env.EMAIL_FROM,
 		INTERNAL_JOB_TOKEN: env.INTERNAL_JOB_TOKEN,
+		MESSAGEBIRD_ACCESS_KEY: env.MESSAGEBIRD_ACCESS_KEY,
+		MESSAGEBIRD_WEBHOOK_SIGNING_KEY: env.MESSAGEBIRD_WEBHOOK_SIGNING_KEY,
+		MESSAGEBIRD_SIGNATURE_HEADER: env.MESSAGEBIRD_SIGNATURE_HEADER,
+		MESSAGEBIRD_TIMESTAMP_HEADER: env.MESSAGEBIRD_TIMESTAMP_HEADER,
 		NODE_ENV: env.NODE_ENV,
 		MOLLIE_API_KEY: env.MOLLIE_API_KEY,
 		MOLLIE_WEBHOOK_TOKEN: env.MOLLIE_WEBHOOK_TOKEN,

@@ -71,6 +71,9 @@
       "headline": "Headline",
       "newJob": "New job",
       "subtitle": "Subtitle"
+    },
+    "labels": {
+      "dismiss": "Dismiss"
     }
   },
   "auth": {
@@ -776,6 +779,50 @@
         "empty": "No AI suggestions available",
         "minutes": "min",
         "title": "AI Suggestions"
+      },
+      "intake": {
+        "title": "Intake",
+        "empty": "No intake items",
+        "detailsTitle": "Intake details",
+        "summaryFallback": "Intake",
+        "metadata": {
+          "received": "Received",
+          "priority": "Priority"
+        },
+        "channel": {
+          "whatsapp": "WhatsApp",
+          "voice": "Voice"
+        },
+        "whatsapp": {
+          "messageCount": "{count} WhatsApp messages",
+          "media": "Media attachments",
+          "mediaEmpty": "No media attached"
+        },
+        "voice": {
+          "direction": {
+            "inbound": "Inbound call",
+            "outbound": "Outbound call"
+          },
+          "caller": "Caller",
+          "receiver": "Receiver",
+          "duration": "Duration",
+          "recording": "Recording",
+          "noRecording": "No recording stored",
+          "transcript": "Transcript",
+          "noTranscript": "Transcript pending"
+        },
+        "analyzer": {
+          "title": "AI analysis",
+          "issue": "Issue",
+          "urgency": "Urgency",
+          "timeEstimate": "Estimated duration",
+          "minutesUnit": "{value} min",
+          "materials": {
+            "heading": "Suggested materials",
+            "empty": "No materials suggested"
+          },
+          "confidence": "Confidence"
+        }
       }
     },
     "update": {

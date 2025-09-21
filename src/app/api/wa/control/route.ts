@@ -4,6 +4,10 @@ import { NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";
+import {
+	isWebhookEventDuplicate,
+	recordWebhookEvent,
+} from "~/server/services/webhooks/events";
 import type { ApprovalContext } from "~/server/services/whatsapp/approval";
 import {
 	approveSuggestion,
@@ -23,11 +27,7 @@ import {
 	parseWhatsAppWebhook,
 } from "~/server/services/whatsapp/message-normalizer";
 import { applyStatuses } from "~/server/services/whatsapp/message-status";
-import {
-	isWebhookEventDuplicate,
-	persistWhatsAppMessages,
-	recordWebhookEvent,
-} from "~/server/services/whatsapp/message-store";
+import { persistWhatsAppMessages } from "~/server/services/whatsapp/message-store";
 import { sendTextMessage } from "~/server/services/whatsapp/send";
 import { verifyWhatsAppSignature } from "~/server/services/whatsapp/signature-verify";
 import type { Database } from "~/types/supabase";

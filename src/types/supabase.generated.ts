@@ -92,6 +92,135 @@ export type Database = {
 					},
 				];
 			};
+			assets: {
+				Row: {
+					brand: string | null;
+					category: string | null;
+					created_at: string;
+					custom_fields: Json;
+					customer_id: string;
+					id: string;
+					label: string;
+					model: string | null;
+					org_id: string;
+					serial_number: string | null;
+					site_id: string | null;
+					status: string | null;
+					updated_at: string;
+					year_installed: number | null;
+				};
+				Insert: {
+					brand?: string | null;
+					category?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					customer_id: string;
+					id?: string;
+					label: string;
+					model?: string | null;
+					org_id: string;
+					serial_number?: string | null;
+					site_id?: string | null;
+					status?: string | null;
+					updated_at?: string;
+					year_installed?: number | null;
+				};
+				Update: {
+					brand?: string | null;
+					category?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					customer_id?: string;
+					id?: string;
+					label?: string;
+					model?: string | null;
+					org_id?: string;
+					serial_number?: string | null;
+					site_id?: string | null;
+					status?: string | null;
+					updated_at?: string;
+					year_installed?: number | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "assets_customer_id_fkey";
+						columns: ["customer_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "assets_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "assets_site_id_fkey";
+						columns: ["site_id"];
+						isOneToOne: false;
+						referencedRelation: "sites";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			audit_events: {
+				Row: {
+					actor_id: string | null;
+					actor_role: string | null;
+					actor_type: string;
+					after: Json | null;
+					before: Json | null;
+					created_at: string;
+					event_type: string;
+					id: string;
+					metadata: Json;
+					org_id: string;
+					resource_id: string | null;
+					resource_type: string;
+					summary: string | null;
+				};
+				Insert: {
+					actor_id?: string | null;
+					actor_role?: string | null;
+					actor_type?: string;
+					after?: Json | null;
+					before?: Json | null;
+					created_at?: string;
+					event_type: string;
+					id?: string;
+					metadata?: Json;
+					org_id: string;
+					resource_id?: string | null;
+					resource_type: string;
+					summary?: string | null;
+				};
+				Update: {
+					actor_id?: string | null;
+					actor_role?: string | null;
+					actor_type?: string;
+					after?: Json | null;
+					before?: Json | null;
+					created_at?: string;
+					event_type?: string;
+					id?: string;
+					metadata?: Json;
+					org_id?: string;
+					resource_id?: string | null;
+					resource_type?: string;
+					summary?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "audit_events_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			audit_logs: {
 				Row: {
 					action: string;
@@ -137,7 +266,7 @@ export type Database = {
 					btw: string | null;
 					city: string | null;
 					created_at: string | null;
-					custom_fields: Json | null;
+					custom_fields: Json;
 					email: string | null;
 					house_number: string | null;
 					id: string;
@@ -147,7 +276,7 @@ export type Database = {
 					opt_out_dunning: boolean | null;
 					org_id: string;
 					phone: string | null;
-					phones: string[] | null;
+					phones: string[];
 					postal_code: string | null;
 					street: string | null;
 				};
@@ -157,7 +286,7 @@ export type Database = {
 					btw?: string | null;
 					city?: string | null;
 					created_at?: string | null;
-					custom_fields?: Json | null;
+					custom_fields?: Json;
 					email?: string | null;
 					house_number?: string | null;
 					id?: string;
@@ -167,7 +296,7 @@ export type Database = {
 					opt_out_dunning?: boolean | null;
 					org_id: string;
 					phone?: string | null;
-					phones?: string[] | null;
+					phones?: string[];
 					postal_code?: string | null;
 					street?: string | null;
 				};
@@ -177,7 +306,7 @@ export type Database = {
 					btw?: string | null;
 					city?: string | null;
 					created_at?: string | null;
-					custom_fields?: Json | null;
+					custom_fields?: Json;
 					email?: string | null;
 					house_number?: string | null;
 					id?: string;
@@ -187,116 +316,13 @@ export type Database = {
 					opt_out_dunning?: boolean | null;
 					org_id?: string;
 					phone?: string | null;
-					phones?: string[] | null;
+					phones?: string[];
 					postal_code?: string | null;
 					street?: string | null;
 				};
 				Relationships: [
 					{
 						foreignKeyName: "customers_org_id_fkey";
-						columns: ["org_id"];
-						isOneToOne: false;
-						referencedRelation: "organizations";
-						referencedColumns: ["id"];
-					},
-				];
-			};
-			audit_events: {
-				Row: {
-					actor_id: string | null;
-					actor_role: string | null;
-					actor_type: "user" | "system" | "service";
-					after: Json | null;
-					before: Json | null;
-					created_at: string;
-					event_type: string;
-					id: string;
-					metadata: Json;
-					org_id: string;
-					resource_id: string | null;
-					resource_type: string;
-					summary: string | null;
-				};
-				Insert: {
-					actor_id?: string | null;
-					actor_role?: string | null;
-					actor_type?: "user" | "system" | "service";
-					after?: Json | null;
-					before?: Json | null;
-					created_at?: string;
-					event_type: string;
-					id?: string;
-					metadata?: Json;
-					org_id: string;
-					resource_id?: string | null;
-					resource_type: string;
-					summary?: string | null;
-				};
-				Update: {
-					actor_id?: string | null;
-					actor_role?: string | null;
-					actor_type?: "user" | "system" | "service";
-					after?: Json | null;
-					before?: Json | null;
-					created_at?: string;
-					event_type?: string;
-					id?: string;
-					metadata?: Json;
-					org_id?: string;
-					resource_id?: string | null;
-					resource_type?: string;
-					summary?: string | null;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "audit_events_org_id_fkey";
-						columns: ["org_id"];
-						isOneToOne: false;
-						referencedRelation: "organizations";
-						referencedColumns: ["id"];
-					},
-				];
-			};
-			feature_flags: {
-				Row: {
-					actor_id: string | null;
-					created_at: string;
-					created_by: string | null;
-					enabled: boolean;
-					flag: string;
-					id: string;
-					org_id: string;
-					updated_at: string;
-					updated_by: string | null;
-					value: Json | null;
-				};
-				Insert: {
-					actor_id?: string | null;
-					created_at?: string;
-					created_by?: string | null;
-					enabled?: boolean;
-					flag: string;
-					id?: string;
-					org_id: string;
-					updated_at?: string;
-					updated_by?: string | null;
-					value?: Json | null;
-				};
-				Update: {
-					actor_id?: string | null;
-					created_at?: string;
-					created_by?: string | null;
-					enabled?: boolean;
-					flag?: string;
-					id?: string;
-					org_id?: string;
-					updated_at?: string;
-					updated_by?: string | null;
-					value?: Json | null;
-				};
-				Relationships: [
-					{
-						foreignKeyName: "feature_flags_org_id_fkey";
 						columns: ["org_id"];
 						isOneToOne: false;
 						referencedRelation: "organizations";
@@ -406,6 +432,257 @@ export type Database = {
 				Relationships: [
 					{
 						foreignKeyName: "employees_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			feature_flag_events: {
+				Row: {
+					changed_at: string;
+					changed_by: string | null;
+					flag: string;
+					id: string;
+					metadata: Json;
+					new_enabled: boolean | null;
+					new_value: Json | null;
+					org_id: string;
+					previous_enabled: boolean | null;
+					previous_value: Json | null;
+				};
+				Insert: {
+					changed_at?: string;
+					changed_by?: string | null;
+					flag: string;
+					id?: string;
+					metadata?: Json;
+					new_enabled?: boolean | null;
+					new_value?: Json | null;
+					org_id: string;
+					previous_enabled?: boolean | null;
+					previous_value?: Json | null;
+				};
+				Update: {
+					changed_at?: string;
+					changed_by?: string | null;
+					flag?: string;
+					id?: string;
+					metadata?: Json;
+					new_enabled?: boolean | null;
+					new_value?: Json | null;
+					org_id?: string;
+					previous_enabled?: boolean | null;
+					previous_value?: Json | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "feature_flag_events_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			feature_flags: {
+				Row: {
+					actor_id: string | null;
+					created_at: string;
+					created_by: string | null;
+					enabled: boolean;
+					flag: string;
+					id: string;
+					org_id: string;
+					updated_at: string;
+					updated_by: string | null;
+					value: Json | null;
+				};
+				Insert: {
+					actor_id?: string | null;
+					created_at?: string;
+					created_by?: string | null;
+					enabled?: boolean;
+					flag: string;
+					id?: string;
+					org_id: string;
+					updated_at?: string;
+					updated_by?: string | null;
+					value?: Json | null;
+				};
+				Update: {
+					actor_id?: string | null;
+					created_at?: string;
+					created_by?: string | null;
+					enabled?: boolean;
+					flag?: string;
+					id?: string;
+					org_id?: string;
+					updated_at?: string;
+					updated_by?: string | null;
+					value?: Json | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "feature_flags_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			intake_events: {
+				Row: {
+					channel: Database["public"]["Enums"]["intake_channel"];
+					created_at: string;
+					created_by: string | null;
+					customer_id: string | null;
+					details: Json;
+					discovered_at: string | null;
+					expires_at: string | null;
+					id: string;
+					org_id: string;
+					priority: string;
+					received_at: string;
+					site_id: string | null;
+					source: Database["public"]["Enums"]["intake_channel"];
+					source_ref: string | null;
+					status: Database["public"]["Enums"]["intake_status"];
+					summary: string | null;
+					updated_at: string;
+					updated_by: string | null;
+				};
+				Insert: {
+					channel: Database["public"]["Enums"]["intake_channel"];
+					created_at?: string;
+					created_by?: string | null;
+					customer_id?: string | null;
+					details?: Json;
+					discovered_at?: string | null;
+					expires_at?: string | null;
+					id?: string;
+					org_id: string;
+					priority?: string;
+					received_at?: string;
+					site_id?: string | null;
+					source: Database["public"]["Enums"]["intake_channel"];
+					source_ref?: string | null;
+					status?: Database["public"]["Enums"]["intake_status"];
+					summary?: string | null;
+					updated_at?: string;
+					updated_by?: string | null;
+				};
+				Update: {
+					channel?: Database["public"]["Enums"]["intake_channel"];
+					created_at?: string;
+					created_by?: string | null;
+					customer_id?: string | null;
+					details?: Json;
+					discovered_at?: string | null;
+					expires_at?: string | null;
+					id?: string;
+					org_id?: string;
+					priority?: string;
+					received_at?: string;
+					site_id?: string | null;
+					source?: Database["public"]["Enums"]["intake_channel"];
+					source_ref?: string | null;
+					status?: Database["public"]["Enums"]["intake_status"];
+					summary?: string | null;
+					updated_at?: string;
+					updated_by?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "intake_events_customer_id_fkey";
+						columns: ["customer_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_events_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_events_site_id_fkey";
+						columns: ["site_id"];
+						isOneToOne: false;
+						referencedRelation: "sites";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			intake_voice_calls: {
+				Row: {
+					caller_number: string | null;
+					created_at: string;
+					duration_seconds: number | null;
+					ended_at: string | null;
+					external_call_id: string | null;
+					id: string;
+					intake_event_id: string;
+					metadata: Json;
+					org_id: string;
+					provider: string;
+					receiver_number: string | null;
+					recording_storage_key: string | null;
+					started_at: string | null;
+					transcript: string | null;
+					transcript_confidence: number | null;
+					transcript_language: string | null;
+				};
+				Insert: {
+					caller_number?: string | null;
+					created_at?: string;
+					duration_seconds?: number | null;
+					ended_at?: string | null;
+					external_call_id?: string | null;
+					id?: string;
+					intake_event_id: string;
+					metadata?: Json;
+					org_id: string;
+					provider: string;
+					receiver_number?: string | null;
+					recording_storage_key?: string | null;
+					started_at?: string | null;
+					transcript?: string | null;
+					transcript_confidence?: number | null;
+					transcript_language?: string | null;
+				};
+				Update: {
+					caller_number?: string | null;
+					created_at?: string;
+					duration_seconds?: number | null;
+					ended_at?: string | null;
+					external_call_id?: string | null;
+					id?: string;
+					intake_event_id?: string;
+					metadata?: Json;
+					org_id?: string;
+					provider?: string;
+					receiver_number?: string | null;
+					recording_storage_key?: string | null;
+					started_at?: string | null;
+					transcript?: string | null;
+					transcript_confidence?: number | null;
+					transcript_language?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "intake_voice_calls_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: true;
+						referencedRelation: "intake_events";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_voice_calls_org_id_fkey";
 						columns: ["org_id"];
 						isOneToOne: false;
 						referencedRelation: "organizations";
@@ -977,20 +1254,128 @@ export type Database = {
 					},
 				];
 			};
+			job_sla_events: {
+				Row: {
+					context: Json;
+					current_state: string;
+					deadline: string | null;
+					id: string;
+					job_id: string;
+					org_id: string;
+					previous_state: string | null;
+					sla_phase: string;
+					state_changed_at: string;
+				};
+				Insert: {
+					context?: Json;
+					current_state: string;
+					deadline?: string | null;
+					id?: string;
+					job_id: string;
+					org_id: string;
+					previous_state?: string | null;
+					sla_phase: string;
+					state_changed_at?: string;
+				};
+				Update: {
+					context?: Json;
+					current_state?: string;
+					deadline?: string | null;
+					id?: string;
+					job_id?: string;
+					org_id?: string;
+					previous_state?: string | null;
+					sla_phase?: string;
+					state_changed_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "job_sla_events_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "job_sla_events_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			job_status_history: {
+				Row: {
+					changed_at: string;
+					changed_by: string | null;
+					from_status: string | null;
+					id: string;
+					job_id: string;
+					metadata: Json;
+					note: string | null;
+					org_id: string;
+					to_status: string;
+				};
+				Insert: {
+					changed_at?: string;
+					changed_by?: string | null;
+					from_status?: string | null;
+					id?: string;
+					job_id: string;
+					metadata?: Json;
+					note?: string | null;
+					org_id: string;
+					to_status: string;
+				};
+				Update: {
+					changed_at?: string;
+					changed_by?: string | null;
+					from_status?: string | null;
+					id?: string;
+					job_id?: string;
+					metadata?: Json;
+					note?: string | null;
+					org_id?: string;
+					to_status?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "job_status_history_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "job_status_history_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			jobs: {
 				Row: {
 					address: string | null;
 					created_at: string | null;
 					customer_id: string;
+					customer_signature: string | null;
 					description: string | null;
 					employee_id: string | null;
 					ends_at: string | null;
 					id: string;
+					notes: string | null;
+					offline_state: Json;
 					org_id: string;
 					postal_code: string | null;
 					priority: string;
+					site_id: string | null;
 					starts_at: string | null;
 					status: string;
+					timer_started_at: string | null;
+					timer_total_seconds: number;
 					title: string;
 					updated_at: string | null;
 				};
@@ -998,15 +1383,21 @@ export type Database = {
 					address?: string | null;
 					created_at?: string | null;
 					customer_id: string;
+					customer_signature?: string | null;
 					description?: string | null;
 					employee_id?: string | null;
 					ends_at?: string | null;
 					id?: string;
+					notes?: string | null;
+					offline_state?: Json;
 					org_id: string;
 					postal_code?: string | null;
 					priority?: string;
+					site_id?: string | null;
 					starts_at?: string | null;
 					status?: string;
+					timer_started_at?: string | null;
+					timer_total_seconds?: number;
 					title: string;
 					updated_at?: string | null;
 				};
@@ -1014,15 +1405,21 @@ export type Database = {
 					address?: string | null;
 					created_at?: string | null;
 					customer_id?: string;
+					customer_signature?: string | null;
 					description?: string | null;
 					employee_id?: string | null;
 					ends_at?: string | null;
 					id?: string;
+					notes?: string | null;
+					offline_state?: Json;
 					org_id?: string;
 					postal_code?: string | null;
 					priority?: string;
+					site_id?: string | null;
 					starts_at?: string | null;
 					status?: string;
+					timer_started_at?: string | null;
+					timer_total_seconds?: number;
 					title?: string;
 					updated_at?: string | null;
 				};
@@ -1043,6 +1440,69 @@ export type Database = {
 					},
 					{
 						foreignKeyName: "jobs_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "jobs_site_id_fkey";
+						columns: ["site_id"];
+						isOneToOne: false;
+						referencedRelation: "sites";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			manuals: {
+				Row: {
+					brand: string;
+					checksum: string;
+					created_at: string;
+					edition: string | null;
+					id: string;
+					indexed: boolean;
+					language: string;
+					metadata: Json;
+					model: string;
+					org_id: string | null;
+					page_count: number | null;
+					storage_key: string;
+					updated_at: string;
+				};
+				Insert: {
+					brand: string;
+					checksum: string;
+					created_at?: string;
+					edition?: string | null;
+					id?: string;
+					indexed?: boolean;
+					language?: string;
+					metadata?: Json;
+					model: string;
+					org_id?: string | null;
+					page_count?: number | null;
+					storage_key: string;
+					updated_at?: string;
+				};
+				Update: {
+					brand?: string;
+					checksum?: string;
+					created_at?: string;
+					edition?: string | null;
+					id?: string;
+					indexed?: boolean;
+					language?: string;
+					metadata?: Json;
+					model?: string;
+					org_id?: string | null;
+					page_count?: number | null;
+					storage_key?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "manuals_org_id_fkey";
 						columns: ["org_id"];
 						isOneToOne: false;
 						referencedRelation: "organizations";
@@ -1181,11 +1641,625 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			project_change_orders: {
+				Row: {
+					assignee: string | null;
+					attachments: Json | null;
+					created_at: string;
+					decided_at: string | null;
+					description: string | null;
+					id: string;
+					impact: Json | null;
+					metadata: Json;
+					org_id: string;
+					project_id: string;
+					sequence: number | null;
+					status: string;
+					submitted_at: string | null;
+					title: string;
+					updated_at: string;
+				};
+				Insert: {
+					assignee?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					decided_at?: string | null;
+					description?: string | null;
+					id?: string;
+					impact?: Json | null;
+					metadata?: Json;
+					org_id: string;
+					project_id: string;
+					sequence?: number | null;
+					status?: string;
+					submitted_at?: string | null;
+					title: string;
+					updated_at?: string;
+				};
+				Update: {
+					assignee?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					decided_at?: string | null;
+					description?: string | null;
+					id?: string;
+					impact?: Json | null;
+					metadata?: Json;
+					org_id?: string;
+					project_id?: string;
+					sequence?: number | null;
+					status?: string;
+					submitted_at?: string | null;
+					title?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_change_orders_assignee_fkey";
+						columns: ["assignee"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_change_orders_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_change_orders_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			project_daily_logs: {
+				Row: {
+					attachments: Json | null;
+					attendance: Json | null;
+					blockers: Json | null;
+					created_at: string;
+					deliveries: Json | null;
+					id: string;
+					log_date: string;
+					org_id: string;
+					project_id: string;
+					summary: string | null;
+					updated_at: string;
+					visit_id: string | null;
+					weather: Json | null;
+				};
+				Insert: {
+					attachments?: Json | null;
+					attendance?: Json | null;
+					blockers?: Json | null;
+					created_at?: string;
+					deliveries?: Json | null;
+					id?: string;
+					log_date?: string;
+					org_id: string;
+					project_id: string;
+					summary?: string | null;
+					updated_at?: string;
+					visit_id?: string | null;
+					weather?: Json | null;
+				};
+				Update: {
+					attachments?: Json | null;
+					attendance?: Json | null;
+					blockers?: Json | null;
+					created_at?: string;
+					deliveries?: Json | null;
+					id?: string;
+					log_date?: string;
+					org_id?: string;
+					project_id?: string;
+					summary?: string | null;
+					updated_at?: string;
+					visit_id?: string | null;
+					weather?: Json | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_daily_logs_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_daily_logs_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_daily_logs_visit_id_fkey";
+						columns: ["visit_id"];
+						isOneToOne: false;
+						referencedRelation: "project_visits";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			project_parties: {
+				Row: {
+					company_name: string | null;
+					contact_name: string | null;
+					created_at: string;
+					custom_fields: Json;
+					email: string | null;
+					id: string;
+					notes: string | null;
+					org_id: string;
+					phone: string | null;
+					project_id: string;
+					role: string;
+					updated_at: string;
+				};
+				Insert: {
+					company_name?: string | null;
+					contact_name?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					email?: string | null;
+					id?: string;
+					notes?: string | null;
+					org_id: string;
+					phone?: string | null;
+					project_id: string;
+					role: string;
+					updated_at?: string;
+				};
+				Update: {
+					company_name?: string | null;
+					contact_name?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					email?: string | null;
+					id?: string;
+					notes?: string | null;
+					org_id?: string;
+					phone?: string | null;
+					project_id?: string;
+					role?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_parties_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_parties_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			project_punch_items: {
+				Row: {
+					assignee: string | null;
+					attachments: Json | null;
+					created_at: string;
+					description: string | null;
+					due_date: string | null;
+					id: string;
+					location: string | null;
+					metadata: Json;
+					org_id: string;
+					project_id: string;
+					sequence: number | null;
+					status: string;
+					title: string;
+					updated_at: string;
+				};
+				Insert: {
+					assignee?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					description?: string | null;
+					due_date?: string | null;
+					id?: string;
+					location?: string | null;
+					metadata?: Json;
+					org_id: string;
+					project_id: string;
+					sequence?: number | null;
+					status?: string;
+					title: string;
+					updated_at?: string;
+				};
+				Update: {
+					assignee?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					description?: string | null;
+					due_date?: string | null;
+					id?: string;
+					location?: string | null;
+					metadata?: Json;
+					org_id?: string;
+					project_id?: string;
+					sequence?: number | null;
+					status?: string;
+					title?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_punch_items_assignee_fkey";
+						columns: ["assignee"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_punch_items_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_punch_items_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			project_rfis: {
+				Row: {
+					assigned_to: string | null;
+					attachments: Json | null;
+					created_at: string;
+					due_date: string | null;
+					id: string;
+					metadata: Json;
+					org_id: string;
+					project_id: string;
+					question: string | null;
+					response: string | null;
+					sequence: number | null;
+					status: string;
+					title: string;
+					updated_at: string;
+				};
+				Insert: {
+					assigned_to?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					due_date?: string | null;
+					id?: string;
+					metadata?: Json;
+					org_id: string;
+					project_id: string;
+					question?: string | null;
+					response?: string | null;
+					sequence?: number | null;
+					status?: string;
+					title: string;
+					updated_at?: string;
+				};
+				Update: {
+					assigned_to?: string | null;
+					attachments?: Json | null;
+					created_at?: string;
+					due_date?: string | null;
+					id?: string;
+					metadata?: Json;
+					org_id?: string;
+					project_id?: string;
+					question?: string | null;
+					response?: string | null;
+					sequence?: number | null;
+					status?: string;
+					title?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_rfis_assigned_to_fkey";
+						columns: ["assigned_to"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_rfis_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_rfis_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			project_visits: {
+				Row: {
+					created_at: string;
+					id: string;
+					job_id: string | null;
+					metrics: Json;
+					notes: string | null;
+					org_id: string;
+					project_id: string;
+					scheduled_end: string | null;
+					scheduled_start: string | null;
+					status: string;
+					title: string;
+					updated_at: string;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					job_id?: string | null;
+					metrics?: Json;
+					notes?: string | null;
+					org_id: string;
+					project_id: string;
+					scheduled_end?: string | null;
+					scheduled_start?: string | null;
+					status?: string;
+					title: string;
+					updated_at?: string;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					job_id?: string | null;
+					metrics?: Json;
+					notes?: string | null;
+					org_id?: string;
+					project_id?: string;
+					scheduled_end?: string | null;
+					scheduled_start?: string | null;
+					status?: string;
+					title?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "project_visits_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_visits_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "project_visits_project_id_fkey";
+						columns: ["project_id"];
+						isOneToOne: false;
+						referencedRelation: "projects";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			projects: {
+				Row: {
+					client_id: string | null;
+					created_at: string;
+					custom_fields: Json;
+					id: string;
+					org_id: string;
+					pilot_enabled: boolean;
+					status: string;
+					title: string;
+					updated_at: string;
+				};
+				Insert: {
+					client_id?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					id?: string;
+					org_id: string;
+					pilot_enabled?: boolean;
+					status?: string;
+					title: string;
+					updated_at?: string;
+				};
+				Update: {
+					client_id?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					id?: string;
+					org_id?: string;
+					pilot_enabled?: boolean;
+					status?: string;
+					title?: string;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "projects_client_id_fkey";
+						columns: ["client_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "projects_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			sites: {
+				Row: {
+					address_line1: string | null;
+					address_line2: string | null;
+					city: string | null;
+					country: string | null;
+					created_at: string;
+					custom_fields: Json;
+					customer_id: string;
+					id: string;
+					label: string;
+					latitude: number | null;
+					longitude: number | null;
+					notes: string | null;
+					org_id: string;
+					postal_code: string | null;
+					updated_at: string;
+				};
+				Insert: {
+					address_line1?: string | null;
+					address_line2?: string | null;
+					city?: string | null;
+					country?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					customer_id: string;
+					id?: string;
+					label?: string;
+					latitude?: number | null;
+					longitude?: number | null;
+					notes?: string | null;
+					org_id: string;
+					postal_code?: string | null;
+					updated_at?: string;
+				};
+				Update: {
+					address_line1?: string | null;
+					address_line2?: string | null;
+					city?: string | null;
+					country?: string | null;
+					created_at?: string;
+					custom_fields?: Json;
+					customer_id?: string;
+					id?: string;
+					label?: string;
+					latitude?: number | null;
+					longitude?: number | null;
+					notes?: string | null;
+					org_id?: string;
+					postal_code?: string | null;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "sites_customer_id_fkey";
+						columns: ["customer_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "sites_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			unscheduled_items: {
+				Row: {
+					created_at: string;
+					id: string;
+					intake_event_id: string;
+					job_id: string | null;
+					metadata: Json;
+					notes: string | null;
+					org_id: string;
+					owner_id: string | null;
+					priority: string;
+					sla_deadline: string | null;
+					status: Database["public"]["Enums"]["unscheduled_status"];
+					updated_at: string;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					intake_event_id: string;
+					job_id?: string | null;
+					metadata?: Json;
+					notes?: string | null;
+					org_id: string;
+					owner_id?: string | null;
+					priority?: string;
+					sla_deadline?: string | null;
+					status?: Database["public"]["Enums"]["unscheduled_status"];
+					updated_at?: string;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					intake_event_id?: string;
+					job_id?: string | null;
+					metadata?: Json;
+					notes?: string | null;
+					org_id?: string;
+					owner_id?: string | null;
+					priority?: string;
+					sla_deadline?: string | null;
+					status?: Database["public"]["Enums"]["unscheduled_status"];
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "unscheduled_items_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_owner_id_fkey";
+						columns: ["owner_id"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			wa_conversations: {
 				Row: {
 					created_at: string;
 					customer_id: string | null;
 					id: string;
+					intake_event_id: string | null;
 					last_message_at: string;
 					metadata: Json | null;
 					org_id: string;
@@ -1198,6 +2272,7 @@ export type Database = {
 					created_at?: string;
 					customer_id?: string | null;
 					id?: string;
+					intake_event_id?: string | null;
 					last_message_at: string;
 					metadata?: Json | null;
 					org_id: string;
@@ -1210,6 +2285,7 @@ export type Database = {
 					created_at?: string;
 					customer_id?: string | null;
 					id?: string;
+					intake_event_id?: string | null;
 					last_message_at?: string;
 					metadata?: Json | null;
 					org_id?: string;
@@ -1224,6 +2300,13 @@ export type Database = {
 						columns: ["customer_id"];
 						isOneToOne: false;
 						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "wa_conversations_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
 						referencedColumns: ["id"];
 					},
 					{
@@ -1242,6 +2325,7 @@ export type Database = {
 					created_at: string;
 					direction: string;
 					id: string;
+					intake_event_id: string | null;
 					media_url: string | null;
 					message_type: string;
 					org_id: string;
@@ -1254,6 +2338,7 @@ export type Database = {
 					created_at?: string;
 					direction: string;
 					id?: string;
+					intake_event_id?: string | null;
 					media_url?: string | null;
 					message_type: string;
 					org_id: string;
@@ -1266,6 +2351,7 @@ export type Database = {
 					created_at?: string;
 					direction?: string;
 					id?: string;
+					intake_event_id?: string | null;
 					media_url?: string | null;
 					message_type?: string;
 					org_id?: string;
@@ -1285,6 +2371,13 @@ export type Database = {
 						columns: ["conversation_id"];
 						isOneToOne: false;
 						referencedRelation: "wa_conversations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "wa_messages_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
 						referencedColumns: ["id"];
 					},
 					{
@@ -1506,8 +2599,127 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			whatsapp_media_assets: {
+				Row: {
+					byte_size: number | null;
+					checksum: string | null;
+					content_type: string | null;
+					created_at: string;
+					height: number | null;
+					id: string;
+					message_id: string;
+					org_id: string;
+					storage_key: string;
+					width: number | null;
+				};
+				Insert: {
+					byte_size?: number | null;
+					checksum?: string | null;
+					content_type?: string | null;
+					created_at?: string;
+					height?: number | null;
+					id?: string;
+					message_id: string;
+					org_id: string;
+					storage_key: string;
+					width?: number | null;
+				};
+				Update: {
+					byte_size?: number | null;
+					checksum?: string | null;
+					content_type?: string | null;
+					created_at?: string;
+					height?: number | null;
+					id?: string;
+					message_id?: string;
+					org_id?: string;
+					storage_key?: string;
+					width?: number | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "whatsapp_media_assets_message_id_fkey";
+						columns: ["message_id"];
+						isOneToOne: true;
+						referencedRelation: "wa_messages";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "whatsapp_media_assets_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 		};
 		Views: {
+			feature_flag_defaults: {
+				Row: {
+					enabled: boolean | null;
+					flag: string | null;
+					value: Json | null;
+				};
+				Relationships: [];
+			};
+			intake_queue: {
+				Row: {
+					channel: Database["public"]["Enums"]["intake_channel"] | null;
+					created_at: string | null;
+					customer_id: string | null;
+					details: Json | null;
+					id: string | null;
+					intake_event_id: string | null;
+					org_id: string | null;
+					owner_id: string | null;
+					priority: string | null;
+					received_at: string | null;
+					site_id: string | null;
+					sla_deadline: string | null;
+					source: Database["public"]["Enums"]["intake_channel"] | null;
+					status: Database["public"]["Enums"]["unscheduled_status"] | null;
+					summary: string | null;
+					updated_at: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "intake_events_customer_id_fkey";
+						columns: ["customer_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_events_site_id_fkey";
+						columns: ["site_id"];
+						isOneToOne: false;
+						referencedRelation: "sites";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "unscheduled_items_owner_id_fkey";
+						columns: ["owner_id"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			invoice_timeline: {
 				Row: {
 					at: string | null;
@@ -1620,10 +2832,6 @@ export type Database = {
 				Args: { issued_at: string; payment_terms?: string };
 				Returns: string;
 			};
-			debug_current_auth: {
-				Args: Record<PropertyKey, never>;
-				Returns: Json;
-			};
 			cleanup_old_webhook_events: {
 				Args: Record<PropertyKey, never>;
 				Returns: undefined;
@@ -1640,13 +2848,25 @@ export type Database = {
 				Args: { invoice_due_at: string };
 				Returns: number;
 			};
+			debug_current_auth: {
+				Args: Record<PropertyKey, never>;
+				Returns: Json;
+			};
+			debug_jwt_claims: {
+				Args: Record<PropertyKey, never>;
+				Returns: Json;
+			};
 			get_next_invoice_number: {
 				Args: { p_org_id: string; p_year: number };
 				Returns: number;
 			};
 			get_org_feature_flags: {
-				Args: { p_org_id: string; p_pilot_mode: boolean };
-				Returns: { flag: string; enabled: boolean }[];
+				Args: { p_org_id: string; p_pilot_mode?: boolean };
+				Returns: {
+					enabled: boolean;
+					flag: string;
+					value: Json;
+				}[];
 			};
 			get_user_org_id: {
 				Args: Record<PropertyKey, never>;
@@ -1746,7 +2966,9 @@ export type Database = {
 			};
 		};
 		Enums: {
-			[_ in never]: never;
+			intake_channel: "whatsapp" | "voice" | "email" | "manual";
+			intake_status: "pending" | "processing" | "scheduled" | "dismissed";
+			unscheduled_status: "pending" | "applied" | "dismissed";
 		};
 		CompositeTypes: {
 			[_ in never]: never;
@@ -1876,6 +3098,10 @@ export type CompositeTypes<
 
 export const Constants = {
 	public: {
-		Enums: {},
+		Enums: {
+			intake_channel: ["whatsapp", "voice", "email", "manual"],
+			intake_status: ["pending", "processing", "scheduled", "dismissed"],
+			unscheduled_status: ["pending", "applied", "dismissed"],
+		},
 	},
 } as const;
