@@ -1,0 +1,59 @@
+name: Supabase Types Drift
+
+on:
+  push:
+    paths:
+      - 'src/server/db/sql/**'
+      - '.github/workflows/supabase-types.yml'
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  typegen:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.9.0'
+          cache: 'pnpm'
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Supabase types (remote)
+        run: supabase gen types typescript --project-id "$SUPABASE_PROJECT_REF" --schema public > src/types/supabase.generated.ts
+
+      - name: Check for drift
+        run: |
+          if ! git diff --quiet -- src/types/supabase.generated.ts; then
+            echo 'Detected Supabase type drift. Commit updated src/types/supabase.generated.ts.'
+            git status --short src/types/supabase.generated.ts
+            exit 1
+          fi
+
+      - name: Upload generated types
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-generated-types
+          path: src/types/supabase.generated.ts
