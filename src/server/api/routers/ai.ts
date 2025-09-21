@@ -90,7 +90,6 @@ export const aiRouter = createTRPCRouter({
 								status: "active",
 								created_at: "",
 								metadata: null,
-								intake_event_id: null,
 								session_expires_at: null,
 							} as const)
 						: undefined;
