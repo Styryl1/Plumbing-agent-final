@@ -437,13 +437,20 @@ export default function CustomersTable({
 											)}
 
 											{/* Phone field - inline editable */}
-											{customer.primaryPhone ??
-												customer.phones.at(0) ??
-												("".trim().length > 0 && (
+											{(() => {
+												const isEditingPhone =
+													editingCustomer?.id === customer.id &&
+													editingCustomer.field === "phone";
+												const resolvedPhone =
+													customer.primaryPhone ?? customer.phones.at(0) ?? "";
+												if (resolvedPhone.length === 0 && !isEditingPhone) {
+													return null;
+												}
+
+												return (
 													<div className="flex items-center gap-1 text-sm">
 														<Phone className="h-3 w-3 text-muted-foreground" />
-														{editingCustomer?.id === customer.id &&
-														editingCustomer.field === "phone" ? (
+														{isEditingPhone ? (
 															<div className="flex items-center gap-1 flex-1">
 																<Input
 																	value={editingCustomer.value}
@@ -481,15 +488,11 @@ export default function CustomersTable({
 														) : (
 															<div className="flex items-center gap-1 flex-1">
 																<a
-																	href={`tel:${customer.primaryPhone ?? customer.phones.at(0) ?? ""}`}
+																	href={`tel:${resolvedPhone}`}
 																	className="text-blue-600 hover:text-blue-800 underline"
-																	title={`Call ${customer.primaryPhone ?? customer.phones.at(0) ?? ""}`}
+																	title={`Call ${resolvedPhone}`}
 																>
-																	{formatPhoneNumber(
-																		customer.primaryPhone ??
-																			customer.phones.at(0) ??
-																			"",
-																	)}
+																	{formatPhoneNumber(resolvedPhone)}
 																</a>
 																<Button
 																	variant="ghost"
@@ -499,9 +502,7 @@ export default function CustomersTable({
 																		startEdit(
 																			customer.id,
 																			"phone",
-																			customer.primaryPhone ??
-																				customer.phones.at(0) ??
-																				"",
+																			resolvedPhone,
 																		);
 																	}}
 																	title="Edit phone"
@@ -511,7 +512,8 @@ export default function CustomersTable({
 															</div>
 														)}
 													</div>
-												))}
+												);
+											})()}
 										</div>
 									</TableCell>
 									<TableCell>

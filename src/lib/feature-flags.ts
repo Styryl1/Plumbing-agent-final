@@ -1,9 +1,23 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { env } from "~/lib/env";
-import type { Database } from "~/types/supabase";
+import type { Database, Json, TablesInsert } from "~/types/supabase";
 
-const FLAG_KEY_TO_CODE = {
+export const FEATURE_FLAG_KEY_ARRAY = [
+	"intakeWhatsApp",
+	"intakeVoice",
+	"jobCards",
+	"projectsCore",
+	"projectsAdvanced",
+	"manualsCopilot",
+	"copilotGlobal",
+	"notificationsCore",
+	"gdprConsole",
+] as const;
+
+export type FeatureFlagKey = (typeof FEATURE_FLAG_KEY_ARRAY)[number];
+
+const FLAG_KEY_TO_CODE: Record<FeatureFlagKey, string> = {
 	intakeWhatsApp: "INTAKE_WHATSAPP",
 	intakeVoice: "INTAKE_VOICE",
 	jobCards: "JOB_CARDS",
@@ -15,19 +29,25 @@ const FLAG_KEY_TO_CODE = {
 	gdprConsole: "GDPR_CONSOLE",
 } as const;
 
-type OrgFeatureFlagRow = {
-	flag: string;
-	enabled: boolean;
-};
+const FLAG_CODE_TO_KEY = {
+	INTAKE_WHATSAPP: "intakeWhatsApp",
+	INTAKE_VOICE: "intakeVoice",
+	JOB_CARDS: "jobCards",
+	PROJECTS_CORE: "projectsCore",
+	PROJECTS_ADVANCED: "projectsAdvanced",
+	MANUALS_COPILOT: "manualsCopilot",
+	COPILOT_GLOBAL: "copilotGlobal",
+	NOTIFICATIONS_CORE: "notificationsCore",
+	GDPR_CONSOLE: "gdprConsole",
+} as const;
 
-const FLAG_CODE_TO_KEY = Object.fromEntries(
-	Object.entries(FLAG_KEY_TO_CODE).map(([key, value]) => [value, key]),
-) as Record<
-	(typeof FLAG_KEY_TO_CODE)[keyof typeof FLAG_KEY_TO_CODE],
-	keyof typeof FLAG_KEY_TO_CODE
->;
+export const FEATURE_FLAG_KEYS: FeatureFlagKey[] = [...FEATURE_FLAG_KEY_ARRAY];
 
-export type FeatureFlagKey = keyof typeof FLAG_KEY_TO_CODE;
+type FeatureFlagCode = keyof typeof FLAG_CODE_TO_KEY;
+
+function isFeatureFlagCode(value: string): value is FeatureFlagCode {
+	return value in FLAG_CODE_TO_KEY;
+}
 
 export type FeatureFlags = {
 	[K in FeatureFlagKey]: boolean;
@@ -85,13 +105,27 @@ export async function getOrgFeatureFlags({
 		return applyPilotCascade(flags);
 	}
 
-	for (const record of data ?? []) {
-		const key = FLAG_CODE_TO_KEY[record.flag as keyof typeof FLAG_CODE_TO_KEY];
-		if (!key) {
+	const records = Array.isArray(data)
+		? (data as Array<{
+				flag: string | null;
+				enabled: boolean | null;
+				value: Json | null;
+			}>)
+		: [];
+
+	for (const record of records) {
+		const { flag, enabled } = record;
+		if (typeof flag !== "string") {
 			continue;
 		}
 
-		flags[key] = Boolean(record.enabled);
+		if (!isFeatureFlagCode(flag)) {
+			continue;
+		}
+
+		const key = FLAG_CODE_TO_KEY[flag];
+
+		flags[key] = Boolean(enabled);
 	}
 
 	flags.pilotMode = pilotMode;
@@ -129,4 +163,71 @@ export function computeFlags(config: {
 	};
 
 	return applyPilotCascade(withOverrides);
+}
+
+export async function setOrgFeatureFlag({
+	db,
+	orgId,
+	flag,
+	enabled,
+	value,
+	actorId,
+}: {
+	db: SupabaseClient<Database>;
+	orgId: string;
+	flag: FeatureFlagKey;
+	enabled: boolean;
+	value?: Json | null;
+	actorId?: string | null;
+}): Promise<void> {
+	const flagCode = FLAG_KEY_TO_CODE[flag];
+	const normalizedValue = value ?? null;
+	const actor = actorId ?? null;
+
+	const { data: existing, error: existingError } = await db
+		.from("feature_flags")
+		.select("id")
+		.eq("org_id", orgId)
+		.eq("flag", flagCode)
+		.maybeSingle();
+
+	if (existingError) {
+		throw existingError;
+	}
+
+	if (existing) {
+		const { error: updateError } = await db
+			.from("feature_flags")
+			.update({
+				enabled,
+				value: normalizedValue,
+				actor_id: actor,
+				updated_by: actor,
+			})
+			.eq("org_id", orgId)
+			.eq("flag", flagCode);
+
+		if (updateError) {
+			throw updateError;
+		}
+		return;
+	}
+
+	const insertRecord: TablesInsert<"feature_flags"> = {
+		org_id: orgId,
+		flag: flagCode,
+		enabled,
+		value: normalizedValue,
+		actor_id: actor,
+		created_by: actor,
+		updated_by: actor,
+	};
+
+	const { error: insertError } = await db
+		.from("feature_flags")
+		.insert(insertRecord);
+
+	if (insertError) {
+		throw insertError;
+	}
 }

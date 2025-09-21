@@ -64,42 +64,6 @@ export async function createContext(): Promise<{
 			});
 		}
 
-		// Debug: decode and log the JWT to see what claims it contains
-		try {
-			const parts = token.split(".");
-			if (parts.length !== 3) {
-				throw new Error("Invalid JWT format");
-			}
-			const [header, payload] = parts;
-			if (!header || !payload) {
-				throw new Error("Missing JWT parts");
-			}
-			const decodedPayload = JSON.parse(
-				Buffer.from(payload, "base64").toString(),
-			);
-			const decodedHeader = JSON.parse(
-				Buffer.from(header, "base64").toString(),
-			);
-			console.log("🔍 JWT Debug:", {
-				header: decodedHeader,
-				claims: {
-					sub: decodedPayload.sub,
-					org_id: decodedPayload.org_id,
-					o: decodedPayload.o,
-					role: decodedPayload.role,
-					iss: decodedPayload.iss,
-					aud: decodedPayload.aud,
-				},
-				authContext: {
-					userId: authContext.userId,
-					orgId: authContext.orgId,
-				},
-				tokenLength: token.length,
-			});
-		} catch (e) {
-			console.error("Failed to decode JWT for debugging:", e);
-		}
-
 		db = getRlsDb(token);
 	}
 

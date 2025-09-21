@@ -13,7 +13,7 @@ importers:
         version: 6.32.0(next@15.5.3(@babel/core@7.28.4)(@playwright/test@1.55.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@hookform/resolvers':
         specifier: ^5.2.2
-        version: 5.2.2(react-hook-form@7.62.0(react@19.1.1))
+        version: 5.2.2(react-hook-form@7.63.0(react@19.1.1))
       '@preact/signals':
         specifier: ^2.3.1
         version: 2.3.1(preact@10.27.2)
@@ -60,26 +60,26 @@ importers:
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@schedule-x/calendar':
-        specifier: ^3.1.2
-        version: 3.1.2(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)
+        specifier: ^3.2.0
+        version: 3.2.0(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)
       '@schedule-x/current-time':
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.2.0
+        version: 3.2.0
       '@schedule-x/drag-and-drop':
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.2.0
+        version: 3.2.0
       '@schedule-x/events-service':
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.2.0
+        version: 3.2.0
       '@schedule-x/react':
         specifier: ^3.1.0
-        version: 3.1.0(@schedule-x/calendar@3.1.2(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 3.1.0(@schedule-x/calendar@3.2.0(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@schedule-x/resize':
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.2.0
+        version: 3.2.0
       '@schedule-x/theme-default':
-        specifier: ^3.1.2
-        version: 3.1.2
+        specifier: ^3.2.0
+        version: 3.2.0
       '@supabase/supabase-js':
         specifier: ^2.57.4
         version: 2.57.4
@@ -138,8 +138,8 @@ importers:
         specifier: 19.1.1
         version: 19.1.1(react@19.1.1)
       react-hook-form:
-        specifier: ^7.62.0
-        version: 7.62.0(react@19.1.1)
+        specifier: ^7.63.0
+        version: 7.63.0(react@19.1.1)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -1762,21 +1762,21 @@ packages:
   '@rushstack/eslint-patch@1.12.0':
     resolution: {integrity: sha512-5EwMtOqvJMMa3HbmxLlF74e+3/HhwBTMcvt3nqVJgGCozO6hzIPOBlwm8mGVNR9SN2IJpxSnlxczyDjcn7qIyw==}
 
-  '@schedule-x/calendar@3.1.2':
-    resolution: {integrity: sha512-JM/4lh04yp4O4PTJEuBeHEnYW2qmf0x6x6LqpYXpp9zPienPqTlxCMiUwNg1GPXQiPSvQqGpmNcnWMzgsRUnCQ==}
+  '@schedule-x/calendar@3.2.0':
+    resolution: {integrity: sha512-3s2HHebhTYxQxNwZ+8gSE7ejqv6bgwGAuYzx0gD3KxDLrZhQg7ephkQdWkDsP2JYa08AKx9gB6p5MtTbbwoECQ==}
     peerDependencies:
       '@preact/signals': ^2.0.2
       preact: ^10.19.2
       temporal-polyfill: 0.3.0
 
-  '@schedule-x/current-time@3.1.2':
-    resolution: {integrity: sha512-/Y/qM5L29VnWOAPGE89jUvUeTIpHj1z3HN9f5Y4zViGeonPgKnh+WaYGZG8tqfteQ062hGiwkZCQF2H95kUYAw==}
+  '@schedule-x/current-time@3.2.0':
+    resolution: {integrity: sha512-HvD3rzfmQp6owmokwW9iz4wK/L4atypfLU7CXjuCN8HbREOBujzYMTd6+Gc8CogzndoBuYkbnJoNXXOj/kssVg==}
 
-  '@schedule-x/drag-and-drop@3.1.2':
-    resolution: {integrity: sha512-8utIk2EvjC1qmaVZbzKpb1XsAcAFQj98n5icqIU7prVtK7AlOtQ/xvSaMPWhAIn1cuZlu1CQ/+Vd7naq4Zbnwg==}
+  '@schedule-x/drag-and-drop@3.2.0':
+    resolution: {integrity: sha512-DTQWMvTmcMMuzJzGxz2K91Q0EwnzDtWUB+1gqFwf/SsbClDSliqkgPFm3MysggsMomTAow38GoM3IGAla4gElA==}
 
-  '@schedule-x/events-service@3.1.2':
-    resolution: {integrity: sha512-SaMYCO7zz4em6s5nUzFl8ahMJtqZQ9JzuTyzqAXnvaAjZ7ibjty0j7goCNIEj7t8JO9ro6/8GVbZkTrBOE06pA==}
+  '@schedule-x/events-service@3.2.0':
+    resolution: {integrity: sha512-0wGQdrsByWsubwvGQQB43F5NytftL9kh+Vsxf0vgXS/sGlJtJcC3Nuk+XMD8BjR4xcEAQAQG7wdyTwuQyn6WAw==}
 
   '@schedule-x/react@3.1.0':
     resolution: {integrity: sha512-qmlju2jvKaTyWsdGTzZ3EZqzTzYsQjo5ktSQwKQd9E4nLF6+oFHWriJr4rrB0W+8sZmWQZfltKqC2+t1buPx0w==}
@@ -1785,11 +1785,11 @@ packages:
       react: ^16.7.0 || ^17 || ^18 || ^19
       react-dom: ^16.7.0 || ^17 || ^18 || ^19
 
-  '@schedule-x/resize@3.1.2':
-    resolution: {integrity: sha512-z1/rCB1nGNIQW3wiIoPIvvTWkN7/afNDCbnf6425opXeqyiAl9AcatKzmo8U5gzbxrcp75FcH6rcmobeARW8TQ==}
+  '@schedule-x/resize@3.2.0':
+    resolution: {integrity: sha512-48w79pQAy604h+NVAXibh9GpcjKCFcOBOmtWOu6zKXpmi9ruwL+IDH8j4m8DSRwAYCG55INd7u0mL/KUbiT2qg==}
 
-  '@schedule-x/theme-default@3.1.2':
-    resolution: {integrity: sha512-0LOd3NjBjYdejE0PgeMU31jC5t2dQz/OY7m9pvoz5izVZ6gOkN32LUKZ7htNpTI3qdRqJtrVjkqlgTxmDMHVfg==}
+  '@schedule-x/theme-default@3.2.0':
+    resolution: {integrity: sha512-LhNFdPs5GliC+CRiDMThI6uJbd9UG26fPwu08B0Rsk68GS53EmKkOfcWvc7LWZcCPmk39eT6F5Il1kwufnQymA==}
 
   '@schummar/icu-type-parser@1.21.5':
     resolution: {integrity: sha512-bXHSaW5jRTmke9Vd0h5P7BtWZG9Znqb8gSDxZnxaGSJnGwPLDPfS+3g0BKzeWqzgZPsIVZkM7m2tbo18cm5HBw==}
@@ -4268,8 +4268,8 @@ packages:
     peerDependencies:
       react: ^19.1.1
 
-  react-hook-form@7.62.0:
-    resolution: {integrity: sha512-7KWFejc98xqG/F4bAxpL41NB3o1nnvQO1RWZT3TqRZYL8RryQETGfEdVnJN2fy1crCiBLLjkRBVK05j24FxJGA==}
+  react-hook-form@7.63.0:
+    resolution: {integrity: sha512-ZwueDMvUeucovM2VjkCf7zIHcs1aAlDimZu2Hvel5C5907gUzMpm4xCrQXtRzCvsBqFjonB4m3x4LzCFI1ZKWA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -5723,10 +5723,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@hookform/resolvers@5.2.2(react-hook-form@7.62.0(react@19.1.1))':
+  '@hookform/resolvers@5.2.2(react-hook-form@7.63.0(react@19.1.1))':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.62.0(react@19.1.1)
+      react-hook-form: 7.63.0(react@19.1.1)
 
   '@humanfs/core@0.19.1': {}
 
@@ -6514,27 +6514,27 @@ snapshots:
 
   '@rushstack/eslint-patch@1.12.0': {}
 
-  '@schedule-x/calendar@3.1.2(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)':
+  '@schedule-x/calendar@3.2.0(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)':
     dependencies:
       '@preact/signals': 2.3.1(preact@10.27.2)
       preact: 10.27.2
       temporal-polyfill: 0.3.0
 
-  '@schedule-x/current-time@3.1.2': {}
+  '@schedule-x/current-time@3.2.0': {}
 
-  '@schedule-x/drag-and-drop@3.1.2': {}
+  '@schedule-x/drag-and-drop@3.2.0': {}
 
-  '@schedule-x/events-service@3.1.2': {}
+  '@schedule-x/events-service@3.2.0': {}
 
-  '@schedule-x/react@3.1.0(@schedule-x/calendar@3.1.2(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@schedule-x/react@3.1.0(@schedule-x/calendar@3.2.0(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@schedule-x/calendar': 3.1.2(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)
+      '@schedule-x/calendar': 3.2.0(@preact/signals@2.3.1(preact@10.27.2))(preact@10.27.2)(temporal-polyfill@0.3.0)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
 
-  '@schedule-x/resize@3.1.2': {}
+  '@schedule-x/resize@3.2.0': {}
 
-  '@schedule-x/theme-default@3.1.2': {}
+  '@schedule-x/theme-default@3.2.0': {}
 
   '@schummar/icu-type-parser@1.21.5': {}
 
@@ -9252,7 +9252,7 @@ snapshots:
       react: 19.1.1
       scheduler: 0.26.0
 
-  react-hook-form@7.62.0(react@19.1.1):
+  react-hook-form@7.63.0(react@19.1.1):
     dependencies:
       react: 19.1.1
 

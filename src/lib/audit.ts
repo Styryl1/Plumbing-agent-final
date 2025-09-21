@@ -23,15 +23,17 @@ export type AuditResource =
 
 export interface AuditLogData {
 	orgId: string;
-	userId?: string | null | undefined; // Clerk user ID (can be undefined from ctx)
+	userId?: string | null | undefined;
 	action: AuditAction;
 	resource: AuditResource;
-	resourceId: string;
-	changes?: {
-		before?: Record<string, unknown>;
-		after?: Record<string, unknown>;
-	};
+	resourceId?: string;
+	before?: Record<string, unknown>;
+	after?: Record<string, unknown>;
 	metadata?: Record<string, unknown>;
+	summary?: string;
+	eventType?: string;
+	actorType?: "user" | "system" | "service";
+	actorRole?: string | null;
 }
 
 /**
@@ -45,21 +47,27 @@ export async function logAuditEvent(
 	data: AuditLogData,
 ): Promise<void> {
 	try {
-		const payload = {
-			resource_id: data.resourceId,
-			changes: data.changes as Json,
-			metadata: data.metadata as Json,
-		} as Json;
+		const before = data.before ? (data.before as Json) : undefined;
+		const after = data.after ? (data.after as Json) : undefined;
+		const metadata = data.metadata ? (data.metadata as Json) : undefined;
+		const eventType = data.eventType ?? `${data.resource}.${data.action}`;
+		const actorType = data.actorType ?? (data.userId ? "user" : "system");
 
-		const auditRecord: TablesInsert<"audit_logs"> = {
+		const auditRecord: TablesInsert<"audit_events"> = {
 			org_id: data.orgId,
-			user_id: data.userId ?? null,
-			action: data.action,
-			resource: data.resource,
-			payload_json: payload,
+			actor_id: data.userId ?? null,
+			actor_type: actorType,
+			actor_role: data.actorRole ?? null,
+			event_type: eventType,
+			resource_type: data.resource,
+			resource_id: data.resourceId ?? null,
+			summary: data.summary ?? null,
+			...(before !== undefined ? { before } : {}),
+			...(after !== undefined ? { after } : {}),
+			...(metadata !== undefined ? { metadata } : {}),
 		};
 
-		const { error } = await db.from("audit_logs").insert(auditRecord);
+		const { error } = await db.from("audit_events").insert(auditRecord);
 
 		if (error) {
 			// Log but don't throw - audit failures shouldn't break business operations
@@ -98,15 +106,9 @@ export async function logJobAudit(
 		action: params.action,
 		resource: "job",
 		resourceId: params.jobId,
-		// Boolean logic: include changes if either exists
-		...(Boolean(params.before) || Boolean(params.after)
-			? {
-					changes: {
-						...(params.before && { before: params.before }),
-						...(params.after && { after: params.after }),
-					},
-				}
-			: {}),
+		summary: `job.${params.action}`,
+		...(params.before ? { before: params.before } : {}),
+		...(params.after ? { after: params.after } : {}),
 		...(params.metadata ? { metadata: params.metadata } : {}),
 	});
 }
@@ -132,15 +134,9 @@ export async function logCustomerAudit(
 		action: params.action,
 		resource: "customer",
 		resourceId: params.customerId,
-		// Boolean logic: include changes if either exists
-		...(Boolean(params.before) || Boolean(params.after)
-			? {
-					changes: {
-						...(params.before && { before: params.before }),
-						...(params.after && { after: params.after }),
-					},
-				}
-			: {}),
+		summary: `customer.${params.action}`,
+		...(params.before ? { before: params.before } : {}),
+		...(params.after ? { after: params.after } : {}),
 		...(params.metadata ? { metadata: params.metadata } : {}),
 	});
 }

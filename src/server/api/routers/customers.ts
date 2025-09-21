@@ -38,9 +38,9 @@ const phoneNumberSchema = z
 	.transform(normalizePhone);
 
 const phoneListSchema = z.preprocess(
-	(value) => {
+	(value: unknown) => {
 		if (Array.isArray(value)) {
-			return value;
+			return value as unknown[];
 		}
 		if (typeof value === "string" && value.length > 0) {
 			return [value];
@@ -50,12 +50,12 @@ const phoneListSchema = z.preprocess(
 	z.array(phoneNumberSchema).min(1, zMsg(E.phoneRequired)),
 );
 
-const optionalPhoneListSchema = z.preprocess((value) => {
+const optionalPhoneListSchema = z.preprocess((value: unknown) => {
 	if (value === undefined || value === null) {
 		return value;
 	}
 	if (Array.isArray(value)) {
-		return value;
+		return value as unknown[];
 	}
 	if (typeof value === "string" && value.length > 0) {
 		return [value];
@@ -131,8 +131,8 @@ export const customersRouter = createTRPCRouter({
 			});
 		}
 
-		console.log("🔍 Supabase Auth Debug:", data);
-		return data;
+		const debugData: unknown = data;
+		return debugData;
 	}),
 	/**
 	 * List customers with optional search and pagination

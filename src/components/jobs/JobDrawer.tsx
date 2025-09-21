@@ -116,7 +116,7 @@ export default function JobDrawer({
 
 	const customerPrimaryPhone = (
 		customer?.primaryPhone ??
-		customer?.phones?.[0] ??
+		customer?.phones[0] ??
 		""
 	).trim();
 

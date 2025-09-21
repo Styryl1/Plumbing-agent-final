@@ -239,6 +239,7 @@ export const orgSettingsRouter = createTRPCRouter({
 				action: "update",
 				resource: "organization",
 				resourceId: orgId,
+				summary: "organization.settings.update",
 				metadata: {
 					action: "update_settings",
 					updatedFields: Object.keys(input),
@@ -321,6 +322,7 @@ export const orgSettingsRouter = createTRPCRouter({
 					action: "update",
 					resource: "organization",
 					resourceId: orgId,
+					summary: "organization.settings.toggle_fast_confirm",
 					metadata: {
 						action: "toggle_fast_confirm",
 						enabled: input.enabled,

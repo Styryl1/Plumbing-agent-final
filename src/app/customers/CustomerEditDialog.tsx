@@ -212,75 +212,90 @@ export default function CustomerEditDialog({
 			cleanFormData.phones = uniquePhones;
 		}
 
-		const trimmedEmail = formData.email?.trim() ?? "";
-		if (trimmedEmail !== (customer.email ?? "")) {
-			if (trimmedEmail.length > 0) {
+		const trimmedEmail = formData.email?.trim();
+		const nextEmail = trimmedEmail ?? "";
+		const existingEmail = customer.email ?? "";
+		if (nextEmail !== existingEmail) {
+			if (trimmedEmail && trimmedEmail.length > 0) {
 				cleanFormData.email = trimmedEmail;
 			} else {
 				cleanFormData.email = null;
 			}
 		}
 
-		const trimmedAddress = formData.address?.trim() ?? "";
-		if (trimmedAddress !== (customer.address ?? "")) {
-			if (trimmedAddress.length > 0) {
+		const trimmedAddress = formData.address?.trim();
+		const nextAddress = trimmedAddress ?? "";
+		const existingAddress = customer.address ?? "";
+		if (nextAddress !== existingAddress) {
+			if (trimmedAddress && trimmedAddress.length > 0) {
 				cleanFormData.address = trimmedAddress;
 			} else {
 				cleanFormData.address = null;
 			}
 		}
 
-		const trimmedPostal = formData.postalCode?.trim() ?? "";
-		if (trimmedPostal !== (customer.postalCode ?? "")) {
-			if (trimmedPostal.length > 0) {
+		const trimmedPostal = formData.postalCode?.trim();
+		const nextPostal = trimmedPostal ?? "";
+		const existingPostal = customer.postalCode ?? "";
+		if (nextPostal !== existingPostal) {
+			if (trimmedPostal && trimmedPostal.length > 0) {
 				cleanFormData.postalCode = trimmedPostal;
 			} else {
 				cleanFormData.postalCode = null;
 			}
 		}
 
-		const trimmedHouseNumber = formData.houseNumber?.trim() ?? "";
-		if (trimmedHouseNumber !== (customer.houseNumber ?? "")) {
-			if (trimmedHouseNumber.length > 0) {
+		const trimmedHouseNumber = formData.houseNumber?.trim();
+		const nextHouseNumber = trimmedHouseNumber ?? "";
+		const existingHouseNumber = customer.houseNumber ?? "";
+		if (nextHouseNumber !== existingHouseNumber) {
+			if (trimmedHouseNumber && trimmedHouseNumber.length > 0) {
 				cleanFormData.houseNumber = trimmedHouseNumber;
 			} else {
 				cleanFormData.houseNumber = null;
 			}
 		}
 
-		const trimmedStreet = formData.street?.trim() ?? "";
-		if (trimmedStreet !== (customer.street ?? "")) {
-			if (trimmedStreet.length > 0) {
+		const trimmedStreet = formData.street?.trim();
+		const nextStreet = trimmedStreet ?? "";
+		const existingStreet = customer.street ?? "";
+		if (nextStreet !== existingStreet) {
+			if (trimmedStreet && trimmedStreet.length > 0) {
 				cleanFormData.street = trimmedStreet;
 			} else {
 				cleanFormData.street = null;
 			}
 		}
 
-		const trimmedCity = formData.city?.trim() ?? "";
-		if (trimmedCity !== (customer.city ?? "")) {
-			if (trimmedCity.length > 0) {
+		const trimmedCity = formData.city?.trim();
+		const nextCity = trimmedCity ?? "";
+		const existingCity = customer.city ?? "";
+		if (nextCity !== existingCity) {
+			if (trimmedCity && trimmedCity.length > 0) {
 				cleanFormData.city = trimmedCity;
 			} else {
 				cleanFormData.city = null;
 			}
 		}
 
-		const trimmedKvk = formData.kvk?.trim() ?? "";
-		if (trimmedKvk !== (customer.kvk ?? "")) {
-			cleanFormData.kvk = trimmedKvk.length > 0 ? trimmedKvk : null;
+		const trimmedKvk = formData.kvk?.trim();
+		if ((trimmedKvk ?? "") !== (customer.kvk ?? "")) {
+			cleanFormData.kvk =
+				trimmedKvk && trimmedKvk.length > 0 ? trimmedKvk : null;
 		}
 
-		const trimmedBtw = formData.btw?.trim() ?? "";
-		if (trimmedBtw !== (customer.btw ?? "")) {
-			cleanFormData.btw = trimmedBtw.length > 0 ? trimmedBtw : null;
+		const trimmedBtw = formData.btw?.trim();
+		if ((trimmedBtw ?? "") !== (customer.btw ?? "")) {
+			cleanFormData.btw =
+				trimmedBtw && trimmedBtw.length > 0 ? trimmedBtw : null;
 		}
 
 		if (customFields !== undefined) {
-			const nextSerialized = JSON.stringify(customFields ?? {});
-			const existingSerialized = JSON.stringify(customer.customFields ?? {});
+			const nextCustomFields = customFields;
+			const nextSerialized = JSON.stringify(nextCustomFields);
+			const existingSerialized = JSON.stringify(customer.customFields);
 			if (nextSerialized !== existingSerialized) {
-				cleanFormData.customFields = customFields ?? {};
+				cleanFormData.customFields = nextCustomFields;
 			}
 		}
 
@@ -289,9 +304,10 @@ export default function CustomerEditDialog({
 		}
 
 		if (Object.keys(cleanFormData).length > 0) {
+			const { phones: overridePhones, ...restUpdate } = cleanFormData;
 			const updatePayload: UpdateCustomerInput & { phones: string[] } = {
-				phones: cleanFormData.phones ?? customer.phones,
-				...cleanFormData,
+				...restUpdate,
+				phones: overridePhones ?? customer.phones,
 			};
 
 			updateCustomerMutation.mutate({

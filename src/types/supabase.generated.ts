@@ -201,6 +201,109 @@ export type Database = {
 					},
 				];
 			};
+			audit_events: {
+				Row: {
+					actor_id: string | null;
+					actor_role: string | null;
+					actor_type: "user" | "system" | "service";
+					after: Json | null;
+					before: Json | null;
+					created_at: string;
+					event_type: string;
+					id: string;
+					metadata: Json;
+					org_id: string;
+					resource_id: string | null;
+					resource_type: string;
+					summary: string | null;
+				};
+				Insert: {
+					actor_id?: string | null;
+					actor_role?: string | null;
+					actor_type?: "user" | "system" | "service";
+					after?: Json | null;
+					before?: Json | null;
+					created_at?: string;
+					event_type: string;
+					id?: string;
+					metadata?: Json;
+					org_id: string;
+					resource_id?: string | null;
+					resource_type: string;
+					summary?: string | null;
+				};
+				Update: {
+					actor_id?: string | null;
+					actor_role?: string | null;
+					actor_type?: "user" | "system" | "service";
+					after?: Json | null;
+					before?: Json | null;
+					created_at?: string;
+					event_type?: string;
+					id?: string;
+					metadata?: Json;
+					org_id?: string;
+					resource_id?: string | null;
+					resource_type?: string;
+					summary?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "audit_events_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			feature_flags: {
+				Row: {
+					actor_id: string | null;
+					created_at: string;
+					created_by: string | null;
+					enabled: boolean;
+					flag: string;
+					id: string;
+					org_id: string;
+					updated_at: string;
+					updated_by: string | null;
+					value: Json | null;
+				};
+				Insert: {
+					actor_id?: string | null;
+					created_at?: string;
+					created_by?: string | null;
+					enabled?: boolean;
+					flag: string;
+					id?: string;
+					org_id: string;
+					updated_at?: string;
+					updated_by?: string | null;
+					value?: Json | null;
+				};
+				Update: {
+					actor_id?: string | null;
+					created_at?: string;
+					created_by?: string | null;
+					enabled?: boolean;
+					flag?: string;
+					id?: string;
+					org_id?: string;
+					updated_at?: string;
+					updated_by?: string | null;
+					value?: Json | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "feature_flags_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			dunning_events: {
 				Row: {
 					channel: string;
