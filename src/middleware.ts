@@ -2,26 +2,6 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { env } from "~/lib/env";
 
-const isPublicRoute = createRouteMatcher([
-	"/", // legacy root landing page
-	"/(en|nl)/launch(.*)",
-	"/(en|nl)/product(.*)",
-	"/(en|nl)/pricing",
-	"/(en|nl)/demos",
-	"/(en|nl)/docs",
-	"/(en|nl)/changelog(.*)",
-	"/(en|nl)/about",
-	"/(en|nl)/contact",
-	"/sign-in(.*)", // keep Clerk auth pages public
-	"/sign-up(.*)",
-	"/api/health(.*)", // health checks can remain public
-	"/api/locale", // allow locale switching without forcing auth
-	"/api/providers/moneybird/health", // Moneybird health endpoint
-	"/api/jobs/dunning/run", // Internal job endpoint with token auth
-	// "/api/webhooks(.*)", // uncomment if you have public webhooks
-]);
-
-// Explicitly define protected routes that require authentication
 const isProtectedRoute = createRouteMatcher([
 	"/dashboard(.*)",
 	"/jobs(.*)",
@@ -29,6 +9,10 @@ const isProtectedRoute = createRouteMatcher([
 	"/invoices(.*)",
 	"/employees(.*)",
 	"/settings(.*)",
+	"/api/trpc(.*)",
+	"/api/jobs(.*)",
+	"/api/providers/(moneybird|wefact|eboekhoud|eboekhouden)(.*)",
+	"/api/wa(.*)",
 ]);
 
 function detectPreferredLocale(acceptLang?: string): "nl" | "en" {
@@ -39,20 +23,9 @@ function detectPreferredLocale(acceptLang?: string): "nl" | "en" {
 
 export default clerkMiddleware(
 	async (auth, req) => {
+		const res = NextResponse.next();
 		const { pathname } = req.nextUrl;
 
-		// Skip Next internals & static assets quickly
-		if (
-			pathname.startsWith("/_next") ||
-			pathname.match(
-				/\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|map|txt|xml|csv|pdf|zip|webmanifest)$/,
-			)
-		) {
-			return NextResponse.next();
-		}
-
-		// Set 'locale' cookie once (fallback to Accept-Language)
-		const res = NextResponse.next();
 		if (!req.cookies.has("locale")) {
 			const preferred = detectPreferredLocale(
 				req.headers.get("accept-language") ?? undefined,
@@ -65,37 +38,36 @@ export default clerkMiddleware(
 			});
 		}
 
-		// 1) Protect everything that isn't explicitly public
-		// Also explicitly check for protected routes to ensure auth
-		if (!isPublicRoute(req) || isProtectedRoute(req)) {
+		if (isProtectedRoute(req)) {
 			await auth.protect();
 		}
 
-		// 2) (Optional nicety) Prevent signed-in users from visiting auth pages
 		const { userId } = await auth();
 		if (
 			userId &&
 			(pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up"))
 		) {
-			const url = req.nextUrl.clone();
-			url.pathname = "/dashboard";
-			return NextResponse.redirect(url);
+			return NextResponse.redirect(new URL("/dashboard", req.url));
 		}
 
 		return res;
 	},
 	{
-		// Leave on in dev so we can see matches in the terminal
 		debug: env.NODE_ENV !== "production",
 	},
 );
 
 export const config = {
 	matcher: [
-		// Run middleware for all application routes except Next internals & static files
-		// Do NOT exclude `/api` here, we need it for tRPC.
-		"/((?!_next|.*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|map|txt|xml|csv|pdf|zip|webmanifest)).*)",
-		// Always include API (tRPC lives under /api/trpc)
-		"/(api|trpc)(.*)",
+		"/dashboard/:path*",
+		"/jobs/:path*",
+		"/customers/:path*",
+		"/invoices/:path*",
+		"/employees/:path*",
+		"/settings/:path*",
+		"/api/trpc/:path*",
+		"/api/jobs/:path*",
+		"/api/providers/:path*",
+		"/api/wa/:path*",
 	],
 };
