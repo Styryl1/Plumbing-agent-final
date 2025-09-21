@@ -15,7 +15,7 @@
 - Load full context before touching code: review the relevant PRPs/Epics in `Docs/`. Docs to open first for most slices: `plumbing_agent_mvp_prp.md`, `plumbing_agent_mvp_epic.md`, `whatsapp_ai_unified_prp.md`, `schedule_x_prp.md`, `invoicing_epic.md`. Never guess requirements.
 - Default working dir: `/home/styryl/dev/pa`. Use `rg`, `sed`, `ls` instead of ad-hoc scripts for basic inspection.
 - Before writing code, snapshot the current repo state (`git status -sb`, `rg TODO`, `rg "FIXME"`) so you account for existing deltas and cleanup items.
-- Keep `/tmp/pa-web-dev.log` streaming whenever `pnpm next dev` is active. Tail the log (`timeout 5 tail -f /tmp/pa-web-dev.log`) after every change so it auto-stops, and treat any error-level entry as a blocker to fix immediately.
+- Use the script-based dev workflow: `pnpm dev:bg` (runs `scripts/start-dev.sh`, restarts the server on 127.0.0.1:3000, and tails output into `.logs/dev.log`), sanity-check with `pnpm logs:once`, read `.logs/dev.log` directly if you need deeper history, and shut down via `pnpm dev:stop` (auto-clears log); treat any error-level log line as a blocker to fix immediately.
 - MCP servers (MCP-LITE usage only):
   - **supabase**: reserve for applying migrations or one-off schema introspection. Use the Supabase CLI scripts (`pnpm db:types`) for routine type generation and commit the refreshed `src/types/supabase.generated.ts` via the shim (`src/types/supabase.ts`).
   - **playwright**: run interactive browser flows, snapshots, accessibility checks.
