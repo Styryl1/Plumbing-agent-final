@@ -171,9 +171,7 @@ export async function ensureIntakeForWhatsApp(
 			waConversationId,
 			waContactId,
 			lastMessageId: waMessageIds[waMessageIds.length - 1] ?? null,
-			...(typeof ingestLatencyMs === "number"
-				? { ingestLatencyMs }
-				: {}),
+			...(typeof ingestLatencyMs === "number" ? { ingestLatencyMs } : {}),
 		},
 		...(typeof existingUnscheduledRow?.id === "string"
 			? { id: existingUnscheduledRow.id }
@@ -214,9 +212,7 @@ export async function ensureIntakeForWhatsApp(
 			waContactId,
 			waConversationId,
 			messageCount: waMessageIds.length,
-			...(typeof ingestLatencyMs === "number"
-				? { ingestLatencyMs }
-				: {}),
+			...(typeof ingestLatencyMs === "number" ? { ingestLatencyMs } : {}),
 		},
 	});
 
@@ -232,9 +228,7 @@ export async function ensureIntakeForWhatsApp(
 				status: unscheduledRow.status,
 				priority: unscheduledRow.priority,
 				intakeEventId: intakeId,
-				...(typeof ingestLatencyMs === "number"
-					? { ingestLatencyMs }
-					: {}),
+				...(typeof ingestLatencyMs === "number" ? { ingestLatencyMs } : {}),
 			},
 		});
 	}
@@ -314,11 +308,7 @@ export async function ensureIntakeForVoice(
 	const nowIso = Temporal.Now.instant().toString();
 	const metadataPayload: Json = providerMetadata ?? {};
 	let latencyFromProvider: number | undefined;
-	if (
-		metadataPayload &&
-		typeof metadataPayload === "object" &&
-		!Array.isArray(metadataPayload)
-	) {
+	if (typeof metadataPayload === "object" && !Array.isArray(metadataPayload)) {
 		const candidate = (metadataPayload as Record<string, unknown>).latencyMs;
 		if (typeof candidate === "number") {
 			latencyFromProvider = candidate;

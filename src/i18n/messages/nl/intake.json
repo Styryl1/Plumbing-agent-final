@@ -1,0 +1,55 @@
+{
+	"console": {
+		"list": {
+			"title": "Openstaande intakes",
+			"empty": "Geen intakes in de wachtrij",
+			"unnamed": "Naamloze intake"
+		},
+		"detail": {
+			"empty": {
+				"title": "Selecteer een intake",
+				"subtitle": "Kies links een item om het AI-voorstel te beoordelen"
+			},
+			"channel": "Kanaal",
+			"analyzer": {
+				"title": "AI-analyse",
+				"issue": "Probleem",
+				"urgency": "Urgentie",
+				"time": "Inschatting",
+				"timeValue": "{{value}} minuten"
+			},
+			"suggestions": {
+				"title": "AI-voorstellen",
+				"empty": "Nog geen AI-voorstellen. Gebruik de Copilot of handel handmatig af."
+			},
+			"actions": {
+				"dismiss": "Markeer als handmatig"
+			},
+			"chat": {
+				"title": "Copilot-werkruimte"
+			}
+		},
+		"suggestions": {
+			"created": "Gegenereerd om {{value}}",
+			"estimatedDuration": "Geschatte tijd: {{value}} minuten",
+			"urgency": "Urgentie: {{value}}",
+			"actions": {
+				"apply": "Voorstel toepassen",
+				"review": "Goed controleren",
+				"manual": "Handmatig beoordelen"
+			}
+		},
+		"confidence": {
+			"none": "Geen signaal",
+			"high": "Hoge betrouwbaarheid",
+			"highSubtitle": "Kan direct worden toegepast",
+			"medium": "Let op",
+			"mediumSubtitle": "Controleer voordat je toepast",
+			"low": "Lage betrouwbaarheid",
+			"lowSubtitle": "Vereist handmatige triage"
+		},
+		"chat": {
+			"title": "Copilot-werkruimte"
+		}
+	}
+}

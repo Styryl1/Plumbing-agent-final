@@ -39,10 +39,8 @@ function messageToText(message: UIMessage): string {
 		return "";
 	}
 
-	const parts = message.parts as Array<{ type: string; text?: string }>;
-
-	return parts
-		.map((part) => (part.type === "text" ? part.text ?? "" : ""))
+	return message.parts
+		.map((part) => (part.type === "text" ? (part.text ?? "") : ""))
 		.join("")
 		.trim();
 }
@@ -238,7 +236,17 @@ function SuggestionPanel({
 	);
 }
 
-export function ChatPanel(): JSX.Element {
+interface ChatPanelProps {
+	conversationId?: string | null;
+	customerId?: string | null;
+	jobId?: string | null;
+}
+
+export function ChatPanel({
+	conversationId = null,
+	customerId = null,
+	jobId = null,
+}: ChatPanelProps = {}): JSX.Element {
 	const t = useTranslations();
 	const translate = (
 		key: string,
@@ -265,7 +273,11 @@ export function ChatPanel(): JSX.Element {
 		clearOcr,
 		extraNotes,
 		setExtraNotes,
-	} = useAiChat();
+	} = useAiChat({
+		conversationId,
+		customerId,
+		jobId,
+	});
 
 	const errorMessage = errorKey ? translate(`errors.${errorKey}`) : null;
 

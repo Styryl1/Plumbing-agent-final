@@ -63,7 +63,8 @@
 		"customers": "Customers",
 		"dashboard": "Dashboard",
 		"invoices": "Invoices",
-		"jobs": "Jobs"
+		"jobs": "Jobs",
+		"intake": "Intake"
 	},
 	"stats": {
 		"activeJobs": "Active Jobs",

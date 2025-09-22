@@ -3,31 +3,13 @@
 // Handles wa_suggestions table mapping with Temporal datetime conversion
 
 import { parseZdt } from "~/lib/time";
+import type { AiRecommendationDTO } from "~/types/ai";
 import type { Tables } from "~/types/supabase";
 
 // === TYPE ALIASES FOR DATABASE LAYER ===
 
 type DbWaSuggestion = Tables<"wa_suggestions">;
 type DbWaConversation = Tables<"wa_conversations">;
-
-// === DTO TYPE DEFINITION ===
-
-export type AiRecommendationDTO = {
-	id: string;
-	createdIso: string; // ISO datetime string
-	title: string;
-	summary?: string;
-	confidence: number; // 0..100
-	customer?: { name?: string; phoneE164?: string };
-	estimate?: {
-		durationMinutes?: number;
-		materials?: Array<{ name: string; qty: number; unit?: string }>;
-	};
-	media?: string[];
-	urgency: "low" | "medium" | "high";
-	tags: string[];
-	source: "rule" | "openai";
-};
 
 // === DATABASE TO DTO MAPPER ===
 
@@ -44,11 +26,16 @@ export function toAiRecommendationDTO(
 	const createdIso = createdZdt.toInstant().toString();
 
 	// Build base DTO
+	const confidenceScore =
+		typeof row.confidence === "number" ? row.confidence : 0;
 	const dto: AiRecommendationDTO = {
 		id: row.id,
 		createdIso,
 		title: row.proposed_text,
-		confidence: Math.round(row.confidence * 100), // Convert 0-1 to 0-100
+		confidence: Math.round(confidenceScore * 100), // Convert 0-1 to 0-100
+		confidenceScore,
+		intakeEventId: conversation?.intake_event_id ?? null,
+		conversationId: conversation?.id ?? null,
 		urgency: row.urgency as "low" | "medium" | "high",
 		tags: row.tags,
 		source: row.source as "rule" | "openai",

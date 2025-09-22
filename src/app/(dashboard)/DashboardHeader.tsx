@@ -14,6 +14,8 @@ export function DashboardHeader({
 	initialLocale,
 }: DashboardHeaderProps): JSX.Element {
 	const t = useTranslations();
+	const translateNav = (key: string): string =>
+		t(`ui.nav.${key}` as Parameters<typeof t>[0]);
 
 	return (
 		<header className="border-b bg-card shadow-soft">
@@ -25,7 +27,7 @@ export function DashboardHeader({
 							{t("system.app.title")}
 						</h1>
 						<span className="ml-2 text-sm text-muted-foreground">
-							{t("ui.nav.dashboard")}
+							{translateNav("dashboard")}
 						</span>
 					</div>
 
@@ -36,25 +38,31 @@ export function DashboardHeader({
 								href="/dashboard"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("ui.nav.dashboard")}
+								{translateNav("dashboard")}
+							</a>
+							<a
+								href="/intake"
+								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+							>
+								{translateNav("intake")}
 							</a>
 							<a
 								href="/jobs"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("ui.nav.jobs")}
+								{translateNav("jobs")}
 							</a>
 							<a
 								href="/customers"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("ui.nav.customers")}
+								{translateNav("customers")}
 							</a>
 							<Link
 								href="/invoices"
 								className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								{t("ui.nav.invoices")}
+								{translateNav("invoices")}
 							</Link>
 						</nav>
 					</div>

@@ -43,6 +43,7 @@ import {
 } from "~/lib/calendar-temporal";
 import { formatDutchDate, formatDutchDateTime } from "~/lib/dates";
 import { api } from "~/lib/trpc/client";
+import type { AiRecommendationDTO } from "~/types/ai";
 import type { IntakeDetailDTO, IntakeSummaryDTO } from "~/types/intake";
 
 type JobPriority = "normal" | "urgent" | "emergency";
@@ -81,6 +82,18 @@ const mapIntakePriority = (value: string | null | undefined): JobPriority => {
 	return "normal";
 };
 
+const isAiRecommendation = (value: unknown): value is AiRecommendationDTO => {
+	if (typeof value !== "object" || value === null) {
+		return false;
+	}
+	const candidate = value as Partial<AiRecommendationDTO>;
+	return (
+		typeof candidate.id === "string" &&
+		typeof candidate.title === "string" &&
+		typeof candidate.confidence === "number"
+	);
+};
+
 interface Employee {
 	id: string;
 	name: string;
@@ -90,23 +103,6 @@ interface Employee {
 interface UnscheduledProps {
 	readonly employees: Employee[];
 	readonly onJobCreated?: () => void;
-}
-
-interface AiRecommendationDTO {
-	id: string;
-	createdIso: string;
-	title: string;
-	summary?: string;
-	confidence: number;
-	customer?: { name?: string; phoneE164?: string };
-	estimate?: {
-		durationMinutes?: number;
-		materials?: Array<{ name: string; qty: number; unit?: string }>;
-	};
-	media?: string[];
-	urgency: "low" | "medium" | "high";
-	tags: string[];
-	source: "rule" | "openai";
 }
 
 interface WhatsAppLead {
@@ -165,7 +161,9 @@ export default function Unscheduled({
 	);
 	const aiData = aiRecommendationsQuery.data;
 	const aiLoading = aiRecommendationsQuery.isLoading;
-	const aiRecommendations = aiData?.items ?? [];
+	const aiRecommendations = Array.isArray(aiData?.items)
+		? aiData.items.filter(isAiRecommendation)
+		: [];
 
 	// Fetch WhatsApp leads
 	const whatsappLeadsQuery = api.whatsapp.listLeads.useQuery(

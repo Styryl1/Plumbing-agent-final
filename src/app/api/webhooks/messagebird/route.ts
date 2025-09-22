@@ -26,8 +26,13 @@ type TranscriptCandidate = {
 	source: string;
 };
 
-const coerceTranscript = (value: unknown, source: string): TranscriptCandidate | null => {
-	if (!value || typeof value !== "object") return null;
+const coerceTranscript = (
+	value: unknown,
+	source: string,
+): TranscriptCandidate | null => {
+	if (typeof value !== "object" || value === null) {
+		return null;
+	}
 	const record = value as Record<string, unknown>;
 	const text =
 		typeof record.text === "string"
@@ -37,7 +42,9 @@ const coerceTranscript = (value: unknown, source: string): TranscriptCandidate |
 				: typeof record.message === "string"
 					? record.message
 					: null;
-	if (!text || text.trim().length === 0) return null;
+	if (text === null || text.trim().length === 0) {
+		return null;
+	}
 	const langValue =
 		typeof record.language === "string"
 			? record.language
@@ -61,14 +68,22 @@ const coerceTranscript = (value: unknown, source: string): TranscriptCandidate |
 };
 
 const extractTranscript = (payload: unknown): TranscriptCandidate | null => {
-	if (!payload || typeof payload !== "object") return null;
+	if (typeof payload !== "object" || payload === null) {
+		return null;
+	}
 	const record = payload as Record<string, unknown>;
 	const candidates: TranscriptCandidate[] = [];
 
-	const transcription = coerceTranscript(record.transcription, "payload.transcription");
+	const transcription = coerceTranscript(
+		record.transcription,
+		"payload.transcription",
+	);
 	if (transcription) candidates.push(transcription);
 
-	if (Array.isArray(record.transcriptions) && record.transcriptions.length > 0) {
+	if (
+		Array.isArray(record.transcriptions) &&
+		record.transcriptions.length > 0
+	) {
 		const candidate = coerceTranscript(
 			record.transcriptions[0],
 			"payload.transcriptions[0]",
@@ -97,10 +112,14 @@ const extractTranscript = (payload: unknown): TranscriptCandidate | null => {
 		if (candidate) candidates.push(candidate);
 	}
 
-	return candidates.find((candidate) => candidate.text.trim().length > 0) ?? null;
+	return (
+		candidates.find((candidate) => candidate.text.trim().length > 0) ?? null
+	);
 };
 
-const normalizeTranscriptLang = (value: string | null | undefined): "nl" | "en" => {
+const normalizeTranscriptLang = (
+	value: string | null | undefined,
+): "nl" | "en" => {
 	const normalized = (value ?? "nl").toLowerCase();
 	if (normalized.startsWith("en")) {
 		return "en";
@@ -373,14 +392,14 @@ async function processEvent(
 	const transcriptCandidate = extractTranscript(payload);
 	const parsedTranscript = transcriptCandidate
 		? TranscriptSchema.safeParse({
-			text: transcriptCandidate.text,
-			lang: normalizeTranscriptLang(transcriptCandidate.lang),
-			confidence:
-				typeof transcriptCandidate.confidence === "number"
-					? transcriptCandidate.confidence
-					: undefined,
-			provider: "messagebird",
-		})
+				text: transcriptCandidate.text,
+				lang: normalizeTranscriptLang(transcriptCandidate.lang),
+				confidence:
+					typeof transcriptCandidate.confidence === "number"
+						? transcriptCandidate.confidence
+						: undefined,
+				provider: "messagebird",
+			})
 		: null;
 	const transcriptRecord = parsedTranscript?.success
 		? parsedTranscript.data

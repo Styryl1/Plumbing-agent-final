@@ -44,9 +44,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 			transcript: result.text.trim(),
 			lang: result.language === "en" ? "en" : "nl",
 			confidence:
-				typeof (result as { confidence?: number }).confidence === "number"
-					? (result as { confidence?: number }).confidence
-					: undefined,
+				typeof result.confidence === "number" ? result.confidence : undefined,
 		});
 
 		return NextResponse.json(payload);

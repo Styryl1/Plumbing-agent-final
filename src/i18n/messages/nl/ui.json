@@ -63,7 +63,8 @@
 		"customers": "Klanten",
 		"dashboard": "Dashboard",
 		"invoices": "Facturen",
-		"jobs": "Klussen"
+		"jobs": "Klussen",
+		"intake": "Intake"
 	},
 	"stats": {
 		"activeJobs": "Actieve Klussen",

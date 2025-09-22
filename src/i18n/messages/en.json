@@ -403,6 +403,61 @@
     "mustBeEmail": "Must be a valid email",
     "passwordTooWeak": "Password too weak"
   },
+  "intake": {
+    "console": {
+      "list": {
+        "title": "Pending intake",
+        "empty": "No intake items waiting",
+        "unnamed": "Unnamed intake"
+      },
+      "detail": {
+        "empty": {
+          "title": "Select an intake",
+          "subtitle": "Choose an item on the left to review the AI proposal"
+        },
+        "channel": "Channel",
+        "analyzer": {
+          "title": "AI analyzer",
+          "issue": "Issue",
+          "urgency": "Urgency",
+          "time": "Estimated duration",
+          "timeValue": "{{value}} minutes"
+        },
+        "suggestions": {
+          "title": "AI suggestions",
+          "empty": "No AI suggestions yet. Use the Copilot or handle manually."
+        },
+        "actions": {
+          "dismiss": "Mark manual"
+        },
+        "chat": {
+          "title": "Copilot workspace"
+        }
+      },
+      "suggestions": {
+        "created": "Generated at {{value}}",
+        "estimatedDuration": "Estimated time: {{value}} minutes",
+        "urgency": "Urgency: {{value}}",
+        "actions": {
+          "apply": "Apply proposal",
+          "review": "Review carefully",
+          "manual": "Manual review required"
+        }
+      },
+      "confidence": {
+        "none": "No signal",
+        "high": "High confidence",
+        "highSubtitle": "Safe to apply automatically",
+        "medium": "Caution",
+        "mediumSubtitle": "Double-check before applying",
+        "low": "Low confidence",
+        "lowSubtitle": "Requires manual triage"
+      },
+      "chat": {
+        "title": "Copilot workspace"
+      }
+    }
+  },
   "invoices": {
     "notFound": "Invoice not found",
     "notFoundDescription": "The invoice you're looking for doesn't exist or you don't have access to it.",
@@ -2496,7 +2551,8 @@
       "customers": "Customers",
       "dashboard": "Dashboard",
       "invoices": "Invoices",
-      "jobs": "Jobs"
+      "jobs": "Jobs",
+      "intake": "Intake"
     },
     "stats": {
       "activeJobs": "Active Jobs",

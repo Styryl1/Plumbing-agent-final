@@ -20,6 +20,11 @@ export type IntakeSummaryDTO = {
 	whatsapp?: IntakeEventDetails["whatsapp"];
 	voice?: IntakeEventDetails["voice"];
 	unscheduledId: string | null;
+	customer?: {
+		id: string;
+		name?: string;
+		phoneE164?: string;
+	};
 };
 
 export type IntakeDetailDTO = IntakeSummaryDTO & {

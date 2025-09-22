@@ -194,24 +194,24 @@ export async function POST(request: NextRequest): Promise<Response> {
 			}
 		}
 
-				for (const conversation of persistedConversations) {
-					const analyzer = analyzerByConversation.get(conversation.conversationId);
-					await ensureIntakeForWhatsApp({
-						db,
-						orgId,
-						conversationId: conversation.conversationId,
-						waContactId: conversation.waContactId,
-						waConversationId: conversation.waConversationId,
-						waMessageIds: conversation.waMessageIds,
-						messageRowIds: conversation.messageRowIds,
-						summary: conversation.summary,
-						snippet: conversation.snippet,
-						lastMessageIso: conversation.lastMessageIso,
-						media: conversation.media,
-						...(analyzer ? { analyzer } : {}),
-						ingestLatencyMs,
-					});
-				}
+		for (const conversation of persistedConversations) {
+			const analyzer = analyzerByConversation.get(conversation.conversationId);
+			await ensureIntakeForWhatsApp({
+				db,
+				orgId,
+				conversationId: conversation.conversationId,
+				waContactId: conversation.waContactId,
+				waConversationId: conversation.waConversationId,
+				waMessageIds: conversation.waMessageIds,
+				messageRowIds: conversation.messageRowIds,
+				summary: conversation.summary,
+				snippet: conversation.snippet,
+				lastMessageIso: conversation.lastMessageIso,
+				media: conversation.media,
+				...(analyzer ? { analyzer } : {}),
+				ingestLatencyMs,
+			});
+		}
 
 		await recordWebhookEvent({ eventId, provider: "whatsapp", db, orgId });
 	}

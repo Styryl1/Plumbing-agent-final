@@ -20,17 +20,25 @@ import {
 
 const MODEL_ID = "gpt-4.1-mini";
 
+const generateMessageId = (): string => {
+	const cryptoApi = globalThis.crypto as Crypto & {
+		randomUUID?: () => string;
+	};
+	if (typeof cryptoApi.randomUUID === "function") {
+		return cryptoApi.randomUUID();
+	}
+	return `msg-${Math.random().toString(36).slice(2)}`;
+};
+
 export type ChatErrorKey = "missingInput" | "sendFailed" | "invalidResponse";
 
 function extractText(message: UIMessage): string {
-	if (!Array.isArray(message.parts)) {
+	const { parts } = message;
+	if (!Array.isArray(parts)) {
 		return "";
 	}
-
-	const parts = message.parts as Array<{ type: string; text?: string }>;
-
 	return parts
-		.map((part) => (part.type === "text" ? part.text ?? "" : ""))
+		.map((part) => (part.type === "text" ? (part.text ?? "") : ""))
 		.join("")
 		.trim();
 }
@@ -50,7 +58,10 @@ function normalizeRole(role: UIMessage["role"]): SanitizedMessage["role"] {
 
 function sanitizeMessages(messages: UIMessage[]): SanitizedMessage[] {
 	return messages.map((message) => ({
-		id: message.id,
+		id:
+			typeof message.id === "string" && message.id.length > 0
+				? message.id
+				: generateMessageId(),
 		role: normalizeRole(message.role),
 		content: extractText(message),
 	}));
@@ -59,6 +70,9 @@ function sanitizeMessages(messages: UIMessage[]): SanitizedMessage[] {
 export interface UseAiChatOptions {
 	onSuggestion?(this: void, suggestion: DiagnosisSuggestion): void;
 	locale?: "nl" | "en";
+	conversationId?: string | null;
+	customerId?: string | null;
+	jobId?: string | null;
 }
 
 type ChatHelpers = UseChatHelpers<UIMessage>;
@@ -87,7 +101,12 @@ export type UseAiChatResult = {
 };
 
 export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
-	const { locale = "nl" } = options;
+	const {
+		locale = "nl",
+		conversationId = null,
+		customerId = null,
+		jobId = null,
+	} = options;
 	const [input, setInput] = useState("");
 	const [voiceTranscript, setVoiceTranscript] = useState<string | null>(null);
 	const [ocrSnippets, setOcrSnippets] = useState<string[]>([]);
@@ -98,7 +117,7 @@ export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
 	const [errorKey, setErrorKey] = useState<ChatErrorKey | null>(null);
 
 	const transport = useMemo(
-		() => new DefaultChatTransport<UIMessage>({ api: "/api/ai/chat" }),
+		() => new DefaultChatTransport({ api: "/api/ai/chat" }),
 		[],
 	);
 
@@ -225,7 +244,7 @@ export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
 			setErrorKey(null);
 			setSuggestion(parsed);
 			onSuggestionRef.current?.(parsed);
-			lastAssistantIdRef.current = assistant.id;
+			lastAssistantIdRef.current = assistant.id ?? null;
 
 			const latency = startedAtRef.current
 				? Math.max(0, Math.round(performance.now() - startedAtRef.current))
@@ -248,6 +267,9 @@ export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
 					output: parsed,
 					model: modelRef.current,
 					latencyMs: latency,
+					conversationId: conversationId ?? undefined,
+					customerId: customerId ?? undefined,
+					jobId: jobId ?? undefined,
 				})
 				.catch((err) => {
 					console.error("Failed to persist AI run", err);
@@ -264,6 +286,9 @@ export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
 		ocrSnippets,
 		recordRun,
 		voiceTranscript,
+		conversationId,
+		customerId,
+		jobId,
 	]);
 
 	const resetConversation = useCallback(() => {
@@ -281,8 +306,9 @@ export const useAiChat = (options: UseAiChatOptions = {}): UseAiChatResult => {
 		lastAssistantIdRef.current = null;
 	}, [chat, stopChat]);
 
+	const hasTransportError = chat.error != null;
 	const combinedErrorKey: ChatErrorKey | null =
-		errorKey ?? (chat.error ? "sendFailed" : null);
+		errorKey ?? (hasTransportError ? "sendFailed" : null);
 	const isLoading = ["streaming", "submitted"].includes(chat.status);
 
 	return {

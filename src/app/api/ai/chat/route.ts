@@ -1,5 +1,10 @@
 import { openai } from "@ai-sdk/openai";
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import {
+	convertToModelMessages,
+	streamText,
+	type UIMessage,
+	type UIPart,
+} from "ai";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { env } from "~/lib/env";
@@ -9,8 +14,23 @@ const MODEL_ID = "gpt-4.1-mini";
 
 export const runtime = "nodejs";
 
+const UiMessageSchema = z.object({
+	id: z.string().optional(),
+	role: z.enum(["system", "user", "assistant"]),
+	content: z.string().optional(),
+	name: z.string().optional(),
+	parts: z
+		.array(
+			z.object({
+				type: z.string(),
+				text: z.string().optional(),
+			}),
+		)
+		.optional(),
+});
+
 const ChatRequestSchema = z.object({
-	messages: z.array(z.unknown()),
+	messages: z.array(UiMessageSchema),
 	context: z
 		.object({
 			voiceTranscript: z.string().nullable().optional(),
@@ -22,6 +42,7 @@ const ChatRequestSchema = z.object({
 });
 
 type ChatRequest = z.infer<typeof ChatRequestSchema>;
+type UiMessageInput = z.infer<typeof UiMessageSchema>;
 
 function buildContextPatch(context?: ChatRequest["context"]): string | null {
 	if (!context) {
@@ -78,7 +99,33 @@ export async function POST(req: Request): Promise<Response> {
 	}
 
 	const { messages, context } = ChatRequestSchema.parse(await req.json());
-	const typedMessages = messages as UIMessage[];
+	const typedMessages: UIMessage[] = messages.map((message) => {
+		const parsed: UiMessageInput = UiMessageSchema.parse(message);
+		const base: UIMessage = { role: parsed.role };
+		if (parsed.id !== undefined) {
+			base.id = parsed.id;
+		}
+		if (parsed.content !== undefined) {
+			base.content = parsed.content;
+		}
+		if (parsed.name !== undefined) {
+			base.name = parsed.name;
+		}
+		const parts = parsed.parts ?? [];
+		if (parts.length > 0) {
+			const sanitizedParts: UIPart[] = parts.map((part) => {
+				const sanitizedPart: UIPart = {
+					type: part.type,
+				};
+				if (typeof part.text === "string") {
+					sanitizedPart.text = part.text;
+				}
+				return sanitizedPart;
+			});
+			base.parts = sanitizedParts;
+		}
+		return base;
+	});
 
 	const appendedContext = buildContextPatch(context);
 
@@ -95,16 +142,16 @@ export async function POST(req: Request): Promise<Response> {
 		model: openai(MODEL_ID),
 		system: SYSTEM_PROMPT,
 		messages: modelMessages,
-	onFinish({ text }: { text: string }) {
-		try {
-			DiagnosisSuggestionSchema.parse(JSON.parse(text));
-		} catch (parseError) {
-			console.warn("AI JSON validation failed", { error: parseError });
-		}
-	},
-	onError({ error }: { error: unknown }) {
-		console.error("AI chat streaming error", error);
-	},
+		onFinish({ text }: { text: string }) {
+			try {
+				DiagnosisSuggestionSchema.parse(JSON.parse(text));
+			} catch (parseError) {
+				console.warn("AI JSON validation failed", { error: parseError });
+			}
+		},
+		onError({ error }: { error: unknown }) {
+			console.error("AI chat streaming error", error);
+		},
 	});
 
 	return result.toUIMessageStreamResponse({

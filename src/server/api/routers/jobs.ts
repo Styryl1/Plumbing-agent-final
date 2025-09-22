@@ -1,13 +1,13 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { logJobAudit } from "~/lib/audit";
+import { assertOrgRole } from "~/lib/authz";
 import { toISO, toZDT } from "~/lib/calendar-temporal";
 import { isWithinBusinessHours } from "~/lib/dates";
 import { E } from "~/lib/i18n/errors";
 import { zMsg } from "~/lib/i18n/zodMessage";
 import { fromDbStatus, type JobStatusDB, toDbStatus } from "~/lib/job-status";
 import { NL_POSTCODE } from "~/lib/validation/postcode";
-import { assertOrgRole } from "~/lib/authz";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import type { JobDTO } from "~/types/job";
 import type { Tables, TablesInsert, TablesUpdate } from "~/types/supabase";
@@ -71,10 +71,10 @@ export const jobsRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ ctx, input }): Promise<JobDTO[]> => {
-				const { db } = ctx;
-				const { auth } = ctx;
-				ensureSchedulerRole(auth.role);
-				const { orgId } = auth;
+			const { db } = ctx;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId } = auth;
 			const { from, to, employeeId, employeeIds, status } = input;
 
 			let query = db
@@ -180,10 +180,10 @@ export const jobsRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
-				const { db } = ctx;
-				const { auth } = ctx;
-				ensureSchedulerRole(auth.role);
-				const { orgId, userId } = auth;
+			const { db } = ctx;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId, userId } = auth;
 			const {
 				title,
 				description,

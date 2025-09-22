@@ -4,6 +4,7 @@
 
 - **TL;DR — MCP-LITE PLAN**
 - Regenerate Supabase types via CLI scripts (`pnpm db:types`) and only call the Supabase MCP server for migrations or one-off schema checks.
+- When you add or modify SQL migrations: **immediately apply them via the Supabase MCP `apply_migration` action, then run `pnpm db:types` right after**. Commit both the migration and the regenerated `supabase.generated.ts` together.
 - Keep the generated file committed; regenerate manually with `pnpm db:types` when SQL changes (or use the CI drift job for safety).
 - Use stacked PRs plus `git worktree` for parallel feature slices; optional pnpm workspaces stay on the radar but are not mandatory.
 - Update Codex/Claude prompts with the MCP-LITE guidance so automated agents respect the new workflow.

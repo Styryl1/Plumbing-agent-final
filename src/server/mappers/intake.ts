@@ -1,7 +1,7 @@
 import { Temporal } from "temporal-polyfill";
 import { parseZdt } from "~/lib/time";
-import { IntakeEventDetailsSchema } from "~/schema/intake";
 import type { IntakeEventDetails } from "~/schema/intake";
+import { IntakeEventDetailsSchema } from "~/schema/intake";
 import type {
 	IntakeDetailDTO,
 	IntakeDetails,
@@ -17,7 +17,7 @@ type UnscheduledRow = Pick<
 >;
 
 function withSignedMedia(details: IntakeEventDetails): IntakeDetails {
-	const media = (details.media ?? []).map((item) => ({
+	const media = details.media.map((item) => ({
 		...(item as IntakeMediaDTO),
 		signedUrl: null,
 	}));
