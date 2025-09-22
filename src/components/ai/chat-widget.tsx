@@ -39,8 +39,10 @@ function messageToText(message: UIMessage): string {
 		return "";
 	}
 
-	return message.parts
-		.map((part) => (part.type === "text" ? part.text : ""))
+	const parts = message.parts as Array<{ type: string; text?: string }>;
+
+	return parts
+		.map((part) => (part.type === "text" ? part.text ?? "" : ""))
 		.join("")
 		.trim();
 }

@@ -95,16 +95,16 @@ export async function POST(req: Request): Promise<Response> {
 		model: openai(MODEL_ID),
 		system: SYSTEM_PROMPT,
 		messages: modelMessages,
-		onFinish({ text }) {
-			try {
-				DiagnosisSuggestionSchema.parse(JSON.parse(text));
-			} catch (error) {
-				console.warn("AI JSON validation failed", { error });
-			}
-		},
-		onError({ error }) {
-			console.error("AI chat streaming error", error);
-		},
+	onFinish({ text }: { text: string }) {
+		try {
+			DiagnosisSuggestionSchema.parse(JSON.parse(text));
+		} catch (parseError) {
+			console.warn("AI JSON validation failed", { error: parseError });
+		}
+	},
+	onError({ error }: { error: unknown }) {
+		console.error("AI chat streaming error", error);
+	},
 	});
 
 	return result.toUIMessageStreamResponse({

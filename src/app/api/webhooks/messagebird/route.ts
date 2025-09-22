@@ -4,7 +4,7 @@ import { Temporal } from "temporal-polyfill";
 import type { z } from "zod";
 import { env, serverOnlyEnv } from "~/lib/env";
 import { logger } from "~/lib/log";
-import { MediaRefSchema } from "~/schema/intake";
+import { MediaRefSchema, TranscriptSchema } from "~/schema/intake";
 import { createSystemClient } from "~/server/db/client";
 import type { EnsureIntakeForVoiceParams } from "~/server/services/intake/ensure-intake";
 import { ensureIntakeForVoice } from "~/server/services/intake/ensure-intake";
@@ -14,9 +14,99 @@ import {
 	isWebhookEventDuplicate,
 	recordWebhookEvent,
 } from "~/server/services/webhooks/events";
+import type { Json } from "~/types/supabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+type TranscriptCandidate = {
+	text: string;
+	lang?: string | null;
+	confidence?: number | null;
+	source: string;
+};
+
+const coerceTranscript = (value: unknown, source: string): TranscriptCandidate | null => {
+	if (!value || typeof value !== "object") return null;
+	const record = value as Record<string, unknown>;
+	const text =
+		typeof record.text === "string"
+			? record.text
+			: typeof record.transcript === "string"
+				? record.transcript
+				: typeof record.message === "string"
+					? record.message
+					: null;
+	if (!text || text.trim().length === 0) return null;
+	const langValue =
+		typeof record.language === "string"
+			? record.language
+			: typeof record.lang === "string"
+				? record.lang
+				: typeof record.locale === "string"
+					? record.locale
+					: null;
+	const confidenceRaw =
+		typeof record.confidence === "number"
+			? record.confidence
+			: typeof record.confidence_score === "number"
+				? record.confidence_score
+				: null;
+	return {
+		text,
+		lang: langValue,
+		confidence: confidenceRaw,
+		source,
+	};
+};
+
+const extractTranscript = (payload: unknown): TranscriptCandidate | null => {
+	if (!payload || typeof payload !== "object") return null;
+	const record = payload as Record<string, unknown>;
+	const candidates: TranscriptCandidate[] = [];
+
+	const transcription = coerceTranscript(record.transcription, "payload.transcription");
+	if (transcription) candidates.push(transcription);
+
+	if (Array.isArray(record.transcriptions) && record.transcriptions.length > 0) {
+		const candidate = coerceTranscript(
+			record.transcriptions[0],
+			"payload.transcriptions[0]",
+		);
+		if (candidate) candidates.push(candidate);
+	}
+
+	const dataTranscription = coerceTranscript(
+		typeof record.data === "object"
+			? (record.data as Record<string, unknown>).transcription
+			: undefined,
+		"payload.data.transcription",
+	);
+	if (dataTranscription) candidates.push(dataTranscription);
+
+	const resultsArray = Array.isArray(record.results)
+		? (record.results as unknown[])
+		: undefined;
+	if (resultsArray && resultsArray.length > 0) {
+		const candidate = coerceTranscript(
+			typeof resultsArray[0] === "object"
+				? (resultsArray[0] as Record<string, unknown>).transcription
+				: undefined,
+			"payload.results[0].transcription",
+		);
+		if (candidate) candidates.push(candidate);
+	}
+
+	return candidates.find((candidate) => candidate.text.trim().length > 0) ?? null;
+};
+
+const normalizeTranscriptLang = (value: string | null | undefined): "nl" | "en" => {
+	const normalized = (value ?? "nl").toLowerCase();
+	if (normalized.startsWith("en")) {
+		return "en";
+	}
+	return "nl";
+};
 
 const resolveEvents = (payload: unknown): unknown[] => {
 	if (Array.isArray(payload)) return payload;
@@ -280,6 +370,35 @@ async function processEvent(
 	const callerLabel = callerNumber ?? "Onbekend";
 	const snippet = `${summary} van ${callerLabel}`;
 
+	const transcriptCandidate = extractTranscript(payload);
+	const parsedTranscript = transcriptCandidate
+		? TranscriptSchema.safeParse({
+			text: transcriptCandidate.text,
+			lang: normalizeTranscriptLang(transcriptCandidate.lang),
+			confidence:
+				typeof transcriptCandidate.confidence === "number"
+					? transcriptCandidate.confidence
+					: undefined,
+			provider: "messagebird",
+		})
+		: null;
+	const transcriptRecord = parsedTranscript?.success
+		? parsedTranscript.data
+		: null;
+
+	const metadataEnvelope: Record<string, unknown> = {
+		...payload,
+		latencyMs: context.latencyMs,
+	};
+	if (transcriptCandidate?.source) {
+		metadataEnvelope.transcript_source = transcriptCandidate.source;
+	}
+	if (transcriptRecord?.confidence !== undefined) {
+		metadataEnvelope.transcript_confidence = transcriptRecord.confidence;
+	}
+
+	const providerMetadata = metadataEnvelope as unknown as Json;
+
 	const voiceParams: EnsureIntakeForVoiceParams = {
 		db,
 		orgId,
@@ -295,8 +414,8 @@ async function processEvent(
 		startedAt,
 		endedAt,
 		durationSeconds,
-		transcript: null,
-		providerMetadata: { ...payload, latencyMs: context.latencyMs },
+		transcript: transcriptRecord,
+		providerMetadata,
 	};
 
 	if (mediaRef) {
@@ -321,5 +440,6 @@ async function processEvent(
 		callId,
 		latencyMs: context.latencyMs,
 		recordingStored: Boolean(mediaRef),
+		transcriptDetected: Boolean(transcriptRecord),
 	});
 }

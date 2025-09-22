@@ -7,6 +7,7 @@ import { E } from "~/lib/i18n/errors";
 import { zMsg } from "~/lib/i18n/zodMessage";
 import { fromDbStatus, type JobStatusDB, toDbStatus } from "~/lib/job-status";
 import { NL_POSTCODE } from "~/lib/validation/postcode";
+import { assertOrgRole } from "~/lib/authz";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import type { JobDTO } from "~/types/job";
 import type { Tables, TablesInsert, TablesUpdate } from "~/types/supabase";
@@ -52,6 +53,12 @@ const isoDateSchema = z.string().transform((value, ctx) => {
 	return z.NEVER;
 });
 
+const SCHEDULER_ROLES = ["owner", "admin", "staff"] as const;
+
+function ensureSchedulerRole(role: string | null | undefined): void {
+	assertOrgRole(role, SCHEDULER_ROLES);
+}
+
 export const jobsRouter = createTRPCRouter({
 	list: protectedProcedure
 		.input(
@@ -64,8 +71,10 @@ export const jobsRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ ctx, input }): Promise<JobDTO[]> => {
-			const { db } = ctx;
-			const { orgId } = ctx.auth;
+				const { db } = ctx;
+				const { auth } = ctx;
+				ensureSchedulerRole(auth.role);
+				const { orgId } = auth;
 			const { from, to, employeeId, employeeIds, status } = input;
 
 			let query = db
@@ -171,8 +180,10 @@ export const jobsRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
-			const { db } = ctx;
-			const { orgId } = ctx.auth;
+				const { db } = ctx;
+				const { auth } = ctx;
+				ensureSchedulerRole(auth.role);
+				const { orgId, userId } = auth;
 			const {
 				title,
 				description,
@@ -224,7 +235,7 @@ export const jobsRouter = createTRPCRouter({
 			// Log job creation for audit trail
 			await logJobAudit(db, {
 				orgId,
-				userId: ctx.auth.userId,
+				userId,
 				action: "create",
 				jobId: createdTyped.id,
 				after: {
@@ -275,7 +286,9 @@ export const jobsRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
 			const { db } = ctx;
-			const { orgId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId, userId } = auth;
 			const { id, patch } = input;
 
 			// Get current job data for audit logging
@@ -333,7 +346,7 @@ export const jobsRouter = createTRPCRouter({
 			// Log job update for audit trail
 			const auditParams = {
 				orgId,
-				userId: ctx.auth.userId,
+				userId,
 				action: "update" as const,
 				jobId: id,
 				after: {
@@ -397,7 +410,9 @@ export const jobsRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
 			const { db } = ctx;
-			const { orgId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId, userId } = auth;
 			const { id, startLocal, endLocal, employeeId } = input;
 
 			// Business hours validation
@@ -452,7 +467,7 @@ export const jobsRouter = createTRPCRouter({
 			// Log job move/reschedule for audit trail
 			const moveAuditParams = {
 				orgId,
-				userId: ctx.auth.userId,
+				userId,
 				action: "move" as const,
 				jobId: id,
 				after: {
@@ -498,7 +513,9 @@ export const jobsRouter = createTRPCRouter({
 		.input(z.object({ id: uuidSchema }))
 		.mutation(async ({ ctx, input }): Promise<void> => {
 			const { db } = ctx;
-			const { orgId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId } = auth;
 			const { id } = input;
 
 			const { error, count } = await db
@@ -551,7 +568,9 @@ export const jobsRouter = createTRPCRouter({
 		.input(z.object({ id: uuidSchema }))
 		.query(async ({ ctx, input }) => {
 			const { db } = ctx;
-			const { orgId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId } = auth;
 			const { id } = input;
 
 			// First get the job
@@ -637,7 +656,9 @@ export const jobsRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db } = ctx;
-			const { orgId, userId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId, userId } = auth;
 			// TODO: derive employeeId from userId if needed; for now, restrict with role only.
 			const { jobId, primaryEmployeeId } = input;
 
@@ -702,7 +723,9 @@ export const jobsRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db } = ctx;
-			const { orgId, userId } = ctx.auth;
+			const { auth } = ctx;
+			ensureSchedulerRole(auth.role);
+			const { orgId, userId } = auth;
 			// TODO: derive employeeId from userId if needed; for now, restrict with role only.
 			const { jobId, starts_at, ends_at } = input;
 

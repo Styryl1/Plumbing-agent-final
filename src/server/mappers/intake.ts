@@ -1,9 +1,11 @@
 import { Temporal } from "temporal-polyfill";
 import { parseZdt } from "~/lib/time";
 import { IntakeEventDetailsSchema } from "~/schema/intake";
+import type { IntakeEventDetails } from "~/schema/intake";
 import type {
 	IntakeDetailDTO,
 	IntakeDetails,
+	IntakeMediaDTO,
 	IntakeSummaryDTO,
 } from "~/types/intake";
 import type { Tables } from "~/types/supabase";
@@ -14,20 +16,32 @@ type UnscheduledRow = Pick<
 	"status" | "priority" | "id"
 >;
 
+function withSignedMedia(details: IntakeEventDetails): IntakeDetails {
+	const media = (details.media ?? []).map((item) => ({
+		...(item as IntakeMediaDTO),
+		signedUrl: null,
+	}));
+	return {
+		...details,
+		media,
+	};
+}
+
 function parseDetails(raw: unknown): IntakeDetails {
 	const result = IntakeEventDetailsSchema.safeParse(raw);
 	if (!result.success) {
 		console.warn("Failed to parse intake details", {
 			issues: result.error.issues.map((issue) => issue.message),
 		});
-		return IntakeEventDetailsSchema.parse({
+		const fallback = IntakeEventDetailsSchema.parse({
 			channel: "whatsapp",
 			summary: "Onbekende intake",
 			snippet: "",
 			lastMessageIso: Temporal.Now.instant().toString(),
 		});
+		return withSignedMedia(fallback);
 	}
-	return result.data;
+	return withSignedMedia(result.data);
 }
 
 function isUnscheduledRow(value: unknown): value is UnscheduledRow {

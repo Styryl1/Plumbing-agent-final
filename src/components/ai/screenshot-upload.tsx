@@ -62,7 +62,7 @@ export function ScreenshotUpload({
 			try {
 				const tesseract = (await import("tesseract.js")) as WorkerModule;
 				worker = (await tesseract.createWorker("nld+eng", undefined, {
-					logger: (message) => {
+					logger: (message: { progress?: number }) => {
 						if (typeof message.progress === "number") {
 							setProgress(Math.round(message.progress * 100));
 						}

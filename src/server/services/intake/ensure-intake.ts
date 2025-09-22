@@ -58,6 +58,7 @@ export type EnsureIntakeForWhatsAppParams = {
 	lastMessageIso: string;
 	analyzer?: AnalyzerResult;
 	media: MediaRef[];
+	ingestLatencyMs?: number | null;
 };
 
 export async function ensureIntakeForWhatsApp(
@@ -76,6 +77,7 @@ export async function ensureIntakeForWhatsApp(
 		lastMessageIso,
 		analyzer,
 		media,
+		ingestLatencyMs,
 	} = params;
 
 	const lastInstant = (() => {
@@ -169,6 +171,9 @@ export async function ensureIntakeForWhatsApp(
 			waConversationId,
 			waContactId,
 			lastMessageId: waMessageIds[waMessageIds.length - 1] ?? null,
+			...(typeof ingestLatencyMs === "number"
+				? { ingestLatencyMs }
+				: {}),
 		},
 		...(typeof existingUnscheduledRow?.id === "string"
 			? { id: existingUnscheduledRow.id }
@@ -184,6 +189,14 @@ export async function ensureIntakeForWhatsApp(
 	const unscheduledRow = isUnscheduledRow(unscheduled.data)
 		? unscheduled.data
 		: null;
+
+	if (!intakeRow?.discovered_at) {
+		await db
+			.from("intake_events")
+			.update({ discovered_at: nowIso })
+			.eq("id", intakeId)
+			.is("discovered_at", null);
+	}
 
 	await logAuditEvent(db, {
 		orgId,
@@ -201,6 +214,9 @@ export async function ensureIntakeForWhatsApp(
 			waContactId,
 			waConversationId,
 			messageCount: waMessageIds.length,
+			...(typeof ingestLatencyMs === "number"
+				? { ingestLatencyMs }
+				: {}),
 		},
 	});
 
@@ -216,6 +232,9 @@ export async function ensureIntakeForWhatsApp(
 				status: unscheduledRow.status,
 				priority: unscheduledRow.priority,
 				intakeEventId: intakeId,
+				...(typeof ingestLatencyMs === "number"
+					? { ingestLatencyMs }
+					: {}),
 			},
 		});
 	}
@@ -294,6 +313,17 @@ export async function ensureIntakeForVoice(
 
 	const nowIso = Temporal.Now.instant().toString();
 	const metadataPayload: Json = providerMetadata ?? {};
+	let latencyFromProvider: number | undefined;
+	if (
+		metadataPayload &&
+		typeof metadataPayload === "object" &&
+		!Array.isArray(metadataPayload)
+	) {
+		const candidate = (metadataPayload as Record<string, unknown>).latencyMs;
+		if (typeof candidate === "number") {
+			latencyFromProvider = candidate;
+		}
+	}
 
 	const intakeUpsert = await db
 		.from("intake_events")
@@ -318,6 +348,14 @@ export async function ensureIntakeForVoice(
 	const intakeId = intakeVoiceRow?.id ?? null;
 	if (!intakeId) {
 		return null;
+	}
+
+	if (!intakeVoiceRow?.discovered_at) {
+		await db
+			.from("intake_events")
+			.update({ discovered_at: nowIso })
+			.eq("id", intakeId)
+			.is("discovered_at", null);
 	}
 
 	const existingVoiceUnscheduled = await db
@@ -347,6 +385,9 @@ export async function ensureIntakeForVoice(
 		metadata: {
 			callId,
 			direction,
+			...(latencyFromProvider !== undefined
+				? { ingestLatencyMs: latencyFromProvider }
+				: {}),
 		},
 		...(typeof existingVoiceRow?.id === "string"
 			? { id: existingVoiceRow.id }
@@ -400,6 +441,9 @@ export async function ensureIntakeForVoice(
 			direction,
 			durationSeconds,
 			recordingStored: Boolean(recording?.storageKey),
+			...(latencyFromProvider !== undefined
+				? { ingestLatencyMs: latencyFromProvider }
+				: {}),
 		},
 	});
 
@@ -415,6 +459,9 @@ export async function ensureIntakeForVoice(
 				status: unscheduledVoiceRow.status,
 				priority: unscheduledVoiceRow.priority,
 				intakeEventId: intakeId,
+				...(latencyFromProvider !== undefined
+					? { ingestLatencyMs: latencyFromProvider }
+					: {}),
 			},
 		});
 	}

@@ -1,6 +1,12 @@
 import type { IntakeEventDetails } from "~/schema/intake";
 
-export type IntakeDetails = IntakeEventDetails;
+export type IntakeMediaDTO = IntakeEventDetails["media"][number] & {
+	signedUrl: string | null;
+};
+
+export type IntakeDetails = Omit<IntakeEventDetails, "media"> & {
+	media: IntakeMediaDTO[];
+};
 
 export type IntakeSummaryDTO = {
 	id: string;
@@ -10,12 +16,12 @@ export type IntakeSummaryDTO = {
 	receivedAtIso: string;
 	summary: string;
 	snippet: string;
-	media: IntakeEventDetails["media"];
+	media: IntakeMediaDTO[];
 	whatsapp?: IntakeEventDetails["whatsapp"];
 	voice?: IntakeEventDetails["voice"];
 	unscheduledId: string | null;
 };
 
 export type IntakeDetailDTO = IntakeSummaryDTO & {
-	details: IntakeEventDetails;
+	details: IntakeDetails;
 };

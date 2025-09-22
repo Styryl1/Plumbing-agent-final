@@ -131,6 +131,10 @@ export async function POST(request: NextRequest): Promise<Response> {
 	const nowMs = Temporal.Now.instant().epochMilliseconds;
 	const eventId =
 		entryId && entryTime ? `${entryId}_${entryTime}` : `wa_${nowMs}`;
+	const ingestLatencyMs =
+		typeof entryTime === "number"
+			? Math.max(0, nowMs - entryTime * 1000)
+			: null;
 	if (await isWebhookEventDuplicate({ eventId, provider: "whatsapp", db })) {
 		return NextResponse.json({ ok: true, duplicate: true });
 	}
@@ -190,23 +194,24 @@ export async function POST(request: NextRequest): Promise<Response> {
 			}
 		}
 
-		for (const conversation of persistedConversations) {
-			const analyzer = analyzerByConversation.get(conversation.conversationId);
-			await ensureIntakeForWhatsApp({
-				db,
-				orgId,
-				conversationId: conversation.conversationId,
-				waContactId: conversation.waContactId,
-				waConversationId: conversation.waConversationId,
-				waMessageIds: conversation.waMessageIds,
-				messageRowIds: conversation.messageRowIds,
-				summary: conversation.summary,
-				snippet: conversation.snippet,
-				lastMessageIso: conversation.lastMessageIso,
-				media: conversation.media,
-				...(analyzer ? { analyzer } : {}),
-			});
-		}
+				for (const conversation of persistedConversations) {
+					const analyzer = analyzerByConversation.get(conversation.conversationId);
+					await ensureIntakeForWhatsApp({
+						db,
+						orgId,
+						conversationId: conversation.conversationId,
+						waContactId: conversation.waContactId,
+						waConversationId: conversation.waConversationId,
+						waMessageIds: conversation.waMessageIds,
+						messageRowIds: conversation.messageRowIds,
+						summary: conversation.summary,
+						snippet: conversation.snippet,
+						lastMessageIso: conversation.lastMessageIso,
+						media: conversation.media,
+						...(analyzer ? { analyzer } : {}),
+						ingestLatencyMs,
+					});
+				}
 
 		await recordWebhookEvent({ eventId, provider: "whatsapp", db, orgId });
 	}
