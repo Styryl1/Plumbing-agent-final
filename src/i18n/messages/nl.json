@@ -76,6 +76,89 @@
       "dismiss": "Sluiten"
     }
   },
+  "ai": {
+    "widget": {
+      "open": "Open AI-chat"
+    },
+    "title": "AI-chat voor loodgieters",
+    "subtitle": "Proefversie — voorstel altijd eerst beoordelen",
+    "actions": {
+      "reset": "Reset",
+      "stop": "Stop",
+      "retry": "Nieuw voorstel",
+      "send": "Verstuur",
+      "sending": "Versturen…"
+    },
+    "input": {
+      "placeholder": "Beschrijf het probleem of plak een transcript…"
+    },
+    "notes": {
+      "placeholder": "Extra notities (optioneel)…"
+    },
+    "voice": {
+      "transcriptLabel": "Transcript spraaknotitie",
+      "clear": "Verwijderen",
+      "button": {
+        "idle": "🎙️ Inspreken",
+        "recording": "Opname stoppen",
+        "processing": "Bezig…"
+      },
+      "error": {
+        "permission": "Microfoontoegang geweigerd. Controleer je browserinstellingen en probeer opnieuw.",
+        "provider": "Spraakdienst tijdelijk niet beschikbaar. Probeer het later opnieuw.",
+        "transcription": "Geen transcript van de AI ontvangen.",
+        "upload": "Opname kon niet worden verstuurd. Probeer het opnieuw."
+      }
+    },
+    "ocr": {
+      "title": "Tekst uit screenshots",
+      "clear": "Alles verwijderen",
+      "dropzone": {
+        "idleTitle": "📷 Screenshots toevoegen",
+        "idleHint": "Sleep screenshots hierheen of klik om te kiezen.",
+        "processingTitle": "Tekst uitlezen…",
+        "processingHint": "Voortgang: {{progress}}%"
+      },
+      "error": {
+        "noImages": "Kies één of meer afbeeldingsbestanden.",
+        "ocrFailed": "Tekst uitlezen is mislukt. Probeer het opnieuw."
+      }
+    },
+    "errors": {
+      "missingInput": "Voer eerst een bericht in of voeg context toe.",
+      "sendFailed": "Verzenden mislukt. Probeer het opnieuw.",
+      "invalidResponse": "De AI gaf ongeldige data terug. Verstuur het opnieuw."
+    },
+    "empty": {
+      "title": "Start een nieuwe diagnose",
+      "body": "Stel een vraag, spreek een spraaknotitie in of upload een screenshot. De AI geeft een voorstel terug."
+    },
+    "suggestion": {
+      "loading": "AI stelt diagnose voor…",
+      "loadingHint": "De AI leest je context en werkt het voorstel uit.",
+      "placeholderTitle": "Nog geen voorstel",
+      "placeholderBody": "Stuur eerst context (tekst, spraak of screenshot) om een AI-voorstel te ontvangen.",
+      "title": "AI-voorstel",
+      "reviewRequired": "Controle nodig",
+      "disclaimer": "Dubbelcheck altijd het voorstel voordat je het doorstuurt of toepast.",
+      "issue": "Diagnose",
+      "confidence": "Vertrouwen",
+      "urgency": "Urgentie",
+      "laborHours": "Inschatting uren",
+      "timeEstimate": "Totale duur",
+      "minutes": "min",
+      "materials": "Materiaaladvies",
+      "noMaterials": "Geen materialen voorgesteld.",
+      "notes": "Opmerkingen",
+      "urgencyLevels": {
+        "non-urgent": "Niet urgent",
+        "urgent": "Urgent",
+        "emergency": "Spoed"
+      },
+      "laborHoursValue": "{{value}} uur",
+      "materialQty": "• {{qty}}"
+    }
+  },
   "auth": {
     "context": {
       "description": "Huidige gebruiker- en organisatie-informatie",

@@ -1,4 +1,5 @@
 import { aiRouter } from "./routers/ai";
+import { aiBrainRouter } from "./routers/ai-brain";
 import { customersRouter } from "./routers/customers";
 import { employeesRouter } from "./routers/employees";
 import { intakeRouter } from "./routers/intake";
@@ -30,6 +31,7 @@ export const appRouter = router({
 	scheduling: schedulingRouter,
 	settings: settingsRouter,
 	ai: aiRouter,
+	aiBrain: aiBrainRouter,
 	intake: intakeRouter,
 	whatsapp: whatsappRouter,
 	whatsappSettings: whatsappSettingsRouter,

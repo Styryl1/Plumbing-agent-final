@@ -1,0 +1,83 @@
+{
+	"widget": {
+		"open": "Open AI chat"
+	},
+	"title": "AI chat for plumbers",
+	"subtitle": "Preview — review every proposal before acting",
+	"actions": {
+		"reset": "Reset",
+		"stop": "Stop",
+		"retry": "New proposal",
+		"send": "Send",
+		"sending": "Sending…"
+	},
+	"input": {
+		"placeholder": "Describe the issue or paste a transcript…"
+	},
+	"notes": {
+		"placeholder": "Extra notes (optional)…"
+	},
+	"voice": {
+		"transcriptLabel": "Voice transcript",
+		"clear": "Remove",
+		"button": {
+			"idle": "🎙️ Record voice",
+			"recording": "Stop recording",
+			"processing": "Processing…"
+		},
+		"error": {
+			"permission": "Microphone access denied. Check browser settings and try again.",
+			"provider": "Speech-to-text service is unavailable right now. Try again soon.",
+			"transcription": "No transcript was returned by the AI.",
+			"upload": "Recording could not be uploaded. Please retry."
+		}
+	},
+	"ocr": {
+		"title": "Text extracted from screenshots",
+		"clear": "Clear all",
+		"dropzone": {
+			"idleTitle": "📷 Add screenshots",
+			"idleHint": "Drag screenshots here or tap to choose.",
+			"processingTitle": "Reading text…",
+			"processingHint": "Progress: {{progress}}%"
+		},
+		"error": {
+			"noImages": "Select one or more image files.",
+			"ocrFailed": "We couldn’t read text from these screenshots. Try again."
+		}
+	},
+	"errors": {
+		"missingInput": "Enter a message or add context first.",
+		"sendFailed": "Sending failed. Please try again.",
+		"invalidResponse": "The AI returned invalid data. Try resending."
+	},
+	"empty": {
+		"title": "Start a new diagnosis",
+		"body": "Ask a question, record a voice note, or upload a screenshot to receive an AI proposal."
+	},
+	"suggestion": {
+		"loading": "AI is drafting a diagnosis…",
+		"loadingHint": "The AI is reading your context and preparing a proposal.",
+		"placeholderTitle": "No proposal yet",
+		"placeholderBody": "Share some context (text, voice, or screenshot) to receive an AI proposal.",
+		"title": "AI proposal",
+		"reviewRequired": "Review required",
+		"disclaimer": "Double-check every proposal before sharing or applying it.",
+		"issue": "Diagnosis",
+		"confidence": "Confidence",
+		"urgency": "Urgency",
+		"laborHours": "Estimated labor",
+		"timeEstimate": "Total duration",
+		"minutes": "min",
+		"materials": "Material advice",
+		"noMaterials": "No materials suggested.",
+		"notes": "Notes",
+		"urgencyLevels": {
+			"non-urgent": "Non-urgent",
+			"urgent": "Urgent",
+			"emergency": "Emergency"
+		},
+		"laborHoursValue": "{{value}} h",
+		"materialQty": "• {{qty}}"
+	}
+}

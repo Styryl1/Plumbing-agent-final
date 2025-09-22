@@ -12,7 +12,6 @@
 		"check": "pnpm i18n:doctor && pnpm -s typecheck",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"e2e": "node scripts/e2e-run.mjs",
 		"guard": "biome format --write && biome check --write && pnpm lint && node scripts/pretypecheck.mjs && tsc --noEmit && node scripts/check-imports.mjs && node scripts/check-routes.mjs && node scripts/check-encoding.mjs && node scripts/check-placeholders.mjs && pnpm i18n:doctor && node scripts/audit-production-rules.mjs && next build",
 		"work": "cross-env WB_ALLOW_DB=1 pnpm test && cross-env WB_ALLOW_DB=1 npx vitest run --config workbench/vitest.config.ts",
 		"guard-safe": "node scripts/guard-safe.mjs",
@@ -38,6 +37,8 @@
 		"db:types:project": "PATH=/home/linuxbrew/.linuxbrew/bin:$PATH supabase gen types --project-id akuktezoisvblrnkaljb --schema public > src/types/supabase.generated.ts"
 	},
 	"dependencies": {
+		"@ai-sdk/openai": "^2.0.32",
+		"@ai-sdk/react": "^2.0.48",
 		"@clerk/nextjs": "^6.32.0",
 		"@hookform/resolvers": "^5.2.2",
 		"@preact/signals": "^2.3.1",
@@ -67,6 +68,7 @@
 		"@trpc/client": "^11.5.1",
 		"@trpc/react-query": "^11.5.1",
 		"@trpc/server": "^11.5.1",
+		"ai": "^5.0.48",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"cmdk": "^1.1.1",
@@ -88,6 +90,7 @@
 		"svix": "^1.76.1",
 		"tailwind-merge": "^3.3.1",
 		"temporal-polyfill": "^0.3.0",
+		"tesseract.js": "^6.0.1",
 		"vaul": "^1.1.2",
 		"zod": "^4.1.11"
 	},
@@ -120,8 +123,8 @@
 		"eslint-plugin-unicorn": "^61.0.2",
 		"fast-glob": "^3.3.3",
 		"fs-extra": "^11.3.2",
-		"husky": "^9.1.7",
 		"globby": "^14.1.0",
+		"husky": "^9.1.7",
 		"jsdom": "^27.0.0",
 		"playwright": "^1.55.0",
 		"rimraf": "^6.0.1",
