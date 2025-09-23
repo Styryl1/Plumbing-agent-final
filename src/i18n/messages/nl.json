@@ -977,6 +977,26 @@
         "inactive": "○"
       }
     },
+    "notes": {
+      "title": "Werknotities",
+      "subtitle": "Leg ter plaatse notities vast voor de planner.",
+      "placeholder": "Voeg notities toe voor deze klus...",
+      "offline": "Offline — notities worden gesynchroniseerd zodra je weer online bent.",
+      "saving": "Bezig met opslaan…",
+      "queued": "In wachtrij voor synchronisatie"
+    },
+    "signature": {
+      "title": "Handtekening klant",
+      "subtitle": "Laat de klant tekenen zodra de klus gereed is.",
+      "offline": "Offline — handtekening wordt gesynchroniseerd zodra je weer online bent.",
+      "save": "Handtekening opslaan",
+      "clear": "Wissen",
+      "current": "Laatst opgeslagen handtekening",
+      "queued": "In wachtrij voor synchronisatie",
+      "queuedBadge": "Wachtrij",
+      "saving": "Bezig met opslaan…",
+      "alt": "Opgeslagen handtekening"
+    },
     "client": {
       "offline": "Offline — wijzigingen worden verstuurd zodra je weer online bent.",
       "toast": {
@@ -989,7 +1009,17 @@
         "statusQueued": "Status opgeslagen voor synchronisatie",
         "statusSuccess": "Status bijgewerkt",
         "statusError": "Status bijwerken mislukt",
-        "statusNeedsTimer": "Rond eerst de timer af."
+        "statusNeedsTimer": "Rond eerst de timer af.",
+        "notesQueued": "Notities in wachtrij voor synchronisatie",
+        "notesSuccess": "Notities opgeslagen",
+        "notesError": "Opslaan van notities mislukt",
+        "signatureQueued": "Handtekening in wachtrij voor synchronisatie",
+        "signatureClearedQueued": "Verwijderen van handtekening in wachtrij gezet",
+        "signatureSuccess": "Handtekening opgeslagen",
+        "signatureCleared": "Handtekening verwijderd",
+        "signatureError": "Opslaan van handtekening mislukt",
+        "signatureEmpty": "Laat eerst een handtekening zetten",
+        "signatureUnavailable": "Handtekeningveld nog niet klaar"
       },
       "priority": {
         "normal": "Normaal",

@@ -94,16 +94,14 @@ export function OfflineSyncProvider({
 	const enqueue = useCallback((operation: EnqueueInput): void => {
 		const id = operation.id ?? crypto.randomUUID();
 		setQueue((prev) => {
-			if (prev.some((item) => item.id === id)) {
-				return prev;
-			}
 			const op: OfflineOperation = {
 				id,
 				kind: operation.kind,
 				payload: operation.payload,
 				createdAt: operation.createdAt ?? Temporal.Now.instant().toString(),
 			};
-			const next = [...prev, op].sort((a, b) =>
+			const filtered = prev.filter((item) => item.id !== id);
+			const next = [...filtered, op].sort((a, b) =>
 				a.createdAt.localeCompare(b.createdAt),
 			);
 			return next;

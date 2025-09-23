@@ -977,6 +977,26 @@
         "inactive": "○"
       }
     },
+    "notes": {
+      "title": "Work notes",
+      "subtitle": "Capture on-site notes for the organiser.",
+      "placeholder": "Add notes for this job...",
+      "offline": "Offline — notes will sync once you reconnect.",
+      "saving": "Saving…",
+      "queued": "Queued for sync"
+    },
+    "signature": {
+      "title": "Customer signature",
+      "subtitle": "Ask the customer to sign after the work is complete.",
+      "offline": "Offline — signature will sync once you reconnect.",
+      "save": "Save signature",
+      "clear": "Clear",
+      "current": "Last captured signature",
+      "queued": "Queued for sync",
+      "queuedBadge": "Queued",
+      "saving": "Saving…",
+      "alt": "Saved customer signature"
+    },
     "client": {
       "offline": "Offline — changes will sync once you're online again.",
       "toast": {
@@ -989,7 +1009,17 @@
         "statusQueued": "Status queued for sync",
         "statusSuccess": "Status updated",
         "statusError": "Failed to update status",
-        "statusNeedsTimer": "Finish the timer first."
+        "statusNeedsTimer": "Finish the timer first.",
+        "notesQueued": "Notes queued for sync",
+        "notesSuccess": "Notes saved",
+        "notesError": "Failed to save notes",
+        "signatureQueued": "Signature queued for sync",
+        "signatureClearedQueued": "Signature removal queued for sync",
+        "signatureSuccess": "Signature saved",
+        "signatureCleared": "Signature cleared",
+        "signatureError": "Failed to save signature",
+        "signatureEmpty": "Sign before saving",
+        "signatureUnavailable": "Signature pad not ready"
       },
       "priority": {
         "normal": "Normal",

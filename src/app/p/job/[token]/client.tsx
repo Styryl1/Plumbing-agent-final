@@ -1,9 +1,11 @@
 "use client";
 
-import { MessageSquare, Navigation, Phone } from "lucide-react";
+import { MessageSquare, Navigation, Phone, Save, Undo2 } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type SignaturePad from "signature_pad";
 import { toast } from "sonner";
 import {
 	type MaterialInput,
@@ -17,6 +19,7 @@ import { JobTimer, type JobTimerState } from "~/components/job-card/timer";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
+import { Textarea } from "~/components/ui/textarea";
 import { OfflineSyncProvider, useOfflineSync } from "~/hooks/use-offline-sync";
 import { minutesBetween, nowZoned, round5, TZ } from "~/lib/calendar-temporal";
 import { api } from "~/lib/trpc/client";
@@ -50,6 +53,8 @@ interface JobCardView {
 		readonly lastSyncedAtISO: string | null;
 		readonly pendingOperations: number;
 	};
+	readonly notes: string;
+	readonly signatureDataUrl: string | null;
 }
 
 type TimerAction = "start" | "pause" | "complete";
@@ -68,6 +73,16 @@ interface StatusPayload {
 	readonly jobId: string;
 	readonly status: JobCardStatus;
 	readonly notifyCustomer: boolean;
+}
+
+interface NotesPayload {
+	readonly jobId: string;
+	readonly notes: string;
+}
+
+interface SignaturePayload {
+	readonly jobId: string;
+	readonly signatureDataUrl: string | null;
 }
 
 function computeTimeRange(
@@ -181,6 +196,23 @@ function applyStatusOptimistic(
 	};
 }
 
+function applyNotesOptimistic(view: JobCardView, notes: string): JobCardView {
+	return {
+		...view,
+		notes,
+	};
+}
+
+function applySignatureOptimistic(
+	view: JobCardView,
+	signatureDataUrl: string | null,
+): JobCardView {
+	return {
+		...view,
+		signatureDataUrl,
+	};
+}
+
 function buildWhatsappLink(phone: string | null): string {
 	if (!phone) {
 		return "#";
@@ -214,6 +246,16 @@ function JobCardInner({
 		typeof navigator !== "undefined" ? !navigator.onLine : false,
 	);
 	const previousRef = useRef<JobCardView>(initialJob);
+	const [notesDraft, setNotesDraft] = useState(initialJob.notes);
+	const notesTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const [notesSaving, setNotesSaving] = useState(false);
+	const [notesQueued, setNotesQueued] = useState(false);
+	const signatureCanvasRef = useRef<HTMLCanvasElement | null>(null);
+	const signaturePadRef = useRef<SignaturePad | null>(null);
+	const [signatureSaving, setSignatureSaving] = useState(false);
+	const [signatureQueued, setSignatureQueued] = useState(false);
+	const [signatureDirty, setSignatureDirty] = useState(false);
+	const [signatureReady, setSignatureReady] = useState(false);
 
 	const timerMutation = api.jobCard.updateTimer.useMutation({
 		onSuccess: (next) => {
@@ -233,6 +275,30 @@ function JobCardInner({
 			setJob(next);
 		},
 	});
+	const notesMutation = api.jobCard.updateNotes.useMutation({
+		onSuccess: (next) => {
+			previousRef.current = next;
+			setJob(next);
+			setNotesSaving(false);
+			setNotesQueued(false);
+			setNotesDraft(next.notes);
+		},
+		onError: () => {
+			setNotesSaving(false);
+		},
+	});
+	const signatureMutation = api.jobCard.saveSignature.useMutation({
+		onSuccess: (next) => {
+			previousRef.current = next;
+			setJob(next);
+			setSignatureSaving(false);
+			setSignatureQueued(false);
+			setSignatureDirty(false);
+		},
+		onError: () => {
+			setSignatureSaving(false);
+		},
+	});
 
 	useEffect(() => {
 		if (typeof window === "undefined") {
@@ -249,7 +315,288 @@ function JobCardInner({
 		};
 	}, []);
 
+	useEffect(() => {
+		setNotesDraft(job.notes);
+	}, [job.notes]);
+
+	useEffect(
+		() => () => {
+			if (notesTimeoutRef.current) {
+				clearTimeout(notesTimeoutRef.current);
+			}
+		},
+		[],
+	);
+
+	useEffect(() => {
+		if (typeof window === "undefined") {
+			return;
+		}
+		let cancelled = false;
+		let pad: SignaturePad | null = null;
+		let removeListeners: (() => void) | undefined;
+
+		const configureCanvas = (canvas: HTMLCanvasElement): void => {
+			const deviceRatio = window.devicePixelRatio;
+			const ratio =
+				Number.isFinite(deviceRatio) && deviceRatio > 0 ? deviceRatio : 1;
+			const rect = canvas.getBoundingClientRect();
+			const width = rect.width;
+			const normalizedWidth = Number.isFinite(width) && width > 0 ? width : 320;
+			const height = rect.height;
+			const normalizedHeight =
+				Number.isFinite(height) && height > 0 ? height : 180;
+			canvas.width = normalizedWidth * ratio;
+			canvas.height = normalizedHeight * ratio;
+			const context = canvas.getContext("2d");
+			if (context) {
+				context.scale(ratio, ratio);
+			}
+		};
+
+		const setup = async (): Promise<void> => {
+			const canvas = signatureCanvasRef.current;
+			if (!canvas) {
+				return;
+			}
+			const { default: SignaturePadCtor } = await import("signature_pad");
+			if (cancelled || !signatureCanvasRef.current) {
+				return;
+			}
+
+			configureCanvas(canvas);
+			pad = new SignaturePadCtor(canvas, {
+				minWidth: 0.6,
+				maxWidth: 2.4,
+				penColor: "#0f172a",
+				backgroundColor: "rgba(255,255,255,0)",
+			});
+			signaturePadRef.current = pad;
+			setSignatureReady(true);
+			if (initialJob.signatureDataUrl) {
+				try {
+					void pad.fromDataURL(initialJob.signatureDataUrl);
+					setSignatureDirty(false);
+				} catch (error) {
+					console.error("[job-card] failed to load initial signature", error);
+				}
+			}
+
+			const handleBegin = (): void => {
+				setSignatureDirty(true);
+			};
+			const handleEnd = (): void => {
+				setSignatureDirty(!(pad?.isEmpty() ?? true));
+			};
+
+			const handleResize = (): void => {
+				if (!pad || !signatureCanvasRef.current) {
+					return;
+				}
+				const existing = pad.isEmpty() ? null : pad.toDataURL("image/png");
+				configureCanvas(signatureCanvasRef.current);
+				if (existing) {
+					try {
+						void pad.fromDataURL(existing);
+					} catch (error) {
+						console.error(
+							"[job-card] failed to restore signature after resize",
+							error,
+						);
+					}
+				}
+			};
+
+			pad.addEventListener("beginStroke", handleBegin);
+			pad.addEventListener("endStroke", handleEnd);
+			window.addEventListener("resize", handleResize);
+
+			removeListeners = () => {
+				window.removeEventListener("resize", handleResize);
+				pad?.removeEventListener("beginStroke", handleBegin);
+				pad?.removeEventListener("endStroke", handleEnd);
+			};
+		};
+
+		void setup();
+
+		return () => {
+			cancelled = true;
+			removeListeners?.();
+			signaturePadRef.current = null;
+			setSignatureReady(false);
+		};
+	}, [initialJob.signatureDataUrl]);
+
+	useEffect(() => {
+		if (!signatureReady) {
+			return;
+		}
+		const pad = signaturePadRef.current;
+		if (!pad) {
+			return;
+		}
+		if (!job.signatureDataUrl) {
+			pad.clear();
+			setSignatureDirty(false);
+			return;
+		}
+		try {
+			void pad.fromDataURL(job.signatureDataUrl);
+			setSignatureDirty(false);
+		} catch (error) {
+			console.error("[job-card] failed to load signature", error);
+		}
+	}, [job.signatureDataUrl, signatureReady]);
+
 	const { enqueue, registerHandler, pendingCount } = useOfflineSync();
+
+	const persistNotes = useCallback(
+		async (value: string) => {
+			const trimmed = value.trimEnd();
+			setNotesSaving(true);
+			setNotesQueued(false);
+			setJob((prev) => {
+				previousRef.current = prev;
+				return applyNotesOptimistic(prev, trimmed);
+			});
+
+			if (isOffline) {
+				setNotesQueued(true);
+				enqueue({
+					id: `notes:${job.jobId}`,
+					kind: "job.notes.update",
+					payload: toJson<NotesPayload>({ jobId: job.jobId, notes: trimmed }),
+				});
+				setNotesSaving(false);
+				toast.info(t("jobCard.client.toast.notesQueued"));
+				return;
+			}
+
+			try {
+				await notesMutation.mutateAsync({ jobId: job.jobId, notes: trimmed });
+				setNotesSaving(false);
+				toast.success(t("jobCard.client.toast.notesSuccess"));
+			} catch (error) {
+				console.error(error);
+				setNotesSaving(false);
+				setNotesQueued(false);
+				setJob(previousRef.current);
+				setNotesDraft(previousRef.current.notes);
+				toast.error(t("jobCard.client.toast.notesError"));
+			}
+		},
+		[enqueue, isOffline, job.jobId, notesMutation, t],
+	);
+
+	const handleNotesChange = useCallback(
+		(value: string) => {
+			setNotesDraft(value);
+			if (value === job.notes) {
+				if (notesTimeoutRef.current) {
+					clearTimeout(notesTimeoutRef.current);
+					notesTimeoutRef.current = null;
+				}
+				setNotesSaving(false);
+				setNotesQueued(false);
+				return;
+			}
+			if (notesTimeoutRef.current) {
+				clearTimeout(notesTimeoutRef.current);
+			}
+			notesTimeoutRef.current = setTimeout(() => {
+				void persistNotes(value);
+			}, 900);
+		},
+		[job.notes, persistNotes],
+	);
+
+	const saveSignature = useCallback(
+		async (dataUrl: string | null, { viaClear = false } = {}) => {
+			setSignatureSaving(true);
+			setSignatureQueued(false);
+			setJob((prev) => {
+				previousRef.current = prev;
+				return applySignatureOptimistic(prev, dataUrl);
+			});
+
+			if (isOffline) {
+				setSignatureQueued(true);
+				enqueue({
+					id: `signature:${job.jobId}`,
+					kind: "job.signature.save",
+					payload: toJson<SignaturePayload>({
+						jobId: job.jobId,
+						signatureDataUrl: dataUrl,
+					}),
+				});
+				setSignatureSaving(false);
+				setSignatureDirty(false);
+				toast.info(
+					viaClear
+						? t("jobCard.client.toast.signatureClearedQueued")
+						: t("jobCard.client.toast.signatureQueued"),
+				);
+				return;
+			}
+
+			try {
+				await signatureMutation.mutateAsync({
+					jobId: job.jobId,
+					signatureDataUrl: dataUrl,
+				});
+				setSignatureSaving(false);
+				setSignatureDirty(false);
+				toast.success(
+					viaClear
+						? t("jobCard.client.toast.signatureCleared")
+						: t("jobCard.client.toast.signatureSuccess"),
+				);
+			} catch (error) {
+				console.error(error);
+				setSignatureSaving(false);
+				setSignatureQueued(false);
+				setSignatureDirty(false);
+				setJob(previousRef.current);
+				if (signaturePadRef.current) {
+					if (previousRef.current.signatureDataUrl) {
+						try {
+							void signaturePadRef.current.fromDataURL(
+								previousRef.current.signatureDataUrl,
+							);
+						} catch (err) {
+							console.error("[job-card] failed to restore signature", err);
+						}
+					} else {
+						signaturePadRef.current.clear();
+					}
+				}
+				toast.error(t("jobCard.client.toast.signatureError"));
+			}
+		},
+		[enqueue, isOffline, job.jobId, signatureMutation, t],
+	);
+
+	const handleSignatureSubmit = useCallback(async () => {
+		const pad = signaturePadRef.current;
+		if (!pad) {
+			toast.error(t("jobCard.client.toast.signatureUnavailable"));
+			return;
+		}
+		if (pad.isEmpty()) {
+			toast.warning(t("jobCard.client.toast.signatureEmpty"));
+			return;
+		}
+		const dataUrl = pad.toDataURL("image/png");
+		await saveSignature(dataUrl);
+	}, [saveSignature, t]);
+
+	const handleSignatureClear = useCallback(async () => {
+		if (signaturePadRef.current) {
+			signaturePadRef.current.clear();
+		}
+		await saveSignature(null, { viaClear: true });
+	}, [saveSignature]);
 
 	const registerHandlers = useCallback((): (() => void) => {
 		const unregisterStart = registerHandler(
@@ -297,14 +644,37 @@ function JobCardInner({
 				setJob(next);
 			},
 		);
+		const unregisterNotes = registerHandler(
+			"job.notes.update",
+			async (payload) => {
+				const parsed = fromJson<NotesPayload>(payload);
+				await notesMutation.mutateAsync(parsed);
+			},
+		);
+		const unregisterSignature = registerHandler(
+			"job.signature.save",
+			async (payload) => {
+				const parsed = fromJson<SignaturePayload>(payload);
+				await signatureMutation.mutateAsync(parsed);
+			},
+		);
 		return () => {
 			unregisterStart();
 			unregisterPause();
 			unregisterComplete();
 			unregisterMaterial();
 			unregisterStatus();
+			unregisterNotes();
+			unregisterSignature();
 		};
-	}, [materialMutation, registerHandler, statusMutation, timerMutation]);
+	}, [
+		materialMutation,
+		notesMutation,
+		registerHandler,
+		signatureMutation,
+		statusMutation,
+		timerMutation,
+	]);
 
 	useEffect(() => {
 		return registerHandlers();
@@ -552,6 +922,40 @@ function JobCardInner({
 					isOffline={isOffline}
 				/>
 
+				<section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+					<div className="flex items-start justify-between gap-3">
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+								{t("jobCard.notes.title")}
+							</p>
+							<p className="text-sm text-slate-600">
+								{t("jobCard.notes.subtitle")}
+							</p>
+							{isOffline ? (
+								<p className="mt-1 text-sm text-amber-600">
+									{t("jobCard.notes.offline")}
+								</p>
+							) : null}
+						</div>
+					</div>
+					<Textarea
+						value={notesDraft}
+						onChange={(event) => {
+							handleNotesChange(event.target.value);
+						}}
+						rows={6}
+						placeholder={t("jobCard.notes.placeholder")}
+						className="mt-2"
+					/>
+					<div className="flex justify-end text-xs text-slate-500">
+						{notesSaving
+							? t("jobCard.notes.saving")
+							: notesQueued
+								? t("jobCard.notes.queued")
+								: null}
+					</div>
+				</section>
+
 				<MaterialsQuickAdd
 					lines={job.materials.lines}
 					totals={job.materials.totals}
@@ -559,6 +963,87 @@ function JobCardInner({
 					isProcessing={materialMutation.isPending}
 					isOffline={isOffline}
 				/>
+
+				<section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+					<div className="flex items-start justify-between gap-3">
+						<div>
+							<p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+								{t("jobCard.signature.title")}
+							</p>
+							<p className="text-sm text-slate-600">
+								{t("jobCard.signature.subtitle")}
+							</p>
+							{isOffline ? (
+								<p className="mt-1 text-sm text-amber-600">
+									{t("jobCard.signature.offline")}
+								</p>
+							) : null}
+						</div>
+						{signatureQueued ? (
+							<Badge variant="outline" className="bg-amber-50 text-amber-700">
+								{t("jobCard.signature.queuedBadge")}
+							</Badge>
+						) : null}
+					</div>
+					<div className="rounded-lg border border-slate-200 bg-slate-50 p-2">
+						<canvas
+							ref={signatureCanvasRef}
+							className="h-44 w-full touch-none"
+							style={{ touchAction: "none" }}
+						/>
+					</div>
+					<div className="flex flex-wrap gap-2">
+						<Button
+							type="button"
+							variant="secondary"
+							size="lg"
+							onClick={() => {
+								void handleSignatureClear();
+							}}
+							disabled={
+								signatureSaving || (!signatureDirty && !job.signatureDataUrl)
+							}
+						>
+							<Undo2 className="mr-2 h-5 w-5" />
+							{t("jobCard.signature.clear")}
+						</Button>
+						<Button
+							type="button"
+							size="lg"
+							onClick={() => {
+								void handleSignatureSubmit();
+							}}
+							disabled={signatureSaving || !signatureReady || !signatureDirty}
+						>
+							<Save className="mr-2 h-5 w-5" />
+							{t("jobCard.signature.save")}
+						</Button>
+					</div>
+					{job.signatureDataUrl ? (
+						<div>
+							<p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+								{t("jobCard.signature.current")}
+							</p>
+							<div className="mt-2 overflow-hidden rounded-lg border border-slate-200 bg-white p-4">
+								<Image
+									src={job.signatureDataUrl}
+									alt={t("jobCard.signature.alt")}
+									width={600}
+									height={200}
+									unoptimized
+									className="h-auto max-h-40 w-auto"
+								/>
+							</div>
+						</div>
+					) : null}
+					<div className="flex justify-end text-xs text-slate-500">
+						{signatureSaving
+							? t("jobCard.signature.saving")
+							: signatureQueued
+								? t("jobCard.signature.queued")
+								: null}
+					</div>
+				</section>
 			</div>
 		</div>
 	);

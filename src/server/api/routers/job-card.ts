@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { randomUUID } from "node:crypto";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -112,6 +113,8 @@ const jobCardViewSchema = z.object({
 		lastSyncedAtISO: z.string().nullable(),
 		pendingOperations: z.number(),
 	}),
+	notes: z.string(),
+	signatureDataUrl: z.string().nullable(),
 });
 
 type JobCardStatus = (typeof JOB_CARD_STATUSES)[number];
@@ -129,6 +132,8 @@ interface JobCardState {
 	status: JobCardStatus;
 	lastSyncedAt: string | null;
 	pendingOperations: number;
+	notes: string;
+	signatureDataUrl: string | null;
 }
 
 type JobRow = Tables<"jobs"> & {
@@ -275,6 +280,20 @@ function deriveJobCardState(row: JobRow): JobCardState {
 
 	const materials = sanitizeMaterials(cardRaw.materials);
 
+	const notes =
+		typeof cardRaw.notes === "string"
+			? cardRaw.notes
+			: typeof row.notes === "string"
+				? row.notes
+				: "";
+
+	const signatureFromState =
+		typeof cardRaw.signature === "string" && cardRaw.signature.length > 0
+			? cardRaw.signature
+			: null;
+	const signatureFromRow = normalizeSignature(row.customer_signature);
+	const signatureDataUrl = signatureFromState ?? signatureFromRow;
+
 	const lastSyncedAt =
 		typeof cardRaw.lastSyncedAt === "string" ? cardRaw.lastSyncedAt : null;
 
@@ -294,6 +313,8 @@ function deriveJobCardState(row: JobRow): JobCardState {
 		status,
 		lastSyncedAt,
 		pendingOperations,
+		notes,
+		signatureDataUrl,
 	} satisfies JobCardState;
 }
 
@@ -309,6 +330,8 @@ function buildOfflineState(previous: unknown, state: JobCardState): Json {
 		status: state.status,
 		lastSyncedAt: state.lastSyncedAt,
 		pendingCount: state.pendingOperations,
+		notes: state.notes,
+		signature: state.signatureDataUrl,
 	} satisfies Record<string, unknown>;
 
 	return base as Json;
@@ -427,9 +450,52 @@ function toJobCardView(row: JobRow, state: JobCardState): JobCardView {
 			lastSyncedAtISO: state.lastSyncedAt,
 			pendingOperations: state.pendingOperations,
 		},
+		notes: state.notes,
+		signatureDataUrl: state.signatureDataUrl,
 	} satisfies JobCardView;
 
 	return jobCardViewSchema.parse(detail);
+}
+
+function normalizeSignature(raw: unknown): string | null {
+	if (typeof raw !== "string" || raw.length === 0) {
+		return null;
+	}
+	if (raw.startsWith("data:image/")) {
+		return raw;
+	}
+	if (raw.startsWith("\\x")) {
+		const hex = raw.slice(2);
+		const base64 = Buffer.from(hex, "hex").toString("base64");
+		return `data:image/png;base64,${base64}`;
+	}
+	// Assume base64 without prefix
+	return `data:image/png;base64,${raw}`;
+}
+
+function extractSignaturePayload(dataUrl: string | null): {
+	base64: string | null;
+	dataUrl: string | null;
+} {
+	if (!dataUrl || dataUrl.length === 0) {
+		return { base64: null, dataUrl: null };
+	}
+	const match =
+		/^data:(?<mime>image\/(?:png|jpeg));base64,(?<payload>[A-Za-z0-9+/=]+)$/.exec(
+			dataUrl,
+		);
+	const payload = match?.groups?.payload ?? null;
+	const mime = match?.groups?.mime ?? null;
+	if (!payload || !mime) {
+		throw new TRPCError({
+			code: "BAD_REQUEST",
+			message: "Ongeldig handtekeningformaat",
+		});
+	}
+	return {
+		base64: payload,
+		dataUrl: `data:${mime};base64,${payload}`,
+	};
 }
 
 async function requireEmployee(
@@ -616,6 +682,15 @@ export const jobCardRouter = createTRPCRouter({
 			return toJobCardView(row, state);
 		}),
 
+	getByJobId: protectedProcedure
+		.input(z.object({ jobId: z.uuid() }))
+		.query(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
+			const state = ensureTokenFresh(deriveJobCardState(job));
+			return toJobCardView(job, state);
+		}),
+
 	updateTimer: protectedProcedure
 		.input(
 			z.object({
@@ -761,6 +836,119 @@ export const jobCardRouter = createTRPCRouter({
 						unitPriceCents: newLine.unitPriceCents,
 						vatRate: newLine.vatRate,
 					},
+				},
+			});
+
+			return toJobCardView(updatedRow, nextState);
+		}),
+
+	updateNotes: protectedProcedure
+		.input(
+			z.object({
+				jobId: z.uuid(),
+				notes: z
+					.string()
+					.max(10_000)
+					.transform((value) => value.trimStart()),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
+			let state = ensureTokenFresh(deriveJobCardState(job));
+			const nowInstant = Temporal.Now.instant();
+			const trimmed = input.notes.trimEnd();
+
+			state = {
+				...state,
+				notes: trimmed,
+				lastSyncedAt: nowInstant.toString(),
+			} satisfies JobCardState;
+
+			const update: TablesUpdate<"jobs"> = {
+				notes: trimmed.length > 0 ? trimmed : null,
+				offline_state: buildOfflineState(job.offline_state, state),
+			};
+
+			const updatedRow = await updateJobRow(
+				db,
+				auth.orgId,
+				input.jobId,
+				update,
+			);
+			const nextState = ensureTokenFresh(deriveJobCardState(updatedRow));
+
+			await logJobAudit(db, {
+				orgId: auth.orgId,
+				userId: auth.userId,
+				action: "update",
+				jobId: input.jobId,
+				metadata: {
+					action: "job.notes.update",
+					notesLength: trimmed.length,
+				},
+			});
+
+			return toJobCardView(updatedRow, nextState);
+		}),
+
+	saveSignature: protectedProcedure
+		.input(
+			z.object({
+				jobId: z.uuid(),
+				signatureDataUrl: z.string().nullable(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
+			let state = ensureTokenFresh(deriveJobCardState(job));
+			const nowInstant = Temporal.Now.instant();
+
+			let base64: string | null = null;
+			let normalizedDataUrl: string | null = null;
+			if (input.signatureDataUrl) {
+				const parsed = extractSignaturePayload(input.signatureDataUrl);
+				base64 = parsed.base64;
+				normalizedDataUrl = parsed.dataUrl;
+				const bytes = Buffer.from(base64 ?? "", "base64");
+				const MAX_SIGNATURE_BYTES = 750_000; // ~0.75 MB
+				if (bytes.byteLength > MAX_SIGNATURE_BYTES) {
+					throw new TRPCError({
+						code: "PAYLOAD_TOO_LARGE",
+						message: "Handtekening is te groot",
+					});
+				}
+				base64 = bytes.toString("base64");
+			}
+
+			state = {
+				...state,
+				signatureDataUrl: normalizedDataUrl,
+				lastSyncedAt: nowInstant.toString(),
+			} satisfies JobCardState;
+
+			const update: TablesUpdate<"jobs"> = {
+				customer_signature: base64 ?? null,
+				offline_state: buildOfflineState(job.offline_state, state),
+			};
+
+			const updatedRow = await updateJobRow(
+				db,
+				auth.orgId,
+				input.jobId,
+				update,
+			);
+			const nextState = ensureTokenFresh(deriveJobCardState(updatedRow));
+
+			await logJobAudit(db, {
+				orgId: auth.orgId,
+				userId: auth.userId,
+				action: "update",
+				jobId: input.jobId,
+				metadata: {
+					action: base64 ? "job.signature.save" : "job.signature.clear",
+					size: base64 ? Buffer.from(base64, "base64").byteLength : 0,
 				},
 			});
 
