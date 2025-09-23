@@ -12,13 +12,13 @@
 		"docs": "Documentatie"
 	},
 	"hero": {
-		"eyebrow": "WhatsApp in. Klus gepland. Factuur betaald.",
-		"title": "Het loodgieterplatform dat dag en nacht doorgaat.",
-		"subtitle": "WhatsApp dual-number receptionist, Schedule-X v3 agenda en Moneybird/e-Boekhouden/WeFact facturatie in één lus. Nederlands, AVG-proof.",
-		"primaryCta": "Op de wachtlijst",
-		"secondaryCta": "Bekijk demo",
-		"trust": "Voor 10-persoons loodgietersteams in Nederland · AVG + BTW in orde",
-		"note": "Pilot-ready · mens keurt elke AI-actie",
+		"eyebrow": "Pilotcohort september 2025 · wachtlijst open",
+		"title": "Vervang je backoffice-retainer van €5.000 per maand door AI die je loodgietersbedrijf echt runt.",
+		"subtitle": "Stop met bureaus die alleen spreadsheets mailen. Plumbing Agent filtert WhatsApp, plant ploegen in en jaagt facturen automatisch na—met organiser-goedkeuring op elke stap.",
+		"primaryCta": "Reserveer je plek",
+		"secondaryCta": "Bekijk de automatiseringen",
+		"trust": "Nederlandse loodgietersteams draaien de intake → planning → facturatielus al in pilot.",
+		"note": "Alleen wachtlijst · elke AI-actie wordt door een mens bevestigd",
 		"h1": "Plumbing Agent voor vakmensen",
 		"subhead": "Automatiseer planning, facturen en WhatsApp met AI.",
 		"cta_demo": "Plan een demo",
@@ -28,41 +28,41 @@
 		"ticker": [
 			{
 				"label": "Automatisering",
-				"message": "On-my-way bericht naar Kelly (Haarlem) verstuurd",
-				"time": "08:12",
-				"tone": "success"
-			},
-			{
-				"label": "Cashflow",
-				"message": "Factuur 240913-18 betaald via iDEAL · Moneybird status = voldaan",
-				"time": "08:44",
+				"message": "AI triage in de control chat goedgekeurd en verzonden",
+				"time": "07:42",
 				"tone": "success"
 			},
 			{
 				"label": "Planning",
-				"message": "Spoedslot ingepland · reistijd en buffers gecontroleerd",
-				"time": "09:07",
+				"message": "Spoedklus bevestigd · reistijdbuffer blijft intact · ploeg geïnformeerd",
+				"time": "07:55",
 				"tone": "info"
 			},
 			{
-				"label": "Herinneringen",
-				"message": "Herinnering #2 klaar – WhatsApp + e-mail met BTW-tekst",
-				"time": "09:30",
+				"label": "Facturatie",
+				"message": "Moneybird factuur + iDEAL-link verstuurd · opvolg-timer geactiveerd",
+				"time": "08:08",
+				"tone": "success"
+			},
+			{
+				"label": "Cashflow",
+				"message": "Mollie bevestigd · tijdlijn direct geüpdatet voor de binnendienst",
+				"time": "08:21",
 				"tone": "neutral"
 			}
 		],
 		"kpis": [
 			{
-				"value": "70%",
-				"label": "Facturen <24u betaald via iDEAL"
+				"value": "Gebouwd voor NL teams",
+				"label": "10-mans loodgieterploegen met duale WhatsApp-nummers"
 			},
 			{
-				"value": "4–8u",
-				"label": "Administratieve uren terug per week"
+				"value": "Bespaart €60k+/jaar",
+				"label": "Vervang dure bureau-retainers door AI-gestuurde planning en opvolging"
 			},
 			{
-				"value": "<10%",
-				"label": "Reisconflicten op spoedklussen"
+				"value": "Volledig agentisch",
+				"label": "AI schrijft antwoorden, plant afspraken en stuurt iDEAL-herinneringen 24/7"
 			}
 		],
 		"integrations": [
@@ -188,6 +188,8 @@
 		"chat": {
 			"title": "WhatsApp intake",
 			"description": "AI maakt het antwoord klaar, jij keurt en de klant blijft in WhatsApp.",
+			"timestamp": "18:47:34",
+			"defaultTime": "18:47:34",
 			"cta": "Volgende bericht",
 			"steps": [
 				{

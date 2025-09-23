@@ -12,13 +12,13 @@
 		"docs": "Docs"
 	},
 	"hero": {
-		"eyebrow": "WhatsApp in. Job booked. Invoice paid.",
-		"title": "The plumbing ops platform that never sleeps.",
-		"subtitle": "Dual-number WhatsApp receptionist, Schedule-X v3 calendar and Moneybird/e-Boekhouden/WeFact invoicing in one loop. Dutch-first, GDPR-proof.",
-		"primaryCta": "Join the waitlist",
-		"secondaryCta": "See demo",
-		"trust": "Built for 10-person Dutch plumbing teams · GDPR + BTW compliant",
-		"note": "Pilot-ready · human approval on every AI action",
+		"eyebrow": "September 2025 pilot cohort · waitlist open",
+		"title": "Replace your €5,000/mo back-office retainer with AI that actually runs plumbing ops.",
+		"subtitle": "Stop paying agencies that send spreadsheets. Plumbing Agent triages WhatsApp, books crews, and chases invoices automatically—organiser approval stays in the loop.",
+		"primaryCta": "Reserve your spot",
+		"secondaryCta": "Tour the automations",
+		"trust": "Dutch plumbing teams are already running the intake → schedule → invoice loop in pilot.",
+		"note": "Waitlist-only launch · human approval on every AI action",
 		"h1": "Plumbing Agent for professionals",
 		"subhead": "Automate intake, planning and invoicing with AI.",
 		"cta_demo": "Book a demo",
@@ -28,41 +28,41 @@
 		"ticker": [
 			{
 				"label": "Automation",
-				"message": "On-my-way template delivered to Kelly (Haarlem)",
-				"time": "08:12",
+				"message": "AI triaged Haarlem control thread · organiser approved and sent",
+				"time": "07:42",
+				"tone": "success"
+			},
+			{
+				"label": "Scheduling",
+				"message": "Urgent leak slot confirmed · travel buffer kept · crew notified",
+				"time": "07:55",
+				"tone": "info"
+			},
+			{
+				"label": "Invoicing",
+				"message": "Moneybird invoice + iDEAL link delivered · payment timer armed",
+				"time": "08:08",
 				"tone": "success"
 			},
 			{
 				"label": "Cashflow",
-				"message": "Invoice 240913-18 paid via iDEAL · Moneybird marked as settled",
-				"time": "08:44",
-				"tone": "success"
-			},
-			{
-				"label": "Planning",
-				"message": "AI slotted urgent leak · travel buffer respected · approved by organiser",
-				"time": "09:07",
-				"tone": "info"
-			},
-			{
-				"label": "Dunning",
-				"message": "Reminder #2 scheduled – WhatsApp + e-mail with BTW-safe wording",
-				"time": "09:30",
+				"message": "Mollie confirmed settlement · job timeline updated for organiser",
+				"time": "08:21",
 				"tone": "neutral"
 			}
 		],
 		"kpis": [
 			{
-				"value": "70%",
-				"label": "Invoices paid <24h via iDEAL"
+				"value": "Built for NL crews",
+				"label": "10-person plumbing teams with dual-number WhatsApp intake"
 			},
 			{
-				"value": "4–8h",
-				"label": "Admin time saved each week"
+				"value": "Save €60k+/yr",
+				"label": "Replace agency retainers with AI-managed scheduling and follow-up"
 			},
 			{
-				"value": "<10%",
-				"label": "Travel conflict rate on urgent jobs"
+				"value": "Fully agentic",
+				"label": "AI drafts replies, offers slots, and sends iDEAL nudges 24/7"
 			}
 		],
 		"integrations": [
@@ -188,6 +188,8 @@
 		"chat": {
 			"title": "WhatsApp intake",
 			"description": "AI drafts the reply, organiser approves and the customer stays in WhatsApp.",
+			"timestamp": "18:47:34",
+			"defaultTime": "18:47:34",
 			"cta": "Next message",
 			"steps": [
 				{

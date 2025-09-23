@@ -9,12 +9,10 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { JSX } from "react";
 import { TrpcProvider } from "~/components/providers/TrpcProvider";
-import PilotModeBanner from "~/components/system/PilotModeBanner";
 import { Toaster } from "~/components/ui/sonner";
 import { loadMessages } from "~/i18n";
 import { NextIntlClientProvider } from "~/i18n/client";
 import { resolveLocale } from "~/i18n/server";
-import { DashboardHeader } from "./(dashboard)/DashboardHeader";
 import TemporalPolyfill from "./TemporalPolyfill";
 
 const geistSans = Geist({
@@ -79,13 +77,7 @@ export default async function RootLayout({
 						formats={formats}
 					>
 						<TrpcProvider>
-							<div className="min-h-screen bg-background">
-								<PilotModeBanner />
-								<DashboardHeader initialLocale={locale} />
-								<main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-									{children}
-								</main>
-							</div>
+							<div className="min-h-screen bg-background">{children}</div>
 						</TrpcProvider>
 					</NextIntlClientProvider>
 					<Toaster />

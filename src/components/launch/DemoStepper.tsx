@@ -11,8 +11,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
-import { useEffect, useMemo, useState } from "react";
-import { Temporal } from "temporal-polyfill";
+import { useEffect, useState } from "react";
 
 export type LiveTickerItem = {
 	label: string;
@@ -93,23 +92,13 @@ type DemoStep = {
 	role: "customer" | "ai" | "organiser" | "system";
 };
 
-function useLocaleTime(locale: string): string {
-	return useMemo(() => {
-		const now = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam");
-		return now.toLocaleString(locale === "nl" ? "nl-NL" : "en-GB", {
-			hour: "2-digit",
-			minute: "2-digit",
-			second: "2-digit",
-		});
-	}, [locale]);
-}
-
 interface DemoProps {
 	steps: DemoStep[];
 	cta: string;
+	timestamp?: string;
 }
 
-export function ChatDemo({ steps, cta }: DemoProps): JSX.Element {
+export function ChatDemo({ steps, cta, timestamp }: DemoProps): JSX.Element {
 	const [index, setIndex] = useState(0);
 	const chatT = useTranslations();
 
@@ -123,7 +112,7 @@ export function ChatDemo({ steps, cta }: DemoProps): JSX.Element {
 						<MessageSquareIcon className="h-4 w-4" />
 						<span>{chatT("launch.demos.chat.header")}</span>
 					</div>
-					<span>{useLocaleTime("nl")}</span>
+					<span>{timestamp ?? chatT("launch.demos.chat.defaultTime")}</span>
 				</div>
 				<div className="space-y-4">
 					{transcript.map((step, i) => {

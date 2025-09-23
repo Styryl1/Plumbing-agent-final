@@ -1,18 +1,12 @@
 "use client";
+
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { LanguageSwitcher } from "~/components/LanguageSwitcher";
-import type { Locale } from "~/i18n";
 
-interface DashboardHeaderProps {
-	initialLocale: Locale;
-}
-
-export function DashboardHeader({
-	initialLocale,
-}: DashboardHeaderProps): JSX.Element {
+export function DashboardHeader(): JSX.Element {
 	const t = useTranslations();
 
 	return (
@@ -61,7 +55,7 @@ export function DashboardHeader({
 
 					{/* Auth Components & Language Switcher */}
 					<div className="flex items-center space-x-4">
-						<LanguageSwitcher initialLocale={initialLocale} />
+						<LanguageSwitcher />
 						<OrganizationSwitcher
 							appearance={{
 								elements: {

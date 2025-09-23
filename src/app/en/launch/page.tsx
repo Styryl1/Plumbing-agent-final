@@ -41,6 +41,7 @@ type DemoContent = {
 		body: string;
 		role: "customer" | "ai" | "organiser" | "system";
 	}[];
+	timestamp?: string;
 };
 
 type Testimonial = {
@@ -171,6 +172,9 @@ export default async function LaunchPageEN(): Promise<JSX.Element> {
 		calendar: DemoContent;
 		invoice: DemoContent;
 	}>("launch.demos");
+
+	const chatTimestamp =
+		demos.chat.timestamp ?? translate("launch.demos.chat.defaultTime");
 
 	const testimonials = raw<{
 		title: string;
@@ -447,7 +451,11 @@ export default async function LaunchPageEN(): Promise<JSX.Element> {
 									<p className="mt-2 text-sm text-slate-200">
 										{demos.chat.description}
 									</p>
-									<ChatDemo steps={demos.chat.steps} cta={demos.chat.cta} />
+									<ChatDemo
+										steps={demos.chat.steps}
+										cta={demos.chat.cta}
+										timestamp={chatTimestamp}
+									/>
 								</div>
 								<div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
 									<h3 className="text-lg font-semibold text-white">

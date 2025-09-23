@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@clerk/nextjs";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { api } from "~/lib/trpc/client";
@@ -9,8 +10,21 @@ import { api } from "~/lib/trpc/client";
  * Shows only when pilotMode flag is true from server
  */
 export default function PilotModeBanner(): JSX.Element | null {
+	const auth = useAuth();
 	const t = useTranslations();
-	const { data: flags, isLoading } = api.settings.getPublicFlags.useQuery();
+	const shouldFetch = auth.isLoaded && auth.isSignedIn && Boolean(auth.orgId);
+	const { data: flags, isLoading } = api.settings.getPublicFlags.useQuery(
+		undefined,
+		{
+			enabled: shouldFetch,
+			retry: false,
+		},
+	);
+
+	// Skip entirely when unauthenticated/without org context
+	if (!shouldFetch) {
+		return null;
+	}
 
 	// Don't render until flags are loaded or if pilot mode is not active
 	if (isLoading || !flags?.pilotMode) {

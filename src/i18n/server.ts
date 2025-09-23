@@ -31,8 +31,8 @@ export async function resolveLocale(): Promise<Locale> {
 		// not signed-in or serverless edge with no session
 	}
 
-	type SimpleHeaders = { get(name: string): string | null };
-	const accept = (headers() as unknown as SimpleHeaders).get("accept-language");
+	const headersList = await headers();
+	const accept = headersList.get("accept-language");
 	if (accept) return normalizeLocale(accept);
 	return DEFAULT_LOCALE;
 }
