@@ -12,13 +12,23 @@ export const MarkReadInput = z.object({
 	upToCreatedAtIso: z.string().optional(),
 });
 
+type UnreadCountsResult = {
+	counts: Record<string, number>;
+	lastInboundByConversation: Record<string, string | null>;
+};
+
 export async function listUnreadCounts(
 	db: DB,
 	orgId: string,
 	userId: string,
 	conversationIds: string[],
-): Promise<Record<string, number>> {
-	if (conversationIds.length === 0) return {};
+): Promise<UnreadCountsResult> {
+	if (conversationIds.length === 0) {
+		return {
+			counts: {},
+			lastInboundByConversation: {},
+		};
+	}
 
 	// Regular query approach (portable):
 	const respRows = await db
@@ -37,29 +47,46 @@ export async function listUnreadCounts(
 		.in("conversation_id", conversationIds);
 	const markers = rowsOrEmpty(respMarkers);
 
-	const lastByConvo = new Map<string, string | null>();
+	const lastReadByConvo = new Map<string, string | null>();
 	const counts: Record<string, number> = {};
+	const lastInboundByConversation: Record<string, string | null> = {};
+
+	const zeroUnread = 0;
+	const noInbound: string | null = null;
 	for (let i = 0; i < conversationIds.length; i += 1) {
-		counts[conversationIds[i]!] = 0;
+		const conversationId = conversationIds[i]!;
+		counts[conversationId] = zeroUnread;
+		lastInboundByConversation[conversationId] = noInbound;
 	}
 
 	// Lint-clean iteration (no truthiness, no ??)
 	for (let i = 0; i < markers.length; i += 1) {
-		const m = markers[i]!;
-		lastByConvo.set(m.conversation_id, m.last_read_at);
+		const marker = markers[i]!;
+		lastReadByConvo.set(marker.conversation_id, marker.last_read_at);
 	}
 
 	for (let i = 0; i < rows.length; i += 1) {
-		const r = rows[i]!;
-		const cid = r.conversation_id;
-		const last = lastByConvo.get(cid); // string | null | undefined
-		// Explicit checks (no truthiness)
-		if (last === null || last === undefined || r.created_at > last) {
+		const message = rows[i]!;
+		const cid = message.conversation_id;
+		const existingInbound = lastInboundByConversation[cid] ?? null;
+		if (existingInbound === null || existingInbound < message.created_at) {
+			lastInboundByConversation[cid] = message.created_at;
+		}
+		const lastRead = lastReadByConvo.get(cid);
+		if (
+			lastRead === null ||
+			lastRead === undefined ||
+			message.created_at > lastRead
+		) {
 			const prev = counts[cid];
 			counts[cid] = (typeof prev === "number" ? prev : 0) + 1;
 		}
 	}
-	return counts;
+
+	return {
+		counts,
+		lastInboundByConversation,
+	};
 }
 
 export async function markConversationRead(

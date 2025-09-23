@@ -184,7 +184,7 @@ export const whatsappRouter = createTRPCRouter({
 	listLeads: protectedProcedure
 		.input(ListLeadsInput)
 		.query(async ({ ctx, input }) => {
-			return listLeads(ctx.db, ctx.auth.orgId, input);
+			return listLeads(ctx.db, ctx.auth.orgId, ctx.auth.userId, input);
 		}),
 
 	/**

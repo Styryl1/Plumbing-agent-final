@@ -50,6 +50,60 @@
 		},
 		"chat": {
 			"title": "Copilot workspace"
+		},
+		"apply": {
+			"title": "Apply intake",
+			"subtitle": "Review the proposal and create a job for the team.",
+			"jobSection": "Job details",
+			"customerSection": "Customer",
+			"siteSection": "Site (optional)",
+			"modeExisting": "Existing customer",
+			"modeNew": "New customer",
+			"fields": {
+				"title": "Job title",
+				"description": "Description",
+				"start": "Start time",
+				"duration": "Duration (minutes)",
+				"priority": "Priority",
+				"employee": "Assign to",
+				"employeePlaceholder": "Select employee",
+				"employeeUnassigned": "Unassigned",
+				"notes": "Internal notes",
+				"customer": "Customer",
+				"customerPlaceholder": "Select customer",
+				"customerMode": "Customer source",
+				"name": "Name",
+				"phone": "Phone",
+				"email": "Email",
+				"language": "Preferred language",
+				"languageOptionNl": "Dutch",
+				"languageOptionEn": "English",
+				"siteLabel": "Label",
+				"street": "Street",
+				"houseNumber": "House number",
+				"addition": "Addition",
+				"postalCode": "Postcode",
+				"city": "City"
+			},
+			"priority": {
+				"normal": "Normal",
+				"urgent": "Urgent",
+				"emergency": "Emergency"
+			},
+			"submit": "Create job",
+			"submitting": "Creating…",
+			"cancel": "Cancel",
+			"success": "Intake applied",
+			"error": "Failed to apply intake",
+			"undoAction": "Undo",
+			"undoSuccess": "Job creation undone",
+			"undoError": "Failed to undo apply",
+			"validation": {
+				"title": "Please enter a job title.",
+				"start": "Please provide a valid start time.",
+				"duration": "Duration must be greater than zero.",
+				"customer": "Select an existing customer or enter details for a new customer."
+			}
 		}
 	}
 }

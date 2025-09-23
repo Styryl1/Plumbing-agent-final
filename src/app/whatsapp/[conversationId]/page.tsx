@@ -42,7 +42,10 @@ export default function WhatsAppConversationPage({
 		(c) => c.conversation_id === conversationId,
 	);
 	const messages = (messagesData?.items ?? []).map(mapToMessageDTO);
-	const sessionInfo = mapToSessionInfoDTO(null); // For now, default to no session
+	const sessionInfo = mapToSessionInfoDTO({
+		sessionExpiresAt: conversation?.session_expires_at ?? null,
+		lastInboundAt: conversation?.last_inbound_at ?? null,
+	});
 
 	// Mark conversation as read when component mounts
 	const markReadMutation = api.whatsapp.markRead.useMutation();
@@ -102,7 +105,7 @@ export default function WhatsAppConversationPage({
 						<div className="space-y-1">
 							<h1 className="text-xl font-semibold flex items-center gap-2">
 								<MessageCircle className="h-5 w-5" />
-								{conversation?.phone_number ?? t("common.unnamed")}
+								{conversation?.customer_name ?? t("common.unnamed")}
 							</h1>
 							<p className="text-sm text-muted-foreground">
 								{conversation?.phone_number && `+${conversation.phone_number}`}

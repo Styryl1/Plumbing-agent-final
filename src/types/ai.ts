@@ -16,4 +16,6 @@ export interface AiRecommendationDTO {
 	urgency: "low" | "medium" | "high";
 	tags: string[];
 	source: "rule" | "openai";
+	materialsStub?: string[] | null;
+	timeStub?: string | null;
 }

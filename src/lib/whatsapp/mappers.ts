@@ -15,18 +15,60 @@ export function mapToLeadDTO(serverData: {
 	last_message_at: string | null;
 	last_message_snippet?: string | null;
 	unread_count?: number;
+	session_expires_at?: string | null;
+	last_inbound_at?: string | null;
+	customer_name?: string | null;
 }): LeadDTO {
-	// For now, assume all sessions are active (TODO: implement proper session tracking)
-	const sessionActive = true;
-
 	// Mask phone number for privacy
 	const phoneMasked = serverData.phone_number
 		? `+${serverData.phone_number.slice(0, 3)}***${serverData.phone_number.slice(-3)}`
 		: "Unknown";
 
+	let sessionExpiresAt: string | null = null;
+	if (
+		typeof serverData.session_expires_at === "string" &&
+		serverData.session_expires_at.length > 0
+	) {
+		sessionExpiresAt = serverData.session_expires_at;
+	} else if (
+		typeof serverData.last_inbound_at === "string" &&
+		serverData.last_inbound_at.length > 0
+	) {
+		try {
+			const expires = globalThis.Temporal.Instant.from(
+				serverData.last_inbound_at,
+			).add({ hours: 24 });
+			sessionExpiresAt = expires.toString();
+		} catch (error) {
+			console.warn(
+				"Failed to calculate session expiry for conversation",
+				serverData.conversation_id,
+				error,
+			);
+			sessionExpiresAt = null;
+		}
+	}
+
+	let sessionActive = false;
+	if (sessionExpiresAt) {
+		try {
+			const expiresInstant = globalThis.Temporal.Instant.from(sessionExpiresAt);
+			const now = globalThis.Temporal.Now.instant();
+			sessionActive =
+				globalThis.Temporal.Instant.compare(expiresInstant, now) > 0;
+		} catch (error) {
+			console.warn(
+				"Failed to parse session expiry for conversation",
+				serverData.conversation_id,
+				error,
+			);
+			sessionActive = false;
+		}
+	}
+
 	return {
 		id: serverData.conversation_id ?? "unknown",
-		name: null, // TODO: Add customer name from joined query
+		name: serverData.customer_name ?? null,
 		phoneMasked,
 		lastMessageAt:
 			serverData.last_message_at ??
@@ -34,6 +76,7 @@ export function mapToLeadDTO(serverData: {
 		lastSnippet: serverData.last_message_snippet ?? "No message content",
 		unreadCount: serverData.unread_count ?? 0,
 		sessionActive,
+		sessionExpiresAt,
 	};
 }
 
@@ -56,27 +99,42 @@ export function mapToMessageDTO(serverData: {
 	};
 }
 
-export function mapToSessionInfoDTO(
-	lastInboundAt: string | null,
-): SessionInfoDTO {
-	if (!lastInboundAt) {
+export function mapToSessionInfoDTO({
+	lastInboundAt,
+	sessionExpiresAt,
+}: {
+	lastInboundAt?: string | null;
+	sessionExpiresAt?: string | null;
+}): SessionInfoDTO {
+	let expiresAt = sessionExpiresAt ?? null;
+
+	if (!expiresAt && lastInboundAt) {
+		try {
+			expiresAt = globalThis.Temporal.Instant.from(lastInboundAt)
+				.add({ hours: 24 })
+				.toString();
+		} catch (error) {
+			console.warn("Failed to derive session expiry", error);
+			expiresAt = null;
+		}
+	}
+
+	if (!expiresAt) {
 		return { active: false };
 	}
 
-	const lastInbound = globalThis.Temporal.Instant.from(lastInboundAt);
 	const now = globalThis.Temporal.Now.instant();
-	const sessionWindow = globalThis.Temporal.Duration.from({ hours: 24 });
-	const timeSinceLastInbound = now.since(lastInbound);
-
-	const active =
-		globalThis.Temporal.Duration.compare(timeSinceLastInbound, sessionWindow) <
-		0;
-	const expiresAt = active
-		? lastInbound.add(sessionWindow).toString()
-		: undefined;
+	let active = false;
+	try {
+		const expiresInstant = globalThis.Temporal.Instant.from(expiresAt);
+		active = globalThis.Temporal.Instant.compare(expiresInstant, now) > 0;
+	} catch (error) {
+		console.warn("Failed to parse session expiry", error);
+		active = false;
+	}
 
 	return {
 		active,
-		expiresAt,
+		expiresAt: active ? expiresAt : undefined,
 	};
 }

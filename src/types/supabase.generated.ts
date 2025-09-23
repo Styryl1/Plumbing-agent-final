@@ -533,6 +533,104 @@ export type Database = {
 					},
 				];
 			};
+			intake_apply_actions: {
+				Row: {
+					created_at: string;
+					created_by: string | null;
+					created_customer_id: string | null;
+					created_site_id: string | null;
+					expires_at: string;
+					id: string;
+					intake_event_id: string;
+					job_id: string;
+					org_id: string;
+					payload: Json;
+					undo_token: string;
+					undone_at: string | null;
+					unscheduled_item_id: string;
+				};
+				Insert: {
+					created_at?: string;
+					created_by?: string | null;
+					created_customer_id?: string | null;
+					created_site_id?: string | null;
+					expires_at: string;
+					id?: string;
+					intake_event_id: string;
+					job_id: string;
+					org_id: string;
+					payload: Json;
+					undo_token: string;
+					undone_at?: string | null;
+					unscheduled_item_id: string;
+				};
+				Update: {
+					created_at?: string;
+					created_by?: string | null;
+					created_customer_id?: string | null;
+					created_site_id?: string | null;
+					expires_at?: string;
+					id?: string;
+					intake_event_id?: string;
+					job_id?: string;
+					org_id?: string;
+					payload?: Json;
+					undo_token?: string;
+					undone_at?: string | null;
+					unscheduled_item_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "intake_apply_actions_created_customer_id_fkey";
+						columns: ["created_customer_id"];
+						isOneToOne: false;
+						referencedRelation: "customers";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_created_site_id_fkey";
+						columns: ["created_site_id"];
+						isOneToOne: false;
+						referencedRelation: "sites";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_unscheduled_item_id_fkey";
+						columns: ["unscheduled_item_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_queue";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "intake_apply_actions_unscheduled_item_id_fkey";
+						columns: ["unscheduled_item_id"];
+						isOneToOne: false;
+						referencedRelation: "unscheduled_items";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			intake_events: {
 				Row: {
 					channel: Database["public"]["Enums"]["intake_channel"];
@@ -2476,6 +2574,7 @@ export type Database = {
 					created_at: string;
 					id: string;
 					job_id: string | null;
+					materials_stub: string[] | null;
 					message_id: string;
 					org_id: string;
 					proposed_text: string;
@@ -2486,6 +2585,7 @@ export type Database = {
 					status: string | null;
 					tags: string[];
 					time_estimate_min: number | null;
+					time_stub: string | null;
 					urgency: string;
 				};
 				Insert: {
@@ -2496,6 +2596,7 @@ export type Database = {
 					created_at?: string;
 					id?: string;
 					job_id?: string | null;
+					materials_stub?: string[] | null;
 					message_id: string;
 					org_id: string;
 					proposed_text: string;
@@ -2506,6 +2607,7 @@ export type Database = {
 					status?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
+					time_stub?: string | null;
 					urgency: string;
 				};
 				Update: {
@@ -2516,6 +2618,7 @@ export type Database = {
 					created_at?: string;
 					id?: string;
 					job_id?: string | null;
+					materials_stub?: string[] | null;
 					message_id?: string;
 					org_id?: string;
 					proposed_text?: string;
@@ -2526,6 +2629,7 @@ export type Database = {
 					status?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
+					time_stub?: string | null;
 					urgency?: string;
 				};
 				Relationships: [

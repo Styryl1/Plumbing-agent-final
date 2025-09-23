@@ -13,7 +13,14 @@ import {
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { ChatPanel } from "~/components/ai/chat-widget";
+import {
+	ApplyDialog,
+	type ApplyDialogContext,
+	showApplyErrorToast,
+	showApplySuccessToast,
+} from "~/components/intake/apply-dialog";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -28,11 +35,6 @@ interface ConfidenceMeta {
 	state: "high" | "medium" | "low" | "none";
 	label: string;
 	description?: string;
-}
-
-interface ApplyContext {
-	intake: IntakeDetailDTO;
-	recommendation: AiRecommendationDTO | null;
 }
 
 type RecommendationIndex = {
@@ -59,10 +61,15 @@ export function OperatorConsole(): JSX.Element {
 	const t = useTranslations();
 	const translate: TranslateFn = (key, values) =>
 		t(`intake.console.${key}` as Parameters<typeof t>[0], values);
+	const translateRoot = (key: string, values?: TranslationValues): string =>
+		t(key as Parameters<typeof t>[0], values);
 	const [selectedIntakeId, setSelectedIntakeId] = useState<string | null>(null);
-	const [applyContext, setApplyContext] = useState<ApplyContext | null>(null);
+	const [applyContext, setApplyContext] = useState<ApplyDialogContext | null>(
+		null,
+	);
 
 	const utils = api.useUtils();
+	const { data: employees = [] } = api.employees.list.useQuery({});
 
 	const intakeListQuery = api.intake.list.useQuery(
 		{ status: "pending", limit: 50 },
@@ -85,6 +92,41 @@ export function OperatorConsole(): JSX.Element {
 				utils.intake.list.invalidate({ status: "pending" }),
 				utils.intake.get.invalidate(),
 			]);
+		},
+	});
+
+	const undoApplyMutation = api.intake.undoApply.useMutation({
+		onSuccess: async () => {
+			toast.success(translate("apply.undoSuccess"));
+			await Promise.all([
+				utils.intake.list.invalidate({ status: "pending" }),
+				utils.intake.get.invalidate(),
+			]);
+		},
+		onError: (error) => {
+			toast.error(
+				error instanceof Error ? error.message : translate("apply.undoError"),
+			);
+		},
+	});
+
+	const applyMutation = api.intake.applyIntake.useMutation({
+		onSuccess: async (result) => {
+			showApplySuccessToast(
+				translateRoot,
+				(undoToken) => {
+					undoApplyMutation.mutate({ undoToken });
+				},
+				result,
+			);
+			setApplyContext(null);
+			await Promise.all([
+				utils.intake.list.invalidate({ status: "pending" }),
+				utils.intake.get.invalidate(),
+			]);
+		},
+		onError: (error) => {
+			showApplyErrorToast(translateRoot, error);
 		},
 	});
 
@@ -272,7 +314,19 @@ export function OperatorConsole(): JSX.Element {
 				</Card>
 			</div>
 
-			{applyContext ? null : null}
+			{applyContext ? (
+				<ApplyDialog
+					context={applyContext}
+					employees={employees}
+					onClose={() => {
+						setApplyContext(null);
+					}}
+					onSubmit={async (payload) => {
+						await applyMutation.mutateAsync(payload);
+					}}
+					isSubmitting={applyMutation.isPending}
+				/>
+			) : null}
 		</div>
 	);
 }
@@ -535,6 +589,25 @@ function SuggestionCard({
 						: null}
 				</p>
 			</div>
+
+			{suggestion.timeStub ? (
+				<p className="mt-2 text-xs text-muted-foreground">
+					{translateSuggestion("timeStub", { value: suggestion.timeStub })}
+				</p>
+			) : null}
+
+			{suggestion.materialsStub && suggestion.materialsStub.length > 0 ? (
+				<div className="mt-3">
+					<p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+						{translateSuggestion("materialsHeading")}
+					</p>
+					<ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+						{suggestion.materialsStub.map((material, index) => (
+							<li key={`${suggestion.id}-material-${index}`}>{material}</li>
+						))}
+					</ul>
+				</div>
+			) : null}
 
 			<div className="mt-4 flex items-center justify-between">
 				<Button

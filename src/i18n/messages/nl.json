@@ -455,6 +455,60 @@
       },
       "chat": {
         "title": "Copilot-werkruimte"
+      },
+      "apply": {
+        "title": "Intake verwerken",
+        "subtitle": "Controleer het voorstel en maak een klus aan.",
+        "jobSection": "Klusgegevens",
+        "customerSection": "Klant",
+        "siteSection": "Locatie (optioneel)",
+        "modeExisting": "Bestaande klant",
+        "modeNew": "Nieuwe klant",
+        "fields": {
+          "title": "Titel",
+          "description": "Omschrijving",
+          "start": "Starttijd",
+          "duration": "Duur (minuten)",
+          "priority": "Prioriteit",
+          "employee": "Toewijzen aan",
+          "employeePlaceholder": "Selecteer monteur",
+          "employeeUnassigned": "Nog niet toegewezen",
+          "notes": "Interne notities",
+          "customer": "Klant",
+          "customerPlaceholder": "Selecteer klant",
+          "customerMode": "Bron klant",
+          "name": "Naam",
+          "phone": "Telefoonnummer",
+          "email": "E-mail",
+          "language": "Voorkeurstaal",
+          "languageOptionNl": "Nederlands",
+          "languageOptionEn": "Engels",
+          "siteLabel": "Label",
+          "street": "Straat",
+          "houseNumber": "Huisnummer",
+          "addition": "Toevoeging",
+          "postalCode": "Postcode",
+          "city": "Plaats"
+        },
+        "priority": {
+          "normal": "Normaal",
+          "urgent": "Spoed",
+          "emergency": "Nood"
+        },
+        "submit": "Klus aanmaken",
+        "submitting": "Bezig…",
+        "cancel": "Annuleren",
+        "success": "Intake verwerkt",
+        "error": "Verwerken van intake mislukt",
+        "undoAction": "Ongedaan maken",
+        "undoSuccess": "Klus is verwijderd",
+        "undoError": "Ongedaan maken mislukt",
+        "validation": {
+          "title": "Voer een titel in.",
+          "start": "Geef een geldige starttijd op.",
+          "duration": "Duur moet groter dan nul zijn.",
+          "customer": "Selecteer een bestaande klant of vul een nieuwe klant in."
+        }
       }
     }
   },
@@ -1051,8 +1105,16 @@
         "minutes": "min",
         "title": "AI Suggesties"
       },
+      "apply": {
+        "fetchError": "Intake-details konden niet worden geladen",
+        "leadUnsupported": "WhatsApp-leads kunnen nog niet worden verwerkt",
+        "missingIntake": "Selecteer eerst een intake",
+        "undoError": "Terugdraaien van de klus mislukt",
+        "undoSuccess": "Klus verwijderd"
+      },
       "intake": {
         "title": "Intake",
+        "apply": "Verwerken",
         "empty": "Geen intake-items",
         "detailsTitle": "Intake details",
         "summaryFallback": "Intake",

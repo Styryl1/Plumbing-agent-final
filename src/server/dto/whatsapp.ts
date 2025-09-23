@@ -1,3 +1,4 @@
+import { Temporal } from "temporal-polyfill";
 import { z } from "zod";
 
 /**
@@ -12,6 +13,7 @@ export const LeadDTO = z.object({
 	lastSnippet: z.string(),
 	unreadCount: z.number().int().min(0),
 	sessionActive: z.boolean(),
+	sessionExpiresAt: z.string().nullable(),
 });
 export type LeadDTO = z.infer<typeof LeadDTO>;
 
@@ -49,18 +51,59 @@ export function toLeadDTO(serverData: {
 	last_message_at: string | null;
 	last_message_snippet?: string | null;
 	unread_count?: number;
+	session_expires_at?: string | null;
+	last_inbound_at?: string | null;
+	customer_name?: string | null;
 }): LeadDTO {
-	// For now, assume all sessions are active (TODO: implement proper session tracking)
-	const sessionActive = true;
-
 	// Mask phone number for privacy
 	const phoneMasked = serverData.phone_number
 		? `+${serverData.phone_number.slice(0, 3)}***${serverData.phone_number.slice(-3)}`
 		: "Unknown";
 
+	let sessionExpiresAt: string | null = null;
+	if (
+		typeof serverData.session_expires_at === "string" &&
+		serverData.session_expires_at.length > 0
+	) {
+		sessionExpiresAt = serverData.session_expires_at;
+	} else if (
+		typeof serverData.last_inbound_at === "string" &&
+		serverData.last_inbound_at.length > 0
+	) {
+		try {
+			const expires = Temporal.Instant.from(serverData.last_inbound_at).add({
+				hours: 24,
+			});
+			sessionExpiresAt = expires.toString();
+		} catch (error) {
+			console.warn(
+				"Failed to calculate session expiry for lead",
+				serverData.conversation_id,
+				error,
+			);
+			sessionExpiresAt = null;
+		}
+	}
+
+	let sessionActive = false;
+	if (sessionExpiresAt) {
+		try {
+			const expiresInstant = Temporal.Instant.from(sessionExpiresAt);
+			const now = Temporal.Now.instant();
+			sessionActive = Temporal.Instant.compare(expiresInstant, now) > 0;
+		} catch (error) {
+			console.warn(
+				"Failed to evaluate session expiry for lead",
+				serverData.conversation_id,
+				error,
+			);
+			sessionActive = false;
+		}
+	}
+
 	return {
 		id: serverData.conversation_id ?? "unknown",
-		name: null, // TODO: Add customer name from joined query
+		name: serverData.customer_name ?? null,
 		phoneMasked,
 		lastMessageAt:
 			serverData.last_message_at ??
@@ -68,6 +111,7 @@ export function toLeadDTO(serverData: {
 		lastSnippet: serverData.last_message_snippet ?? "No message content",
 		unreadCount: serverData.unread_count ?? 0,
 		sessionActive,
+		sessionExpiresAt,
 	};
 }
 

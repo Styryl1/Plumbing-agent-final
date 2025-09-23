@@ -61,5 +61,13 @@ export function toAiRecommendationDTO(
 		};
 	}
 
+	if (Array.isArray(row.materials_stub) && row.materials_stub.length > 0) {
+		dto.materialsStub = row.materials_stub;
+	}
+
+	if (row.time_stub && row.time_stub.length > 0) {
+		dto.timeStub = row.time_stub;
+	}
+
 	return dto;
 }

@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { Temporal } from "temporal-polyfill";
 import { z } from "zod";
 import type { Database } from "~/types/supabase";
 import { listUnreadCounts } from "./conversation-unread";
@@ -14,6 +15,9 @@ type ConversationRow = {
 	last_message_type: string | null;
 	last_message_snippet: string | null;
 	unread_count?: number;
+	session_expires_at?: string | null;
+	last_inbound_at?: string | null;
+	customer_name?: string | null;
 };
 
 type MessageRow = {
@@ -59,17 +63,75 @@ export async function listConversations(
 		.map((i) => i.conversation_id)
 		.filter((id): id is string => id !== null);
 
-	const unreadMap = await listUnreadCounts(db, orgId, userId, convoIds);
-	const itemsWithUnread = items.map((i) => ({
-		...i,
-		unread_count: unreadMap[i.conversation_id as string] ?? 0,
-	}));
+	const { counts: unreadCounts, lastInboundByConversation } =
+		await listUnreadCounts(db, orgId, userId, convoIds);
+
+	const metaMap = new Map<
+		string,
+		{ session_expires_at: string | null; customer_name: string | null }
+	>();
+
+	if (convoIds.length > 0) {
+		const metaQuery = await db
+			.from("wa_conversations")
+			.select("id, session_expires_at, customer:customers(name)")
+			.in("id", convoIds)
+			.eq("org_id", orgId);
+		if (metaQuery.error) throw metaQuery.error;
+		const metaRows = Array.isArray(metaQuery.data) ? metaQuery.data : [];
+		for (const row of metaRows) {
+			metaMap.set(row.id, {
+				session_expires_at: row.session_expires_at,
+				customer_name: row.customer?.name ?? null,
+			});
+		}
+	}
+
+	const itemsWithMeta = items.map((item) => {
+		const conversationId = item.conversation_id;
+		if (!conversationId) {
+			return {
+				...item,
+				unread_count: 0,
+				session_expires_at: null,
+				last_inbound_at: null,
+				customer_name: null,
+			};
+		}
+
+		const meta = metaMap.get(conversationId);
+		const lastInbound = lastInboundByConversation[conversationId] ?? null;
+		let sessionExpiresAt = meta?.session_expires_at ?? null;
+		if (!sessionExpiresAt && lastInbound) {
+			try {
+				const expiresInstant = Temporal.Instant.from(lastInbound).add({
+					hours: 24,
+				});
+				sessionExpiresAt = expiresInstant.toString();
+			} catch (error) {
+				console.warn(
+					"Failed to derive session expiration for conversation",
+					conversationId,
+					error,
+				);
+				sessionExpiresAt = null;
+			}
+		}
+
+		return {
+			...item,
+			unread_count: unreadCounts[conversationId] ?? 0,
+			session_expires_at: sessionExpiresAt,
+			last_inbound_at: lastInbound,
+			customer_name: meta?.customer_name ?? null,
+		};
+	});
 
 	const nextCursor =
 		hasMore && items.length > 0
 			? (items[items.length - 1]?.last_message_at ?? null)
 			: null;
-	return { items: itemsWithUnread, nextCursor };
+	return { items: itemsWithMeta, nextCursor };
 }
 
 export const GetMessagesInput = z.object({
@@ -139,6 +201,7 @@ export const ListLeadsInput = z.object({
 export async function listLeads(
 	db: DB,
 	orgId: string,
+	userId: string,
 	input: z.infer<typeof ListLeadsInput>,
 ): Promise<{ items: ConversationRow[]; nextCursor: string | null }> {
 	const { limit, cursor } = input;
@@ -172,9 +235,83 @@ export async function listLeads(
 	);
 	const hasMore = filtered.length > limit;
 	const items = hasMore ? filtered.slice(0, limit) : filtered;
+
+	const leadIds = items
+		.map((item) => item.conversation_id)
+		.filter((id): id is string => typeof id === "string");
+
+	let unreadCounts: Record<string, number> = {};
+	let lastInboundByConversation: Record<string, string | null> = {};
+	if (leadIds.length > 0) {
+		const unreadResult = await listUnreadCounts(db, orgId, userId, leadIds);
+		unreadCounts = unreadResult.counts;
+		lastInboundByConversation = unreadResult.lastInboundByConversation;
+	}
+
+	const metaMap = new Map<
+		string,
+		{ session_expires_at: string | null; customer_name: string | null }
+	>();
+
+	if (leadIds.length > 0) {
+		const metaQuery = await db
+			.from("wa_conversations")
+			.select("id, session_expires_at, customer:customers(name)")
+			.in("id", leadIds)
+			.eq("org_id", orgId);
+		if (metaQuery.error) throw metaQuery.error;
+		const metaRows = Array.isArray(metaQuery.data) ? metaQuery.data : [];
+		for (const row of metaRows) {
+			metaMap.set(row.id, {
+				session_expires_at: row.session_expires_at,
+				customer_name: row.customer?.name ?? null,
+			});
+		}
+	}
+
+	const itemsWithMeta = items.map((item) => {
+		const conversationId = item.conversation_id;
+		if (!conversationId) {
+			return {
+				...item,
+				unread_count: 0,
+				session_expires_at: null,
+				last_inbound_at: null,
+				customer_name: null,
+			};
+		}
+
+		const meta = metaMap.get(conversationId);
+		const lastInbound = lastInboundByConversation[conversationId] ?? null;
+		let sessionExpiresAt = meta?.session_expires_at ?? null;
+		if (!sessionExpiresAt && lastInbound) {
+			try {
+				const expiresInstant = Temporal.Instant.from(lastInbound).add({
+					hours: 24,
+				});
+				sessionExpiresAt = expiresInstant.toString();
+			} catch (error) {
+				console.warn(
+					"Failed to derive session expiration for lead conversation",
+					conversationId,
+					error,
+				);
+				sessionExpiresAt = null;
+			}
+		}
+
+		return {
+			...item,
+			unread_count: unreadCounts[conversationId] ?? 0,
+			session_expires_at: sessionExpiresAt,
+			last_inbound_at: lastInbound,
+			customer_name: meta?.customer_name ?? null,
+		};
+	});
+
 	const nextCursor =
 		hasMore && items.length > 0
 			? (items[items.length - 1]?.last_message_at ?? null)
 			: null;
-	return { items, nextCursor };
+	return { items: itemsWithMeta, nextCursor };
 }

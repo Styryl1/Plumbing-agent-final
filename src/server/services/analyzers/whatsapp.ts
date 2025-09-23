@@ -283,8 +283,8 @@ export async function persistSuggestion(
 			tags: result.tags,
 			urgency: result.urgency,
 			confidence: result.confidence,
-			// materials_stub: result.materials_stub ?? null, // TODO: Add to schema
-			// time_stub: result.time_stub ?? null, // TODO: Add to schema
+			materials_stub: result.materials_stub ?? null,
+			time_stub: result.time_stub ?? null,
 			source: aiMode,
 		};
 

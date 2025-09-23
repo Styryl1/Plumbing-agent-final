@@ -33,12 +33,6 @@
 5. Repeat steps 3–4 until the slice is complete, then run `pnpm guard`.
 6. Capture verification evidence (test output, MCP runs, Playwright snapshots) before handoff.
 
-## 0) Scope & Diff Budget
-- Limit change-sets per task to tightly scoped diffs.
-- Prefer adding new modules or adapters over rewriting wide surfaces.
-- Stop if >3 unresolved TypeScript errors or a gate fails; report blockers with file + line + fix intent.
-- Keep a running checklist; if a dependent PRP/Epic isn’t clear, pause and gather context before coding.
-
 ## 1) Architecture & Boundaries
 - Respect DTO → mapper → UI flow. Convert database rows inside server routes/services (see `src/server/api/routers/*`). Never pass raw Supabase rows into React components.
 - Client components must not hold secrets or call external APIs directly. Use tRPC (`~/lib/trpc/...`) for all server I/O.
