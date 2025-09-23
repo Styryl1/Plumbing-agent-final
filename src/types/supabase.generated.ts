@@ -1460,6 +1460,7 @@ export type Database = {
 					created_at: string | null;
 					customer_id: string;
 					customer_signature: string | null;
+					customer_signature_key: string | null;
 					description: string | null;
 					employee_id: string | null;
 					ends_at: string | null;
@@ -1482,6 +1483,7 @@ export type Database = {
 					created_at?: string | null;
 					customer_id: string;
 					customer_signature?: string | null;
+					customer_signature_key?: string | null;
 					description?: string | null;
 					employee_id?: string | null;
 					ends_at?: string | null;
@@ -1504,6 +1506,7 @@ export type Database = {
 					created_at?: string | null;
 					customer_id?: string;
 					customer_signature?: string | null;
+					customer_signature_key?: string | null;
 					description?: string | null;
 					employee_id?: string | null;
 					ends_at?: string | null;

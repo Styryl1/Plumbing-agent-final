@@ -33,6 +33,7 @@ const schema = z.object({
 		.default(false), // Media download feature flag
 	BUCKET_WA_MEDIA: z.string().default("wa-media"),
 	BUCKET_VOICE_INTAKE: z.string().default("voice-intake"),
+	BUCKET_JOB_SIGNATURES: z.string().default("job-signatures"),
 	MESSAGEBIRD_ACCESS_KEY: z.string().min(10).optional(),
 	MESSAGEBIRD_WEBHOOK_SIGNING_KEY: z.string().min(16).optional(),
 	MESSAGEBIRD_SIGNATURE_HEADER: z.string().default("MessageBird-Signature"),
@@ -114,6 +115,7 @@ const parsed = schema.safeParse({
 	WHATSAPP_DEBUG: process.env.WHATSAPP_DEBUG,
 	BUCKET_WA_MEDIA: process.env.BUCKET_WA_MEDIA,
 	BUCKET_VOICE_INTAKE: process.env.BUCKET_VOICE_INTAKE,
+	BUCKET_JOB_SIGNATURES: process.env.BUCKET_JOB_SIGNATURES,
 	MESSAGEBIRD_ACCESS_KEY: process.env.MESSAGEBIRD_ACCESS_KEY,
 	MESSAGEBIRD_WEBHOOK_SIGNING_KEY: process.env.MESSAGEBIRD_WEBHOOK_SIGNING_KEY,
 	MESSAGEBIRD_SIGNATURE_HEADER: process.env.MESSAGEBIRD_SIGNATURE_HEADER,
@@ -178,6 +180,7 @@ export const serverOnlyEnv = (() => {
 		WA_MEDIA_DOWNLOAD: env.WA_MEDIA_DOWNLOAD,
 		BUCKET_WA_MEDIA: env.BUCKET_WA_MEDIA,
 		BUCKET_VOICE_INTAKE: env.BUCKET_VOICE_INTAKE,
+		BUCKET_JOB_SIGNATURES: env.BUCKET_JOB_SIGNATURES,
 		OPENAI_API_KEY: env.OPENAI_API_KEY,
 		WHATSAPP_APP_SECRET: env.WHATSAPP_APP_SECRET,
 		WHATSAPP_ACCESS_TOKEN: env.WHATSAPP_ACCESS_TOKEN,

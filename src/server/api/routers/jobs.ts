@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { logJobAudit } from "~/lib/audit";
@@ -10,7 +11,12 @@ import { fromDbStatus, type JobStatusDB, toDbStatus } from "~/lib/job-status";
 import { NL_POSTCODE } from "~/lib/validation/postcode";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import type { JobDTO } from "~/types/job";
-import type { Tables, TablesInsert, TablesUpdate } from "~/types/supabase";
+import type {
+	Database,
+	Tables,
+	TablesInsert,
+	TablesUpdate,
+} from "~/types/supabase";
 
 // Constants for type safety and consistency
 export const JOB_STATUSES = [
@@ -59,6 +65,135 @@ function ensureSchedulerRole(role: string | null | undefined): void {
 	assertOrgRole(role, SCHEDULER_ROLES);
 }
 
+type AssigneeRow = {
+	readonly job_id: string;
+	readonly employee_id: string;
+	readonly is_primary: boolean;
+};
+
+const normalizePrimaryId = (value: unknown): string | null =>
+	typeof value === "string" && value.length > 0 ? value : null;
+
+const normalizeSecondaryIds = (
+	primaryId: string | null,
+	secondaryIds: readonly string[],
+): string[] => {
+	const unique = new Set(secondaryIds);
+	if (primaryId) {
+		unique.delete(primaryId);
+	}
+	return Array.from(unique);
+};
+
+const normalizeAssignmentActor = (
+	userId: string | null | undefined,
+): string | null =>
+	typeof userId === "string" && userId.length > 0 ? userId : null;
+
+const buildSecondaryMap = (
+	rows: readonly AssigneeRow[],
+): Map<string, string[]> => {
+	const map = new Map<string, string[]>();
+	for (const row of rows) {
+		if (row.is_primary) continue;
+		const existing = map.get(row.job_id);
+		if (existing) {
+			existing.push(row.employee_id);
+		} else {
+			map.set(row.job_id, [row.employee_id]);
+		}
+	}
+	return map;
+};
+
+const fetchSecondaryAssignees = async (
+	db: SupabaseClient<Database>,
+	jobIds: readonly string[],
+): Promise<Map<string, string[]>> => {
+	if (jobIds.length === 0) {
+		return new Map();
+	}
+
+	const response = await db
+		.from("job_assignees")
+		.select("job_id, employee_id, is_primary")
+		.in("job_id", jobIds)
+		.throwOnError();
+
+	const rows = response.data as AssigneeRow[];
+	return buildSecondaryMap(rows);
+};
+
+const fetchSecondaryForJob = async (
+	db: SupabaseClient<Database>,
+	jobId: string,
+): Promise<string[]> => {
+	const response = await db
+		.from("job_assignees")
+		.select("job_id, employee_id, is_primary")
+		.eq("job_id", jobId)
+		.throwOnError();
+
+	const rows = response.data as AssigneeRow[];
+	return buildSecondaryMap(rows).get(jobId) ?? [];
+};
+
+interface UpsertAssignmentsParams {
+	readonly db: SupabaseClient<Database>;
+	readonly jobId: string;
+	readonly orgId: string;
+	readonly primaryEmployeeId: string | null;
+	readonly secondaryEmployeeIds: readonly string[];
+	readonly actorUserId: string | null;
+}
+
+const replaceJobAssignees = async ({
+	db,
+	jobId,
+	orgId,
+	primaryEmployeeId,
+	secondaryEmployeeIds,
+	actorUserId,
+}: UpsertAssignmentsParams): Promise<void> => {
+	await db.from("job_assignees").delete().eq("job_id", jobId).throwOnError();
+
+	const normalizedSecondaries = normalizeSecondaryIds(
+		primaryEmployeeId,
+		secondaryEmployeeIds,
+	);
+
+	const assignedAt = Temporal.Now.instant().toString();
+	const assignmentActor = normalizeAssignmentActor(actorUserId);
+
+	const rows: TablesInsert<"job_assignees">[] = [];
+
+	if (primaryEmployeeId) {
+		rows.push({
+			job_id: jobId,
+			employee_id: primaryEmployeeId,
+			is_primary: true,
+			assigned_at: assignedAt,
+			assigned_by: assignmentActor,
+			org_id: orgId,
+		});
+	}
+
+	for (const employee of normalizedSecondaries) {
+		rows.push({
+			job_id: jobId,
+			employee_id: employee,
+			is_primary: false,
+			assigned_at: assignedAt,
+			assigned_by: assignmentActor,
+			org_id: orgId,
+		});
+	}
+
+	if (rows.length > 0) {
+		await db.from("job_assignees").insert(rows).throwOnError();
+	}
+};
+
 export const jobsRouter = createTRPCRouter({
 	list: protectedProcedure
 		.input(
@@ -77,6 +212,30 @@ export const jobsRouter = createTRPCRouter({
 			const { orgId } = auth;
 			const { from, to, employeeId, employeeIds, status } = input;
 
+			let jobIdFilter: string[] | null = null;
+			const filterEmployeeIds =
+				employeeIds && employeeIds.length > 0
+					? Array.from(new Set(employeeIds))
+					: employeeId
+						? [employeeId]
+						: [];
+
+			if (filterEmployeeIds.length > 0) {
+				const assignmentFilter = await db
+					.from("job_assignees")
+					.select("job_id")
+					.eq("org_id", orgId)
+					.in("employee_id", filterEmployeeIds)
+					.throwOnError();
+
+				const ids = assignmentFilter.data;
+				jobIdFilter = Array.from(new Set(ids.map((row) => row.job_id)));
+
+				if (jobIdFilter.length === 0) {
+					return [];
+				}
+			}
+
 			let query = db
 				.from("jobs")
 				.select(`
@@ -92,11 +251,8 @@ export const jobsRouter = createTRPCRouter({
 				.lte("ends_at", to)
 				.order("starts_at", { ascending: true });
 
-			// Support both single employeeId (legacy) and employeeIds array (new)
-			if (employeeIds && employeeIds.length > 0) {
-				query = query.in("employee_id", employeeIds);
-			} else if (employeeId) {
-				query = query.eq("employee_id", employeeId);
+			if (jobIdFilter) {
+				query = query.in("id", jobIdFilter);
 			}
 
 			if (status !== undefined) {
@@ -126,6 +282,11 @@ export const jobsRouter = createTRPCRouter({
 				return [];
 			}
 
+			const secondaryByJob = await fetchSecondaryAssignees(
+				db,
+				typedData.map((row) => row.id),
+			);
+
 			return typedData.map((row) => ({
 				id: row.id,
 				title: row.title,
@@ -134,7 +295,7 @@ export const jobsRouter = createTRPCRouter({
 				end: row.ends_at ?? "",
 				employeeId: row.employee_id ?? null,
 				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
+				secondaryEmployeeIds: secondaryByJob.get(row.id) ?? [],
 				status: fromDbStatus(row.status as JobStatusDB),
 				priority: row.priority as JobDTO["priority"],
 				address: row.address ?? "",
@@ -175,6 +336,7 @@ export const jobsRouter = createTRPCRouter({
 				}),
 				customerId: uuidSchema,
 				employeeId: uuidSchema.optional(),
+				secondaryEmployeeIds: z.array(uuidSchema).default([]),
 				status: jobStatusSchema.default("planned"),
 				// notes removed - using description field instead
 			}),
@@ -192,9 +354,16 @@ export const jobsRouter = createTRPCRouter({
 				address,
 				customerId,
 				employeeId,
+				secondaryEmployeeIds,
 				status,
 				// notes removed - using description field instead
 			} = input;
+
+			const primaryAssigneeId = normalizePrimaryId(employeeId);
+			const normalizedSecondary = normalizeSecondaryIds(
+				primaryAssigneeId,
+				secondaryEmployeeIds,
+			);
 
 			// Address is now required via schema validation
 			// Convert structured address to string for database storage
@@ -213,24 +382,26 @@ export const jobsRouter = createTRPCRouter({
 				status: toDbStatus(status),
 				address: addressString,
 				// notes field doesn't exist in base schema - using description
-				// Only include employee_id if we actually have a value
-				...(employeeId !== undefined ? { employee_id: employeeId } : {}),
+				...(primaryAssigneeId ? { employee_id: primaryAssigneeId } : {}),
 			};
 
-			const { data: created, error: insertErr } = await db
+			const createResult = await db
 				.from("jobs")
 				.insert(jobData)
 				.select()
-				.single();
+				.single()
+				.throwOnError();
 
-			const createdTyped = created as Tables<"jobs">;
+			const createdTyped = createResult.data as Tables<"jobs">;
 
-			if (insertErr) {
-				throw new TRPCError({
-					code: "INTERNAL_SERVER_ERROR",
-					message: "Failed to create job",
-				});
-			}
+			await replaceJobAssignees({
+				db,
+				jobId: createdTyped.id,
+				orgId,
+				primaryEmployeeId: primaryAssigneeId,
+				secondaryEmployeeIds: normalizedSecondary,
+				actorUserId: auth.userId,
+			});
 
 			// Log job creation for audit trail
 			await logJobAudit(db, {
@@ -245,6 +416,7 @@ export const jobsRouter = createTRPCRouter({
 					status: createdTyped.status,
 					customer_id: createdTyped.customer_id,
 					employee_id: createdTyped.employee_id,
+					secondary_employee_ids: normalizedSecondary,
 				},
 			});
 
@@ -256,7 +428,7 @@ export const jobsRouter = createTRPCRouter({
 				end: createdTyped.ends_at ?? "",
 				employeeId: createdTyped.employee_id ?? null,
 				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
+				secondaryEmployeeIds: normalizedSecondary,
 				status: fromDbStatus(createdTyped.status as JobStatusDB),
 				priority: createdTyped.priority as JobDTO["priority"],
 				address: createdTyped.address ?? "",
@@ -291,57 +463,69 @@ export const jobsRouter = createTRPCRouter({
 			const { orgId, userId } = auth;
 			const { id, patch } = input;
 
-			// Get current job data for audit logging
-			const { data: currentJob } = await db
+			const currentJobResult = await db
 				.from("jobs")
 				.select("*")
 				.eq("id", id)
 				.eq("org_id", orgId)
 				.maybeSingle();
 
-			const currentJobTyped = currentJob as Tables<"jobs"> | null;
+			if (currentJobResult.error) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job not found or you don't have permission to update it",
+				});
+			}
+
+			const currentJobData = currentJobResult.data;
+			if (!currentJobData) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job not found or you don't have permission to update it",
+				});
+			}
+
+			const currentJobTyped = currentJobData as Tables<"jobs">;
+			const existingSecondaries = await fetchSecondaryForJob(db, id);
+			const nextPrimary = normalizePrimaryId(patch.employeeId);
 
 			const updateData: TablesUpdate<"jobs"> = {};
-
 			if (patch.title !== undefined) updateData.title = patch.title;
 			if (patch.description !== undefined)
 				updateData.description = patch.description;
 			if (patch.start !== undefined) updateData.starts_at = patch.start;
 			if (patch.end !== undefined) updateData.ends_at = patch.end;
 			if (patch.address !== undefined) updateData.address = patch.address;
-			if (patch.employeeId !== undefined)
-				updateData.employee_id = patch.employeeId;
+			if (patch.employeeId !== undefined) updateData.employee_id = nextPrimary;
 			if (patch.status !== undefined)
 				updateData.status = toDbStatus(patch.status);
-			// notes field doesn't exist in base schema - using description field
 
-			const { data, error } = await db
+			const updateResult = await db
 				.from("jobs")
 				.update({
 					...updateData,
 					updated_at: Temporal.Now.instant().toString(),
 				} satisfies TablesUpdate<"jobs">)
 				.eq("id", id)
-				.eq("org_id", orgId) // Security: ensure org ownership
+				.eq("org_id", orgId)
 				.select()
-				.maybeSingle();
+				.single()
+				.throwOnError();
 
-			// Treat error as opaque — don't read .message
-			if (error) {
-				throw new TRPCError({
-					code: "INTERNAL_SERVER_ERROR",
-					message: "Failed to update job",
+			const updatedJob = updateResult.data as Tables<"jobs">;
+
+			if (patch.employeeId !== undefined) {
+				await replaceJobAssignees({
+					db,
+					jobId: id,
+					orgId,
+					primaryEmployeeId: nextPrimary,
+					secondaryEmployeeIds: existingSecondaries,
+					actorUserId: auth.userId,
 				});
 			}
 
-			// Force the union on a new variable so ESLint sees the nullability clearly
-			const row: Tables<"jobs"> | null = data as Tables<"jobs"> | null;
-			if (!row) {
-				throw new TRPCError({
-					code: "NOT_FOUND",
-					message: "Job not found or you don't have permission to update it",
-				});
-			}
+			const nextSecondaryAssignees = await fetchSecondaryForJob(db, id);
 
 			// Log job update for audit trail
 			const auditParams = {
@@ -350,52 +534,46 @@ export const jobsRouter = createTRPCRouter({
 				action: "update" as const,
 				jobId: id,
 				after: {
-					title: row.title,
-					starts_at: row.starts_at,
-					ends_at: row.ends_at,
-					status: row.status,
-					employee_id: row.employee_id,
-					address: row.address,
-					description: row.description ?? "",
+					title: updatedJob.title,
+					starts_at: updatedJob.starts_at,
+					ends_at: updatedJob.ends_at,
+					status: updatedJob.status,
+					employee_id: updatedJob.employee_id,
+					secondary_employee_ids: nextSecondaryAssignees,
+					address: updatedJob.address,
+					description: updatedJob.description ?? "",
 				},
 				metadata: { updatedFields: Object.keys(patch) },
 			};
 
-			if (currentJobTyped) {
-				await logJobAudit(db, {
-					...auditParams,
-					before: {
-						title: currentJobTyped.title,
-						starts_at: currentJobTyped.starts_at,
-						ends_at: currentJobTyped.ends_at,
-						status: currentJobTyped.status,
-						employee_id: currentJobTyped.employee_id,
-						address: currentJobTyped.address,
-						description: currentJobTyped.description,
-					},
-				});
-			} else {
-				await logJobAudit(db, auditParams);
-			}
+			await logJobAudit(db, {
+				...auditParams,
+				before: {
+					title: currentJobTyped.title,
+					starts_at: currentJobTyped.starts_at,
+					ends_at: currentJobTyped.ends_at,
+					status: currentJobTyped.status,
+					employee_id: currentJobTyped.employee_id,
+					secondary_employee_ids: existingSecondaries,
+					address: currentJobTyped.address,
+					description: currentJobTyped.description ?? "",
+				},
+			});
 
-			const rowTyped: Tables<"jobs"> = row;
 			return {
-				id: rowTyped.id,
-				title: rowTyped.title,
-				description: rowTyped.description ?? "",
-				start: rowTyped.starts_at ?? "",
-				end: rowTyped.ends_at ?? "",
-				employeeId: rowTyped.employee_id ?? null,
-				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
-				status: fromDbStatus(rowTyped.status as JobStatusDB),
-				priority: rowTyped.priority as JobDTO["priority"],
-				address: rowTyped.address ?? "",
-				customerId: rowTyped.customer_id,
-				// notes field doesn't exist in base schema
-				// legacy back-compat fields
-				starts_at: rowTyped.starts_at ?? "",
-				ends_at: rowTyped.ends_at ?? "",
+				id: updatedJob.id,
+				title: updatedJob.title,
+				description: updatedJob.description ?? "",
+				start: updatedJob.starts_at ?? "",
+				end: updatedJob.ends_at ?? "",
+				employeeId: updatedJob.employee_id ?? null,
+				secondaryEmployeeIds: nextSecondaryAssignees,
+				status: fromDbStatus(updatedJob.status as JobStatusDB),
+				priority: updatedJob.priority as JobDTO["priority"],
+				address: updatedJob.address ?? "",
+				customerId: updatedJob.customer_id,
+				starts_at: updatedJob.starts_at ?? "",
+				ends_at: updatedJob.ends_at ?? "",
 			};
 		}),
 
@@ -428,27 +606,54 @@ export const jobsRouter = createTRPCRouter({
 			const startUTC = toISO(toZDT(startLocal));
 			const endUTC = toISO(toZDT(endLocal));
 
-			// Get current job times for audit logging
-			const { data: currentJob } = await db
+			const currentJobResult = await db
 				.from("jobs")
-				.select("starts_at, ends_at")
+				.select(
+					"id, title, description, starts_at, ends_at, status, priority, address, customer_id, employee_id",
+				)
 				.eq("id", id)
 				.eq("org_id", orgId)
 				.maybeSingle();
 
-			const currentJobTyped = currentJob as Pick<
-				Tables<"jobs">,
-				"starts_at" | "ends_at"
-			> | null;
+			if (currentJobResult.error) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
+
+			const currentJobData = currentJobResult.data;
+			if (!currentJobData) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
+
+			const currentJobTyped = currentJobData as Tables<"jobs">;
+			const existingSecondaries = await fetchSecondaryForJob(db, id);
+			const nextPrimary =
+				employeeId === undefined
+					? normalizePrimaryId(currentJobTyped.employee_id)
+					: normalizePrimaryId(employeeId);
+			const normalizedSecondaries = normalizeSecondaryIds(
+				nextPrimary,
+				existingSecondaries,
+			);
+
+			const updatePayload: TablesUpdate<"jobs"> = {
+				starts_at: startUTC,
+				ends_at: endUTC,
+				updated_at: Temporal.Now.instant().toString(),
+			};
+
+			if (employeeId !== undefined) {
+				updatePayload.employee_id = nextPrimary;
+			}
 
 			const { data: moved, error: moveErr } = await db
 				.from("jobs")
-				.update({
-					starts_at: startUTC,
-					ends_at: endUTC,
-					employee_id: employeeId ?? null,
-					updated_at: Temporal.Now.instant().toString(),
-				} satisfies TablesUpdate<"jobs">)
+				.update(updatePayload)
 				.eq("id", id)
 				.eq("org_id", orgId) // Security: ensure org ownership
 				.select()
@@ -461,8 +666,26 @@ export const jobsRouter = createTRPCRouter({
 				});
 			}
 
+			if (!moved) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to reschedule job",
+				});
+			}
+
+			if (employeeId !== undefined) {
+				await replaceJobAssignees({
+					db,
+					jobId: id,
+					orgId,
+					primaryEmployeeId: nextPrimary,
+					secondaryEmployeeIds: normalizedSecondaries,
+					actorUserId: auth.userId,
+				});
+			}
+
 			// Type assertion: moved should be non-null after successful update
-			const movedRowTyped = moved as unknown as Tables<"jobs">;
+			const movedRowTyped = moved as Tables<"jobs">;
 
 			// Log job move/reschedule for audit trail
 			const moveAuditParams = {
@@ -473,20 +696,20 @@ export const jobsRouter = createTRPCRouter({
 				after: {
 					starts_at: startUTC,
 					ends_at: endUTC,
+					employee_id: nextPrimary,
+					secondary_employee_ids: normalizedSecondaries,
 				},
 			};
 
-			if (currentJobTyped) {
-				await logJobAudit(db, {
-					...moveAuditParams,
-					before: {
-						starts_at: currentJobTyped.starts_at,
-						ends_at: currentJobTyped.ends_at,
-					},
-				});
-			} else {
-				await logJobAudit(db, moveAuditParams);
-			}
+			await logJobAudit(db, {
+				...moveAuditParams,
+				before: {
+					starts_at: currentJobTyped.starts_at,
+					ends_at: currentJobTyped.ends_at,
+					employee_id: currentJobTyped.employee_id,
+					secondary_employee_ids: existingSecondaries,
+				},
+			});
 
 			// movedRowTyped already declared above
 			return {
@@ -497,7 +720,7 @@ export const jobsRouter = createTRPCRouter({
 				end: movedRowTyped.ends_at ?? "",
 				employeeId: movedRowTyped.employee_id ?? null,
 				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
+				secondaryEmployeeIds: normalizedSecondaries,
 				status: fromDbStatus(movedRowTyped.status as JobStatusDB),
 				priority: movedRowTyped.priority as JobDTO["priority"],
 				address: movedRowTyped.address ?? "",
@@ -617,7 +840,7 @@ export const jobsRouter = createTRPCRouter({
 				} | null;
 			};
 
-			// TODO: Add secondary assignees query when multi-assignee is fully implemented
+			const secondaryEmployeeIds = await fetchSecondaryForJob(db, job.id);
 			return {
 				id: job.id,
 				title: job.title,
@@ -626,7 +849,7 @@ export const jobsRouter = createTRPCRouter({
 				end: job.ends_at ?? "",
 				employeeId: job.employee_id ?? null,
 				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
+				secondaryEmployeeIds,
 				status: fromDbStatus(job.status as JobStatusDB),
 				priority: job.priority as JobDTO["priority"],
 				address: job.address ?? "",
@@ -660,35 +883,54 @@ export const jobsRouter = createTRPCRouter({
 			ensureSchedulerRole(auth.role);
 			const { orgId, userId } = auth;
 			// TODO: derive employeeId from userId if needed; for now, restrict with role only.
-			const { jobId, primaryEmployeeId } = input;
+			const { jobId } = input;
 
-			// Get current job for permission check
-			const { data: currentJob } = await db
+			const currentJobResult = await db
 				.from("jobs")
-				.select("*")
+				.select(
+					"id, employee_id, title, starts_at, ends_at, status, priority, address, customer_id, description",
+				)
 				.eq("id", jobId)
 				.eq("org_id", orgId)
 				.maybeSingle();
 
-			// Type assertion: currentJob should exist for valid updates
-			const currentJobTyped = currentJob as unknown as Tables<"jobs">;
+			if (currentJobResult.error) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
 
-			// Permission check
-			// TODO: Implement proper staff permission check once employee lookup is implemented
-			// Currently allowing all org members to reassign jobs
+			const currentJobData = currentJobResult.data;
+			if (!currentJobData) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
 
-			const beforeAssignee: string | null = currentJobTyped.employee_id;
+			const currentJobTyped = currentJobData as Tables<"jobs">;
+			const existingSecondaries = await fetchSecondaryForJob(db, jobId);
 
-			// Update primary assignee
+			const nextPrimary =
+				input.primaryEmployeeId === undefined
+					? normalizePrimaryId(currentJobTyped.employee_id)
+					: normalizePrimaryId(input.primaryEmployeeId);
+
+			const desiredSecondaries = normalizeSecondaryIds(
+				nextPrimary,
+				input.secondaryEmployeeIds ?? existingSecondaries,
+			);
+
 			const { error } = await db
 				.from("jobs")
 				.update({
-					employee_id: primaryEmployeeId ?? null,
+					employee_id: nextPrimary,
 					updated_at: Temporal.Now.instant().toString(),
-				})
+				} satisfies TablesUpdate<"jobs">)
 				.eq("id", jobId)
 				.eq("org_id", orgId)
-				.select()
+				.select("id")
 				.maybeSingle();
 
 			if (error) {
@@ -698,19 +940,35 @@ export const jobsRouter = createTRPCRouter({
 				});
 			}
 
-			// Log assignee change
+			await replaceJobAssignees({
+				db,
+				jobId,
+				orgId,
+				primaryEmployeeId: nextPrimary,
+				secondaryEmployeeIds: desiredSecondaries,
+				actorUserId: auth.userId,
+			});
+
 			await logJobAudit(db, {
 				orgId,
 				userId,
 				action: "update",
 				jobId,
-				before: { employee_id: beforeAssignee },
-				after: { employee_id: primaryEmployeeId ?? null },
+				before: {
+					employee_id: currentJobTyped.employee_id,
+					secondary_employee_ids: existingSecondaries,
+				},
+				after: {
+					employee_id: nextPrimary,
+					secondary_employee_ids: desiredSecondaries,
+				},
 			});
 
-			// TODO: Handle secondary assignees when multi-assignee table is ready
-
-			return { success: true };
+			return {
+				success: true,
+				employeeId: nextPrimary,
+				secondaryEmployeeIds: desiredSecondaries,
+			};
 		}),
 
 	reschedule: protectedProcedure
@@ -730,15 +988,30 @@ export const jobsRouter = createTRPCRouter({
 			const { jobId, starts_at, ends_at } = input;
 
 			// Get current job for permission and audit
-			const { data: currentJob } = await db
+			const currentJobResult = await db
 				.from("jobs")
 				.select("*")
 				.eq("id", jobId)
 				.eq("org_id", orgId)
 				.maybeSingle();
 
-			// Type assertion: currentJob should exist for valid reschedule
-			const currentJobTyped = currentJob as unknown as Tables<"jobs">;
+			if (currentJobResult.error) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
+
+			const currentJobData = currentJobResult.data;
+			if (!currentJobData) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Job niet gevonden of geen toegang",
+				});
+			}
+
+			const currentJobTyped = currentJobData as Tables<"jobs">;
+			const secondaryAssignees = await fetchSecondaryForJob(db, jobId);
 
 			// Permission check for staff
 			// TODO: Implement proper staff permission check once employee lookup is implemented
@@ -774,10 +1047,14 @@ export const jobsRouter = createTRPCRouter({
 				before: {
 					starts_at: currentJobTyped.starts_at,
 					ends_at: currentJobTyped.ends_at,
+					employee_id: currentJobTyped.employee_id,
+					secondary_employee_ids: secondaryAssignees,
 				},
 				after: {
 					starts_at,
 					ends_at,
+					employee_id: currentJobTyped.employee_id,
+					secondary_employee_ids: secondaryAssignees,
 				},
 			});
 
@@ -790,7 +1067,7 @@ export const jobsRouter = createTRPCRouter({
 				end: updatedTyped.ends_at ?? "",
 				employeeId: updatedTyped.employee_id ?? null,
 				// Multi-assignee support via job_assignees table (migration 003)
-				secondaryEmployeeIds: [], // TODO: Query job_assignees table for multi-assignee support
+				secondaryEmployeeIds: secondaryAssignees,
 				status: fromDbStatus(updatedTyped.status as JobStatusDB),
 				priority: updatedTyped.priority as JobDTO["priority"],
 				address: updatedTyped.address ?? "",

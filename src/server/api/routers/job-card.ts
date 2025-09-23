@@ -6,6 +6,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { logJobAudit } from "~/lib/audit";
 import { minutesBetween, nowZoned, round5 } from "~/lib/calendar-temporal";
+import { env } from "~/lib/env";
 import { logger } from "~/lib/log";
 import {
 	createTRPCRouter,
@@ -26,6 +27,8 @@ const TZ = "Europe/Amsterdam";
 
 const tokenTtlDuration = (): Temporal.Duration =>
 	Temporal.Duration.from({ days: 2 });
+
+const SIGNATURE_URL_TTL_SECONDS = 60 * 60; // 1 hour
 
 type MaterialVatRate = 21 | 9 | 0;
 
@@ -133,10 +136,12 @@ interface JobCardState {
 	lastSyncedAt: string | null;
 	pendingOperations: number;
 	notes: string;
-	signatureDataUrl: string | null;
+	signatureStorageKey: string | null;
+	signaturePreviewDataUrl: string | null;
 }
 
 type JobRow = Tables<"jobs"> & {
+	customer_signature_key?: string | null;
 	customers?: {
 		id: string;
 		name: string | null;
@@ -287,12 +292,35 @@ function deriveJobCardState(row: JobRow): JobCardState {
 				? row.notes
 				: "";
 
-	const signatureFromState =
-		typeof cardRaw.signature === "string" && cardRaw.signature.length > 0
-			? cardRaw.signature
+	const signatureRaw = cardRaw.signature;
+	const rowSignatureKey =
+		typeof row.customer_signature_key === "string" &&
+		row.customer_signature_key.length > 0
+			? row.customer_signature_key
 			: null;
-	const signatureFromRow = normalizeSignature(row.customer_signature);
-	const signatureDataUrl = signatureFromState ?? signatureFromRow;
+
+	let signatureStorageKey = rowSignatureKey;
+	let signaturePreview: string | null = null;
+
+	if (isRecord(signatureRaw)) {
+		if (typeof signatureRaw.storageKey === "string") {
+			signatureStorageKey = signatureRaw.storageKey;
+		}
+		if (typeof signatureRaw.preview === "string") {
+			signaturePreview = signatureRaw.preview;
+		}
+	} else if (typeof signatureRaw === "string" && signatureRaw.length > 0) {
+		if (signatureRaw.startsWith("data:")) {
+			signaturePreview = signatureRaw;
+		} else {
+			signatureStorageKey = signatureRaw;
+		}
+	}
+
+	const legacySignaturePreview = normalizeSignature(row.customer_signature);
+	if (!signaturePreview && legacySignaturePreview) {
+		signaturePreview = legacySignaturePreview;
+	}
 
 	const lastSyncedAt =
 		typeof cardRaw.lastSyncedAt === "string" ? cardRaw.lastSyncedAt : null;
@@ -314,7 +342,8 @@ function deriveJobCardState(row: JobRow): JobCardState {
 		lastSyncedAt,
 		pendingOperations,
 		notes,
-		signatureDataUrl,
+		signatureStorageKey,
+		signaturePreviewDataUrl: signaturePreview,
 	} satisfies JobCardState;
 }
 
@@ -331,7 +360,10 @@ function buildOfflineState(previous: unknown, state: JobCardState): Json {
 		lastSyncedAt: state.lastSyncedAt,
 		pendingCount: state.pendingOperations,
 		notes: state.notes,
-		signature: state.signatureDataUrl,
+		signature: {
+			storageKey: state.signatureStorageKey,
+			preview: state.signaturePreviewDataUrl,
+		},
 	} satisfies Record<string, unknown>;
 
 	return base as Json;
@@ -409,7 +441,11 @@ function toListJob(row: JobRow, state: JobCardState): ListJob {
 	return data;
 }
 
-function toJobCardView(row: JobRow, state: JobCardState): JobCardView {
+function toJobCardView(
+	row: JobRow,
+	state: JobCardState,
+	options?: { signatureUrl?: string | null },
+): JobCardView {
 	const totals = calcMaterialTotals(state.materials);
 	const customer = mapCustomer(row.customers ?? null);
 	const startedAtISO = state.timerStartedAt;
@@ -422,6 +458,9 @@ function toJobCardView(row: JobRow, state: JobCardState): JobCardView {
 			)
 		: 0;
 	const displayMinutes = round5(state.actualMinutes + elapsedRunningMinutes);
+
+	const signatureDataUrl =
+		options?.signatureUrl ?? state.signaturePreviewDataUrl ?? null;
 
 	const detail = {
 		jobId: row.id,
@@ -451,10 +490,37 @@ function toJobCardView(row: JobRow, state: JobCardState): JobCardView {
 			pendingOperations: state.pendingOperations,
 		},
 		notes: state.notes,
-		signatureDataUrl: state.signatureDataUrl,
+		signatureDataUrl,
 	} satisfies JobCardView;
 
 	return jobCardViewSchema.parse(detail);
+}
+
+async function toJobCardViewWithSignature(
+	db: SupabaseClient<Database>,
+	row: JobRow,
+	state: JobCardState,
+	overridePreview?: string | null,
+): Promise<JobCardView> {
+	let signatureUrl = overridePreview ?? state.signaturePreviewDataUrl ?? null;
+	const hasPreview =
+		typeof signatureUrl === "string" && signatureUrl.length > 0;
+	if (
+		!hasPreview &&
+		typeof state.signatureStorageKey === "string" &&
+		state.signatureStorageKey.length > 0
+	) {
+		const { data: signed, error } = await db.storage
+			.from(env.BUCKET_JOB_SIGNATURES)
+			.createSignedUrl(state.signatureStorageKey, SIGNATURE_URL_TTL_SECONDS);
+		if (!error) {
+			const signedUrl = signed.signedUrl;
+			if (typeof signedUrl === "string" && signedUrl.length > 0) {
+				signatureUrl = signedUrl;
+			}
+		}
+	}
+	return toJobCardView(row, state, { signatureUrl });
 }
 
 function normalizeSignature(raw: unknown): string | null {
@@ -496,6 +562,31 @@ function extractSignaturePayload(dataUrl: string | null): {
 		base64: payload,
 		dataUrl: `data:${mime};base64,${payload}`,
 	};
+}
+
+function buildSignatureStorageKey(orgId: string, jobId: string): string {
+	const safeOrg = orgId.replace(/[^a-zA-Z0-9_-]/g, "_");
+	const safeJob = jobId.replace(/[^a-zA-Z0-9_-]/g, "_");
+	const stamp = Temporal.Now.instant().epochMilliseconds.toString();
+	return `org_${safeOrg}/jobs/${safeJob}/signature_${stamp}.png`;
+}
+
+async function removeSignatureObject(
+	db: SupabaseClient<Database>,
+	storageKey: string | null,
+): Promise<void> {
+	if (!storageKey) {
+		return;
+	}
+	const { error } = await db.storage
+		.from(env.BUCKET_JOB_SIGNATURES)
+		.remove([storageKey]);
+	if (error && !error.message.toLowerCase().includes("not found")) {
+		logger.warn("[job-card] failed to delete signature object", {
+			storageKey,
+			error: error.message,
+		});
+	}
 }
 
 async function requireEmployee(
@@ -679,7 +770,7 @@ export const jobCardRouter = createTRPCRouter({
 				}
 			}
 
-			return toJobCardView(row, state);
+			return toJobCardViewWithSignature(serviceDb, row, state);
 		}),
 
 	getByJobId: protectedProcedure
@@ -688,7 +779,7 @@ export const jobCardRouter = createTRPCRouter({
 			const { db, auth } = ctx;
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			const state = ensureTokenFresh(deriveJobCardState(job));
-			return toJobCardView(job, state);
+			return toJobCardViewWithSignature(db, job, state);
 		}),
 
 	updateTimer: protectedProcedure
@@ -778,7 +869,7 @@ export const jobCardRouter = createTRPCRouter({
 				metadata: { action: `job.timer.${input.action}` },
 			});
 
-			return toJobCardView(updatedRow, nextState);
+			return toJobCardViewWithSignature(db, updatedRow, nextState);
 		}),
 
 	addMaterial: protectedProcedure
@@ -839,7 +930,7 @@ export const jobCardRouter = createTRPCRouter({
 				},
 			});
 
-			return toJobCardView(updatedRow, nextState);
+			return toJobCardViewWithSignature(db, updatedRow, nextState);
 		}),
 
 	updateNotes: protectedProcedure
@@ -889,7 +980,7 @@ export const jobCardRouter = createTRPCRouter({
 				},
 			});
 
-			return toJobCardView(updatedRow, nextState);
+			return toJobCardViewWithSignature(db, updatedRow, nextState);
 		}),
 
 	saveSignature: protectedProcedure
@@ -905,13 +996,28 @@ export const jobCardRouter = createTRPCRouter({
 			let state = ensureTokenFresh(deriveJobCardState(job));
 			const nowInstant = Temporal.Now.instant();
 
-			let base64: string | null = null;
+			const existingKey =
+				typeof job.customer_signature_key === "string" &&
+				job.customer_signature_key.length > 0
+					? job.customer_signature_key
+					: null;
+
 			let normalizedDataUrl: string | null = null;
+			let nextStorageKey: string | null = existingKey;
+
+			const update: TablesUpdate<"jobs"> = {
+				offline_state: job.offline_state,
+			};
+
 			if (input.signatureDataUrl) {
 				const parsed = extractSignaturePayload(input.signatureDataUrl);
-				base64 = parsed.base64;
-				normalizedDataUrl = parsed.dataUrl;
-				const bytes = Buffer.from(base64 ?? "", "base64");
+				if (!parsed.base64) {
+					throw new TRPCError({
+						code: "BAD_REQUEST",
+						message: "Empty handtekening",
+					});
+				}
+				const bytes = Buffer.from(parsed.base64, "base64");
 				const MAX_SIGNATURE_BYTES = 750_000; // ~0.75 MB
 				if (bytes.byteLength > MAX_SIGNATURE_BYTES) {
 					throw new TRPCError({
@@ -919,19 +1025,45 @@ export const jobCardRouter = createTRPCRouter({
 						message: "Handtekening is te groot",
 					});
 				}
-				base64 = bytes.toString("base64");
+				const storageKey = buildSignatureStorageKey(auth.orgId, input.jobId);
+				const upload = await db.storage
+					.from(env.BUCKET_JOB_SIGNATURES)
+					.upload(storageKey, bytes, {
+						contentType: "image/png",
+						cacheControl: "31536000",
+						upsert: false,
+					});
+
+				if (upload.error) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: `Opslaan van handtekening mislukt: ${upload.error.message}`,
+					});
+				}
+
+				if (existingKey && existingKey !== storageKey) {
+					await removeSignatureObject(db, existingKey);
+				}
+
+				nextStorageKey = storageKey;
+				normalizedDataUrl = parsed.dataUrl;
+				update.customer_signature_key = storageKey;
+				update.customer_signature = null;
+			} else {
+				await removeSignatureObject(db, existingKey);
+				nextStorageKey = null;
+				update.customer_signature_key = null;
+				update.customer_signature = null;
 			}
 
 			state = {
 				...state,
-				signatureDataUrl: normalizedDataUrl,
+				signatureStorageKey: nextStorageKey,
+				signaturePreviewDataUrl: normalizedDataUrl,
 				lastSyncedAt: nowInstant.toString(),
 			} satisfies JobCardState;
 
-			const update: TablesUpdate<"jobs"> = {
-				customer_signature: base64 ?? null,
-				offline_state: buildOfflineState(job.offline_state, state),
-			};
+			update.offline_state = buildOfflineState(job.offline_state, state);
 
 			const updatedRow = await updateJobRow(
 				db,
@@ -941,18 +1073,28 @@ export const jobCardRouter = createTRPCRouter({
 			);
 			const nextState = ensureTokenFresh(deriveJobCardState(updatedRow));
 
+			const previewSize = normalizedDataUrl
+				? Buffer.from(normalizedDataUrl.split(",")[1] ?? "", "base64")
+						.byteLength
+				: 0;
+
 			await logJobAudit(db, {
 				orgId: auth.orgId,
 				userId: auth.userId,
 				action: "update",
 				jobId: input.jobId,
 				metadata: {
-					action: base64 ? "job.signature.save" : "job.signature.clear",
-					size: base64 ? Buffer.from(base64, "base64").byteLength : 0,
+					action: nextStorageKey ? "job.signature.save" : "job.signature.clear",
+					size: previewSize,
 				},
 			});
 
-			return toJobCardView(updatedRow, nextState);
+			return toJobCardViewWithSignature(
+				db,
+				updatedRow,
+				nextState,
+				normalizedDataUrl,
+			);
 		}),
 
 	updateStatus: protectedProcedure
@@ -1022,6 +1164,6 @@ export const jobCardRouter = createTRPCRouter({
 				},
 			});
 
-			return toJobCardView(updatedRow, nextState);
+			return toJobCardViewWithSignature(db, updatedRow, nextState);
 		}),
 });
