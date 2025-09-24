@@ -77,7 +77,7 @@ export const waAdminRouter = createTRPCRouter({
 	 */
 	listNumbers: protectedProcedure.query(
 		async ({ ctx }): Promise<{ items: WaNumberDTO[] }> => {
-			const { db, auth } = ctx;
+			const { db, auth, timezone } = ctx;
 			const { orgId } = auth;
 
 			if (orgId.trim().length === 0) {
@@ -100,7 +100,7 @@ export const waAdminRouter = createTRPCRouter({
 			const items: WaNumberDTO[] = numbers.map((row) => ({
 				phoneNumberId: row.phone_number_id,
 				label: row.label as "business" | "control",
-				createdAt: parseZdt(row.created_at).toInstant().toString(),
+				createdAt: parseZdt(row.created_at, timezone).toInstant().toString(),
 			}));
 
 			return { items };
@@ -113,7 +113,7 @@ export const waAdminRouter = createTRPCRouter({
 	upsertNumber: protectedProcedure
 		.input(waNumberUpsertSchema)
 		.mutation(async ({ ctx, input }): Promise<WaNumberDTO> => {
-			const { db, auth } = ctx;
+			const { db, auth, timezone } = ctx;
 			const { orgId } = auth;
 
 			if (orgId.trim().length === 0) {
@@ -151,7 +151,7 @@ export const waAdminRouter = createTRPCRouter({
 			return {
 				phoneNumberId: data.phone_number_id,
 				label: data.label as "business" | "control",
-				createdAt: parseZdt(data.created_at).toInstant().toString(),
+				createdAt: parseZdt(data.created_at, timezone).toInstant().toString(),
 			};
 		}),
 

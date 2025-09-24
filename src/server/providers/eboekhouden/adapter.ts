@@ -1,5 +1,8 @@
 import "server-only";
+import { Buffer } from "node:buffer";
 import "~/lib/time";
+import { env } from "~/lib/env";
+import { createSystemClient } from "~/server/db/client";
 import type {
 	CreateDraftResult,
 	FinalizeSendResult,
@@ -14,11 +17,75 @@ export class EBoekhoudenProvider implements InvoiceProvider {
 	readonly id = "eboekhouden" as const;
 	supportsPaymentUrl = false; // e-Boekhouden doesn't provide direct payment URLs
 	supportsUbl = false; // e-Boekhouden doesn't support UBL export
+	private readonly storage = createSystemClient();
 
 	constructor(
 		private readonly orgId: string,
 		private readonly userId: string,
 	) {}
+
+	private sanitizeExternalId(externalId: string): string {
+		const sanitized = externalId.replace(/[^a-zA-Z0-9_-]/g, "-");
+		return sanitized.length > 0 ? sanitized : `invoice-${this.orgId}`;
+	}
+
+	private async uploadPdfAndGetUrl(
+		pdfBase64: string,
+		externalId: string,
+	): Promise<string | null> {
+		if (pdfBase64.length === 0) {
+			return null;
+		}
+
+		try {
+			const buffer = Buffer.from(pdfBase64, "base64");
+			if (buffer.byteLength === 0) {
+				return null;
+			}
+
+			const bucket = env.BUCKET_INVOICE_EXPORTS;
+			const storageKey = `org_${this.orgId}/eboekhouden/${this.sanitizeExternalId(externalId)}.pdf`;
+
+			const upload = await this.storage.storage
+				.from(bucket)
+				.upload(storageKey, buffer, {
+					contentType: "application/pdf",
+					cacheControl: "86400",
+					upsert: true,
+				});
+
+			if (upload.error) {
+				console.warn(
+					"Failed to upload e-Boekhouden PDF to storage:",
+					upload.error,
+				);
+				return null;
+			}
+
+			const { data: signedData, error: signedError } =
+				await this.storage.storage
+					.from(bucket)
+					.createSignedUrl(storageKey, 60 * 60 * 24); // 24 hours
+
+			if (signedError) {
+				console.warn(
+					"Failed to create signed URL for e-Boekhouden PDF:",
+					signedError,
+				);
+				return null;
+			}
+
+			const signedUrl = signedData.signedUrl;
+			if (signedUrl.length === 0) {
+				return null;
+			}
+
+			return signedUrl;
+		} catch (error) {
+			console.warn("Error while storing e-Boekhouden PDF:", error);
+			return null;
+		}
+	}
 
 	/**
 	 * Create or find contact (relatie/debtor) in e-Boekhouden
@@ -140,9 +207,7 @@ export class EBoekhoudenProvider implements InvoiceProvider {
 		let pdfUrl: string | null = null;
 		try {
 			const pdfBase64 = await client.downloadInvoicePdf(externalId);
-			// TODO: Upload to storage service and return signed URL
-			// For now, we'll indicate PDF is available but not provide URL
-			pdfUrl = pdfBase64.length > 0 ? "eboekhouden:pdf-available" : null;
+			pdfUrl = await this.uploadPdfAndGetUrl(pdfBase64, externalId);
 		} catch (error) {
 			// PDF download failure shouldn't block send operation
 			console.warn("Failed to download e-Boekhouden PDF:", error);
@@ -170,7 +235,7 @@ export class EBoekhoudenProvider implements InvoiceProvider {
 		let pdfUrl: string | null = null;
 		try {
 			const pdfBase64 = await client.downloadInvoicePdf(externalId);
-			pdfUrl = pdfBase64.length > 0 ? "eboekhouden:pdf-available" : null;
+			pdfUrl = await this.uploadPdfAndGetUrl(pdfBase64, externalId);
 		} catch {
 			// PDF not available or error occurred
 			pdfUrl = null;

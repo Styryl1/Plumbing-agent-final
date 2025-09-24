@@ -20,7 +20,7 @@ export const aiRouter = createTRPCRouter({
 				ctx,
 				input = {},
 			}): Promise<{ items: AiRecommendationDTO[] }> => {
-				const { db, auth } = ctx;
+				const { db, auth, timezone } = ctx;
 				const { orgId } = auth;
 				const { limit = 25, since } = input;
 
@@ -91,6 +91,7 @@ export const aiRouter = createTRPCRouter({
 					return toAiRecommendationDTO(
 						row as Parameters<typeof toAiRecommendationDTO>[0],
 						partialConv,
+						timezone,
 					);
 				});
 

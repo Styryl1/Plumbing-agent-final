@@ -2,14 +2,19 @@
 // Global polyfill loaded via layout, using globalThis.Temporal
 // Single source of truth for the "three fighting date systems" problem
 
-const TZ = "Europe/Amsterdam"; // TODO: make dynamic per-org later
+import { DEFAULT_TIMEZONE, normalizeTimezone } from "./timezone";
+
+const TZ = DEFAULT_TIMEZONE;
 
 /**
  * Parse ISO datetime string → ZonedDateTime (for timestamps with time)
  * Used for database timestamptz → app layer conversion
  */
-export const parseZdt = (iso: string): Temporal.ZonedDateTime =>
-	Temporal.Instant.from(iso).toZonedDateTimeISO(TZ);
+export const parseZdt = (
+	iso: string,
+	timezone: string = DEFAULT_TIMEZONE,
+): Temporal.ZonedDateTime =>
+	Temporal.Instant.from(iso).toZonedDateTimeISO(normalizeTimezone(timezone));
 
 /**
  * Convert ZonedDateTime → ISO UTC string (for database storage)
@@ -52,11 +57,22 @@ export const isoUtcToZdt = parseZdt;
  */
 export const zdtToIsoUtc = zdtToISO;
 
+export const zonedNow = (
+	timezone: string = DEFAULT_TIMEZONE,
+): Temporal.ZonedDateTime =>
+	Temporal.Now.zonedDateTimeISO(normalizeTimezone(timezone));
+
 /**
- * @deprecated Use parseZdt(iso, TZ) instead
+ * @deprecated Use zonedNow(timezone) instead
  */
-export const nowAms = (): Temporal.ZonedDateTime =>
-	Temporal.Now.zonedDateTimeISO(TZ);
+export const now = (
+	timezone: string = DEFAULT_TIMEZONE,
+): Temporal.ZonedDateTime => zonedNow(timezone);
+
+/**
+ * @deprecated Use now(timezone) instead
+ */
+export const nowAms = (): Temporal.ZonedDateTime => zonedNow(DEFAULT_TIMEZONE);
 
 /**
  * @deprecated Use parseZdt instead
@@ -72,6 +88,11 @@ export const toISO = zdtToISO;
  * @deprecated Use TZ constant instead
  */
 export const ZONE = TZ;
+
+/**
+ * Normalize timezone strings according to supported values.
+ */
+export const ensureTimezone = normalizeTimezone;
 
 /**
  * @deprecated Use TZ constant instead

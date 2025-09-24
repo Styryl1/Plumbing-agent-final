@@ -8,7 +8,7 @@ import { logAuditEvent } from "~/lib/audit";
 import { toISO } from "~/lib/calendar-temporal";
 import { env } from "~/lib/env";
 import { toDbStatus } from "~/lib/job-status";
-import { parseZdt, zdtToISO } from "~/lib/time";
+import { zdtToISO, zonedNow } from "~/lib/time";
 import type { Database } from "~/types/supabase";
 import { sendTextMessage } from "./send";
 
@@ -18,6 +18,7 @@ export interface ApprovalContext {
 	orgId: string;
 	userId: string; // Plumber/control user ID
 	phone: string; // Control number for audit
+	timezone: string;
 }
 
 interface SuggestionData {
@@ -112,7 +113,7 @@ export async function approveSuggestion(
 		}
 
 		// Mark suggestion as approved with status tracking
-		const approvedAt = zdtToISO(parseZdt("Europe/Amsterdam"));
+		const approvedAt = zdtToISO(zonedNow(context.timezone));
 		await db
 			.from("wa_suggestions")
 			.update({
@@ -182,7 +183,7 @@ export async function rejectSuggestion(
 		}
 
 		// Mark suggestion as rejected with status tracking
-		const rejectedAt = zdtToISO(parseZdt("Europe/Amsterdam"));
+		const rejectedAt = zdtToISO(zonedNow(context.timezone));
 		await db
 			.from("wa_suggestions")
 			.update({
@@ -394,12 +395,13 @@ async function createJobFromSuggestion(
 		const customer = suggestionData.conversation.customer;
 
 		// Create job start time (schedule for next business hour if outside business hours)
-		const now = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam");
-		let startTime = now;
+		const current = zonedNow(context.timezone);
+		let startTime = current;
 
 		// If it's outside business hours, schedule for 8 AM next business day
-		if (now.hour < 8 || now.hour >= 18) {
-			const nextBusinessDay = now.hour >= 18 ? now.add({ days: 1 }) : now;
+		if (current.hour < 8 || current.hour >= 18) {
+			const nextBusinessDay =
+				current.hour >= 18 ? current.add({ days: 1 }) : current;
 			startTime = nextBusinessDay.with({ hour: 8, minute: 0, second: 0 });
 		}
 

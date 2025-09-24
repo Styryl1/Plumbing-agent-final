@@ -56,6 +56,7 @@ function isUnscheduledRow(value: unknown): value is UnscheduledRow {
 
 export function toIntakeSummary(
 	row: IntakeRow & { unscheduled?: unknown },
+	timezone?: string,
 ): IntakeSummaryDTO {
 	const details = parseDetails(row.details);
 	const unscheduledEntry = Array.isArray(row.unscheduled)
@@ -64,7 +65,7 @@ export function toIntakeSummary(
 
 	const receivedIso =
 		typeof row.received_at === "string"
-			? parseZdt(row.received_at).toInstant().toString()
+			? parseZdt(row.received_at, timezone).toInstant().toString()
 			: Temporal.Now.instant().toString();
 
 	const status =
@@ -103,8 +104,9 @@ export function toIntakeSummary(
 
 export function toIntakeDetail(
 	row: IntakeRow & { unscheduled?: unknown },
+	timezone?: string,
 ): IntakeDetailDTO {
-	const summary = toIntakeSummary(row);
+	const summary = toIntakeSummary(row, timezone);
 	const details = parseDetails(row.details);
 
 	return {

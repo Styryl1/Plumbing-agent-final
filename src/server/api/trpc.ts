@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import type { Locale } from "~/i18n";
+import { DEFAULT_TIMEZONE, normalizeTimezone } from "~/lib/timezone";
 import { toZodFlatten, type ZodFlatten } from "~/lib/zodError";
 import { getRlsDb } from "~/server/security/rlsClient";
 import type { Database } from "~/types/supabase";
@@ -17,6 +18,7 @@ export async function createContext(): Promise<{
 	};
 	locale: Locale;
 	db: SupabaseClient<Database> | null;
+	timezone: string;
 }> {
 	// Get auth context from Clerk session - do this only once to avoid "call" errors
 	const clerkAuth = await auth();
@@ -32,8 +34,9 @@ export async function createContext(): Promise<{
 
 	// Create RLS-aware database client only for authenticated users
 	let db: SupabaseClient<Database> | null = null;
+	let timezone = DEFAULT_TIMEZONE;
 
-	if (authContext.userId && authContext.orgId) {
+	if (authContext.userId !== null && authContext.orgId !== null) {
 		// CRITICAL: Verify user actually belongs to the requested org
 		// This prevents clients from spoofing orgId in requests
 		await currentUser(); // Verify user exists
@@ -65,9 +68,21 @@ export async function createContext(): Promise<{
 		}
 
 		db = getRlsDb(token);
+
+		// Load organization timezone (fallback to default on any errors)
+		const orgId = authContext.orgId;
+		const { data: tzRow, error: tzError } = await db
+			.from("org_settings")
+			.select("timezone")
+			.eq("org_id", orgId)
+			.maybeSingle();
+
+		if (!tzError && tzRow?.timezone) {
+			timezone = normalizeTimezone(tzRow.timezone);
+		}
 	}
 
-	return { auth: authContext, locale, db };
+	return { auth: authContext, locale, db, timezone };
 }
 
 type Ctx = Awaited<ReturnType<typeof createContext>>;

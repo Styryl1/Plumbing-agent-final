@@ -20,9 +20,10 @@ type DbWaConversation = Tables<"wa_conversations">;
 export function toAiRecommendationDTO(
 	row: DbWaSuggestion,
 	conversation?: DbWaConversation,
+	timezone?: string,
 ): AiRecommendationDTO {
 	// Parse created_at timestamp to ISO string
-	const createdZdt = parseZdt(row.created_at);
+	const createdZdt = parseZdt(row.created_at, timezone);
 	const createdIso = createdZdt.toInstant().toString();
 
 	// Build base DTO

@@ -47,10 +47,10 @@ async function constructWithCredentials(
 				);
 			}
 
-			return new WeFactProvider(
-				credentials.access_token,
-				credentials.administration_id ?? undefined,
-			);
+			const wefactOptions = credentials.administration_id
+				? { baseUrl: credentials.administration_id }
+				: undefined;
+			return new WeFactProvider(orgId, credentials.access_token, wefactOptions);
 		}
 		case "eboekhouden": {
 			// e-Boekhouden uses server-only API token authentication (no OAuth credentials in database)

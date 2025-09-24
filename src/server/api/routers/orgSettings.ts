@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { logAuditEvent } from "~/lib/audit";
+import { isValidTimezone, normalizeTimezone } from "~/lib/timezone";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 // Zod schemas for org settings validation
@@ -33,6 +34,8 @@ const updateOrgSettingsSchema = z.object({
 	// Notification settings
 	emailNotifications: z.boolean().optional(),
 	whatsappNotifications: z.boolean().optional(),
+	// Localization
+	timezone: z.string().refine(isValidTimezone, "Invalid timezone").optional(),
 });
 
 interface OrgSettings {
@@ -54,6 +57,8 @@ interface OrgSettings {
 	// Notification settings
 	emailNotifications: boolean;
 	whatsappNotifications: boolean;
+	// Localization
+	timezone: string;
 	// Timestamps
 	createdAt: string;
 	updatedAt: string;
@@ -83,6 +88,7 @@ function transformOrgSettingsFromDb(
 		voiceLanguage: dbRow.voice_language as z.infer<typeof voiceLanguageSchema>,
 		emailNotifications: dbRow.email_notifications as boolean,
 		whatsappNotifications: dbRow.whatsapp_notifications as boolean,
+		timezone: normalizeTimezone(dbRow.timezone as string | null | undefined),
 		createdAt: (dbRow.created_at as Date).toISOString(),
 		updatedAt: (dbRow.updated_at as Date).toISOString(),
 	};
@@ -131,6 +137,9 @@ function transformOrgSettingsToDb(
 	}
 	if (input.whatsappNotifications !== undefined) {
 		dbUpdate.whatsapp_notifications = input.whatsappNotifications;
+	}
+	if (input.timezone !== undefined) {
+		dbUpdate.timezone = normalizeTimezone(input.timezone);
 	}
 
 	return dbUpdate;

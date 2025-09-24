@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
+import { normalizeTimezone } from "~/lib/timezone";
 import { getServiceDbForWebhook } from "~/server/db/serviceClient";
 import {
 	isWebhookEventDuplicate,
@@ -186,6 +187,13 @@ export async function POST(request: NextRequest): Promise<Response> {
 			{ status: 422 },
 		);
 
+	const { data: tzRow } = await db
+		.from("org_settings")
+		.select("timezone")
+		.eq("org_id", orgId)
+		.maybeSingle();
+	const timezone = normalizeTimezone(tzRow?.timezone);
+
 	const nowMs = Temporal.Now.instant().epochMilliseconds;
 	const eventId =
 		entryId && entryTime ? `${entryId}_${entryTime}` : `wa_${nowMs}`;
@@ -246,6 +254,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 							orgId,
 							userId: "system", // TODO: Map to actual user when user management is implemented
 							phone: message.phoneNumber,
+							timezone,
 						},
 						message,
 					);

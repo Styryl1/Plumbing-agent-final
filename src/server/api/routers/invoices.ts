@@ -3,7 +3,7 @@
 
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { parseZdt } from "~/lib/time";
+import { parseZdt, zonedNow } from "~/lib/time";
 import type { Invoice } from "~/schema/invoice";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mustSingle } from "~/server/db/unwrap";
@@ -213,8 +213,9 @@ export const invoicesRouter = createTRPCRouter({
 			});
 		}
 
-		const now = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam");
-		const thisMonth = now.with({
+		const timezone = ctx.timezone;
+		const nowZdt = zonedNow(timezone);
+		const thisMonth = nowZdt.with({
 			day: 1,
 			hour: 0,
 			minute: 0,
@@ -232,7 +233,7 @@ export const invoicesRouter = createTRPCRouter({
 
 		for (const invoice of invoices) {
 			const total = invoice.total_cents ?? 0;
-			const createdAt = parseZdt(invoice.created_at!);
+			const createdAt = parseZdt(invoice.created_at!, timezone);
 
 			if (invoice.status === "draft") {
 				draftCount++;

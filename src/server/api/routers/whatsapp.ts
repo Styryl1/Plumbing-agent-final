@@ -260,6 +260,7 @@ export const whatsappRouter = createTRPCRouter({
 					orgId,
 					userId,
 					phone: "dashboard",
+					timezone: ctx.timezone,
 				},
 				{ createJob: Boolean(input.createJob) },
 			);

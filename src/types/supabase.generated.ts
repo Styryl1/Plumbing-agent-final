@@ -1703,6 +1703,7 @@ export type Database = {
 					invoice_prefix: string | null;
 					next_invoice_number: number | null;
 					org_id: string;
+					timezone: string;
 					updated_at: string | null;
 					voice_enabled: boolean | null;
 					voice_language: string | null;
@@ -1721,6 +1722,7 @@ export type Database = {
 					invoice_prefix?: string | null;
 					next_invoice_number?: number | null;
 					org_id: string;
+					timezone?: string;
 					updated_at?: string | null;
 					voice_enabled?: boolean | null;
 					voice_language?: string | null;
@@ -1739,6 +1741,7 @@ export type Database = {
 					invoice_prefix?: string | null;
 					next_invoice_number?: number | null;
 					org_id?: string;
+					timezone?: string;
 					updated_at?: string | null;
 					voice_enabled?: boolean | null;
 					voice_language?: string | null;

@@ -1,5 +1,8 @@
 import "server-only";
+import { Buffer } from "node:buffer";
 import "~/lib/time";
+import { env } from "~/lib/env";
+import { createSystemClient } from "~/server/db/client";
 import type {
 	CreateDraftResult,
 	FinalizeSendResult,
@@ -7,7 +10,11 @@ import type {
 	ProviderDraftInput,
 	ProviderInvoiceSnapshot,
 } from "../types";
-import { WeFactClient, type WeFactDebtor } from "./client";
+import {
+	WeFactClient,
+	type WeFactClientOptions,
+	type WeFactDebtor,
+} from "./client";
 import { mapWeFactStatus } from "./status-map";
 
 export class WeFactProvider implements InvoiceProvider {
@@ -15,13 +22,84 @@ export class WeFactProvider implements InvoiceProvider {
 	supportsPaymentUrl = false; // WeFact doesn't provide payment URLs directly
 	supportsUbl = false; // WeFact doesn't support UBL export
 
-	private client: WeFactClient;
+	private readonly client: WeFactClient;
+	private readonly storage = createSystemClient();
 
-	constructor(apiKey: string, baseUrl?: string) {
-		this.client = new WeFactClient({
-			apiKey,
-			baseUrl: baseUrl ?? "https://api.mijnwefact.nl/v2/",
-		});
+	constructor(
+		private readonly orgId: string,
+		apiKey: string,
+		options?: { baseUrl?: string | null },
+	) {
+		const providedBaseUrl = options?.baseUrl ?? null;
+		const normalizedBaseUrl =
+			typeof providedBaseUrl === "string" && providedBaseUrl.startsWith("http")
+				? providedBaseUrl
+				: null;
+		const clientOptions: WeFactClientOptions = { apiKey };
+		if (normalizedBaseUrl) {
+			clientOptions.baseUrl = normalizedBaseUrl;
+		}
+		this.client = new WeFactClient(clientOptions);
+	}
+
+	private sanitizeIdentifier(value: string): string {
+		const sanitized = value.replace(/[^a-zA-Z0-9_-]/g, "-");
+		return sanitized.length > 0 ? sanitized : "invoice";
+	}
+
+	private async uploadPdfAndGetUrl(
+		pdfBase64: string,
+		externalId: string,
+	): Promise<string | null> {
+		if (pdfBase64.length === 0) {
+			return null;
+		}
+
+		try {
+			const buffer = Buffer.from(pdfBase64, "base64");
+			if (buffer.byteLength === 0) {
+				return null;
+			}
+
+			const bucket = env.BUCKET_INVOICE_EXPORTS;
+			const storageKey = `org_${this.orgId}/wefact/invoice_${this.sanitizeIdentifier(externalId)}.pdf`;
+
+			const upload = await this.storage.storage
+				.from(bucket)
+				.upload(storageKey, buffer, {
+					contentType: "application/pdf",
+					cacheControl: "86400",
+					upsert: true,
+				});
+
+			if (upload.error) {
+				console.warn("Failed to upload WeFact PDF to storage:", upload.error);
+				return null;
+			}
+
+			const { data: signedData, error: signedError } =
+				await this.storage.storage
+					.from(bucket)
+					.createSignedUrl(storageKey, 60 * 60 * 24);
+
+			if (signedError) {
+				console.warn(
+					"Failed to create signed URL for WeFact PDF:",
+					signedError,
+				);
+				return null;
+			}
+
+			const signedUrl = signedData.signedUrl;
+			if (signedUrl.length === 0) {
+				return null;
+			}
+
+			return signedUrl;
+		} catch (error) {
+			console.warn("Error while storing WeFact PDF:", error);
+			return null;
+		}
 	}
 
 	/**
@@ -180,9 +258,7 @@ export class WeFactProvider implements InvoiceProvider {
 		let pdfUrl: string | null = null;
 		try {
 			const pdfBase64 = await this.client.downloadInvoicePdf(identifier);
-			// TODO: Upload to storage service and return signed URL
-			// For now, we'll indicate PDF is available but not provide URL
-			pdfUrl = pdfBase64.length > 0 ? "wefact:pdf-available" : null;
+			pdfUrl = await this.uploadPdfAndGetUrl(pdfBase64, externalId);
 		} catch (error) {
 			// PDF download failure shouldn't block send operation
 			console.warn("Failed to download WeFact PDF:", error);
@@ -217,7 +293,7 @@ export class WeFactProvider implements InvoiceProvider {
 		let pdfUrl: string | null = null;
 		try {
 			const pdfBase64 = await this.client.downloadInvoicePdf(identifier);
-			pdfUrl = pdfBase64.length > 0 ? "wefact:pdf-available" : null;
+			pdfUrl = await this.uploadPdfAndGetUrl(pdfBase64, externalId);
 		} catch {
 			// PDF not available or error occurred
 			pdfUrl = null;

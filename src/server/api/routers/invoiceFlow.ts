@@ -3,7 +3,7 @@
 
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { parseZdt, zdtToISO } from "~/lib/time";
+import { parseZdt, zdtToISO, zonedNow } from "~/lib/time";
 import type { InvoiceStatus } from "~/schema/invoice";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
@@ -19,8 +19,6 @@ import {
 import { sendPaymentLink } from "~/server/services/whatsapp/paymentLinkSender";
 
 // Note: Using manual error handling instead of mustSingle for this router
-const TZ = "Europe/Amsterdam";
-const now = (): Temporal.ZonedDateTime => Temporal.Now.zonedDateTimeISO(TZ);
 const SENDABLE_STATUSES: InvoiceStatus[] = ["sent", "overdue"];
 
 export const invoiceFlowRouter = createTRPCRouter({
@@ -82,23 +80,25 @@ export const invoiceFlowRouter = createTRPCRouter({
 					message: "Job must have start and end times",
 				});
 			}
-			const startTime = parseZdt(job.starts_at);
-			const endTime = parseZdt(job.ends_at);
+			const timezone = ctx.timezone;
+			const startTime = parseZdt(job.starts_at, timezone);
+			const endTime = parseZdt(job.ends_at, timezone);
 			const durationHours = Math.ceil(startTime.until(endTime).total("hours"));
 
 			// Create draft invoice
+			const draftTimestamp = zonedNow(timezone);
 			const { data: invoice, error } = await db
 				.from("invoices")
 				.insert({
 					org_id: orgId,
 					customer_id: job.customer_id,
 					job_id: jobId,
-					number: `DRAFT-${now().epochMilliseconds}`, // Draft number uses timestamp until invoice_number_sequences is restored
+					number: `DRAFT-${draftTimestamp.epochMilliseconds}`, // Draft number uses timestamp until invoice_number_sequences is restored
 					subtotal_ex_vat: durationHours * 75, // €75/hour
 					vat_total: Math.round(durationHours * 75 * 0.21), // 21% BTW
 					total_inc_vat: Math.round(durationHours * 75 * 1.21),
 					status: "draft",
-					due_at: zdtToISO(now().add({ days: 30 })), // 30 days
+					due_at: zdtToISO(draftTimestamp.add({ days: 30 })), // 30 days
 					notes: job.description ?? `Work performed: ${job.title}`,
 				})
 				.select("id")
@@ -123,7 +123,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 	issue: protectedProcedure
 		.input(issueInvoiceSchema)
 		.mutation(async ({ ctx, input }): Promise<IssueInvoiceResult> => {
-			const { db, auth } = ctx;
+			const { db, auth, timezone } = ctx;
 			const { orgId } = auth;
 			const { invoiceId } = input;
 
@@ -162,15 +162,16 @@ export const invoiceFlowRouter = createTRPCRouter({
 				await new Promise((resolve) => setTimeout(resolve, 1000));
 
 				// Update invoice status and add provider info
+				const issuedTimestamp = zonedNow(timezone);
 				await db
 					.from("invoices")
 					.update({
 						status: "sent",
 						provider: "moneybird",
-						external_id: `MB-${now().epochMilliseconds}`,
+						external_id: `MB-${issuedTimestamp.epochMilliseconds}`,
 						payment_url: `https://moneybird.example.com/pay/${invoiceId}`,
 						pdf_url: `https://moneybird.example.com/pdf/${invoiceId}`,
-						issued_at: zdtToISO(now()),
+						issued_at: zdtToISO(issuedTimestamp),
 					})
 					.eq("id", invoiceId)
 					.eq("org_id", orgId);
@@ -392,7 +393,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			const { db, auth } = ctx;
+			const { db, auth, timezone } = ctx;
 			const { orgId } = auth;
 
 			if (orgId === "") {
@@ -449,6 +450,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 						continue;
 					}
 					// Use the existing draft creation logic
+					const draftTimestamp = zonedNow(timezone);
 					const invoiceData = {
 						job_id: job.id,
 						customer_id: job.customer_id,
@@ -463,8 +465,8 @@ export const invoiceFlowRouter = createTRPCRouter({
 						vat_amount_cents: 2100, // €21 in cents
 						total_cents: 12100, // €121 in cents
 						payment_terms: "30_days" as const,
-						created_at: now().toString(),
-						updated_at: now().toString(),
+						created_at: draftTimestamp.toString(),
+						updated_at: draftTimestamp.toString(),
 					};
 
 					const { data: invoice, error: invoiceError } = await db

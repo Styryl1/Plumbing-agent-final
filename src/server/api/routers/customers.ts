@@ -502,26 +502,23 @@ export const customersRouter = createTRPCRouter({
 			}
 
 			// Count linked records (same logic as linkedCounts procedure)
-			// TODO: Add back invoice_drafts check when table is restored
-			const [{ count: jobsCount }] = await Promise.all([
-				db
-					.from("jobs")
-					.select("*", { count: "exact", head: true })
-					.eq("customer_id", id)
-					.eq("org_id", orgId),
-				// db
-				// 	.from("invoice_drafts")
-				// 	.select("*", { count: "exact", head: true })
-				// 	.eq("customer_id", id)
-				// 	.eq("org_id", orgId),
-			]);
+			const [{ count: jobsCount }, { count: invoicesCount }] =
+				await Promise.all([
+					db
+						.from("jobs")
+						.select("*", { count: "exact", head: true })
+						.eq("customer_id", id)
+						.eq("org_id", orgId),
+					db
+						.from("invoices")
+						.select("*", { count: "exact", head: true })
+						.eq("customer_id", id)
+						.eq("org_id", orgId),
+				]);
 
 			// Check if customer has linked data (jobs or invoices) that prevents deletion
 			const hasLinkedJobs = (jobsCount ?? 0) > 0;
-			// TODO: Re-enable when invoice_drafts table is restored
-			// const invoicesCount = await getInvoicesCount(customerId, orgId);
-			// const hasLinkedInvoices = invoicesCount > 0;
-			const hasLinkedInvoices = false; // Temporary: always false until invoice_drafts table restored
+			const hasLinkedInvoices = (invoicesCount ?? 0) > 0;
 			const hasLinkedData = Boolean(hasLinkedJobs || hasLinkedInvoices);
 
 			// If linked data exists, throw conflict error
@@ -603,26 +600,23 @@ export const customersRouter = createTRPCRouter({
 				}
 
 				// Count linked records
-				// TODO: Add back invoice_drafts check when table is restored
-				const [{ count: jobsCount }] = await Promise.all([
-					db
-						.from("jobs")
-						.select("*", { count: "exact", head: true })
-						.eq("customer_id", customerId)
-						.eq("org_id", orgId),
-					// db
-					// 	.from("invoice_drafts")
-					// 	.select("*", { count: "exact", head: true })
-					// 	.eq("customer_id", customerId)
-					// 	.eq("org_id", orgId),
-				]);
-
-				// TODO: Re-enable when invoice_drafts table is restored
-				// const invoicesCount = await getInvoicesCount(customerId, orgId);
+				const [{ count: jobsCount }, { count: invoicesCount }] =
+					await Promise.all([
+						db
+							.from("jobs")
+							.select("*", { count: "exact", head: true })
+							.eq("customer_id", customerId)
+							.eq("org_id", orgId),
+						db
+							.from("invoices")
+							.select("*", { count: "exact", head: true })
+							.eq("customer_id", customerId)
+							.eq("org_id", orgId),
+					]);
 
 				return {
 					jobs: jobsCount ?? 0,
-					invoices: 0, // Temporary: hardcoded until invoice_drafts table restored
+					invoices: invoicesCount ?? 0,
 				};
 			},
 		),
