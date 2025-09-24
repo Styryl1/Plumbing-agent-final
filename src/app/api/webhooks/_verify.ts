@@ -6,10 +6,123 @@
  */
 
 import { createHmac } from "crypto";
+import ipaddr from "ipaddr.js";
 import { headers } from "next/headers";
 import { Webhook } from "svix"; // Clerk webhook verification
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
+
+type ParsedAddress = ipaddr.IPv4 | ipaddr.IPv6;
+
+function isAllDigits(value: string): boolean {
+	if (value.length === 0) {
+		return false;
+	}
+	for (let index = 0; index < value.length; index += 1) {
+		const code = value.charCodeAt(index);
+		if (code < 48 || code > 57) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function parseIpCandidate(value: string): ParsedAddress | null {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) {
+		return null;
+	}
+
+	const variants = new Set<string>();
+	variants.add(trimmed);
+
+	if (trimmed.startsWith("[") && trimmed.includes("]")) {
+		const closingIndex = trimmed.indexOf("]");
+		if (closingIndex > 1) {
+			variants.add(trimmed.slice(1, closingIndex));
+		}
+	}
+
+	const colonIndex = trimmed.lastIndexOf(":");
+	if (colonIndex > -1) {
+		const before = trimmed.slice(0, colonIndex);
+		const after = trimmed.slice(colonIndex + 1);
+		if (before.includes(".") && isAllDigits(after)) {
+			variants.add(before);
+		}
+	}
+
+	const zoneIndex = trimmed.indexOf("%");
+	if (zoneIndex !== -1) {
+		const candidate = trimmed.slice(0, zoneIndex);
+		if (candidate.length > 0) {
+			variants.add(candidate);
+		}
+	}
+
+	for (const candidate of variants) {
+		try {
+			return ipaddr.parse(candidate);
+		} catch {
+			continue;
+		}
+	}
+
+	return null;
+}
+
+function isAddressInRanges(
+	address: ParsedAddress,
+	ranges: readonly string[],
+): boolean {
+	return ranges.some((range) => {
+		try {
+			if (range.includes("/")) {
+				const cidr = ipaddr.parseCIDR(range);
+				if (address.kind() !== cidr[0].kind()) {
+					return false;
+				}
+				return address.match(cidr);
+			}
+
+			const target = ipaddr.parse(range);
+			if (address.kind() !== target.kind()) {
+				return false;
+			}
+			return address.toNormalizedString() === target.toNormalizedString();
+		} catch {
+			return false;
+		}
+	});
+}
+
+function ensureMollieIpAllowed(headers: Headers): void {
+	const allowedRanges = env.MOLLIE_WEBHOOK_ALLOWED_IPS;
+	if (allowedRanges.length === 0) {
+		return;
+	}
+
+	const forwardedFor = headers.get("x-forwarded-for");
+	const realIp = headers.get("x-real-ip");
+	const candidates = [
+		...(forwardedFor ? forwardedFor.split(",") : []),
+		realIp ?? "",
+	]
+		.map(parseIpCandidate)
+		.filter((address): address is ParsedAddress => address !== null);
+
+	if (candidates.length === 0) {
+		throw new Error("Unable to determine Mollie webhook source IP");
+	}
+
+	const isAllowed = candidates.some((address) =>
+		isAddressInRanges(address, allowedRanges),
+	);
+
+	if (!isAllowed) {
+		throw new Error("Mollie webhook IP not allowed");
+	}
+}
 
 /**
  * Verify webhook signatures from different providers
@@ -115,16 +228,7 @@ function verifyMollieSignature(body: string, headers: Headers): unknown {
 		throw new Error("Invalid Mollie webhook token");
 	}
 
-	// Optionally verify Mollie IP addresses (recommended for production)
-	// const forwardedFor = headers.get("x-forwarded-for");
-	// const mollieIPs = [
-	//   // Mollie's webhook IP ranges (update from their docs)
-	//   "87.233.217.24/29",
-	//   "87.233.217.32/28",
-	//   // Add more as needed
-	// ];
-
-	// TODO: Implement IP range checking for production
+	ensureMollieIpAllowed(headers);
 
 	return JSON.parse(body);
 }

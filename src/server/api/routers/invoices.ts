@@ -86,7 +86,7 @@ export const invoicesRouter = createTRPCRouter({
 					name,
 					email
 				),
-				jobs!inner (
+				jobs (
 					id,
 					title
 				)
@@ -106,7 +106,7 @@ export const invoicesRouter = createTRPCRouter({
 			id: invoice.id,
 			orgId: invoice.org_id,
 			customerId: invoice.customer_id,
-			jobId: invoice.job_id,
+			jobId: invoice.job_id ?? undefined,
 
 			// Legacy vs provider numbering
 			invoiceNumber: invoice.number,
@@ -143,10 +143,13 @@ export const invoicesRouter = createTRPCRouter({
 				name: invoice.customers.name,
 				email: invoice.customers.email ?? undefined,
 			},
-			job: {
-				id: invoice.jobs.id,
-				title: invoice.jobs.title,
-			},
+			job:
+				invoice.jobs != null
+					? {
+							id: invoice.jobs.id,
+							title: invoice.jobs.title,
+						}
+					: undefined,
 
 			// Audit fields
 			createdAt: invoice.created_at!,
@@ -310,7 +313,7 @@ export const invoicesRouter = createTRPCRouter({
 			id: invoice.id,
 			orgId: invoice.org_id,
 			customerId: invoice.customer_id,
-			jobId: invoice.job_id,
+			jobId: invoice.job_id ?? undefined,
 			status: invoice.status as "draft",
 			provider: invoice.provider as Invoice["provider"],
 			providerStatus: invoice.provider_status ?? undefined,
@@ -331,10 +334,12 @@ export const invoicesRouter = createTRPCRouter({
 				id: invoice.customers.id,
 				name: invoice.customers.name,
 			},
-			job: {
-				id: invoice.jobs.id,
-				title: invoice.jobs.title,
-			},
+			job: invoice.jobs
+				? {
+						id: invoice.jobs.id,
+						title: invoice.jobs.title,
+					}
+				: undefined,
 			createdAt: invoice.created_at!,
 			updatedAt: invoice.updated_at!,
 		}));
@@ -1334,7 +1339,7 @@ function mapDbInvoiceToDto(
 		id: invoice.id,
 		orgId: invoice.org_id,
 		customerId: invoice.customer_id,
-		jobId: invoice.job_id,
+		jobId: invoice.job_id ?? undefined,
 
 		// Legacy vs provider numbering
 		invoiceNumber: invoice.number,

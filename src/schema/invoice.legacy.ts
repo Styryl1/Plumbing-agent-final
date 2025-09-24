@@ -190,6 +190,7 @@ export interface InvoiceLineInput {
 
 export interface CreateInvoiceInput {
 	customerId: string;
+	jobId?: string | undefined;
 	lines: InvoiceLineInput[];
 	subtotalCents: number;
 	vatAmountCents: number;
@@ -201,6 +202,7 @@ export interface CreateInvoiceInput {
 // Zod schema for tRPC input validation
 export const CreateInvoiceInputSchema = z.object({
 	customerId: z.uuid(),
+	jobId: z.uuid().optional(),
 	lines: z
 		.array(
 			z.object({

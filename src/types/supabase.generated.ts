@@ -1208,7 +1208,7 @@ export type Database = {
 					internal_notes: string | null;
 					is_legacy: boolean | null;
 					issued_at: string;
-					job_id: string;
+					job_id: string | null;
 					last_reminder_at: string | null;
 					message_ids: Json | null;
 					mollie_checkout_url: string | null;
@@ -1252,7 +1252,7 @@ export type Database = {
 					internal_notes?: string | null;
 					is_legacy?: boolean | null;
 					issued_at?: string;
-					job_id: string;
+					job_id?: string | null;
 					last_reminder_at?: string | null;
 					message_ids?: Json | null;
 					mollie_checkout_url?: string | null;
@@ -1296,7 +1296,7 @@ export type Database = {
 					internal_notes?: string | null;
 					is_legacy?: boolean | null;
 					issued_at?: string;
-					job_id?: string;
+					job_id?: string | null;
 					last_reminder_at?: string | null;
 					message_ids?: Json | null;
 					mollie_checkout_url?: string | null;
@@ -1345,6 +1345,55 @@ export type Database = {
 					},
 					{
 						foreignKeyName: "invoices_org_id_fkey";
+						columns: ["org_id"];
+						isOneToOne: false;
+						referencedRelation: "organizations";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			job_assignees: {
+				Row: {
+					assigned_at: string;
+					assigned_by: string | null;
+					employee_id: string;
+					is_primary: boolean;
+					job_id: string;
+					org_id: string;
+				};
+				Insert: {
+					assigned_at?: string;
+					assigned_by?: string | null;
+					employee_id: string;
+					is_primary?: boolean;
+					job_id: string;
+					org_id: string;
+				};
+				Update: {
+					assigned_at?: string;
+					assigned_by?: string | null;
+					employee_id?: string;
+					is_primary?: boolean;
+					job_id?: string;
+					org_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "job_assignees_employee_id_fkey";
+						columns: ["employee_id"];
+						isOneToOne: false;
+						referencedRelation: "employees";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "job_assignees_job_id_fkey";
+						columns: ["job_id"];
+						isOneToOne: false;
+						referencedRelation: "jobs";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "job_assignees_org_id_fkey";
 						columns: ["org_id"];
 						isOneToOne: false;
 						referencedRelation: "organizations";
@@ -3008,7 +3057,7 @@ export type Database = {
 					internal_notes: string | null;
 					is_legacy: boolean | null;
 					issued_at: string;
-					job_id: string;
+					job_id: string | null;
 					last_reminder_at: string | null;
 					message_ids: Json | null;
 					mollie_checkout_url: string | null;

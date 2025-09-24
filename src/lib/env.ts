@@ -15,6 +15,15 @@ const schema = z.object({
 	CLERK_WEBHOOK_SECRET: z.string().optional(), // Svix signing secret from Clerk
 	MOLLIE_API_KEY: z.string().optional(), // Mollie API key (test or live)
 	MOLLIE_WEBHOOK_TOKEN: z.string().optional(), // Mollie webhook verification token
+	MOLLIE_WEBHOOK_ALLOWED_IPS: z
+		.string()
+		.default("")
+		.transform((value) =>
+			value
+				.split(",")
+				.map((part) => part.trim())
+				.filter((part) => part.length > 0),
+		),
 	MONEYBIRD_WEBHOOK_SECRET: z.string().optional(), // Moneybird webhook signature verification
 	// WhatsApp Cloud API configuration
 	WHATSAPP_VERIFY_TOKEN: z.string().min(1), // WhatsApp webhook verification token (required)
@@ -98,6 +107,7 @@ const parsed = schema.safeParse({
 	CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
 	MOLLIE_API_KEY: process.env.MOLLIE_API_KEY,
 	MOLLIE_WEBHOOK_TOKEN: process.env.MOLLIE_WEBHOOK_TOKEN,
+	MOLLIE_WEBHOOK_ALLOWED_IPS: process.env.MOLLIE_WEBHOOK_ALLOWED_IPS ?? "",
 	MONEYBIRD_WEBHOOK_SECRET: process.env.MONEYBIRD_WEBHOOK_SECRET,
 	WHATSAPP_VERIFY_TOKEN: process.env.WHATSAPP_VERIFY_TOKEN,
 	WA_APP_SECRET: process.env.WA_APP_SECRET,
@@ -199,6 +209,7 @@ export const serverOnlyEnv = (() => {
 		NODE_ENV: env.NODE_ENV,
 		MOLLIE_API_KEY: env.MOLLIE_API_KEY,
 		MOLLIE_WEBHOOK_TOKEN: env.MOLLIE_WEBHOOK_TOKEN,
+		MOLLIE_WEBHOOK_ALLOWED_IPS: env.MOLLIE_WEBHOOK_ALLOWED_IPS,
 		AIRTABLE_WEBHOOK_URL: env.AIRTABLE_WEBHOOK_URL,
 		WHATSAPP_VERIFY_TOKEN: env.WHATSAPP_VERIFY_TOKEN,
 	} as const;

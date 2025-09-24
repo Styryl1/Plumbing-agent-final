@@ -15,6 +15,60 @@ import {
 
 type DB = SupabaseClient<Database>;
 
+interface OrgContactInfo {
+	id: string;
+	name: string;
+	phone: string | null;
+}
+
+const DEFAULT_COMPANY_NAME = "Loodgieter B.V.";
+
+async function fetchOrgContactInfo(
+	db: DB,
+	orgIds: readonly string[],
+): Promise<Map<string, OrgContactInfo>> {
+	if (orgIds.length === 0) {
+		return new Map();
+	}
+
+	const { data, error } = await db
+		.from("organizations")
+		.select("id, name, whatsapp_business_number, whatsapp_control_number")
+		.in("id", orgIds);
+
+	if (error) {
+		console.error("Failed to load organization contact info:", error);
+		return new Map();
+	}
+
+	const info = new Map<string, OrgContactInfo>();
+	const rows = Array.isArray(data) ? data : [];
+
+	for (const row of rows) {
+		let rawPhone: string | null = null;
+		if (row.whatsapp_business_number) {
+			rawPhone = row.whatsapp_business_number;
+		} else if (row.whatsapp_control_number) {
+			rawPhone = row.whatsapp_control_number;
+		}
+		let normalizedPhone: string | null = null;
+		if (rawPhone) {
+			const candidatePhone = normalizeE164NL(rawPhone);
+			normalizedPhone = candidatePhone ?? rawPhone;
+		}
+		const name = row.name;
+		const displayName = name.trim().length > 0 ? name : DEFAULT_COMPANY_NAME;
+
+		info.set(row.id, {
+			id: row.id,
+			name: displayName,
+			phone: normalizedPhone,
+		});
+	}
+
+	return info;
+}
+
 export interface DunningRunResult {
 	candidates: number;
 	sent: number;
@@ -146,7 +200,16 @@ async function updateInvoiceReminderFields(
 /**
  * Convert candidate to reminder message data
  */
-function candidateToMessageData(candidate: Candidate): ReminderMessageData {
+function candidateToMessageData(
+	candidate: Candidate,
+	orgInfo?: OrgContactInfo,
+): ReminderMessageData {
+	const trimmedOrgName = orgInfo?.name.trim();
+	const companyName =
+		trimmedOrgName && trimmedOrgName.length > 0
+			? trimmedOrgName
+			: DEFAULT_COMPANY_NAME;
+	const companyPhone = orgInfo?.phone ?? "";
 	const baseData = {
 		customerName: candidate.customerName,
 		invoiceNumber: candidate.invoiceNumber,
@@ -154,8 +217,8 @@ function candidateToMessageData(candidate: Candidate): ReminderMessageData {
 		issuedAt: candidate.dueAt, // We'll calculate from due_at for now
 		dueAt: candidate.dueAt,
 		daysOverdue: candidate.daysOverdue,
-		companyName: "Loodgieter B.V.", // TODO: Get from organization settings
-		companyPhone: "+31 XX XXX XXXX", // TODO: Get from organization settings
+		companyName,
+		companyPhone,
 	};
 
 	if (candidate.paymentUrl) {
@@ -190,6 +253,16 @@ export async function runDunning(
 	if (candidates.length === 0) {
 		return result;
 	}
+
+	const candidateOrgIds = Array.from(
+		new Set(
+			candidates
+				.map((candidate) => candidate.orgId)
+				.filter((value) => value.length > 0),
+		),
+	);
+
+	const orgContactInfo = await fetchOrgContactInfo(db, candidateOrgIds);
 
 	let sentToday = 0;
 
@@ -247,7 +320,11 @@ export async function runDunning(
 		let templateName = `whatsapp_${candidate.severity}`;
 
 		const phone = normalizeE164NL(candidate.whatsapp);
-		const messageData = candidateToMessageData(candidate);
+		const orgInfo =
+			candidate.orgId.length > 0
+				? orgContactInfo.get(candidate.orgId)
+				: undefined;
+		const messageData = candidateToMessageData(candidate, orgInfo);
 
 		if (phone && dunningConfig.DUNNING_CHANNELS.includes("whatsapp")) {
 			const dedupeKey = createDedupeKey(

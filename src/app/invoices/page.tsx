@@ -304,7 +304,9 @@ export default function InvoicesPage(): JSX.Element {
 															: t("invoices.draftLabel")}
 													</TableCell>
 													<TableCell>{draft.customer.name}</TableCell>
-													<TableCell>{draft.job.title}</TableCell>
+													<TableCell>
+														{draft.job?.title ?? t("invoices.review.noJob")}
+													</TableCell>
 													<TableCell className="text-right">
 														€{(draft.totalIncVat / 100).toFixed(2)}
 													</TableCell>

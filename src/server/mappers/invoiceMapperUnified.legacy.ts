@@ -32,7 +32,7 @@ export function toDBInvoice(
 ): {
 	org_id: string;
 	customer_id: string;
-	job_id: string;
+	job_id: string | null;
 	status: string;
 	subtotal_cents: number;
 	vat_amount_cents: number;
@@ -48,7 +48,7 @@ export function toDBInvoice(
 	return {
 		org_id: orgId,
 		customer_id: customerId,
-		job_id: "", // Empty string for now - TODO: make truly optional in schema
+		job_id: input.jobId ?? null,
 		status: input.issueNow ? "sent" : "draft",
 		subtotal_cents: subtotalExVatCents,
 		vat_amount_cents: vatTotalCents,
