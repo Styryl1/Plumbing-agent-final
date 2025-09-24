@@ -1,18 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import type { JSX } from "react";
 import { useState, useTransition } from "react";
 
 type Locale = "en" | "nl";
 
-export function LanguageSwitcher({
-	initialLocale,
-}: {
-	initialLocale: Locale;
-}): JSX.Element {
+export function LanguageSwitcher(): JSX.Element {
 	const router = useRouter();
 	const [pending, startTransition] = useTransition();
-	const [locale, setLocale] = useState<Locale>(initialLocale);
+	const contextLocale = useLocale() as Locale;
+	const [locale, setLocale] = useState<Locale>(contextLocale);
 
 	async function setLanguage(next: Locale): Promise<void> {
 		if (next === locale) return;
