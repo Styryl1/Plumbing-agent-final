@@ -4,6 +4,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { parseZdt, zdtToISO } from "~/lib/time";
+import type { InvoiceStatus } from "~/schema/invoice";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
 	type CreateDraftResult,
@@ -20,6 +21,7 @@ import { sendPaymentLink } from "~/server/services/whatsapp/paymentLinkSender";
 // Note: Using manual error handling instead of mustSingle for this router
 const TZ = "Europe/Amsterdam";
 const now = (): Temporal.ZonedDateTime => Temporal.Now.zonedDateTimeISO(TZ);
+const SENDABLE_STATUSES: InvoiceStatus[] = ["sent", "overdue"];
 
 export const invoiceFlowRouter = createTRPCRouter({
 	/**
@@ -230,6 +232,77 @@ export const invoiceFlowRouter = createTRPCRouter({
 		}),
 
 	/**
+	 * List recently issued invoices for a customer that are eligible for payment links
+	 */
+	listSendableByCustomer: protectedProcedure
+		.input(z.object({ customerId: z.uuid() }))
+		.query(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const { orgId } = auth;
+
+			if (orgId === "") {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "No organization selected",
+				});
+			}
+
+			const { data, error } = await db
+				.from("invoices")
+				.select(
+					`
+					id,
+					number,
+					status,
+					provider,
+					external_id,
+					payment_url,
+					mollie_checkout_url,
+					total_cents,
+					total_inc_vat,
+					issued_at,
+					due_at
+				`,
+				)
+				.eq("org_id", orgId)
+				.eq("customer_id", input.customerId)
+				.in("status", SENDABLE_STATUSES)
+				.order("issued_at", { ascending: false })
+				.limit(5);
+
+			if (error) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to load invoices",
+					cause: error,
+				});
+			}
+
+			const rows = Array.isArray(data) ? data : [];
+			const invoices = rows.map((invoice) => {
+				const totalCents =
+					typeof invoice.total_cents === "number"
+						? invoice.total_cents
+						: Math.round(invoice.total_inc_vat * 100);
+
+				return {
+					id: invoice.id,
+					number: invoice.number,
+					status: invoice.status as InvoiceStatus,
+					provider: invoice.provider,
+					externalId: invoice.external_id,
+					paymentUrl: invoice.payment_url,
+					mollieCheckoutUrl: invoice.mollie_checkout_url,
+					totalAmountCents: totalCents,
+					issuedAt: invoice.issued_at,
+					dueAt: invoice.due_at,
+				};
+			});
+
+			return { invoices };
+		}),
+
+	/**
 	 * Send payment link via WhatsApp
 	 */
 	sendPaymentLink: protectedProcedure
@@ -249,7 +322,7 @@ export const invoiceFlowRouter = createTRPCRouter({
 			// Verify invoice belongs to org and has payment URL
 			const { data: invoice, error: invoiceError } = await db
 				.from("invoices")
-				.select("id, payment_url, status")
+				.select("id, payment_url, mollie_checkout_url, status, provider")
 				.eq("id", invoiceId)
 				.eq("org_id", orgId)
 				.single();
@@ -268,18 +341,29 @@ export const invoiceFlowRouter = createTRPCRouter({
 				});
 			}
 
-			if (!invoice.payment_url) {
-				throw new TRPCError({
-					code: "BAD_REQUEST",
-					message: "Invoice has no payment URL",
-				});
+			let linkUrl = url ?? invoice.payment_url ?? invoice.mollie_checkout_url;
+
+			if (!linkUrl) {
+				try {
+					const { createPaymentForInvoice } = await import(
+						"~/server/payments/mollie/adapter"
+					);
+					const { checkoutUrl } = await createPaymentForInvoice(db, invoiceId);
+					linkUrl = checkoutUrl;
+				} catch (creationError) {
+					throw new TRPCError({
+						code: "BAD_REQUEST",
+						message: "Invoice has no payment URL",
+						cause: creationError,
+					});
+				}
 			}
 
 			try {
 				// Send via WhatsApp using our service
 				const result = await sendPaymentLink(db, orgId, {
 					phoneE164,
-					url,
+					url: linkUrl,
 					locale,
 				});
 

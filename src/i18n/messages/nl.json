@@ -2738,7 +2738,23 @@
       "paylinkNotImplemented": "Betaallink functie komt binnenkort",
       "paylinkError": "Betaallink versturen mislukt",
       "conversationClosed": "Gesprek gesloten",
-      "closeError": "Gesprek sluiten mislukt"
+      "closeError": "Gesprek sluiten mislukt",
+      "paylinkSent": "Betaallink verstuurd",
+      "paylinkSentSession": "Verzonden binnen het 24uurs venster",
+      "paylinkSentTemplate": "Verzonden via het payment_link template",
+      "paylinkNoCustomer": "Koppel dit gesprek aan een klant om een betaallink te sturen",
+      "paylinkNoPhone": "Er is geen telefoonnummer beschikbaar voor dit gesprek",
+      "paylinkNoInvoices": "Er zijn geen verstuurde facturen voor deze klant",
+      "paylinkSelectInvoiceError": "Selecteer een factuur om te versturen",
+      "paylinkDialogTitle": "Betaallink versturen",
+      "paylinkDialogDescription": "Kies een factuur om via WhatsApp te delen met de klant.",
+      "paylinkSelectInvoice": "Kies factuur",
+      "paylinkInvoiceLabel": "Factuur {number}",
+      "paylinkInvoiceSummary": "Factuur {number} • {amount}",
+      "paylinkInvoiceDue": "Vervaldatum {date}",
+      "paylinkInvoiceProvider": "Provider {provider}",
+      "paylinkConfirm": "Link versturen",
+      "paylinkSending": "Versturen…"
     },
     "control": {
       "title": "Controle Chat",
@@ -2746,7 +2762,12 @@
       "approve": "Goedkeuren",
       "close": "Sluiten",
       "approved": "Gesprek goedgekeurd",
-      "approveError": "Goedkeuren mislukt"
+      "approveError": "Goedkeuren mislukt",
+      "approveSuccess": "Bericht verstuurd naar klant",
+      "approveJobCreated": "Er is een klus aangemaakt vanuit deze goedkeuring",
+      "approveNoSuggestion": "Geen openstaande suggestie om te keuren",
+      "openJobCard": "Open kluskaart",
+      "approving": "Bezig met goedkeuren…"
     },
     "info": {
       "title": "Info",

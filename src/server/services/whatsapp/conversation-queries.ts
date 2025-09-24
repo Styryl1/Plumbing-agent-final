@@ -18,6 +18,7 @@ type ConversationRow = {
 	session_expires_at?: string | null;
 	last_inbound_at?: string | null;
 	customer_name?: string | null;
+	customer_id?: string | null;
 };
 
 type MessageRow = {
@@ -68,13 +69,17 @@ export async function listConversations(
 
 	const metaMap = new Map<
 		string,
-		{ session_expires_at: string | null; customer_name: string | null }
+		{
+			session_expires_at: string | null;
+			customer_name: string | null;
+			customer_id: string | null;
+		}
 	>();
 
 	if (convoIds.length > 0) {
 		const metaQuery = await db
 			.from("wa_conversations")
-			.select("id, session_expires_at, customer:customers(name)")
+			.select("id, session_expires_at, customer_id, customer:customers(name)")
 			.in("id", convoIds)
 			.eq("org_id", orgId);
 		if (metaQuery.error) throw metaQuery.error;
@@ -83,6 +88,7 @@ export async function listConversations(
 			metaMap.set(row.id, {
 				session_expires_at: row.session_expires_at,
 				customer_name: row.customer?.name ?? null,
+				customer_id: row.customer_id ?? null,
 			});
 		}
 	}
@@ -124,6 +130,7 @@ export async function listConversations(
 			session_expires_at: sessionExpiresAt,
 			last_inbound_at: lastInbound,
 			customer_name: meta?.customer_name ?? null,
+			customer_id: meta?.customer_id ?? null,
 		};
 	});
 
@@ -250,13 +257,17 @@ export async function listLeads(
 
 	const metaMap = new Map<
 		string,
-		{ session_expires_at: string | null; customer_name: string | null }
+		{
+			session_expires_at: string | null;
+			customer_name: string | null;
+			customer_id: string | null;
+		}
 	>();
 
 	if (leadIds.length > 0) {
 		const metaQuery = await db
 			.from("wa_conversations")
-			.select("id, session_expires_at, customer:customers(name)")
+			.select("id, session_expires_at, customer_id, customer:customers(name)")
 			.in("id", leadIds)
 			.eq("org_id", orgId);
 		if (metaQuery.error) throw metaQuery.error;
@@ -265,6 +276,7 @@ export async function listLeads(
 			metaMap.set(row.id, {
 				session_expires_at: row.session_expires_at,
 				customer_name: row.customer?.name ?? null,
+				customer_id: row.customer_id ?? null,
 			});
 		}
 	}
@@ -306,6 +318,7 @@ export async function listLeads(
 			session_expires_at: sessionExpiresAt,
 			last_inbound_at: lastInbound,
 			customer_name: meta?.customer_name ?? null,
+			customer_id: meta?.customer_id ?? null,
 		};
 	});
 

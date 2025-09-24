@@ -1,7 +1,9 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { logAuditEvent } from "~/lib/audit";
 import { getOrgFeatureFlags } from "~/lib/feature-flags";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { approveSuggestion } from "~/server/services/whatsapp/approval";
 import {
 	GetMessagesInput,
 	getMessages,
@@ -20,6 +22,11 @@ import {
 	SendTextInput,
 	sendTextMessage,
 } from "~/server/services/whatsapp/send";
+
+const approveSuggestionInput = z.object({
+	conversationId: z.uuid(),
+	createJob: z.boolean().optional(),
+});
 
 /**
  * WhatsApp tRPC router for Phase 0
@@ -210,6 +217,59 @@ export const whatsappRouter = createTRPCRouter({
 					templateName: input.templateName,
 				},
 			});
+
+			return result;
+		}),
+
+	approveLatestSuggestion: protectedProcedure
+		.input(approveSuggestionInput)
+		.mutation(async ({ ctx, input }) => {
+			const { db, auth } = ctx;
+			const { orgId, userId } = auth;
+
+			const suggestionQuery = await db
+				.from("wa_suggestions")
+				.select("id")
+				.eq("org_id", orgId)
+				.eq("conversation_id", input.conversationId)
+				.eq("status", "pending")
+				.order("created_at", { ascending: false })
+				.limit(1)
+				.maybeSingle();
+
+			if (suggestionQuery.error) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to load suggestions",
+					cause: suggestionQuery.error,
+				});
+			}
+
+			const suggestionId = suggestionQuery.data?.id;
+			if (!suggestionId) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "No pending suggestion",
+				});
+			}
+
+			const result = await approveSuggestion(
+				db,
+				suggestionId,
+				{
+					orgId,
+					userId,
+					phone: "dashboard",
+				},
+				{ createJob: Boolean(input.createJob) },
+			);
+
+			if (!result.success) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: result.error ?? "Failed to approve suggestion",
+				});
+			}
 
 			return result;
 		}),

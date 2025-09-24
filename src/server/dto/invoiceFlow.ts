@@ -20,7 +20,7 @@ export const getPaymentLinkSchema = z.object({
 export const sendPaymentLinkSchema = z.object({
 	invoiceId: z.uuid(),
 	phoneE164: z.string().regex(/^\+\d{10,15}$/),
-	url: z.url(),
+	url: z.url().optional(),
 	locale: z.enum(["nl", "en"]).default("nl"),
 });
 

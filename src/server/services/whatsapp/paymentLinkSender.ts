@@ -247,4 +247,13 @@ async function storeMessage(
 		content: data.content,
 		payload_json: data.payloadJson,
 	});
+
+	await db
+		.from("wa_conversations")
+		.update({
+			last_message_at: Temporal.Now.instant().toString(),
+			status: "active",
+		})
+		.eq("id", data.conversationId)
+		.eq("org_id", data.orgId);
 }

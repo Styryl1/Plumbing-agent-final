@@ -53,7 +53,23 @@
 		"paylinkNotImplemented": "Paylink feature coming soon",
 		"paylinkError": "Failed to send paylink",
 		"conversationClosed": "Conversation closed",
-		"closeError": "Failed to close conversation"
+		"closeError": "Failed to close conversation",
+		"paylinkSent": "Payment link sent",
+		"paylinkSentSession": "Delivered within the 24h session window",
+		"paylinkSentTemplate": "Delivered using the payment_link template",
+		"paylinkNoCustomer": "Link this conversation to a customer before sending a payment link",
+		"paylinkNoPhone": "Conversation is missing a phone number",
+		"paylinkNoInvoices": "No issued invoices available for this customer",
+		"paylinkSelectInvoiceError": "Select an invoice to send",
+		"paylinkDialogTitle": "Send payment link",
+		"paylinkDialogDescription": "Choose an invoice to share with the customer on WhatsApp.",
+		"paylinkSelectInvoice": "Select invoice",
+		"paylinkInvoiceLabel": "Invoice {number}",
+		"paylinkInvoiceSummary": "Invoice {number} • {amount}",
+		"paylinkInvoiceDue": "Due {date}",
+		"paylinkInvoiceProvider": "Provider {provider}",
+		"paylinkConfirm": "Send link",
+		"paylinkSending": "Sending…"
 	},
 	"control": {
 		"title": "Control Chat",
@@ -61,7 +77,12 @@
 		"approve": "Approve",
 		"close": "Close",
 		"approved": "Conversation approved",
-		"approveError": "Failed to approve"
+		"approveError": "Failed to approve",
+		"approveSuccess": "Message sent to customer",
+		"approveJobCreated": "Job created from this approval",
+		"approveNoSuggestion": "No pending suggestion to approve",
+		"openJobCard": "Open job card",
+		"approving": "Approving…"
 	},
 	"info": {
 		"title": "Info",
