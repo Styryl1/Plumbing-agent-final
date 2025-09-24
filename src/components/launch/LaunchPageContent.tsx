@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import {
+	motion,
+	type TargetAndTransition,
+	type Transition,
+	useReducedMotion,
+	type ViewportOptions,
+} from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
 	ArrowRight,
@@ -32,22 +38,22 @@ import { cn } from "~/lib/utils";
 import type { FeatureIcon, LaunchCopy } from "./launchCopySchema";
 
 type FadeMotion = {
-	initial: { opacity: number; y: number };
-	whileInView: { opacity: number; y: number };
-	transition: { duration: number; ease?: string };
-	viewport: { once: boolean; amount: number };
+	initial: TargetAndTransition;
+	whileInView: TargetAndTransition;
+	transition: Transition;
+	viewport: ViewportOptions;
 };
 
 const baseFade: FadeMotion = {
 	initial: { opacity: 0, y: 28 },
 	whileInView: { opacity: 1, y: 0 },
-	transition: { duration: 0.45, ease: "easeOut" },
+	transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
 	viewport: { once: true, amount: 0.2 },
 };
 const reducedFade: FadeMotion = {
 	initial: { opacity: 1, y: 0 },
 	whileInView: { opacity: 1, y: 0 },
-	transition: { duration: 0, ease: "linear" },
+	transition: { duration: 0 },
 	viewport: { once: true, amount: 0.2 },
 };
 
