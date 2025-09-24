@@ -17,6 +17,8 @@
 	"duration": "{minutes} minutes",
 	"primaryEmployee": "Primary employee",
 	"secondaryEmployees": "Secondary employees",
+	"secondaryEmployeesHint": "Select additional crew members to keep them in sync with the job card.",
+	"secondaryEmployeesEmpty": "No additional employees available",
 	"assignments": "Assignments",
 	"calendar": "Schedule",
 	"requiredSymbol": "*",

@@ -23,6 +23,8 @@
     "duration": "{minutes} minuten",
     "primaryEmployee": "Hoofdmonteur",
     "secondaryEmployees": "Extra monteurs",
+    "secondaryEmployeesHint": "Selecteer extra monteurs om hen mee te nemen in de jobcard-sync.",
+    "secondaryEmployeesEmpty": "Geen extra monteurs beschikbaar",
     "assignments": "Toewijzingen",
     "calendar": "Planning",
     "requiredSymbol": "*",
@@ -1074,6 +1076,12 @@
     "create": {
       "failed": "Aanmaken mislukt",
       "success": "Klus succesvol aangemaakt"
+    },
+    "conflict": {
+      "title": "Planningsconflict",
+      "body": "Dit tijdslot overlapt met een andere klus voor de geselecteerde monteur.",
+      "confirm": "Toch inplannen",
+      "cancel": "Terug"
     },
     "description": "Beheer alle loodgieter opdrachten en planning",
     "empty": {

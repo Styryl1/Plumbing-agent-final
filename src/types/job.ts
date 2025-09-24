@@ -11,7 +11,7 @@ export interface JobDTO {
 	readonly start: string; // derived from DB starts_at
 	readonly end: string; // derived from DB ends_at
 	readonly employeeId?: string | null;
-	readonly secondaryEmployeeIds?: string[];
+	readonly secondaryEmployeeIds: string[];
 	readonly status: JobStatusUI;
 	readonly priority: JobPriority;
 	readonly address?: string;

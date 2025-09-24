@@ -6,11 +6,20 @@ import { nl } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { JSX } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
 import { CustomerPicker } from "~/components/ui/customer-picker";
@@ -94,16 +103,38 @@ const jobFormSchema = z.object({
 
 type JobFormData = z.infer<typeof jobFormSchema>;
 
+const normalizeFormAddress = (
+	address: JobFormData["address"],
+): JobFormData["address"] => {
+	const houseNumberValue =
+		typeof address.houseNumber === "number"
+			? address.houseNumber
+			: address.houseNumber.trim();
+	const additionValue = address.addition?.trim() ?? "";
+	const streetValue = address.street?.trim() ?? "";
+	const cityValue = address.city?.trim() ?? "";
+
+	return {
+		postalCode: address.postalCode.trim(),
+		houseNumber: houseNumberValue,
+		addition: additionValue.length > 0 ? additionValue : undefined,
+		street: streetValue.length > 0 ? streetValue : undefined,
+		city: cityValue.length > 0 ? cityValue : undefined,
+	};
+};
+
 interface JobEditorDialogProps {
 	readonly open: boolean;
 	readonly onOpenChange: (open: boolean) => void;
 	readonly job?: JobDTO | undefined; // undefined for create, defined for edit
+	readonly initialStartISO?: string | null;
 }
 
 export default function JobEditorDialog({
 	open,
 	onOpenChange,
 	job,
+	initialStartISO,
 }: JobEditorDialogProps): JSX.Element {
 	const isEdit = !!job;
 	const utils = api.useUtils();
@@ -174,6 +205,15 @@ export default function JobEditorDialog({
 		}
 	}, [selectedCustomer, form]);
 
+	type ConflictState = {
+		mode: "create" | "update";
+		payload: Record<string, unknown>;
+		message: string;
+	};
+	const [conflictState, setConflictState] = useState<ConflictState | null>(
+		null,
+	);
+
 	const createMutation = api.jobs.create.useMutation({
 		onSuccess: () => {
 			toast.success(t("jobs.create.success"));
@@ -181,7 +221,15 @@ export default function JobEditorDialog({
 			onOpenChange(false);
 			form.reset();
 		},
-		onError: () => {
+		onError: (error, variables) => {
+			if (error.data?.code === "CONFLICT") {
+				setConflictState({
+					mode: "create",
+					payload: variables as Record<string, unknown>,
+					message: error.message,
+				});
+				return;
+			}
 			toast.error(t("jobs.create.failed"));
 		},
 	});
@@ -193,7 +241,15 @@ export default function JobEditorDialog({
 			onOpenChange(false);
 			form.reset();
 		},
-		onError: () => {
+		onError: (error, variables) => {
+			if (error.data?.code === "CONFLICT") {
+				setConflictState({
+					mode: "update",
+					payload: variables as Record<string, unknown>,
+					message: error.message,
+				});
+				return;
+			}
 			toast.error(t("jobs.update.failed"));
 		},
 	});
@@ -245,13 +301,29 @@ export default function JobEditorDialog({
 				notes: job.notes ?? "",
 			});
 		} else if (!isEdit && open) {
-			// Reset form for create - use current time + 1 hour
-			const now = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam");
-			const startTime = now.add({ hours: 1 }).round({
-				smallestUnit: "minute",
-				roundingIncrement: 15,
-				roundingMode: "ceil",
-			});
+			const fallbackStart = Temporal.Now.zonedDateTimeISO("Europe/Amsterdam")
+				.add({ hours: 1 })
+				.round({
+					smallestUnit: "minute",
+					roundingIncrement: 15,
+					roundingMode: "ceil",
+				});
+
+			let startTime = fallbackStart;
+			if (initialStartISO) {
+				try {
+					const parsed = toZDT(initialStartISO).with({
+						second: 0,
+						millisecond: 0,
+						microsecond: 0,
+						nanosecond: 0,
+					});
+					startTime = parsed;
+				} catch (error) {
+					console.warn("[job-editor] failed to parse initial start", error);
+				}
+			}
+
 			const endTime = startTime.add({ hours: 1 });
 
 			form.reset({
@@ -273,7 +345,7 @@ export default function JobEditorDialog({
 				notes: "",
 			});
 		}
-	}, [job, open, isEdit, form]);
+	}, [job, open, isEdit, form, initialStartISO]);
 
 	const onSubmit = async (data: JobFormData): Promise<void> => {
 		try {
@@ -305,33 +377,29 @@ export default function JobEditorDialog({
 			const startUTC = toISO(startZDT);
 			const endUTC = toISO(endZDT);
 
-			if (job) {
-				// For updates, convert structured address back to string format temporarily
-				// TODO: Update JobDTO and update mutation to accept structured address
-				const addressString =
-					data.address.street ??
-					`${data.address.postalCode} ${data.address.houseNumber}${data.address.addition ?? ""}, ${data.address.city}`.trim();
+			const commonPayload = {
+				start: startUTC,
+				end: endUTC,
+				status: data.status,
+			};
 
+			if (job) {
 				await updateMutation.mutateAsync({
 					id: job.id,
 					patch: {
 						title: data.title,
-						start: startUTC,
-						end: endUTC,
+						...commonPayload,
 						employeeId: data.employeeId ?? undefined,
-						address: addressString.length > 0 ? addressString : undefined,
-						status: data.status,
+						address: normalizeFormAddress(data.address),
 					},
 				});
 			} else {
 				await createMutation.mutateAsync({
 					title: data.title,
-					start: startUTC,
-					end: endUTC,
+					...commonPayload,
 					customerId: data.customerId,
-					address: data.address,
+					address: normalizeFormAddress(data.address),
 					...(data.employeeId && { employeeId: data.employeeId }),
-					status: data.status,
 				});
 			}
 		} catch (error) {
@@ -340,389 +408,450 @@ export default function JobEditorDialog({
 		}
 	};
 
+	const handleConflictConfirm = async (): Promise<void> => {
+		if (!conflictState) return;
+		const payloadWithOverride = {
+			...conflictState.payload,
+			allowConflict: true,
+		};
+		setConflictState(null);
+		try {
+			if (conflictState.mode === "create") {
+				await createMutation.mutateAsync(
+					payloadWithOverride as Parameters<
+						typeof createMutation.mutateAsync
+					>[0],
+				);
+			} else {
+				await updateMutation.mutateAsync(
+					payloadWithOverride as Parameters<
+						typeof updateMutation.mutateAsync
+					>[0],
+				);
+			}
+		} catch (error) {
+			console.error("Failed to override conflict:", error);
+		}
+	};
+
+	const handleConflictCancel = (): void => {
+		setConflictState(null);
+	};
+
 	// Boolean logic: checking if either mutation is pending
 	const isPending = createMutation.isPending || updateMutation.isPending;
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden flex flex-col">
-				<DialogHeader>
-					<DialogTitle>
-						{isEdit ? t("jobs.job.editJob") : t("jobs.job.newJob")}
-					</DialogTitle>
-					<DialogDescription>
-						{isEdit
-							? t("jobs.job.editDescription")
-							: t("jobs.job.createDescription")}
-					</DialogDescription>
-				</DialogHeader>
+		<>
+			<Dialog open={open} onOpenChange={onOpenChange}>
+				<DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden flex flex-col">
+					<DialogHeader>
+						<DialogTitle>
+							{isEdit ? t("jobs.job.editJob") : t("jobs.job.newJob")}
+						</DialogTitle>
+						<DialogDescription>
+							{isEdit
+								? t("jobs.job.editDescription")
+								: t("jobs.job.createDescription")}
+						</DialogDescription>
+					</DialogHeader>
 
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="flex flex-col flex-1 overflow-hidden"
-					>
-						<div className="flex-1 overflow-y-auto space-y-4 pr-2">
-							<FormField
-								control={form.control}
-								name="title"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>
-											{t("ui.form.title")} {t("ui.form.required")}
-										</FormLabel>
-										<FormControl>
-											<Input placeholder="Lekkage repareren..." {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<div className="grid grid-cols-2 gap-4">
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(onSubmit)}
+							className="flex flex-col flex-1 overflow-hidden"
+						>
+							<div className="flex-1 overflow-y-auto space-y-4 pr-2">
 								<FormField
 									control={form.control}
-									name="startDate"
-									render={({ field }) => (
-										<FormItem className="flex flex-col">
-											<FormLabel>
-												{t("ui.form.startDate")} {t("ui.form.required")}
-											</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant="outline"
-															className="w-full pl-3 text-left font-normal"
-														>
-															{format(field.value, "PPP", { locale: nl })}
-															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className="w-auto p-0" align="start">
-													<Calendar
-														mode="single"
-														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) =>
-															date < new globalThis.Date("1900-01-01")
-														}
-														autoFocus
-													/>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-
-								<FormField
-									control={form.control}
-									name="startTime"
+									name="title"
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel>
-												{t("ui.form.startTime")} {t("ui.form.required")}
+												{t("ui.form.title")} {t("ui.form.required")}
 											</FormLabel>
 											<FormControl>
-												<Input type="time" {...field} />
+												<Input placeholder="Lekkage repareren..." {...field} />
 											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
-							</div>
 
-							<div className="grid grid-cols-2 gap-4">
+								<div className="grid grid-cols-2 gap-4">
+									<FormField
+										control={form.control}
+										name="startDate"
+										render={({ field }) => (
+											<FormItem className="flex flex-col">
+												<FormLabel>
+													{t("ui.form.startDate")} {t("ui.form.required")}
+												</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl>
+															<Button
+																variant="outline"
+																className="w-full pl-3 text-left font-normal"
+															>
+																{format(field.value, "PPP", { locale: nl })}
+																<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent className="w-auto p-0" align="start">
+														<Calendar
+															mode="single"
+															selected={field.value}
+															onSelect={field.onChange}
+															disabled={(date) =>
+																date < new globalThis.Date("1900-01-01")
+															}
+															autoFocus
+														/>
+													</PopoverContent>
+												</Popover>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+
+									<FormField
+										control={form.control}
+										name="startTime"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													{t("ui.form.startTime")} {t("ui.form.required")}
+												</FormLabel>
+												<FormControl>
+													<Input type="time" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+
+								<div className="grid grid-cols-2 gap-4">
+									<FormField
+										control={form.control}
+										name="endDate"
+										render={({ field }) => (
+											<FormItem className="flex flex-col">
+												<FormLabel>
+													{t("ui.form.endDate")} {t("ui.form.required")}
+												</FormLabel>
+												<Popover>
+													<PopoverTrigger asChild>
+														<FormControl>
+															<Button
+																variant="outline"
+																className="w-full pl-3 text-left font-normal"
+															>
+																{format(field.value, "PPP", { locale: nl })}
+																<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+															</Button>
+														</FormControl>
+													</PopoverTrigger>
+													<PopoverContent className="w-auto p-0" align="start">
+														<Calendar
+															mode="single"
+															selected={field.value}
+															onSelect={field.onChange}
+															disabled={(date) =>
+																date < new globalThis.Date("1900-01-01")
+															}
+															autoFocus
+														/>
+													</PopoverContent>
+												</Popover>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+
+									<FormField
+										control={form.control}
+										name="endTime"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													{t("ui.form.endTime")} {t("ui.form.required")}
+												</FormLabel>
+												<FormControl>
+													<Input type="time" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+
+								{/* Employee Selection */}
 								<FormField
 									control={form.control}
-									name="endDate"
-									render={({ field }) => (
-										<FormItem className="flex flex-col">
-											<FormLabel>
-												{t("ui.form.endDate")} {t("ui.form.required")}
-											</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant="outline"
-															className="w-full pl-3 text-left font-normal"
-														>
-															{format(field.value, "PPP", { locale: nl })}
-															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className="w-auto p-0" align="start">
-													<Calendar
-														mode="single"
-														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) =>
-															date < new globalThis.Date("1900-01-01")
-														}
-														autoFocus
-													/>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-
-								<FormField
-									control={form.control}
-									name="endTime"
+									name="employeeId"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>
-												{t("ui.form.endTime")} {t("ui.form.required")}
-											</FormLabel>
-											<FormControl>
-												<Input type="time" {...field} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-
-							{/* Employee Selection */}
-							<FormField
-								control={form.control}
-								name="employeeId"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{t("ui.form.employee")}</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											value={field.value ?? ""}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Kies medewerker (optioneel)" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem value="none">
-													{t("ui.form.noEmployee")}
-												</SelectItem>
-												{employees.map((employee) => (
-													<SelectItem key={employee.id} value={employee.id}>
-														{employee.name}
+											<FormLabel>{t("ui.form.employee")}</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												value={field.value ?? ""}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Kies medewerker (optioneel)" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="none">
+														{t("ui.form.noEmployee")}
 													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+													{employees.map((employee) => (
+														<SelectItem key={employee.id} value={employee.id}>
+															{employee.name}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 
-							{/* Customer Selection */}
-							<FormField
-								control={form.control}
-								name="customerId"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{t("ui.form.customer")}</FormLabel>
-										<FormControl>
-											<CustomerPicker
-												value={field.value}
-												onChange={(value) => {
-													field.onChange(value ?? undefined);
-												}}
-												placeholder={t("customers.selectCustomer")}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							{/* Address fields */}
-							<div className="space-y-4">
-								<div className="grid grid-cols-2 gap-4">
-									<FormField
-										control={form.control}
-										name="address.postalCode"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													{t("customers.form.postalCode.label")}{" "}
-													{t("ui.form.required")}
-												</FormLabel>
-												<FormControl>
-													<Input
-														placeholder={t(
-															"customers.form.postalCode.placeholder",
-														)}
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-
-									<FormField
-										control={form.control}
-										name="address.houseNumber"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													{t("customers.form.houseNumber.label")}{" "}
-													{t("ui.form.required")}
-												</FormLabel>
-												<FormControl>
-													<Input
-														placeholder={t(
-															"customers.form.houseNumber.placeholder",
-														)}
-														{...field}
-														value={String(field.value)}
-														onChange={(e) => {
-															field.onChange(e.target.value);
-														}}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</div>
-
+								{/* Customer Selection */}
 								<FormField
 									control={form.control}
-									name="address.addition"
+									name="customerId"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Toevoeging</FormLabel>
+											<FormLabel>{t("ui.form.customer")}</FormLabel>
 											<FormControl>
-												<Input placeholder="A, B, bis" {...field} />
+												<CustomerPicker
+													value={field.value}
+													onChange={(value) => {
+														field.onChange(value ?? undefined);
+													}}
+													placeholder={t("customers.selectCustomer")}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 
-								<div className="grid grid-cols-2 gap-4">
-									<FormField
-										control={form.control}
-										name="address.street"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>
-													{t("customers.form.street.label")}
-												</FormLabel>
-												<FormControl>
-													<Input
-														placeholder={t("customers.form.street.placeholder")}
-														{...field}
-														disabled={isLooking}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
+								{/* Address fields */}
+								<div className="space-y-4">
+									<div className="grid grid-cols-2 gap-4">
+										<FormField
+											control={form.control}
+											name="address.postalCode"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														{t("customers.form.postalCode.label")}{" "}
+														{t("ui.form.required")}
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder={t(
+																"customers.form.postalCode.placeholder",
+															)}
+															{...field}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
 
-									<FormField
-										control={form.control}
-										name="address.city"
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>{t("customers.form.city.label")}</FormLabel>
-												<FormControl>
-													<Input
-														placeholder={t("customers.form.city.placeholder")}
-														{...field}
-														disabled={isLooking}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-								</div>
-
-								{isLooking && (
-									<div className="text-sm text-muted-foreground">
-										{t("customers.form.address.autoFill.title")}...
+										<FormField
+											control={form.control}
+											name="address.houseNumber"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														{t("customers.form.houseNumber.label")}{" "}
+														{t("ui.form.required")}
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder={t(
+																"customers.form.houseNumber.placeholder",
+															)}
+															{...field}
+															value={String(field.value)}
+															onChange={(e) => {
+																field.onChange(e.target.value);
+															}}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
 									</div>
-								)}
+
+									<FormField
+										control={form.control}
+										name="address.addition"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Toevoeging</FormLabel>
+												<FormControl>
+													<Input placeholder="A, B, bis" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+
+									<div className="grid grid-cols-2 gap-4">
+										<FormField
+											control={form.control}
+											name="address.street"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														{t("customers.form.street.label")}
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder={t(
+																"customers.form.street.placeholder",
+															)}
+															{...field}
+															disabled={isLooking}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+
+										<FormField
+											control={form.control}
+											name="address.city"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>
+														{t("customers.form.city.label")}
+													</FormLabel>
+													<FormControl>
+														<Input
+															placeholder={t("customers.form.city.placeholder")}
+															{...field}
+															disabled={isLooking}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
+
+									{isLooking && (
+										<div className="text-sm text-muted-foreground">
+											{t("customers.form.address.autoFill.title")}...
+										</div>
+									)}
+								</div>
+
+								<FormField
+									control={form.control}
+									name="status"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>{t("ui.form.status")}</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Kies status" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{Object.entries(statusNL).map(([value, label]) => (
+														<SelectItem key={value} value={value}>
+															{label}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="notes"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>{t("ui.form.notes")}</FormLabel>
+											<FormControl>
+												<Textarea
+													placeholder="Extra informatie over de klus..."
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 							</div>
 
-							<FormField
-								control={form.control}
-								name="status"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{t("ui.form.status")}</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Kies status" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{Object.entries(statusNL).map(([value, label]) => (
-													<SelectItem key={value} value={value}>
-														{label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<FormField
-								control={form.control}
-								name="notes"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{t("ui.form.notes")}</FormLabel>
-										<FormControl>
-											<Textarea
-												placeholder="Extra informatie over de klus..."
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
-						<DialogFooter className="flex-shrink-0 pt-4 border-t">
-							<Button
-								type="button"
-								variant="outline"
-								onClick={() => {
-									onOpenChange(false);
-								}}
-								disabled={isPending}
-							>
-								{t("actions.cancel")}
-							</Button>
-							<Button type="submit" disabled={isPending}>
-								{isPending
-									? t("actions.saving")
-									: isEdit
-										? t("actions.update")
-										: t("actions.create")}
-							</Button>
-						</DialogFooter>
-					</form>
-				</Form>
-			</DialogContent>
-		</Dialog>
+							<DialogFooter className="flex-shrink-0 pt-4 border-t">
+								<Button
+									type="button"
+									variant="outline"
+									onClick={() => {
+										onOpenChange(false);
+									}}
+									disabled={isPending}
+								>
+									{t("actions.cancel")}
+								</Button>
+								<Button type="submit" disabled={isPending}>
+									{isPending
+										? t("actions.saving")
+										: isEdit
+											? t("actions.update")
+											: t("actions.create")}
+								</Button>
+							</DialogFooter>
+						</form>
+					</Form>
+				</DialogContent>
+			</Dialog>
+			<AlertDialog
+				open={conflictState !== null}
+				onOpenChange={(next) => {
+					if (!next) {
+						handleConflictCancel();
+					}
+				}}
+			>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>{t("jobs.conflict.title")}</AlertDialogTitle>
+						<AlertDialogDescription>
+							{conflictState?.message ?? t("jobs.conflict.body")}
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel onClick={handleConflictCancel}>
+							{t("jobs.conflict.cancel")}
+						</AlertDialogCancel>
+						<AlertDialogAction onClick={handleConflictConfirm}>
+							{t("jobs.conflict.confirm")}
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</>
 	);
 }

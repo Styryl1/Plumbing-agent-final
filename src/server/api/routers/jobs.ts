@@ -74,6 +74,137 @@ type AssigneeRow = {
 const normalizePrimaryId = (value: unknown): string | null =>
 	typeof value === "string" && value.length > 0 ? value : null;
 
+const ACTIVE_CONFLICT_STATUSES: JobStatusDB[] = ["scheduled"];
+
+interface SchedulingConflict {
+	readonly jobId: string;
+	readonly employeeId: string;
+	readonly employeeName: string | null;
+	readonly startsAt: string;
+	readonly endsAt: string;
+	readonly title: string;
+}
+
+interface ConflictCheckParams {
+	readonly db: SupabaseClient<Database>;
+	readonly orgId: string;
+	readonly jobId?: string | null;
+	readonly startISO?: string | null;
+	readonly endISO?: string | null;
+	readonly employees: readonly string[];
+	readonly allowConflict: boolean | undefined;
+	readonly role: string | null | undefined;
+}
+
+const detectSchedulingConflicts = async (
+	params: ConflictCheckParams,
+): Promise<SchedulingConflict[]> => {
+	const { db, orgId, jobId, startISO, endISO } = params;
+	const employeeIds = Array.from(new Set(params.employees.filter(Boolean)));
+	if (employeeIds.length === 0) {
+		return [];
+	}
+	if (!startISO || !endISO) {
+		return [];
+	}
+
+	const query = db
+		.from("job_assignees")
+		.select(
+			"job_id, employee_id, employees:employees!inner(id, name), jobs!inner(id, title, starts_at, ends_at, status)",
+		)
+		.eq("org_id", orgId)
+		.in("employee_id", employeeIds)
+		.in("jobs.status", ACTIVE_CONFLICT_STATUSES)
+		.not("jobs.starts_at", "is", null)
+		.not("jobs.ends_at", "is", null)
+		.lt("jobs.starts_at", endISO)
+		.gt("jobs.ends_at", startISO);
+
+	if (jobId) {
+		query.neq("job_id", jobId);
+	}
+
+	const response = await query.throwOnError();
+	const rows = response.data as Array<{
+		readonly job_id: string;
+		readonly employee_id: string;
+		readonly employees: { id: string; name: string | null } | null;
+		readonly jobs: {
+			readonly id: string;
+			readonly title: string | null;
+			readonly starts_at: string | null;
+			readonly ends_at: string | null;
+			readonly status: JobStatusDB | null;
+		};
+	}>;
+
+	const conflicts: SchedulingConflict[] = [];
+	for (const row of rows) {
+		const job = row.jobs;
+		const { starts_at: jobStart, ends_at: jobEnd } = job;
+		if (jobStart == null || jobEnd == null) {
+			continue;
+		}
+		conflicts.push({
+			jobId: job.id,
+			employeeId: row.employee_id,
+			employeeName: row.employees?.name ?? null,
+			startsAt: jobStart,
+			endsAt: jobEnd,
+			title: job.title ?? "",
+		});
+	}
+
+	return conflicts;
+};
+
+export const formatConflictMessage = (
+	conflicts: SchedulingConflict[],
+): string => {
+	const primary = conflicts[0];
+	if (!primary) {
+		return "Klus overlapt met een andere klus.";
+	}
+	const employeeNameCandidate = (primary.employeeName ?? "").trim();
+	const employeeLabel =
+		employeeNameCandidate.length > 0 ? employeeNameCandidate : "deze monteur";
+	const titleCandidate = primary.title.trim();
+	const jobLabel =
+		titleCandidate.length > 0 ? titleCandidate : "een andere klus";
+	return `Klus overlapt met ${jobLabel} voor ${employeeLabel}.`;
+};
+
+const ensureNoConflicts = async (
+	params: ConflictCheckParams,
+): Promise<void> => {
+	const { allowConflict, role } = params;
+	const conflicts = await detectSchedulingConflicts(params);
+	if (conflicts.length === 0) {
+		return;
+	}
+	const canOverride = Boolean(allowConflict && !isStaffRole(role));
+	if (canOverride) {
+		return;
+	}
+	throw new TRPCError({
+		code: "CONFLICT",
+		message: formatConflictMessage(conflicts),
+	});
+};
+
+const jobAddressSchema = z.object({
+	postalCode: z.string().regex(NL_POSTCODE, zMsg(E.postalInvalid)),
+	houseNumber: z
+		.union([z.string(), z.number()])
+		.refine((v) => String(v).trim() !== "", zMsg(E.houseNumberRequired)),
+	addition: z.string().optional(),
+	street: z.string().optional(),
+	city: z.string().optional(),
+});
+
+type JobAddressInput = z.infer<typeof jobAddressSchema>;
+
 const normalizeSecondaryIds = (
 	primaryId: string | null,
 	secondaryIds: readonly string[],
@@ -85,10 +216,129 @@ const normalizeSecondaryIds = (
 	return Array.from(unique);
 };
 
+const collectEmployeeIds = (
+	primaryId: string | null,
+	secondaryIds: readonly string[],
+): string[] => {
+	const ids: string[] = [];
+	if (primaryId) {
+		ids.push(primaryId);
+	}
+	for (const employeeId of secondaryIds) {
+		ids.push(employeeId);
+	}
+	return ids;
+};
+
 const normalizeAssignmentActor = (
 	userId: string | null | undefined,
 ): string | null =>
 	typeof userId === "string" && userId.length > 0 ? userId : null;
+
+const normalizeRole = (role: string | null | undefined): string | null => {
+	if (!role) return null;
+	return role.startsWith("org:") ? role.slice(4) : role;
+};
+
+const isStaffRole = (role: string | null | undefined): boolean =>
+	normalizeRole(role) === "staff";
+
+type EmployeeLookupRow = {
+	id: string;
+};
+
+type JobAssignmentRow = {
+	employee_id: string;
+	is_primary: boolean;
+};
+
+const requireActiveEmployeeId = async (
+	db: SupabaseClient<Database>,
+	orgId: string,
+	userId: string,
+): Promise<string> => {
+	const { data, error } = await db
+		.from("employees")
+		.select("id")
+		.eq("org_id", orgId)
+		.eq("user_id", userId)
+		.eq("active", true)
+		.maybeSingle();
+
+	if (error) {
+		throw new TRPCError({
+			code: "INTERNAL_SERVER_ERROR",
+			message: "Kon medewerkersgegevens niet ophalen",
+		});
+	}
+
+	const row = data as EmployeeLookupRow | null;
+	if (!row) {
+		throw new TRPCError({
+			code: "FORBIDDEN",
+			message: "Geen actief medewerkerprofiel gevonden",
+		});
+	}
+
+	return row.id;
+};
+
+const ensureStaffCanMutateJob = async (
+	db: SupabaseClient<Database>,
+	orgId: string,
+	jobId: string,
+	auth: {
+		readonly role: string | null;
+		readonly userId: string;
+	},
+): Promise<string | null> => {
+	if (!isStaffRole(auth.role)) {
+		return null;
+	}
+
+	const employeeId = await requireActiveEmployeeId(db, orgId, auth.userId);
+	const { data, error } = await db
+		.from("job_assignees")
+		.select("employee_id, is_primary")
+		.eq("org_id", orgId)
+		.eq("job_id", jobId)
+		.eq("employee_id", employeeId)
+		.maybeSingle();
+
+	if (error) {
+		throw new TRPCError({
+			code: "INTERNAL_SERVER_ERROR",
+			message: "Kon klus-toewijzing niet controleren",
+		});
+	}
+
+	const assignment = data as JobAssignmentRow | null;
+
+	if (!assignment?.is_primary) {
+		throw new TRPCError({
+			code: "FORBIDDEN",
+			message: "Je kunt alleen eigen klussen aanpassen",
+		});
+	}
+
+	return employeeId;
+};
+
+const formatJobAddress = (address: JobAddressInput): string => {
+	const rawStreet = address.street?.trim() ?? "";
+	const houseNumber = String(address.houseNumber).trim();
+	const addition = address.addition?.trim() ?? "";
+	const streetTokens = [rawStreet, `${houseNumber}${addition}`.trim()].filter(
+		(part) => part.length > 0,
+	);
+	const streetLine = streetTokens.join(" ").trim();
+	const cityTokens = [
+		address.postalCode.trim(),
+		address.city?.trim() ?? "",
+	].filter((part) => part.length > 0);
+	const cityLine = cityTokens.join(" ").trim();
+	return [streetLine, cityLine].filter((part) => part.length > 0).join(", ");
+};
 
 const buildSecondaryMap = (
 	rows: readonly AssigneeRow[],
@@ -322,22 +572,12 @@ export const jobsRouter = createTRPCRouter({
 				description: z.string().optional(),
 				start: isoDateSchema,
 				end: isoDateSchema,
-				address: z.object({
-					postalCode: z.string().regex(NL_POSTCODE, zMsg(E.postalInvalid)),
-					houseNumber: z
-						.union([z.string(), z.number()])
-						.refine(
-							(v) => String(v).trim() !== "",
-							zMsg(E.houseNumberRequired),
-						),
-					addition: z.string().optional(),
-					street: z.string().optional(),
-					city: z.string().optional(),
-				}),
+				address: jobAddressSchema,
 				customerId: uuidSchema,
 				employeeId: uuidSchema.optional(),
 				secondaryEmployeeIds: z.array(uuidSchema).default([]),
 				status: jobStatusSchema.default("planned"),
+				allowConflict: z.boolean().optional(),
 				// notes removed - using description field instead
 			}),
 		)
@@ -356,6 +596,7 @@ export const jobsRouter = createTRPCRouter({
 				employeeId,
 				secondaryEmployeeIds,
 				status,
+				allowConflict,
 				// notes removed - using description field instead
 			} = input;
 
@@ -367,10 +608,19 @@ export const jobsRouter = createTRPCRouter({
 
 			// Address is now required via schema validation
 			// Convert structured address to string for database storage
-			const addressString =
-				`${address.street ?? ""} ${address.houseNumber}${address.addition ?? ""}, ${address.postalCode} ${address.city ?? ""}`.trim();
+			const addressString = formatJobAddress(address);
 
 			// Customer ID is now required - no more temporary customers
+
+			await ensureNoConflicts({
+				db,
+				orgId,
+				startISO: start,
+				endISO: end,
+				employees: collectEmployeeIds(primaryAssigneeId, normalizedSecondary),
+				allowConflict,
+				role: auth.role,
+			});
 
 			const jobData: TablesInsert<"jobs"> = {
 				org_id: orgId,
@@ -449,11 +699,13 @@ export const jobsRouter = createTRPCRouter({
 					description: z.string().optional(),
 					start: isoDateSchema.optional(),
 					end: isoDateSchema.optional(),
-					address: z.string().optional(),
+					address: z.union([jobAddressSchema, z.string()]).optional(),
 					employeeId: uuidSchema.optional(),
 					status: jobStatusSchema.optional(),
+					customerId: uuidSchema.optional(),
 					// notes removed - using description field instead
 				}),
+				allowConflict: z.boolean().optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
@@ -461,7 +713,7 @@ export const jobsRouter = createTRPCRouter({
 			const { auth } = ctx;
 			ensureSchedulerRole(auth.role);
 			const { orgId, userId } = auth;
-			const { id, patch } = input;
+			const { id, patch, allowConflict } = input;
 
 			const currentJobResult = await db
 				.from("jobs")
@@ -488,6 +740,52 @@ export const jobsRouter = createTRPCRouter({
 			const currentJobTyped = currentJobData as Tables<"jobs">;
 			const existingSecondaries = await fetchSecondaryForJob(db, id);
 			const nextPrimary = normalizePrimaryId(patch.employeeId);
+			const staffEmployeeId = await ensureStaffCanMutateJob(
+				db,
+				orgId,
+				id,
+				auth,
+			);
+
+			if (
+				staffEmployeeId &&
+				patch.employeeId !== undefined &&
+				nextPrimary !== staffEmployeeId
+			) {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "Je kunt de hoofdmonteur niet wijzigen",
+				});
+			}
+
+			const currentPrimaryId = normalizePrimaryId(currentJobTyped.employee_id);
+			const targetPrimary =
+				patch.employeeId !== undefined ? nextPrimary : currentPrimaryId;
+			const targetSecondaries = normalizeSecondaryIds(
+				targetPrimary,
+				existingSecondaries,
+			);
+			const targetStartsAt = patch.start ?? currentJobTyped.starts_at;
+			const targetEndsAt = patch.end ?? currentJobTyped.ends_at;
+
+			const requiresConflictCheck = Boolean(
+				patch.start !== undefined ||
+					patch.end !== undefined ||
+					patch.employeeId !== undefined,
+			);
+
+			if (requiresConflictCheck && targetStartsAt && targetEndsAt) {
+				await ensureNoConflicts({
+					db,
+					orgId,
+					jobId: id,
+					startISO: targetStartsAt,
+					endISO: targetEndsAt,
+					employees: collectEmployeeIds(targetPrimary, targetSecondaries),
+					allowConflict,
+					role: auth.role,
+				});
+			}
 
 			const updateData: TablesUpdate<"jobs"> = {};
 			if (patch.title !== undefined) updateData.title = patch.title;
@@ -495,10 +793,17 @@ export const jobsRouter = createTRPCRouter({
 				updateData.description = patch.description;
 			if (patch.start !== undefined) updateData.starts_at = patch.start;
 			if (patch.end !== undefined) updateData.ends_at = patch.end;
-			if (patch.address !== undefined) updateData.address = patch.address;
+			if (patch.address !== undefined) {
+				updateData.address =
+					typeof patch.address === "string"
+						? patch.address
+						: formatJobAddress(patch.address);
+			}
 			if (patch.employeeId !== undefined) updateData.employee_id = nextPrimary;
 			if (patch.status !== undefined)
 				updateData.status = toDbStatus(patch.status);
+			if (patch.customerId !== undefined)
+				updateData.customer_id = patch.customerId;
 
 			const updateResult = await db
 				.from("jobs")
@@ -542,6 +847,7 @@ export const jobsRouter = createTRPCRouter({
 					secondary_employee_ids: nextSecondaryAssignees,
 					address: updatedJob.address,
 					description: updatedJob.description ?? "",
+					customer_id: updatedJob.customer_id,
 				},
 				metadata: { updatedFields: Object.keys(patch) },
 			};
@@ -557,6 +863,7 @@ export const jobsRouter = createTRPCRouter({
 					secondary_employee_ids: existingSecondaries,
 					address: currentJobTyped.address,
 					description: currentJobTyped.description ?? "",
+					customer_id: currentJobTyped.customer_id,
 				},
 			});
 
@@ -584,6 +891,7 @@ export const jobsRouter = createTRPCRouter({
 				startLocal: z.string(), // Local Amsterdam ISO
 				endLocal: z.string(), // Local Amsterdam ISO
 				employeeId: uuidSchema.optional(),
+				allowConflict: z.boolean().optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }): Promise<JobDTO> => {
@@ -591,7 +899,7 @@ export const jobsRouter = createTRPCRouter({
 			const { auth } = ctx;
 			ensureSchedulerRole(auth.role);
 			const { orgId, userId } = auth;
-			const { id, startLocal, endLocal, employeeId } = input;
+			const { id, startLocal, endLocal, employeeId, allowConflict } = input;
 
 			// Business hours validation
 			if (!isWithinBusinessHours(startLocal, endLocal)) {
@@ -632,6 +940,12 @@ export const jobsRouter = createTRPCRouter({
 
 			const currentJobTyped = currentJobData as Tables<"jobs">;
 			const existingSecondaries = await fetchSecondaryForJob(db, id);
+			const staffEmployeeId = await ensureStaffCanMutateJob(
+				db,
+				orgId,
+				id,
+				auth,
+			);
 			const nextPrimary =
 				employeeId === undefined
 					? normalizePrimaryId(currentJobTyped.employee_id)
@@ -640,6 +954,17 @@ export const jobsRouter = createTRPCRouter({
 				nextPrimary,
 				existingSecondaries,
 			);
+
+			if (
+				staffEmployeeId &&
+				employeeId !== undefined &&
+				nextPrimary !== staffEmployeeId
+			) {
+				throw new TRPCError({
+					code: "FORBIDDEN",
+					message: "Je kunt de hoofdmonteur niet wijzigen",
+				});
+			}
 
 			const updatePayload: TablesUpdate<"jobs"> = {
 				starts_at: startUTC,
@@ -650,6 +975,17 @@ export const jobsRouter = createTRPCRouter({
 			if (employeeId !== undefined) {
 				updatePayload.employee_id = nextPrimary;
 			}
+
+			await ensureNoConflicts({
+				db,
+				orgId,
+				jobId: id,
+				startISO: startUTC,
+				endISO: endUTC,
+				employees: collectEmployeeIds(nextPrimary, normalizedSecondaries),
+				allowConflict,
+				role: auth.role,
+			});
 
 			const { data: moved, error: moveErr } = await db
 				.from("jobs")
@@ -740,6 +1076,7 @@ export const jobsRouter = createTRPCRouter({
 			ensureSchedulerRole(auth.role);
 			const { orgId } = auth;
 			const { id } = input;
+			await ensureStaffCanMutateJob(db, orgId, id, auth);
 
 			const { error, count } = await db
 				.from("jobs")
@@ -875,6 +1212,7 @@ export const jobsRouter = createTRPCRouter({
 				jobId: uuidSchema,
 				primaryEmployeeId: uuidSchema.optional(),
 				secondaryEmployeeIds: z.array(uuidSchema).optional(),
+				allowConflict: z.boolean().optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -882,8 +1220,7 @@ export const jobsRouter = createTRPCRouter({
 			const { auth } = ctx;
 			ensureSchedulerRole(auth.role);
 			const { orgId, userId } = auth;
-			// TODO: derive employeeId from userId if needed; for now, restrict with role only.
-			const { jobId } = input;
+			const { jobId, allowConflict } = input;
 
 			const currentJobResult = await db
 				.from("jobs")
@@ -911,6 +1248,12 @@ export const jobsRouter = createTRPCRouter({
 
 			const currentJobTyped = currentJobData as Tables<"jobs">;
 			const existingSecondaries = await fetchSecondaryForJob(db, jobId);
+			const staffEmployeeId = await ensureStaffCanMutateJob(
+				db,
+				orgId,
+				jobId,
+				auth,
+			);
 
 			const nextPrimary =
 				input.primaryEmployeeId === undefined
@@ -921,6 +1264,35 @@ export const jobsRouter = createTRPCRouter({
 				nextPrimary,
 				input.secondaryEmployeeIds ?? existingSecondaries,
 			);
+
+			if (staffEmployeeId) {
+				if (nextPrimary !== staffEmployeeId) {
+					throw new TRPCError({
+						code: "FORBIDDEN",
+						message: "Alleen planners mogen toewijzingen wijzigen",
+					});
+				}
+
+				if (desiredSecondaries.length > 0) {
+					throw new TRPCError({
+						code: "FORBIDDEN",
+						message: "Alleen planners mogen extra monteurs toevoegen",
+					});
+				}
+			}
+
+			if (currentJobTyped.starts_at && currentJobTyped.ends_at) {
+				await ensureNoConflicts({
+					db,
+					orgId,
+					jobId,
+					startISO: currentJobTyped.starts_at,
+					endISO: currentJobTyped.ends_at,
+					employees: collectEmployeeIds(nextPrimary, desiredSecondaries),
+					allowConflict,
+					role: auth.role,
+				});
+			}
 
 			const { error } = await db
 				.from("jobs")
@@ -977,6 +1349,7 @@ export const jobsRouter = createTRPCRouter({
 				jobId: uuidSchema,
 				starts_at: z.string(),
 				ends_at: z.string(),
+				allowConflict: z.boolean().optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -984,8 +1357,7 @@ export const jobsRouter = createTRPCRouter({
 			const { auth } = ctx;
 			ensureSchedulerRole(auth.role);
 			const { orgId, userId } = auth;
-			// TODO: derive employeeId from userId if needed; for now, restrict with role only.
-			const { jobId, starts_at, ends_at } = input;
+			const { jobId, starts_at, ends_at, allowConflict } = input;
 
 			// Get current job for permission and audit
 			const currentJobResult = await db
@@ -1012,10 +1384,19 @@ export const jobsRouter = createTRPCRouter({
 
 			const currentJobTyped = currentJobData as Tables<"jobs">;
 			const secondaryAssignees = await fetchSecondaryForJob(db, jobId);
+			await ensureStaffCanMutateJob(db, orgId, jobId, auth);
 
-			// Permission check for staff
-			// TODO: Implement proper staff permission check once employee lookup is implemented
-			// Currently allowing all org members to reschedule jobs
+			const targetPrimary = normalizePrimaryId(currentJobTyped.employee_id);
+			await ensureNoConflicts({
+				db,
+				orgId,
+				jobId,
+				startISO: starts_at,
+				endISO: ends_at,
+				employees: collectEmployeeIds(targetPrimary, secondaryAssignees),
+				allowConflict,
+				role: auth.role,
+			});
 
 			// Business hours validation removed for now - can be re-added with proper role detection
 

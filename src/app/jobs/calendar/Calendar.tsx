@@ -66,6 +66,16 @@ export default function JobsCalendar({
 	const utils = api.useUtils();
 	const reschedule = api.jobs.reschedule.useMutation();
 
+	const parseEventId = (
+		id: string | number,
+	): { jobId: string; employeeId?: string } => {
+		const idStr = String(id);
+		const parts = idStr.split("__");
+		const jobId = parts[0]!;
+		const employeeId = parts[1];
+		return employeeId ? { jobId, employeeId } : { jobId };
+	};
+
 	// Fetch jobs with visible range - this IS the query architecture fix
 	const { data: jobs = [], isLoading } = api.jobs.list.useQuery({
 		from: visibleRange.start,
@@ -95,7 +105,8 @@ export default function JobsCalendar({
 		callbacks: {
 			// Handle event click
 			onEventClick: (event) => {
-				onEditJob?.(String(event.id));
+				const { jobId } = parseEventId(event.id);
+				onEditJob?.(jobId);
 			},
 
 			// Handle double-click on empty slot
@@ -149,17 +160,6 @@ export default function JobsCalendar({
 							});
 				const nextStartISO = toISO(startZdt);
 				const nextEndISO = toISO(endZdt);
-
-				// Safe parsing of event ID for multi-assignee patterns
-				const parseEventId = (
-					id: string | number,
-				): { jobId: string; employeeId?: string } => {
-					const idStr = String(id);
-					const parts = idStr.split("__");
-					const jobId = parts[0]!;
-					const employeeId = parts[1];
-					return employeeId ? { jobId, employeeId } : { jobId };
-				};
 
 				const { jobId } = parseEventId(event.id);
 

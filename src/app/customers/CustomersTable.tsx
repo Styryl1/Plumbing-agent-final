@@ -170,8 +170,8 @@ export default function CustomersTable({
 			// Only log actual failures, not "customer not found" after successful operation
 			if (error.message !== "Klant niet gevonden of geen permissie") {
 				console.error("Failed to unarchive customer:", error);
+				toast.error(t("customers.unarchive.error"));
 			}
-			// TODO: Show error toast notification for real errors only
 		},
 	});
 

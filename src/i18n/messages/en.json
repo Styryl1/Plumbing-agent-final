@@ -23,6 +23,8 @@
     "duration": "{minutes} minutes",
     "primaryEmployee": "Primary employee",
     "secondaryEmployees": "Secondary employees",
+    "secondaryEmployeesHint": "Select additional crew members to keep them in sync with the job card.",
+    "secondaryEmployeesEmpty": "No additional employees available",
     "assignments": "Assignments",
     "calendar": "Schedule",
     "requiredSymbol": "*",
@@ -1074,6 +1076,12 @@
     "create": {
       "failed": "Failed to create job",
       "success": "Job created successfully"
+    },
+    "conflict": {
+      "title": "Scheduling conflict",
+      "body": "This time overlaps with another job for the selected technician.",
+      "confirm": "Schedule anyway",
+      "cancel": "Back"
     },
     "description": "Manage all plumbing jobs and scheduling",
     "empty": {

@@ -18,19 +18,35 @@ export const getEmployeeColor = (employeeId?: string | null): string =>
 	employeeId ? `emp-${employeeId}` : "emp-default";
 
 export const jobsToSxEvents = (jobs: JobDTO[]): SxEvent[] =>
-	jobs.map((job) => {
+	jobs.flatMap((job) => {
 		const start = toZDT(job.start);
 		const end = toZDT(job.end);
-		const calendarId = job.employeeId ?? "default";
 		const isArchivedCustomer = job.customer?.isArchived ?? false;
-		return {
-			id: job.id,
-			title: isArchivedCustomer ? `${job.title} 📁` : job.title,
-			start,
-			end,
-			calendarId,
-			_employeeId: job.employeeId ?? null,
-			_colorClass: getEmployeeColor(job.employeeId),
-			_isArchivedCustomer: isArchivedCustomer,
-		};
+
+		const assigneeLanes =
+			job.secondaryEmployeeIds.length > 0
+				? [
+						...(job.employeeId ? [job.employeeId] : []),
+						...job.secondaryEmployeeIds,
+					]
+				: job.employeeId
+					? [job.employeeId]
+					: [null];
+
+		const uniqueLanes = Array.from(new Set(assigneeLanes));
+
+		return uniqueLanes.map((lane) => {
+			const calendarId = lane ?? "default";
+			const eventId = lane ? `${job.id}__${lane}` : job.id;
+			return {
+				id: eventId,
+				title: isArchivedCustomer ? `${job.title} 📁` : job.title,
+				start,
+				end,
+				calendarId,
+				_employeeId: lane,
+				_colorClass: getEmployeeColor(lane),
+				_isArchivedCustomer: isArchivedCustomer,
+			};
+		});
 	});

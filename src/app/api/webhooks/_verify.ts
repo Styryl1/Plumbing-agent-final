@@ -12,7 +12,15 @@ import { Webhook } from "svix"; // Clerk webhook verification
 import { Temporal } from "temporal-polyfill";
 import { env } from "~/lib/env";
 
-type ParsedAddress = ipaddr.IPv4 | ipaddr.IPv6;
+type ParsedAddress = ReturnType<typeof ipaddr.parse>;
+
+const isIPv4 = (
+	address: ParsedAddress | ipaddr.IPv4 | ipaddr.IPv6,
+): address is ipaddr.IPv4 => address.kind() === "ipv4";
+
+const isIPv6 = (
+	address: ParsedAddress | ipaddr.IPv4 | ipaddr.IPv6,
+): address is ipaddr.IPv6 => address.kind() === "ipv6";
 
 function isAllDigits(value: string): boolean {
 	if (value.length === 0) {
@@ -78,18 +86,24 @@ function isAddressInRanges(
 	return ranges.some((range) => {
 		try {
 			if (range.includes("/")) {
-				const cidr = ipaddr.parseCIDR(range);
-				if (address.kind() !== cidr[0].kind()) {
-					return false;
+				const [network, prefix] = ipaddr.parseCIDR(range);
+				if (isIPv4(address) && isIPv4(network)) {
+					return address.match(network, prefix);
 				}
-				return address.match(cidr);
+				if (isIPv6(address) && isIPv6(network)) {
+					return address.match(network, prefix);
+				}
+				return false;
 			}
 
 			const target = ipaddr.parse(range);
-			if (address.kind() !== target.kind()) {
-				return false;
+			if (isIPv4(address) && isIPv4(target)) {
+				return address.toNormalizedString() === target.toNormalizedString();
 			}
-			return address.toNormalizedString() === target.toNormalizedString();
+			if (isIPv6(address) && isIPv6(target)) {
+				return address.toNormalizedString() === target.toNormalizedString();
+			}
+			return false;
 		} catch {
 			return false;
 		}

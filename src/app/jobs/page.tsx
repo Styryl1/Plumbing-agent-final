@@ -36,6 +36,9 @@ export default function JobsPage(): JSX.Element {
 	const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
 	const [statusFilter, setStatusFilter] = useState<JobStatusUI | "all">("all");
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+	const [createDialogPrefillStart, setCreateDialogPrefillStart] = useState<
+		string | null
+	>(null);
 	const [editingJob, setEditingJob] = useState<JobDTO | undefined>();
 
 	// Job drawer state
@@ -153,6 +156,7 @@ export default function JobsPage(): JSX.Element {
 
 						<Button
 							onClick={() => {
+								setCreateDialogPrefillStart(null);
 								setIsCreateDialogOpen(true);
 							}}
 						>
@@ -270,6 +274,7 @@ export default function JobsPage(): JSX.Element {
 							</p>
 							<Button
 								onClick={() => {
+									setCreateDialogPrefillStart(null);
 									setIsCreateDialogOpen(true);
 								}}
 							>
@@ -306,8 +311,8 @@ export default function JobsPage(): JSX.Element {
 									setSelectedJobId(jobId);
 									setIsJobDrawerOpen(true);
 								}}
-								onCreateJob={() => {
-									// TODO: Open dialog with prefilled start time
+								onCreateJob={(startISO) => {
+									setCreateDialogPrefillStart(startISO);
 									setIsCreateDialogOpen(true);
 								}}
 							/>
@@ -319,7 +324,13 @@ export default function JobsPage(): JSX.Element {
 			{/* Create/Edit Dialog */}
 			<JobEditorDialog
 				open={isCreateDialogOpen}
-				onOpenChange={setIsCreateDialogOpen}
+				onOpenChange={(open) => {
+					setIsCreateDialogOpen(open);
+					if (!open) {
+						setCreateDialogPrefillStart(null);
+					}
+				}}
+				initialStartISO={createDialogPrefillStart}
 			/>
 
 			<JobEditorDialog
