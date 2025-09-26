@@ -29,10 +29,44 @@
 				"title": "Copilot-werkruimte"
 			}
 		},
+		"proposals": {
+			"title": "AI-voorstellen",
+			"generate": "Voorstel genereren",
+			"error": {
+				"generate": "Voorstel genereren mislukt"
+			},
+			"apply": {
+				"label": "Toepassen",
+				"success": "Voorstel toegepast",
+				"error": "Voorstel toepassen mislukt"
+			},
+			"dismiss": {
+				"label": "Verwerpen",
+				"error": "Voorstel verwerpen mislukt"
+			},
+			"empty": {
+				"noIntake": "Selecteer een intake om voorstellen te bekijken",
+				"noProposals": "Nog geen voorstellen. Genereer er een om te starten."
+			},
+			"estimate": "Schatting: {{min}} – {{max}}",
+			"confidence": "Vertrouwen",
+			"slots": "Voorgestelde slots",
+			"needs_review": "Controle nodig",
+			"pick_slot": "Kies een tijdslot",
+			"cancel": "Annuleren",
+			"expires": "Verloopt op {{when}}"
+		},
 		"suggestions": {
 			"created": "Gegenereerd om {{value}}",
 			"estimatedDuration": "Geschatte tijd: {{value}} minuten",
 			"urgency": "Urgentie: {{value}}",
+			"actionHeading": "Voorgestelde actie",
+			"notesHeading": "Volgende stappen",
+			"channels": {
+				"whatsapp": "WhatsApp",
+				"voice": "Telefoongesprek",
+				"job_card": "Werkbon"
+			},
 			"actions": {
 				"apply": "Voorstel toepassen",
 				"review": "Goed controleren",

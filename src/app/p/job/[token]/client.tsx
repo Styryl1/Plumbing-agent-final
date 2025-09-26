@@ -7,6 +7,7 @@ import type { JSX } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type SignaturePad from "signature_pad";
 import { toast } from "sonner";
+import { JobCardAiHelper } from "~/components/job-card/ai-helper";
 import {
 	type MaterialInput,
 	type MaterialLineVM,
@@ -28,6 +29,35 @@ import type { Json } from "~/types/supabase";
 const toJson = <T,>(value: T): Json => value as unknown as Json;
 const fromJson = <T,>(value: Json): T => value as unknown as T;
 
+const conflictFieldKeyMap = {
+	notes: "jobCard.client.conflict.fields.notes",
+	materials: "jobCard.client.conflict.fields.materials",
+	timer: "jobCard.client.conflict.fields.timer",
+	status: "jobCard.client.conflict.fields.status",
+	signature: "jobCard.client.conflict.fields.signature",
+	scheduling: "jobCard.client.conflict.fields.scheduling",
+	unknown: "jobCard.client.conflict.fields.unknown",
+} as const;
+
+interface ConflictEntry {
+	readonly field: string;
+	readonly resolvedBy: "plumber" | "organizer" | "last-write";
+	readonly resolvedAtISO: string;
+	readonly serverValue: unknown;
+	readonly clientValue: unknown;
+}
+
+interface ConflictState {
+	readonly flagged: boolean;
+	readonly entries: ConflictEntry[];
+}
+
+interface SchedulingBaseline {
+	readonly startsAtISO: string | null;
+	readonly endsAtISO: string | null;
+	readonly employeeId: string | null;
+}
+
 interface JobCardView {
 	readonly jobId: string;
 	readonly token: string;
@@ -39,6 +69,7 @@ interface JobCardView {
 	readonly startsAtISO: string | null;
 	readonly endsAtISO: string | null;
 	readonly address: string | null;
+	readonly assigneeId: string | null;
 	readonly customer: {
 		readonly name: string | null;
 		readonly phone: string | null;
@@ -52,6 +83,8 @@ interface JobCardView {
 	readonly sync: {
 		readonly lastSyncedAtISO: string | null;
 		readonly pendingOperations: number;
+		readonly versionISO: string | null;
+		readonly conflict: ConflictState | null;
 	};
 	readonly notes: string;
 	readonly signatureDataUrl: string | null;
@@ -59,28 +92,33 @@ interface JobCardView {
 
 type TimerAction = "start" | "pause" | "complete";
 
-interface TimerPayload {
+interface SyncMetadataPayload {
+	readonly baseline: SchedulingBaseline;
+	readonly version?: string;
+}
+
+interface TimerPayload extends SyncMetadataPayload {
 	readonly jobId: string;
 	readonly action: TimerAction;
 }
 
-interface MaterialPayload {
+interface MaterialPayload extends SyncMetadataPayload {
 	readonly jobId: string;
 	readonly line: MaterialInput;
 }
 
-interface StatusPayload {
+interface StatusPayload extends SyncMetadataPayload {
 	readonly jobId: string;
 	readonly status: JobCardStatus;
 	readonly notifyCustomer: boolean;
 }
 
-interface NotesPayload {
+interface NotesPayload extends SyncMetadataPayload {
 	readonly jobId: string;
 	readonly notes: string;
 }
 
-interface SignaturePayload {
+interface SignaturePayload extends SyncMetadataPayload {
 	readonly jobId: string;
 	readonly signatureDataUrl: string | null;
 }
@@ -100,6 +138,14 @@ function computeTimeRange(
 	} catch {
 		return fallback;
 	}
+}
+
+function buildBaseline(view: JobCardView): SchedulingBaseline {
+	return {
+		startsAtISO: view.startsAtISO,
+		endsAtISO: view.endsAtISO,
+		employeeId: view.assigneeId,
+	};
 }
 
 function applyTimerOptimistic(
@@ -454,6 +500,8 @@ function JobCardInner({
 	const persistNotes = useCallback(
 		async (value: string) => {
 			const trimmed = value.trimEnd();
+			const baseline = buildBaseline(job);
+			const version = job.sync.versionISO ?? undefined;
 			setNotesSaving(true);
 			setNotesQueued(false);
 			setJob((prev) => {
@@ -461,12 +509,19 @@ function JobCardInner({
 				return applyNotesOptimistic(prev, trimmed);
 			});
 
+			const payload: NotesPayload = {
+				jobId: job.jobId,
+				notes: trimmed,
+				baseline,
+				...(version ? { version } : {}),
+			};
+
 			if (isOffline) {
 				setNotesQueued(true);
 				enqueue({
 					id: `notes:${job.jobId}`,
 					kind: "job.notes.update",
-					payload: toJson<NotesPayload>({ jobId: job.jobId, notes: trimmed }),
+					payload: toJson<NotesPayload>(payload),
 				});
 				setNotesSaving(false);
 				toast.info(t("jobCard.client.toast.notesQueued"));
@@ -474,7 +529,7 @@ function JobCardInner({
 			}
 
 			try {
-				await notesMutation.mutateAsync({ jobId: job.jobId, notes: trimmed });
+				await notesMutation.mutateAsync(payload);
 				setNotesSaving(false);
 				toast.success(t("jobCard.client.toast.notesSuccess"));
 			} catch (error) {
@@ -486,7 +541,7 @@ function JobCardInner({
 				toast.error(t("jobCard.client.toast.notesError"));
 			}
 		},
-		[enqueue, isOffline, job.jobId, notesMutation, t],
+		[enqueue, isOffline, job, notesMutation, t],
 	);
 
 	const handleNotesChange = useCallback(
@@ -515,6 +570,14 @@ function JobCardInner({
 		async (dataUrl: string | null, { viaClear = false } = {}) => {
 			setSignatureSaving(true);
 			setSignatureQueued(false);
+			const baseline = buildBaseline(job);
+			const version = job.sync.versionISO ?? undefined;
+			const payload: SignaturePayload = {
+				jobId: job.jobId,
+				signatureDataUrl: dataUrl,
+				baseline,
+				...(version ? { version } : {}),
+			};
 			setJob((prev) => {
 				previousRef.current = prev;
 				return applySignatureOptimistic(prev, dataUrl);
@@ -525,10 +588,7 @@ function JobCardInner({
 				enqueue({
 					id: `signature:${job.jobId}`,
 					kind: "job.signature.save",
-					payload: toJson<SignaturePayload>({
-						jobId: job.jobId,
-						signatureDataUrl: dataUrl,
-					}),
+					payload: toJson<SignaturePayload>(payload),
 				});
 				setSignatureSaving(false);
 				setSignatureDirty(false);
@@ -541,10 +601,7 @@ function JobCardInner({
 			}
 
 			try {
-				await signatureMutation.mutateAsync({
-					jobId: job.jobId,
-					signatureDataUrl: dataUrl,
-				});
+				await signatureMutation.mutateAsync(payload);
 				setSignatureSaving(false);
 				setSignatureDirty(false);
 				toast.success(
@@ -574,7 +631,7 @@ function JobCardInner({
 				toast.error(t("jobCard.client.toast.signatureError"));
 			}
 		},
-		[enqueue, isOffline, job.jobId, signatureMutation, t],
+		[enqueue, isOffline, job, signatureMutation, t],
 	);
 
 	const handleSignatureSubmit = useCallback(async () => {
@@ -682,7 +739,14 @@ function JobCardInner({
 
 	const handleTimerAction = useCallback(
 		async (action: TimerAction) => {
-			const payload: TimerPayload = { jobId: job.jobId, action };
+			const baseline = buildBaseline(job);
+			const version = job.sync.versionISO ?? undefined;
+			const payload: TimerPayload = {
+				jobId: job.jobId,
+				action,
+				baseline,
+				...(version ? { version } : {}),
+			};
 			setJob((prev) => {
 				previousRef.current = prev;
 				return applyTimerOptimistic(prev, action);
@@ -710,17 +774,24 @@ function JobCardInner({
 				toast.error(t("jobCard.client.toast.timerError"));
 			}
 		},
-		[enqueue, isOffline, job.jobId, t, timerMutation],
+		[enqueue, isOffline, job, t, timerMutation],
 	);
 
 	const handleAddMaterial = useCallback(
 		async (line: MaterialInput) => {
+			const baseline = buildBaseline(job);
+			const version = job.sync.versionISO ?? undefined;
 			setJob((prev) => {
 				previousRef.current = prev;
 				return applyMaterialOptimistic(prev, line);
 			});
 
-			const payload: MaterialPayload = { jobId: job.jobId, line };
+			const payload: MaterialPayload = {
+				jobId: job.jobId,
+				line,
+				baseline,
+				...(version ? { version } : {}),
+			};
 
 			if (isOffline) {
 				const stamp = String(Temporal.Now.instant().epochMilliseconds);
@@ -745,7 +816,7 @@ function JobCardInner({
 				throw error;
 			}
 		},
-		[enqueue, isOffline, job.jobId, materialMutation, t],
+		[enqueue, isOffline, job, materialMutation, t],
 	);
 
 	const handleStatusUpdate = useCallback(
@@ -760,10 +831,14 @@ function JobCardInner({
 				return applyStatusOptimistic(prev, nextStatus);
 			});
 
+			const baseline = buildBaseline(job);
+			const version = job.sync.versionISO ?? undefined;
 			const payload: StatusPayload = {
 				jobId: job.jobId,
 				status: nextStatus,
 				notifyCustomer: notify,
+				baseline,
+				...(version ? { version } : {}),
 			};
 
 			if (isOffline) {
@@ -788,15 +863,52 @@ function JobCardInner({
 				toast.error(t("jobCard.client.toast.statusError"));
 			}
 		},
-		[enqueue, isOffline, job.jobId, job.timer.locked, statusMutation, t],
+		[enqueue, isOffline, job, statusMutation, t],
 	);
 
-	const pendingBadge =
-		pendingCount > 0 ? (
-			<Badge variant="outline" className="bg-amber-50 text-amber-700">
-				{t("jobCard.client.syncChip", { count: pendingCount })}
-			</Badge>
-		) : null;
+	const syncIndicator = useMemo(() => {
+		if (pendingCount > 0) {
+			return (
+				<Badge variant="outline" className="bg-amber-50 text-amber-700">
+					{t("jobCard.client.sync.pending", { count: pendingCount })}
+				</Badge>
+			);
+		}
+		return (
+			<span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+				{t("jobCard.client.sync.synced")}
+			</span>
+		);
+	}, [pendingCount, t]);
+
+	const conflictBanner = useMemo(() => {
+		const conflict = job.sync.conflict;
+		if (!conflict?.flagged) {
+			return null;
+		}
+		const fields = Array.from(
+			new Set(
+				conflict.entries.map((entry) =>
+					entry.field in conflictFieldKeyMap ? entry.field : "unknown",
+				),
+			),
+		);
+		const labels = fields.map((field) =>
+			t(conflictFieldKeyMap[field as keyof typeof conflictFieldKeyMap]),
+		);
+
+		return (
+			<div className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+				<p className="font-medium">{t("jobCard.client.conflict.title")}</p>
+				<p className="mt-1 text-sm">{t("jobCard.client.conflict.subtitle")}</p>
+				<ul className="mt-2 list-disc pl-4">
+					{labels.map((label) => (
+						<li key={label}>{label}</li>
+					))}
+				</ul>
+			</div>
+		);
+	}, [job.sync.conflict, t]);
 
 	const priorityBadge = useMemo(() => {
 		switch (job.priority) {
@@ -827,6 +939,7 @@ function JobCardInner({
 						{t("jobCard.client.offline")}
 					</div>
 				) : null}
+				{conflictBanner}
 
 				<header className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -854,7 +967,7 @@ function JobCardInner({
 								{t(`jobCard.status.buttons.${job.status}`)}
 							</span>
 							{priorityBadge}
-							{pendingBadge}
+							{syncIndicator}
 						</div>
 					</div>
 
@@ -955,6 +1068,16 @@ function JobCardInner({
 								: null}
 					</div>
 				</section>
+
+				<JobCardAiHelper
+					jobId={job.jobId}
+					jobTitle={job.title}
+					jobDescription={job.description}
+					customerName={job.customer.name}
+					customerPhone={job.customer.phone}
+					address={job.address}
+					initialNotes={notesDraft}
+				/>
 
 				<MaterialsQuickAdd
 					lines={job.materials.lines}

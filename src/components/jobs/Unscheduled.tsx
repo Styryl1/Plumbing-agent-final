@@ -1,6 +1,7 @@
 "use client";
 import { skipToken } from "@tanstack/react-query";
 import {
+	AlertCircle,
 	Clock,
 	FileText,
 	Gauge,
@@ -14,6 +15,7 @@ import { useTranslations } from "next-intl";
 import type { JSX } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Temporal } from "temporal-polyfill";
 import {
 	ApplyDialog,
 	type ApplyDialogContext,
@@ -73,6 +75,27 @@ const mapIntakePriority = (value: string | null | undefined): JobPriority => {
 	return "normal";
 };
 
+const payloadHasNotes = (value: unknown): value is { notes?: unknown } =>
+	typeof value === "object" && value !== null && "notes" in value;
+
+type ConfidenceState = "high" | "medium" | "low";
+
+const getConfidenceState = (
+	score: number | null | undefined,
+): ConfidenceState => {
+	if (typeof score !== "number") {
+		return "medium";
+	}
+	const normalized = score > 1 ? score / 100 : score;
+	if (normalized >= 0.7) {
+		return "high";
+	}
+	if (normalized >= 0.5) {
+		return "medium";
+	}
+	return "low";
+};
+
 const isAiRecommendation = (value: unknown): value is AiRecommendationDTO => {
 	if (typeof value !== "object" || value === null) {
 		return false;
@@ -81,7 +104,9 @@ const isAiRecommendation = (value: unknown): value is AiRecommendationDTO => {
 	return (
 		typeof candidate.id === "string" &&
 		typeof candidate.title === "string" &&
-		typeof candidate.confidence === "number"
+		typeof candidate.confidence === "number" &&
+		typeof candidate.channel === "string" &&
+		typeof candidate.actionText === "string"
 	);
 };
 
@@ -146,6 +171,11 @@ export default function Unscheduled({
 	const isIntakeDetailLoading =
 		intakeDetailQuery.isLoading || intakeDetailQuery.isFetching;
 
+	const proposalsQuery = api.proposals.listByIntake.useQuery(
+		activeIntake ? { intakeId: activeIntake.id } : skipToken,
+		{ enabled: activeIntake !== null },
+	);
+
 	const setIntakeStatus = api.intake.setStatus.useMutation();
 
 	// Fetch AI recommendations
@@ -158,6 +188,16 @@ export default function Unscheduled({
 	const aiRecommendations = Array.isArray(aiData?.items)
 		? aiData.items.filter(isAiRecommendation)
 		: [];
+
+	const proposalItems = proposalsQuery.data?.items ?? [];
+	const bestProposal = proposalItems
+		.filter(
+			(proposal) =>
+				proposal.status === "new" &&
+				proposal.confidence >= 0.7 &&
+				proposal.holds.length > 0,
+		)
+		.sort((a, b) => b.confidence - a.confidence)[0];
 
 	// Fetch WhatsApp leads
 	const whatsappLeadsQuery = api.whatsapp.listLeads.useQuery(
@@ -209,6 +249,29 @@ export default function Unscheduled({
 		},
 	});
 
+	const applyProposalMutation = api.proposals.applyProposal.useMutation({
+		onSuccess: async () => {
+			toast.success(translateRoot("jobs.unscheduled.ai.proposalApplied"));
+			const proposalInvalidate = activeIntake
+				? utils.proposals.listByIntake.invalidate({
+						intakeId: activeIntake.id,
+					})
+				: Promise.resolve();
+			await Promise.all([
+				utils.intake.list.invalidate({ status: "pending" }),
+				utils.intake.get.invalidate(),
+				proposalInvalidate,
+			]);
+		},
+		onError: (error) => {
+			toast.error(
+				error instanceof Error
+					? error.message
+					: translateRoot("jobs.unscheduled.ai.proposalApplyError"),
+			);
+		},
+	});
+
 	async function openApplyDialog(
 		intakeEventId: string | null,
 		recommendation: AiRecommendationDTO | null,
@@ -255,6 +318,29 @@ export default function Unscheduled({
 				error instanceof Error ? error.message : "Bijwerken van intake mislukt",
 			);
 		}
+	};
+
+	const handleApplyBestProposal = async (): Promise<void> => {
+		if (!bestProposal) {
+			toast.info(translateRoot("jobs.unscheduled.ai.noProposal"));
+			return;
+		}
+		const sortedHolds = [...bestProposal.holds].sort((a, b) =>
+			Temporal.Instant.compare(
+				Temporal.Instant.from(a.start),
+				Temporal.Instant.from(b.start),
+			),
+		);
+		const firstHold = sortedHolds[0];
+		if (!firstHold) {
+			toast.error(translateRoot("jobs.unscheduled.ai.proposalApplyError"));
+			return;
+		}
+		await applyProposalMutation.mutateAsync({
+			proposalId: bestProposal.id,
+			slotId: firstHold.id,
+		});
+		onJobCreated?.();
 	};
 
 	return (
@@ -416,91 +502,184 @@ export default function Unscheduled({
 											<p>{t("jobs.unscheduled.ai.empty")}</p>
 										</div>
 									) : (
-										aiRecommendations.map((rec) => (
-											<div
-												key={rec.id}
-												className="border rounded-lg p-4 space-y-3 hover:bg-gray-50 transition-colors"
-											>
-												<div className="flex items-start justify-between gap-3">
-													<div className="flex-1 min-w-0">
-														<h3 className="font-medium text-sm truncate">
-															{rec.title}
-														</h3>
-														{rec.summary && (
-															<p className="text-gray-600 text-xs mt-1 line-clamp-2">
-																{rec.summary}
-															</p>
-														)}
-													</div>
-													<div className="flex flex-col gap-1 items-end">
-														<Badge
-															variant={
-																rec.confidence >= 80
-																	? "default"
-																	: rec.confidence >= 60
-																		? "secondary"
-																		: "outline"
-															}
-															className="text-xs"
-														>
-															<Gauge className="h-3 w-3 mr-1" />
-															{rec.confidence}%
-														</Badge>
-														{rec.urgency === "high" && (
-															<Badge variant="destructive" className="text-xs">
-																{t("ui.form.priorityOptions.urgent")}
-															</Badge>
-														)}
-													</div>
-												</div>
+										aiRecommendations.map((rec) => {
+											const confidenceState = getConfidenceState(
+												rec.confidenceScore,
+											);
+											const channelLabel = t(
+												`intake.console.suggestions.channels.${rec.channel}`,
+											);
+											const channelIcon =
+												rec.channel === "voice" ? (
+													<Phone className="h-3.5 w-3.5" />
+												) : (
+													<MessageSquare className="h-3.5 w-3.5" />
+												);
+											let payloadNotes: string[] = [];
+											if (payloadHasNotes(rec.payload)) {
+												const candidate = rec.payload.notes;
+												if (Array.isArray(candidate)) {
+													payloadNotes = candidate.filter(
+														(note): note is string =>
+															typeof note === "string" &&
+															note.trim().length > 0,
+													);
+												}
+											}
+											const shouldShowAction =
+												rec.actionText.trim().length > 0 &&
+												rec.actionText.trim() !== (rec.summary ?? "").trim();
+											const applyDisabled = confidenceState === "low";
+											const applyLabel =
+												confidenceState === "high"
+													? t("jobs.unscheduled.ai.assign")
+													: confidenceState === "medium"
+														? t("jobs.unscheduled.ai.review")
+														: t("jobs.unscheduled.ai.manual");
 
-												<div className="flex flex-wrap gap-3 text-xs text-gray-500">
-													{rec.customer?.phoneE164 && (
-														<div className="flex items-center gap-1">
-															<Phone className="h-3 w-3" />
-															<span>{rec.customer.phoneE164}</span>
-														</div>
-													)}
-													{rec.estimate?.durationMinutes && (
-														<div className="flex items-center gap-1">
-															<Clock className="h-3 w-3" />
-															<span>
-																{rec.estimate.durationMinutes}{" "}
-																{t("jobs.unscheduled.ai.minutes")}
-															</span>
-														</div>
-													)}
-													<div className="flex items-center gap-1">
-														<span>{formatDutchDate(rec.createdIso)}</span>
-													</div>
-												</div>
-
-												{rec.tags.length > 0 && (
-													<div className="flex flex-wrap gap-1">
-														{rec.tags.map((tag) => (
-															<Badge
-																key={tag}
-																variant="outline"
-																className="text-xs py-0 px-1"
-															>
-																{tag}
-															</Badge>
-														))}
-													</div>
-												)}
-
-												<Button
-													onClick={() => {
-														handleApplyAIRecommendation(rec);
-													}}
-													variant="outline"
-													size="sm"
-													className="w-full"
+											return (
+												<div
+													key={rec.id}
+													className="border rounded-lg p-4 space-y-3 hover:bg-gray-50 transition-colors"
 												>
-													{t("jobs.unscheduled.ai.assign")}
-												</Button>
-											</div>
-										))
+													<div className="flex items-start justify-between gap-3">
+														<div className="flex-1 min-w-0 space-y-2">
+															<div className="flex items-center gap-2 text-xs text-gray-500">
+																<span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted">
+																	{channelIcon}
+																</span>
+																<Badge
+																	variant="outline"
+																	className="text-[10px] uppercase tracking-wide"
+																>
+																	{channelLabel}
+																</Badge>
+																<Badge
+																	variant="outline"
+																	className="text-[10px]"
+																>
+																	{t("jobs.unscheduled.ai.confidence")}:{" "}
+																	{rec.confidence}%
+																</Badge>
+															</div>
+															<h3 className="font-medium text-sm text-foreground">
+																{rec.title}
+															</h3>
+															{rec.summary && (
+																<p className="text-gray-600 text-xs">
+																	{rec.summary}
+																</p>
+															)}
+															{shouldShowAction ? (
+																<div>
+																	<p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+																		{t(
+																			"intake.console.suggestions.actionHeading",
+																		)}
+																	</p>
+																	<p className="text-sm text-gray-800">
+																		{rec.actionText}
+																	</p>
+																</div>
+															) : null}
+														</div>
+														<div className="flex flex-col gap-1 items-end">
+															<Badge
+																variant={
+																	confidenceState === "high"
+																		? "default"
+																		: confidenceState === "medium"
+																			? "secondary"
+																			: "destructive"
+																}
+																className="text-xs"
+															>
+																<Gauge className="h-3 w-3 mr-1" />
+																{rec.confidence}%
+															</Badge>
+															{confidenceState === "low" ? (
+																<div className="flex items-center gap-1 text-xs text-amber-600">
+																	<AlertCircle className="h-3 w-3" />
+																	<span>
+																		{t("jobs.unscheduled.ai.lowConfidence")}
+																	</span>
+																</div>
+															) : null}
+															{rec.urgency === "high" && (
+																<Badge
+																	variant="destructive"
+																	className="text-xs"
+																>
+																	{t("ui.form.priorityOptions.urgent")}
+																</Badge>
+															)}
+														</div>
+													</div>
+
+													<div className="flex flex-wrap gap-3 text-xs text-gray-500">
+														{rec.customer?.phoneE164 && (
+															<div className="flex items-center gap-1">
+																<Phone className="h-3 w-3" />
+																<span>{rec.customer.phoneE164}</span>
+															</div>
+														)}
+														{rec.estimate?.durationMinutes && (
+															<div className="flex items-center gap-1">
+																<Clock className="h-3 w-3" />
+																<span>
+																	{rec.estimate.durationMinutes}{" "}
+																	{t("jobs.unscheduled.ai.minutes")}
+																</span>
+															</div>
+														)}
+														<div className="flex items-center gap-1">
+															<span>{formatDutchDate(rec.createdIso)}</span>
+														</div>
+													</div>
+
+													{payloadNotes.length > 0 && (
+														<div className="space-y-1 text-xs text-gray-600">
+															<p className="font-semibold uppercase tracking-wide text-gray-500">
+																{t("intake.console.suggestions.notesHeading")}
+															</p>
+															<ul className="list-disc space-y-1 pl-4">
+																{payloadNotes.map((note, index) => (
+																	<li key={`${rec.id}-note-${index}`}>
+																		{note}
+																	</li>
+																))}
+															</ul>
+														</div>
+													)}
+
+													{rec.tags.length > 0 && (
+														<div className="flex flex-wrap gap-1">
+															{rec.tags.map((tag) => (
+																<Badge
+																	key={tag}
+																	variant="outline"
+																	className="text-xs py-0 px-1"
+																>
+																	{tag}
+																</Badge>
+															))}
+														</div>
+													)}
+
+													<Button
+														onClick={() => {
+															handleApplyAIRecommendation(rec);
+														}}
+														variant={applyDisabled ? "secondary" : "outline"}
+														size="sm"
+														className="w-full"
+														disabled={applyDisabled}
+													>
+														{applyLabel}
+													</Button>
+												</div>
+											);
+										})
 									)}
 								</div>
 							</TabsContent>
@@ -558,6 +737,16 @@ export default function Unscheduled({
 								summary={activeIntake}
 								detail={intakeDetailData}
 								loading={isIntakeDetailLoading}
+								bestProposal={
+									bestProposal
+										? {
+												id: bestProposal.id,
+												confidence: bestProposal.confidence,
+											}
+										: null
+								}
+								onApplyBest={bestProposal ? handleApplyBestProposal : null}
+								isApplyingBest={applyProposalMutation.isPending}
 							/>
 						</div>
 					)}
@@ -586,12 +775,21 @@ type IntakeDetailsCardProps = {
 	summary: IntakeSummaryDTO;
 	detail: IntakeDetailDTO | undefined;
 	loading: boolean;
+	bestProposal?: {
+		id: string;
+		confidence: number;
+	} | null;
+	onApplyBest?: (() => void) | null;
+	isApplyingBest?: boolean;
 };
 
 function IntakeDetailsCard({
 	summary,
 	detail,
 	loading,
+	bestProposal,
+	onApplyBest,
+	isApplyingBest,
 }: IntakeDetailsCardProps): JSX.Element {
 	const t = useTranslations();
 	const detailData: IntakeDetailDTO["details"] | undefined = detail?.details;
@@ -633,9 +831,26 @@ function IntakeDetailsCard({
 						{formatDutchDateTime(lastMessageIso)}
 					</p>
 				</div>
-				{loading && (
-					<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-				)}
+				<div className="flex items-center gap-2">
+					{loading ? (
+						<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+					) : null}
+					{bestProposal && onApplyBest ? (
+						<Button
+							size="sm"
+							variant="secondary"
+							onClick={() => {
+								onApplyBest();
+							}}
+							disabled={Boolean(isApplyingBest)}
+						>
+							{isApplyingBest ? (
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							) : null}
+							🧠 {t("jobs.unscheduled.ai.applyBest")}
+						</Button>
+					) : null}
+				</div>
 			</div>
 
 			<div>

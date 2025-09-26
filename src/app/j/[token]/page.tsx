@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import type { JSX } from "react";
 import { Temporal } from "temporal-polyfill";
+import { ManualsPanel } from "~/components/job-card/manuals-panel";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -181,6 +182,9 @@ export default async function JobCardPage({
 						</CardContent>
 					</Card>
 				)}
+
+				{/* Manuals Copilot */}
+				<ManualsPanel jobId={job.id} featureEnabled />
 
 				{/* Quick Actions */}
 				<div className="space-y-3">

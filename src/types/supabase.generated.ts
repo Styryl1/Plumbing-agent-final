@@ -14,6 +14,45 @@ export type Database = {
 	};
 	public: {
 		Tables: {
+			ai_proposals: {
+				Row: {
+					confidence: number;
+					created_at: string;
+					created_by: string | null;
+					customer_id: string | null;
+					id: string;
+					intake_id: string | null;
+					locale: string;
+					org_id: string;
+					payload: Json;
+					status: string;
+				};
+				Insert: {
+					confidence: number;
+					created_at?: string;
+					created_by?: string | null;
+					customer_id?: string | null;
+					id?: string;
+					intake_id?: string | null;
+					locale: string;
+					org_id: string;
+					payload: Json;
+					status?: string;
+				};
+				Update: {
+					confidence?: number;
+					created_at?: string;
+					created_by?: string | null;
+					customer_id?: string | null;
+					id?: string;
+					intake_id?: string | null;
+					locale?: string;
+					org_id?: string;
+					payload?: Json;
+					status?: string;
+				};
+				Relationships: [];
+			};
 			ai_runs: {
 				Row: {
 					conversation_id: string | null;
@@ -1506,6 +1545,8 @@ export type Database = {
 			jobs: {
 				Row: {
 					address: string | null;
+					conflict_flag: boolean;
+					conflict_snapshot: Json | null;
 					created_at: string | null;
 					customer_id: string;
 					customer_signature: string | null;
@@ -1529,6 +1570,8 @@ export type Database = {
 				};
 				Insert: {
 					address?: string | null;
+					conflict_flag?: boolean;
+					conflict_snapshot?: Json | null;
 					created_at?: string | null;
 					customer_id: string;
 					customer_signature?: string | null;
@@ -1552,6 +1595,8 @@ export type Database = {
 				};
 				Update: {
 					address?: string | null;
+					conflict_flag?: boolean;
+					conflict_snapshot?: Json | null;
 					created_at?: string | null;
 					customer_id?: string;
 					customer_signature?: string | null;
@@ -1604,11 +1649,153 @@ export type Database = {
 					},
 				];
 			};
+			manual_audit: {
+				Row: {
+					created_at: string;
+					created_by: string | null;
+					event: string;
+					id: string;
+					job_id: string | null;
+					manual_id: string | null;
+					meta: Json | null;
+					org_id: string;
+				};
+				Insert: {
+					created_at?: string;
+					created_by?: string | null;
+					event: string;
+					id?: string;
+					job_id?: string | null;
+					manual_id?: string | null;
+					meta?: Json | null;
+					org_id: string;
+				};
+				Update: {
+					created_at?: string;
+					created_by?: string | null;
+					event?: string;
+					id?: string;
+					job_id?: string | null;
+					manual_id?: string | null;
+					meta?: Json | null;
+					org_id?: string;
+				};
+				Relationships: [];
+			};
+			manual_chunks: {
+				Row: {
+					chunk_idx: number;
+					content: string;
+					embedding: string | null;
+					id: string;
+					manual_id: string;
+					page: number;
+					section: string | null;
+				};
+				Insert: {
+					chunk_idx: number;
+					content: string;
+					embedding?: string | null;
+					id?: string;
+					manual_id: string;
+					page: number;
+					section?: string | null;
+				};
+				Update: {
+					chunk_idx?: number;
+					content?: string;
+					embedding?: string | null;
+					id?: string;
+					manual_id?: string;
+					page?: number;
+					section?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "manual_chunks_manual_id_fkey";
+						columns: ["manual_id"];
+						isOneToOne: false;
+						referencedRelation: "manuals";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			manual_files: {
+				Row: {
+					bytes: number | null;
+					checksum: string | null;
+					created_at: string;
+					id: string;
+					language: string | null;
+					manual_id: string;
+					mime: string | null;
+					page_count: number | null;
+					storage_path: string;
+					version: string | null;
+				};
+				Insert: {
+					bytes?: number | null;
+					checksum?: string | null;
+					created_at?: string;
+					id?: string;
+					language?: string | null;
+					manual_id: string;
+					mime?: string | null;
+					page_count?: number | null;
+					storage_path: string;
+					version?: string | null;
+				};
+				Update: {
+					bytes?: number | null;
+					checksum?: string | null;
+					created_at?: string;
+					id?: string;
+					language?: string | null;
+					manual_id?: string;
+					mime?: string | null;
+					page_count?: number | null;
+					storage_path?: string;
+					version?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "manual_files_manual_id_fkey";
+						columns: ["manual_id"];
+						isOneToOne: false;
+						referencedRelation: "manuals";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			manual_jobs: {
+				Row: {
+					job_id: string;
+					manual_id: string;
+				};
+				Insert: {
+					job_id: string;
+					manual_id: string;
+				};
+				Update: {
+					job_id?: string;
+					manual_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "manual_jobs_manual_id_fkey";
+						columns: ["manual_id"];
+						isOneToOne: false;
+						referencedRelation: "manuals";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			manuals: {
 				Row: {
 					brand: string;
 					checksum: string;
 					created_at: string;
+					created_by: string | null;
 					edition: string | null;
 					id: string;
 					indexed: boolean;
@@ -1617,6 +1804,9 @@ export type Database = {
 					model: string;
 					org_id: string | null;
 					page_count: number | null;
+					safety_tags: string[] | null;
+					source_domain: string | null;
+					source_url: string | null;
 					storage_key: string;
 					updated_at: string;
 				};
@@ -1624,6 +1814,7 @@ export type Database = {
 					brand: string;
 					checksum: string;
 					created_at?: string;
+					created_by?: string | null;
 					edition?: string | null;
 					id?: string;
 					indexed?: boolean;
@@ -1632,6 +1823,9 @@ export type Database = {
 					model: string;
 					org_id?: string | null;
 					page_count?: number | null;
+					safety_tags?: string[] | null;
+					source_domain?: string | null;
+					source_url?: string | null;
 					storage_key: string;
 					updated_at?: string;
 				};
@@ -1639,6 +1833,7 @@ export type Database = {
 					brand?: string;
 					checksum?: string;
 					created_at?: string;
+					created_by?: string | null;
 					edition?: string | null;
 					id?: string;
 					indexed?: boolean;
@@ -1647,6 +1842,9 @@ export type Database = {
 					model?: string;
 					org_id?: string | null;
 					page_count?: number | null;
+					safety_tags?: string[] | null;
+					source_domain?: string | null;
+					source_url?: string | null;
 					storage_key?: string;
 					updated_at?: string;
 				};
@@ -2333,6 +2531,53 @@ export type Database = {
 					},
 				];
 			};
+			slot_holds: {
+				Row: {
+					created_at: string;
+					created_by: string | null;
+					end_ts: string;
+					expires_at: string;
+					id: string;
+					org_id: string;
+					proposal_id: string | null;
+					reason: string | null;
+					resource_id: string | null;
+					start_ts: string;
+				};
+				Insert: {
+					created_at?: string;
+					created_by?: string | null;
+					end_ts: string;
+					expires_at: string;
+					id?: string;
+					org_id: string;
+					proposal_id?: string | null;
+					reason?: string | null;
+					resource_id?: string | null;
+					start_ts: string;
+				};
+				Update: {
+					created_at?: string;
+					created_by?: string | null;
+					end_ts?: string;
+					expires_at?: string;
+					id?: string;
+					org_id?: string;
+					proposal_id?: string | null;
+					reason?: string | null;
+					resource_id?: string | null;
+					start_ts?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "slot_holds_proposal_id_fkey";
+						columns: ["proposal_id"];
+						isOneToOne: false;
+						referencedRelation: "ai_proposals";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 			unscheduled_items: {
 				Row: {
 					created_at: string;
@@ -2624,20 +2869,24 @@ export type Database = {
 				Row: {
 					approved_at: string | null;
 					approved_by: string | null;
+					channel: string;
 					confidence: number;
-					conversation_id: string;
+					conversation_id: string | null;
 					created_at: string;
 					id: string;
+					intake_event_id: string | null;
 					job_id: string | null;
 					materials_stub: string[] | null;
-					message_id: string;
+					message_id: string | null;
 					org_id: string;
+					payload: Json | null;
 					proposed_text: string;
 					rejected_at: string | null;
 					rejected_by: string | null;
 					rejection_reason: string | null;
 					source: string;
 					status: string | null;
+					summary: string | null;
 					tags: string[];
 					time_estimate_min: number | null;
 					time_stub: string | null;
@@ -2646,20 +2895,24 @@ export type Database = {
 				Insert: {
 					approved_at?: string | null;
 					approved_by?: string | null;
+					channel?: string;
 					confidence: number;
-					conversation_id: string;
+					conversation_id?: string | null;
 					created_at?: string;
 					id?: string;
+					intake_event_id?: string | null;
 					job_id?: string | null;
 					materials_stub?: string[] | null;
-					message_id: string;
+					message_id?: string | null;
 					org_id: string;
+					payload?: Json | null;
 					proposed_text: string;
 					rejected_at?: string | null;
 					rejected_by?: string | null;
 					rejection_reason?: string | null;
 					source?: string;
 					status?: string | null;
+					summary?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
 					time_stub?: string | null;
@@ -2668,20 +2921,24 @@ export type Database = {
 				Update: {
 					approved_at?: string | null;
 					approved_by?: string | null;
+					channel?: string;
 					confidence?: number;
-					conversation_id?: string;
+					conversation_id?: string | null;
 					created_at?: string;
 					id?: string;
+					intake_event_id?: string | null;
 					job_id?: string | null;
 					materials_stub?: string[] | null;
-					message_id?: string;
+					message_id?: string | null;
 					org_id?: string;
+					payload?: Json | null;
 					proposed_text?: string;
 					rejected_at?: string | null;
 					rejected_by?: string | null;
 					rejection_reason?: string | null;
 					source?: string;
 					status?: string | null;
+					summary?: string | null;
 					tags?: string[];
 					time_estimate_min?: number | null;
 					time_stub?: string | null;
@@ -2700,6 +2957,13 @@ export type Database = {
 						columns: ["conversation_id"];
 						isOneToOne: false;
 						referencedRelation: "wa_conversations";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "wa_suggestions_intake_event_id_fkey";
+						columns: ["intake_event_id"];
+						isOneToOne: false;
+						referencedRelation: "intake_events";
 						referencedColumns: ["id"];
 					},
 					{
@@ -2987,6 +3251,10 @@ export type Database = {
 			};
 		};
 		Functions: {
+			binary_quantize: {
+				Args: { "": string } | { "": unknown };
+				Returns: unknown;
+			};
 			calculate_due_date: {
 				Args: { issued_at: string; payment_terms?: string };
 				Returns: string;
@@ -3034,6 +3302,38 @@ export type Database = {
 			get_webhook_event_exists: {
 				Args: { p_provider: string; p_webhook_id: string };
 				Returns: boolean;
+			};
+			halfvec_avg: {
+				Args: { "": number[] };
+				Returns: unknown;
+			};
+			halfvec_out: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			halfvec_send: {
+				Args: { "": unknown };
+				Returns: string;
+			};
+			halfvec_typmod_in: {
+				Args: { "": unknown[] };
+				Returns: number;
+			};
+			hnsw_bit_support: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			hnsw_halfvec_support: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			hnsw_sparsevec_support: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			hnswhandler: {
+				Args: { "": unknown };
+				Returns: unknown;
 			};
 			increment_invoice_number: {
 				Args: { org_id_param: string };
@@ -3093,6 +3393,18 @@ export type Database = {
 					year: number | null;
 				};
 			};
+			ivfflat_bit_support: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			ivfflat_halfvec_support: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			ivfflathandler: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
 			job_claim_due: {
 				Args: { p_batch?: number };
 				Returns: {
@@ -3103,6 +3415,14 @@ export type Database = {
 					max_attempts: number;
 					provider: string;
 				}[];
+			};
+			l2_norm: {
+				Args: { "": unknown } | { "": unknown };
+				Returns: number;
+			};
+			l2_normalize: {
+				Args: { "": string } | { "": unknown } | { "": unknown };
+				Returns: string;
 			};
 			migrate_invoice_to_cents: {
 				Args: Record<PropertyKey, never>;
@@ -3119,9 +3439,45 @@ export type Database = {
 				};
 				Returns: undefined;
 			};
+			sparsevec_out: {
+				Args: { "": unknown };
+				Returns: unknown;
+			};
+			sparsevec_send: {
+				Args: { "": unknown };
+				Returns: string;
+			};
+			sparsevec_typmod_in: {
+				Args: { "": unknown[] };
+				Returns: number;
+			};
 			validate_invoice_draft_lines: {
 				Args: { lines_json: Json } | { lines_json: Json };
 				Returns: boolean;
+			};
+			vector_avg: {
+				Args: { "": number[] };
+				Returns: string;
+			};
+			vector_dims: {
+				Args: { "": string } | { "": unknown };
+				Returns: number;
+			};
+			vector_norm: {
+				Args: { "": string };
+				Returns: number;
+			};
+			vector_out: {
+				Args: { "": string };
+				Returns: unknown;
+			};
+			vector_send: {
+				Args: { "": string };
+				Returns: string;
+			};
+			vector_typmod_in: {
+				Args: { "": unknown[] };
+				Returns: number;
 			};
 		};
 		Enums: {

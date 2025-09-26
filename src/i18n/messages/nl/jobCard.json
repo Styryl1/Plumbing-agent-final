@@ -147,7 +147,23 @@
 			"urgent": "Urgent",
 			"emergency": "Spoed"
 		},
-		"syncChip": "Te synchroniseren: {count}",
+		"sync": {
+			"pending": "Offline wijzigingen in wachtrij ({count})",
+			"synced": "Alle wijzigingen gesynchroniseerd"
+		},
+		"conflict": {
+			"title": "Conflicterende updates samengevoegd",
+			"subtitle": "Jouw veldnotities zijn toegepast en de planner ziet welke wijzigingen nagekeken moeten worden.",
+			"fields": {
+				"notes": "Werknotities bijgewerkt",
+				"materials": "Materiaaloverzicht aangepast",
+				"timer": "Tijdregistratie gewijzigd",
+				"status": "Status aangepast",
+				"signature": "Handtekening aangepast",
+				"scheduling": "Planner wijzigde het tijdstip",
+				"unknown": "Andere jobdetails bijgewerkt"
+			}
+		},
 		"contact": {
 			"whatsapp": "WhatsApp",
 			"call": "Bel",
@@ -158,6 +174,107 @@
 			"customerUnknown": "Onbekende klant",
 			"openCard": "Open kaart",
 			"timeUnknown": "Nog niet gepland"
+		}
+	},
+	"ai": {
+		"title": "AI-assistent",
+		"contextLabel": "Context voor de assistent",
+		"placeholder": "Vraag de copilot om hulp bij deze klus…",
+		"send": "Versturen",
+		"reset": "Resetten",
+		"regenerate": "Nieuw antwoord proberen",
+		"emptyState": "Nog geen gesprek. Stel je vraag aan de copilot.",
+		"suggestionTitle": "AI-voorstel",
+		"urgency": "Urgentie",
+		"urgencyLevels": {
+			"non-urgent": "Niet dringend",
+			"urgent": "Urgent",
+			"emergency": "Spoed"
+		},
+		"labor": "Geschatte arbeid",
+		"hours": "uur",
+		"prompts": {
+			"summary": "Vat de werkzaamheden tot nu toe samen",
+			"closing": "Schrijf een bericht voor de klant bij afronding",
+			"troubleshoot": "Welke controles moet ik nu doen?"
+		},
+		"errors": {
+			"missingInput": "Voer een bericht in of voeg context toe voordat je verstuurt.",
+			"sendFailed": "Versturen mislukt. Controleer je verbinding en probeer opnieuw.",
+			"invalidResponse": "Het AI-antwoord kon niet worden gelezen. Vraag het opnieuw."
+		}
+	},
+	"manuals": {
+		"panel": {
+			"title": "Handleidingen Copilot",
+			"description": "Zoek de officiële handleiding en blijf bij de instructies tijdens het gesprek."
+		},
+		"finder": {
+			"title": "Zoek handleiding via foto",
+			"description": "Begin met een foto van het front. We herkennen merk en model en vragen om het typeplaatje als dat nodig is.",
+			"actions": {
+				"front": "Upload frontfoto",
+				"ratingPlate": "Upload typeplaatje",
+				"attach": "Koppel handleiding aan job",
+				"attaching": "Bezig met koppelen…",
+				"open": "Open handleiding",
+				"clear": "Reset"
+			},
+			"uploading": "Foto verwerken…",
+			"emptyState": "Nog geen match. Voeg een foto toe om te starten.",
+			"ratingPlatePrompt": "Vertrouwen is laag — voeg een typeplaatje toe om het model te bevestigen.",
+			"matchFor": "Gevonden voor job {jobId}",
+			"attached": "Handleiding gekoppeld",
+			"fallback": {
+				"title": "Snelle match",
+				"body": "De fotodetectie is nog niet verbonden. We gebruiken bestandsnamen als schatting — controleer het resultaat."
+			},
+			"confidence": {
+				"high": "{value}% vertrouwen",
+				"medium": "{value}% vertrouwen",
+				"low": "{value}% vertrouwen (controleer)"
+			},
+			"errors": {
+				"title": "Handleiding zoeken mislukt",
+				"identify": "We konden de foto niet lezen. Probeer een scherpere foto van het logo.",
+				"attach": "Downloaden van de handleiding is mislukt. Probeer het opnieuw.",
+				"notConfigured": "Handleidingen zijn nog niet geconfigureerd. Neem contact op met een beheerder."
+			}
+		},
+		"qa": {
+			"title": "Vraag het de handleiding",
+			"description": "Geef veilige antwoorden met pagina-verwijzingen uit de handleiding.",
+			"placeholder": "bijv. Hoe reset ik foutcode E5?",
+			"loading": "Handleiding raadplegen…",
+			"actions": {
+				"ask": "Vraag"
+			},
+			"suggestions": {
+				"resetCode": "Resetcode",
+				"errorE5": "Fout E5",
+				"lowPressure": "Lage waterdruk"
+			},
+			"disabled": {
+				"title": "Geen handleiding gekoppeld",
+				"body": "Koppel eerst een handleiding om vragen te kunnen stellen."
+			},
+			"errors": {
+				"title": "Handleiding Q&A",
+				"required": "Typ eerst een vraag.",
+				"noManual": "Koppel een handleiding voordat je vragen stelt.",
+				"notConfigured": "Handleiding Q&A is nog niet beschikbaar.",
+				"generic": "We konden geen antwoord ophalen."
+			},
+			"safety": {
+				"title": "Alleen veilige instructies",
+				"body": "Voor gas en verbranding volg je exact de tekst uit de handleiding. Geef de geciteerde stappen met bron."
+			},
+			"citations": {
+				"title": "Bronnen",
+				"page": "Pagina {page}",
+				"open": "Open PDF"
+			},
+			"emptyState": "Stel een vraag om antwoorden met paginaverwijzingen te zien."
 		}
 	}
 }

@@ -23,6 +23,168 @@ const JOB_CARD_STATUSES = [
 	"completed",
 ] as const;
 
+const CONFLICT_RESOLUTIONS = ["plumber", "organizer", "last-write"] as const;
+type ConflictResolution = (typeof CONFLICT_RESOLUTIONS)[number];
+
+const conflictEntrySchema = z.object({
+	field: z.string(),
+	resolvedBy: z.enum(CONFLICT_RESOLUTIONS),
+	resolvedAtISO: z.string(),
+	serverValue: z.unknown(),
+	clientValue: z.unknown(),
+	note: z.string().optional(),
+});
+
+type ConflictEntry = z.infer<typeof conflictEntrySchema>;
+
+const conflictSnapshotSchema = z.object({
+	entries: z.array(conflictEntrySchema),
+});
+
+const MAX_CONFLICT_HISTORY = 10;
+
+function toJson(value: unknown): Json {
+	return value as Json;
+}
+
+function parseConflictSnapshot(raw: unknown): ConflictEntry[] {
+	try {
+		const parsed = conflictSnapshotSchema.parse(raw);
+		return parsed.entries;
+	} catch {
+		return [];
+	}
+}
+
+function serializeConflictEntries(entries: ConflictEntry[]): Json {
+	return { entries } as unknown as Json;
+}
+
+function hasServerAdvancedVersion(
+	serverUpdatedAt: string | null,
+	clientVersion: string | undefined,
+): boolean {
+	if (!serverUpdatedAt || !clientVersion) {
+		return false;
+	}
+	try {
+		const serverInstant = Temporal.Instant.from(serverUpdatedAt);
+		const clientInstant = Temporal.Instant.from(clientVersion);
+		return Temporal.Instant.compare(serverInstant, clientInstant) === 1;
+	} catch {
+		return false;
+	}
+}
+
+function stableStringify(value: unknown): string {
+	return JSON.stringify(value, (_key: string, input: unknown) => {
+		if (Array.isArray(input) || input === null || typeof input !== "object") {
+			return input;
+		}
+		const record = input as Record<string, unknown>;
+		return Object.keys(record)
+			.sort()
+			.reduce<Record<string, unknown>>((acc, key) => {
+				acc[key] = record[key];
+				return acc;
+			}, {});
+	});
+}
+
+function isJsonEqual(a: unknown, b: unknown): boolean {
+	return stableStringify(a) === stableStringify(b);
+}
+
+function detectSchedulingConflict(
+	job: JobRow,
+	baseline?: SchedulingBaseline,
+): ConflictEntry | null {
+	if (!baseline) {
+		return null;
+	}
+	const serverSchedule = {
+		startsAtISO: job.starts_at ?? null,
+		endsAtISO: job.ends_at ?? null,
+		employeeId: job.employee_id ?? null,
+	};
+	if (isJsonEqual(serverSchedule, baseline)) {
+		return null;
+	}
+	return {
+		field: "scheduling",
+		resolvedBy: "organizer",
+		resolvedAtISO: Temporal.Now.instant().toString(),
+		serverValue: toJson(serverSchedule),
+		clientValue: toJson(baseline),
+		note: "Organiser scheduling changes kept while plumber edits applied.",
+	};
+}
+
+function evaluateConflicts(params: {
+	job: JobRow;
+	version?: string;
+	entries?: Array<{
+		field: string;
+		serverValue: Json;
+		clientValue: Json;
+		resolvedBy: ConflictResolution;
+		note?: string;
+	}>;
+	baseline?: SchedulingBaseline;
+}): ConflictEvaluation {
+	const { job, version } = params;
+	const candidateEntries = params.entries ?? [];
+	const serverAdvanced = hasServerAdvancedVersion(job.updated_at, version);
+	if (!serverAdvanced) {
+		return { flagged: false, entries: [] } satisfies ConflictEvaluation;
+	}
+
+	const nowISO = Temporal.Now.instant().toString();
+	const resolvedEntries: ConflictEntry[] = [];
+
+	for (const entry of candidateEntries) {
+		if (isJsonEqual(entry.serverValue, entry.clientValue)) {
+			continue;
+		}
+		resolvedEntries.push({
+			field: entry.field,
+			resolvedBy: entry.resolvedBy,
+			resolvedAtISO: nowISO,
+			serverValue: entry.serverValue,
+			clientValue: entry.clientValue,
+			note: entry.note,
+		});
+	}
+
+	const schedulingConflict = detectSchedulingConflict(job, params.baseline);
+	if (schedulingConflict) {
+		resolvedEntries.push(schedulingConflict);
+	}
+
+	if (resolvedEntries.length === 0) {
+		resolvedEntries.push({
+			field: "unknown",
+			resolvedBy: "last-write",
+			resolvedAtISO: nowISO,
+			serverValue: toJson({ updatedAtISO: job.updated_at ?? null }),
+			clientValue: toJson({ versionISO: version ?? null }),
+			note: "Version mismatch detected without a tracked field diff.",
+		});
+	}
+
+	const existingEntries = parseConflictSnapshot(job.conflict_snapshot);
+	const combined = [...resolvedEntries, ...existingEntries].slice(
+		0,
+		MAX_CONFLICT_HISTORY,
+	);
+
+	return {
+		flagged: true,
+		snapshot: serializeConflictEntries(combined),
+		entries: resolvedEntries,
+	};
+}
+
 const TZ = "Europe/Amsterdam";
 
 const tokenTtlDuration = (): Temporal.Duration =>
@@ -102,6 +264,7 @@ const jobCardViewSchema = z.object({
 	startsAtISO: z.string().nullable(),
 	endsAtISO: z.string().nullable(),
 	address: z.string().nullable(),
+	assigneeId: z.uuid().nullable(),
 	customer: z.object({
 		name: z.string().nullable(),
 		phone: z.string().nullable(),
@@ -115,6 +278,13 @@ const jobCardViewSchema = z.object({
 	sync: z.object({
 		lastSyncedAtISO: z.string().nullable(),
 		pendingOperations: z.number(),
+		versionISO: z.string().nullable(),
+		conflict: z
+			.object({
+				flagged: z.boolean(),
+				entries: z.array(conflictEntrySchema),
+			})
+			.nullable(),
 	}),
 	notes: z.string(),
 	signatureDataUrl: z.string().nullable(),
@@ -124,6 +294,23 @@ type JobCardStatus = (typeof JOB_CARD_STATUSES)[number];
 type MaterialLine = z.infer<typeof jobCardMaterialLineSchema>;
 type JobCardView = z.infer<typeof jobCardViewSchema>;
 type ListJob = z.infer<typeof listJobSchema>;
+
+const syncMetadataInput = z.object({
+	version: z.iso.datetime().optional(),
+	baseline: z
+		.object({
+			startsAtISO: z.string().nullable(),
+			endsAtISO: z.string().nullable(),
+			employeeId: z.uuid().nullable(),
+		})
+		.optional(),
+});
+
+interface SchedulingBaseline {
+	startsAtISO: string | null;
+	endsAtISO: string | null;
+	employeeId: string | null;
+}
 
 interface JobCardState {
 	accessToken: string;
@@ -135,9 +322,16 @@ interface JobCardState {
 	status: JobCardStatus;
 	lastSyncedAt: string | null;
 	pendingOperations: number;
+	version: string | null;
 	notes: string;
 	signatureStorageKey: string | null;
 	signaturePreviewDataUrl: string | null;
+}
+
+interface ConflictEvaluation {
+	flagged: boolean;
+	snapshot?: Json;
+	entries: ConflictEntry[];
 }
 
 type JobRow = Tables<"jobs"> & {
@@ -331,6 +525,13 @@ function deriveJobCardState(row: JobRow): JobCardState {
 			? cardRaw.pendingCount
 			: 0;
 
+	const version =
+		typeof cardRaw.version === "string"
+			? cardRaw.version
+			: typeof row.updated_at === "string"
+				? row.updated_at
+				: null;
+
 	return {
 		accessToken,
 		expiresAt,
@@ -341,6 +542,7 @@ function deriveJobCardState(row: JobRow): JobCardState {
 		status,
 		lastSyncedAt,
 		pendingOperations,
+		version,
 		notes,
 		signatureStorageKey,
 		signaturePreviewDataUrl: signaturePreview,
@@ -359,6 +561,7 @@ function buildOfflineState(previous: unknown, state: JobCardState): Json {
 		status: state.status,
 		lastSyncedAt: state.lastSyncedAt,
 		pendingCount: state.pendingOperations,
+		version: state.version,
 		notes: state.notes,
 		signature: {
 			storageKey: state.signatureStorageKey,
@@ -462,6 +665,18 @@ function toJobCardView(
 	const signatureDataUrl =
 		options?.signatureUrl ?? state.signaturePreviewDataUrl ?? null;
 
+	const conflictEntries = parseConflictSnapshot(row.conflict_snapshot);
+	const conflict =
+		row.conflict_flag || conflictEntries.length > 0
+			? {
+					flagged: Boolean(row.conflict_flag),
+					entries: conflictEntries,
+				}
+			: null;
+
+	const versionISO =
+		typeof row.updated_at === "string" ? row.updated_at : state.version;
+
 	const detail = {
 		jobId: row.id,
 		token: state.accessToken,
@@ -473,6 +688,7 @@ function toJobCardView(
 		startsAtISO: row.starts_at ?? null,
 		endsAtISO: row.ends_at ?? null,
 		address: composeAddress(row),
+		assigneeId: row.employee_id ?? null,
 		customer,
 		timer: {
 			startedAtISO,
@@ -488,6 +704,8 @@ function toJobCardView(
 		sync: {
 			lastSyncedAtISO: state.lastSyncedAt,
 			pendingOperations: state.pendingOperations,
+			versionISO: versionISO ?? null,
+			conflict,
 		},
 		notes: state.notes,
 		signatureDataUrl,
@@ -784,16 +1002,20 @@ export const jobCardRouter = createTRPCRouter({
 
 	updateTimer: protectedProcedure
 		.input(
-			z.object({
-				jobId: z.uuid(),
-				action: z.enum(["start", "pause", "complete"]),
-			}),
+			z
+				.object({
+					jobId: z.uuid(),
+					action: z.enum(["start", "pause", "complete"]),
+				})
+				.and(syncMetadataInput),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db, auth } = ctx;
 
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			let state = ensureTokenFresh(deriveJobCardState(job));
+			const previousState = state;
+			const baseline = input.baseline as SchedulingBaseline | undefined;
 
 			if (state.timerLocked) {
 				throw new TRPCError({
@@ -851,6 +1073,35 @@ export const jobCardRouter = createTRPCRouter({
 				}
 			}
 
+			const timerConflict = evaluateConflicts({
+				job,
+				...(baseline ? { baseline } : {}),
+				entries: [
+					{
+						field: "timer",
+						serverValue: toJson({
+							status: previousState.status,
+							timerLocked: previousState.timerLocked,
+							timerStartedAt: previousState.timerStartedAt,
+							actualMinutes: previousState.actualMinutes,
+						}),
+						clientValue: toJson({
+							status: state.status,
+							timerLocked: state.timerLocked,
+							timerStartedAt: state.timerStartedAt,
+							actualMinutes: state.actualMinutes,
+						}),
+						resolvedBy: "plumber",
+					},
+				],
+				...(input.version ? { version: input.version } : {}),
+			});
+
+			if (timerConflict.flagged && timerConflict.snapshot != null) {
+				update.conflict_flag = true;
+				update.conflict_snapshot = timerConflict.snapshot;
+			}
+
 			update.offline_state = buildOfflineState(job.offline_state, state);
 
 			const updatedRow = await updateJobRow(
@@ -874,16 +1125,20 @@ export const jobCardRouter = createTRPCRouter({
 
 	addMaterial: protectedProcedure
 		.input(
-			z.object({
-				jobId: z.uuid(),
-				line: materialInputSchema,
-			}),
+			z
+				.object({
+					jobId: z.uuid(),
+					line: materialInputSchema,
+				})
+				.and(syncMetadataInput),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db, auth } = ctx;
 
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			let state = ensureTokenFresh(deriveJobCardState(job));
+			const previousState = state;
+			const baseline = input.baseline as SchedulingBaseline | undefined;
 			const nowInstant = Temporal.Now.instant();
 
 			const newLine: MaterialLine = {
@@ -902,9 +1157,28 @@ export const jobCardRouter = createTRPCRouter({
 				lastSyncedAt: nowInstant.toString(),
 			} satisfies JobCardState;
 
+			const materialConflict = evaluateConflicts({
+				job,
+				...(baseline ? { baseline } : {}),
+				entries: [
+					{
+						field: "materials",
+						serverValue: toJson(previousState.materials),
+						clientValue: toJson(state.materials),
+						resolvedBy: "plumber",
+					},
+				],
+				...(input.version ? { version: input.version } : {}),
+			});
+
 			const update: TablesUpdate<"jobs"> = {
 				offline_state: buildOfflineState(job.offline_state, state),
 			};
+
+			if (materialConflict.flagged && materialConflict.snapshot != null) {
+				update.conflict_flag = true;
+				update.conflict_snapshot = materialConflict.snapshot;
+			}
 
 			const updatedRow = await updateJobRow(
 				db,
@@ -935,18 +1209,22 @@ export const jobCardRouter = createTRPCRouter({
 
 	updateNotes: protectedProcedure
 		.input(
-			z.object({
-				jobId: z.uuid(),
-				notes: z
-					.string()
-					.max(10_000)
-					.transform((value) => value.trimStart()),
-			}),
+			z
+				.object({
+					jobId: z.uuid(),
+					notes: z
+						.string()
+						.max(10_000)
+						.transform((value) => value.trimStart()),
+				})
+				.and(syncMetadataInput),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db, auth } = ctx;
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			let state = ensureTokenFresh(deriveJobCardState(job));
+			const previousState = state;
+			const baseline = input.baseline as SchedulingBaseline | undefined;
 			const nowInstant = Temporal.Now.instant();
 			const trimmed = input.notes.trimEnd();
 
@@ -956,10 +1234,29 @@ export const jobCardRouter = createTRPCRouter({
 				lastSyncedAt: nowInstant.toString(),
 			} satisfies JobCardState;
 
+			const noteConflict = evaluateConflicts({
+				job,
+				...(baseline ? { baseline } : {}),
+				entries: [
+					{
+						field: "notes",
+						serverValue: toJson(previousState.notes),
+						clientValue: toJson(trimmed),
+						resolvedBy: "plumber",
+					},
+				],
+				...(input.version ? { version: input.version } : {}),
+			});
+
 			const update: TablesUpdate<"jobs"> = {
 				notes: trimmed.length > 0 ? trimmed : null,
 				offline_state: buildOfflineState(job.offline_state, state),
 			};
+
+			if (noteConflict.flagged && noteConflict.snapshot != null) {
+				update.conflict_flag = true;
+				update.conflict_snapshot = noteConflict.snapshot;
+			}
 
 			const updatedRow = await updateJobRow(
 				db,
@@ -985,15 +1282,19 @@ export const jobCardRouter = createTRPCRouter({
 
 	saveSignature: protectedProcedure
 		.input(
-			z.object({
-				jobId: z.uuid(),
-				signatureDataUrl: z.string().nullable(),
-			}),
+			z
+				.object({
+					jobId: z.uuid(),
+					signatureDataUrl: z.string().nullable(),
+				})
+				.and(syncMetadataInput),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db, auth } = ctx;
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			let state = ensureTokenFresh(deriveJobCardState(job));
+			const previousState = state;
+			const baseline = input.baseline as SchedulingBaseline | undefined;
 			const nowInstant = Temporal.Now.instant();
 
 			const existingKey =
@@ -1063,6 +1364,31 @@ export const jobCardRouter = createTRPCRouter({
 				lastSyncedAt: nowInstant.toString(),
 			} satisfies JobCardState;
 
+			const signatureConflict = evaluateConflicts({
+				job,
+				...(baseline ? { baseline } : {}),
+				entries: [
+					{
+						field: "signature",
+						serverValue: toJson({
+							storageKey: previousState.signatureStorageKey,
+							preview: previousState.signaturePreviewDataUrl,
+						}),
+						clientValue: toJson({
+							storageKey: state.signatureStorageKey,
+							preview: state.signaturePreviewDataUrl,
+						}),
+						resolvedBy: "plumber",
+					},
+				],
+				...(input.version ? { version: input.version } : {}),
+			});
+
+			if (signatureConflict.flagged && signatureConflict.snapshot != null) {
+				update.conflict_flag = true;
+				update.conflict_snapshot = signatureConflict.snapshot;
+			}
+
 			update.offline_state = buildOfflineState(job.offline_state, state);
 
 			const updatedRow = await updateJobRow(
@@ -1099,17 +1425,21 @@ export const jobCardRouter = createTRPCRouter({
 
 	updateStatus: protectedProcedure
 		.input(
-			z.object({
-				jobId: z.uuid(),
-				status: z.enum(JOB_CARD_STATUSES),
-				notifyCustomer: z.boolean().optional().default(false),
-			}),
+			z
+				.object({
+					jobId: z.uuid(),
+					status: z.enum(JOB_CARD_STATUSES),
+					notifyCustomer: z.boolean().optional().default(false),
+				})
+				.and(syncMetadataInput),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { db, auth } = ctx;
 
 			const job = await fetchJobForOrg(db, auth.orgId, input.jobId);
 			let state = ensureTokenFresh(deriveJobCardState(job));
+			const previousState = state;
+			const baseline = input.baseline as SchedulingBaseline | undefined;
 			const nowInstant = Temporal.Now.instant();
 
 			const dbStatus = ((): string => {
@@ -1132,10 +1462,29 @@ export const jobCardRouter = createTRPCRouter({
 				lastSyncedAt: nowInstant.toString(),
 			} satisfies JobCardState;
 
+			const statusConflict = evaluateConflicts({
+				job,
+				...(baseline ? { baseline } : {}),
+				entries: [
+					{
+						field: "status",
+						serverValue: toJson(previousState.status),
+						clientValue: toJson(state.status),
+						resolvedBy: "plumber",
+					},
+				],
+				...(input.version ? { version: input.version } : {}),
+			});
+
 			const update: TablesUpdate<"jobs"> = {
 				status: dbStatus,
 				offline_state: buildOfflineState(job.offline_state, state),
 			};
+
+			if (statusConflict.flagged && statusConflict.snapshot != null) {
+				update.conflict_flag = true;
+				update.conflict_snapshot = statusConflict.snapshot;
+			}
 
 			const updatedRow = await updateJobRow(
 				db,

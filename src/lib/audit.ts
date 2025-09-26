@@ -22,7 +22,10 @@ export type AuditResource =
 	| "whatsapp_message"
 	| "intake_event"
 	| "unscheduled_item"
-	| "voice_call";
+	| "voice_call"
+	| "ai_proposal"
+	| "ai_recommendation"
+	| "slot_hold";
 
 export interface AuditLogData {
 	orgId: string;
@@ -86,6 +89,58 @@ export async function logAuditEvent(
 			data,
 		});
 	}
+}
+
+export async function logAiProposalAudit(
+	db: SupabaseClient<Database>,
+	params: {
+		orgId: string;
+		userId?: string | null;
+		action: AuditAction;
+		eventType: string;
+		proposalId?: string | null;
+		after?: Record<string, unknown>;
+		metadata?: Record<string, unknown>;
+		summary?: string;
+	},
+): Promise<void> {
+	const payload: AuditLogData = {
+		orgId: params.orgId,
+		action: params.action,
+		resource: "ai_proposal",
+		eventType: params.eventType,
+		...(params.userId ? { userId: params.userId } : {}),
+		...(params.proposalId ? { resourceId: params.proposalId } : {}),
+		...(params.summary ? { summary: params.summary } : {}),
+		...(params.after ? { after: params.after } : {}),
+		...(params.metadata ? { metadata: params.metadata } : {}),
+	};
+
+	return logAuditEvent(db, payload);
+}
+
+export async function logSlotHoldAudit(
+	db: SupabaseClient<Database>,
+	params: {
+		orgId: string;
+		userId?: string | null;
+		action: AuditAction;
+		eventType: string;
+		holdId: string;
+		metadata?: Record<string, unknown>;
+	},
+): Promise<void> {
+	const payload: AuditLogData = {
+		orgId: params.orgId,
+		action: params.action,
+		resource: "slot_hold",
+		resourceId: params.holdId,
+		eventType: params.eventType,
+		...(params.userId ? { userId: params.userId } : {}),
+		...(params.metadata ? { metadata: params.metadata } : {}),
+	};
+
+	return logAuditEvent(db, payload);
 }
 
 /**

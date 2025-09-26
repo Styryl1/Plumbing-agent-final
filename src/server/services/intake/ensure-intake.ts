@@ -7,6 +7,7 @@ import {
 	type MediaRef,
 	type Transcript,
 } from "~/schema/intake";
+import { ensureVoiceRecommendation } from "~/server/services/ai/recommendations";
 import type { Database, Json, Tables } from "~/types/supabase";
 
 type DB = SupabaseClient<Database>;
@@ -455,6 +456,18 @@ export async function ensureIntakeForVoice(
 			},
 		});
 	}
+
+	await ensureVoiceRecommendation({
+		db,
+		orgId,
+		intakeId,
+		transcript: transcript?.text ?? null,
+		language: transcript?.lang ?? null,
+		callDirection: direction,
+		durationSeconds: durationSeconds ?? null,
+		callerNumber: callerNumber ?? null,
+		receivedAtIso,
+	});
 
 	return intakeId;
 }

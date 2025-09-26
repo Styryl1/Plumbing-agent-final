@@ -29,10 +29,44 @@
 				"title": "Copilot workspace"
 			}
 		},
+		"proposals": {
+			"title": "AI Proposals",
+			"generate": "Generate proposal",
+			"error": {
+				"generate": "Failed to generate proposal"
+			},
+			"apply": {
+				"label": "Apply",
+				"success": "Proposal applied",
+				"error": "Unable to apply proposal"
+			},
+			"dismiss": {
+				"label": "Dismiss",
+				"error": "Failed to dismiss proposal"
+			},
+			"empty": {
+				"noIntake": "Select an intake to view proposals",
+				"noProposals": "No proposals yet. Generate one to get started."
+			},
+			"estimate": "Estimate: {{min}} – {{max}}",
+			"confidence": "Confidence",
+			"slots": "Suggested slots",
+			"needs_review": "Needs review",
+			"pick_slot": "Pick a slot",
+			"cancel": "Cancel",
+			"expires": "Expires at {{when}}"
+		},
 		"suggestions": {
 			"created": "Generated at {{value}}",
 			"estimatedDuration": "Estimated time: {{value}} minutes",
 			"urgency": "Urgency: {{value}}",
+			"actionHeading": "Suggested action",
+			"notesHeading": "Next steps",
+			"channels": {
+				"whatsapp": "WhatsApp",
+				"voice": "Voice call",
+				"job_card": "Job card"
+			},
 			"actions": {
 				"apply": "Apply proposal",
 				"review": "Review carefully",

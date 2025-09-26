@@ -8,6 +8,7 @@ import { invoicesRouter } from "./routers/invoices";
 import { jobCardRouter } from "./routers/job-card";
 import { jobsRouter } from "./routers/jobs";
 import { orgSettingsRouter } from "./routers/orgSettings";
+import { proposalsRouter } from "./routers/proposals";
 import { providersRouter } from "./routers/providers";
 import { reportingRouter } from "./routers/reporting";
 import { schedulingRouter } from "./routers/scheduling";
@@ -30,6 +31,7 @@ export const appRouter = router({
 	providers: providersRouter,
 	scheduling: schedulingRouter,
 	settings: settingsRouter,
+	proposals: proposalsRouter,
 	ai: aiRouter,
 	aiBrain: aiBrainRouter,
 	intake: intakeRouter,

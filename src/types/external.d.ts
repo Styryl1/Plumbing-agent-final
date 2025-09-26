@@ -46,6 +46,13 @@ declare module "ai" {
 		}) => Response;
 	};
 
+	export function generateObject(options: {
+		model: unknown;
+		system?: string;
+		prompt?: string;
+		schema?: unknown;
+	}): Promise<{ object: unknown }>;
+
 	export function experimental_transcribe(options: {
 		model: unknown;
 		audio: Uint8Array;

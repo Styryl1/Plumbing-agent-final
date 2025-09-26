@@ -8,7 +8,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { env } from "~/lib/env";
 // WhatsApp AI analyzer service for message processing
 import { mustSingle } from "~/server/db/unwrap";
-import type { Database } from "~/types/supabase";
+import type { Database, Json } from "~/types/supabase";
 
 export interface AnalyzerResult {
 	proposed_text: string;
@@ -274,18 +274,34 @@ export async function persistSuggestion(
 
 	const message = mustSingle(messageQuery);
 
-	const suggestionData: Database["public"]["Tables"]["wa_suggestions"]["Insert"] =
-		{
-			org_id: orgId,
-			conversation_id: conversationId,
-			message_id: message.id,
+	const trimmedSummary = result.proposed_text.split("\n")[0]?.trim() ?? "";
+	const payload: Json = {
+		channel: "whatsapp",
+		analyzer: {
 			proposed_text: result.proposed_text,
 			tags: result.tags,
 			urgency: result.urgency,
 			confidence: result.confidence,
 			materials_stub: result.materials_stub ?? null,
 			time_stub: result.time_stub ?? null,
+		},
+	} as Json;
+
+	const suggestionData: Database["public"]["Tables"]["wa_suggestions"]["Insert"] =
+		{
+			org_id: orgId,
+			conversation_id: conversationId,
+			message_id: message.id,
+			proposed_text: result.proposed_text,
+			summary:
+				trimmedSummary.length > 0 ? trimmedSummary : result.proposed_text,
+			tags: result.tags,
+			urgency: result.urgency,
+			confidence: result.confidence,
+			materials_stub: result.materials_stub ?? null,
+			time_stub: result.time_stub ?? null,
 			source: aiMode,
+			payload,
 		};
 
 	const { data, error } = await db

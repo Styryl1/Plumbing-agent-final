@@ -21,6 +21,7 @@ import {
 	showApplyErrorToast,
 	showApplySuccessToast,
 } from "~/components/intake/apply-dialog";
+import { ProposalsPanel } from "~/components/intake/ProposalsPanel";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -53,7 +54,9 @@ const isAiRecommendation = (value: unknown): value is AiRecommendationDTO => {
 	return (
 		typeof candidate.id === "string" &&
 		typeof candidate.title === "string" &&
-		typeof candidate.confidence === "number"
+		typeof candidate.confidence === "number" &&
+		typeof candidate.actionText === "string" &&
+		typeof candidate.channel === "string"
 	);
 };
 
@@ -298,6 +301,8 @@ export function OperatorConsole(): JSX.Element {
 						)}
 					</CardContent>
 				</Card>
+
+				<ProposalsPanel intakeId={selectedIntakeId} />
 
 				<Card>
 					<CardHeader className="border-b">
@@ -546,12 +551,42 @@ function SuggestionCard({
 		suggestion.confidenceScore,
 		translateConsole,
 	);
+	const channelLabel = translateSuggestion(`channels.${suggestion.channel}`);
+	const channelIcon =
+		suggestion.channel === "voice" ? (
+			<Phone className="h-3.5 w-3.5" />
+		) : (
+			<MessageSquare className="h-3.5 w-3.5" />
+		);
+	const payloadNotesSource = Array.isArray(suggestion.payload?.notes)
+		? (suggestion.payload.notes as unknown[])
+		: [];
+	const payloadNotes = payloadNotesSource.filter(
+		(note): note is string =>
+			typeof note === "string" && note.trim().length > 0,
+	);
+	const shouldShowAction =
+		suggestion.actionText.trim().length > 0 &&
+		suggestion.actionText.trim() !== (suggestion.summary ?? "").trim();
 
 	return (
 		<div className="rounded-md border p-4">
-			<div className="flex items-center justify-between">
-				<div>
-					<p className="text-sm font-semibold">{suggestion.title}</p>
+			<div className="flex items-start justify-between gap-3">
+				<div className="space-y-1">
+					<div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+						<span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted">
+							{channelIcon}
+						</span>
+						<Badge
+							variant="outline"
+							className="text-[10px] uppercase tracking-wide"
+						>
+							{channelLabel}
+						</Badge>
+					</div>
+					<p className="text-sm font-semibold text-foreground">
+						{suggestion.title}
+					</p>
 					<p className="text-xs text-muted-foreground">
 						{translateSuggestion("created", {
 							value: formatDutchTime(suggestion.createdIso),
@@ -575,6 +610,14 @@ function SuggestionCard({
 
 			<div className="mt-3 grid gap-2 text-sm text-muted-foreground">
 				<p>{suggestion.summary ?? suggestion.title}</p>
+				{shouldShowAction ? (
+					<div className="text-foreground">
+						<p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+							{translateSuggestion("actionHeading")}
+						</p>
+						<p>{suggestion.actionText}</p>
+					</div>
+				) : null}
 				{suggestion.estimate?.durationMinutes ? (
 					<p>
 						{translateSuggestion("estimatedDuration", {
@@ -594,6 +637,19 @@ function SuggestionCard({
 				<p className="mt-2 text-xs text-muted-foreground">
 					{translateSuggestion("timeStub", { value: suggestion.timeStub })}
 				</p>
+			) : null}
+
+			{payloadNotes.length > 0 ? (
+				<div className="mt-3">
+					<p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+						{translateSuggestion("notesHeading")}
+					</p>
+					<ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+						{payloadNotes.map((note, index) => (
+							<li key={`${suggestion.id}-note-${index}`}>{note}</li>
+						))}
+					</ul>
+				</div>
 			) : null}
 
 			{suggestion.materialsStub && suggestion.materialsStub.length > 0 ? (

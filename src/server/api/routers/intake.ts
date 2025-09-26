@@ -593,6 +593,19 @@ export const intakeRouter = createTRPCRouter({
 			const jobId = jobRow.id;
 			const nowIso = Temporal.Now.instant().toString();
 
+			if (input.suggestionId) {
+				await db
+					.from("wa_suggestions")
+					.update({
+						status: "approved",
+						approved_at: nowIso,
+						approved_by: userId,
+						job_id: jobId,
+					})
+					.eq("org_id", orgId)
+					.eq("id", input.suggestionId);
+			}
+
 			const unscheduledUpdate = await db
 				.from("unscheduled_items")
 				.update({
@@ -688,6 +701,22 @@ export const intakeRouter = createTRPCRouter({
 				before: { status: intakeRecord.status },
 				after: { status: "scheduled" },
 			});
+
+			if (input.suggestionId) {
+				await logAuditEvent(db, {
+					orgId,
+					userId,
+					actorRole: role,
+					action: "update",
+					resource: "ai_recommendation",
+					resourceId: input.suggestionId,
+					summary: "ai.recommendation.applied",
+					metadata: {
+						intakeEventId: input.intakeEventId,
+						jobId,
+					},
+				});
+			}
 
 			await logJobAudit(db, {
 				orgId,

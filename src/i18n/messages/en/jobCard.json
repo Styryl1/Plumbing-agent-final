@@ -147,7 +147,23 @@
 			"urgent": "Urgent",
 			"emergency": "Emergency"
 		},
-		"syncChip": "Pending sync: {count}",
+		"sync": {
+			"pending": "Offline changes pending ({count})",
+			"synced": "All changes synced"
+		},
+		"conflict": {
+			"title": "Conflicting updates merged",
+			"subtitle": "We kept your on-site edits and noted the organiser's changes so they can review.",
+			"fields": {
+				"notes": "Work notes updated",
+				"materials": "Materials list adjusted",
+				"timer": "Timer duration changed",
+				"status": "Job status updated",
+				"signature": "Signature updated",
+				"scheduling": "Schedule changed by organiser",
+				"unknown": "Other job details updated"
+			}
+		},
 		"contact": {
 			"whatsapp": "WhatsApp",
 			"call": "Call",
@@ -158,6 +174,107 @@
 			"customerUnknown": "Unknown customer",
 			"openCard": "Open card",
 			"timeUnknown": "Not scheduled"
+		}
+	},
+	"ai": {
+		"title": "AI Helper",
+		"contextLabel": "Context for the assistant",
+		"placeholder": "Ask the copilot for help with this job…",
+		"send": "Send",
+		"reset": "Reset",
+		"regenerate": "Try a different answer",
+		"emptyState": "No conversation yet. Ask the copilot anything about this job.",
+		"suggestionTitle": "AI recommendation",
+		"urgency": "Urgency",
+		"urgencyLevels": {
+			"non-urgent": "Non-urgent",
+			"urgent": "Urgent",
+			"emergency": "Emergency"
+		},
+		"labor": "Estimated labor",
+		"hours": "hr",
+		"prompts": {
+			"summary": "Summarise the work so far",
+			"closing": "Draft a completion message for the customer",
+			"troubleshoot": "List diagnostic checks I should do next"
+		},
+		"errors": {
+			"missingInput": "Enter a message or capture context before sending.",
+			"sendFailed": "Message failed to send. Check your connection and retry.",
+			"invalidResponse": "The AI reply could not be parsed. Ask again."
+		}
+	},
+	"manuals": {
+		"panel": {
+			"title": "Manuals Copilot",
+			"description": "Find the official manual and stay on-script when guiding the customer."
+		},
+		"finder": {
+			"title": "Find manual from photo",
+			"description": "Start with a front panel photo. We will match brand and model, then prompt for the rating plate if needed.",
+			"actions": {
+				"front": "Upload front photo",
+				"ratingPlate": "Upload rating plate",
+				"attach": "Attach manual to job",
+				"attaching": "Attaching…",
+				"open": "Open manual",
+				"clear": "Reset"
+			},
+			"uploading": "Processing photo…",
+			"emptyState": "No matches yet. Add a photo to get started.",
+			"ratingPlatePrompt": "Confidence is low — add a rating plate photo to confirm the model.",
+			"matchFor": "Detected for job {jobId}",
+			"attached": "Manual linked",
+			"fallback": {
+				"title": "Quick match only",
+				"body": "Photo identification service is not connected yet. Using filename heuristics – attach carefully."
+			},
+			"confidence": {
+				"high": "{value}% confidence",
+				"medium": "{value}% confidence",
+				"low": "{value}% confidence (needs review)"
+			},
+			"errors": {
+				"title": "Manual lookup failed",
+				"identify": "We couldn't understand that photo. Try a clearer shot of the branding.",
+				"attach": "Manual download failed. Please retry in a moment.",
+				"notConfigured": "Manual fetching is not configured yet. Contact an admin."
+			}
+		},
+		"qa": {
+			"title": "Ask the manual",
+			"description": "Keep the customer safe by quoting the manual with citations.",
+			"placeholder": "e.g. How do I reset error code E5?",
+			"loading": "Searching the manual…",
+			"actions": {
+				"ask": "Ask"
+			},
+			"suggestions": {
+				"resetCode": "Reset code",
+				"errorE5": "Error E5",
+				"lowPressure": "Water pressure low"
+			},
+			"disabled": {
+				"title": "Manual not attached",
+				"body": "Attach a manual first to unlock Q&A."
+			},
+			"errors": {
+				"title": "Manual Q&A",
+				"required": "Type a question first.",
+				"noManual": "Attach a manual before asking questions.",
+				"notConfigured": "Manual Q&A is not connected yet.",
+				"generic": "We couldn't get an answer right now."
+			},
+			"safety": {
+				"title": "Safety guidance only",
+				"body": "Gas and combustion topics must follow the manual exactly. Provide the cited instructions verbatim."
+			},
+			"citations": {
+				"title": "Citations",
+				"page": "Page {page}",
+				"open": "Open PDF"
+			},
+			"emptyState": "Ask a question to see the answer with page citations."
 		}
 	}
 }

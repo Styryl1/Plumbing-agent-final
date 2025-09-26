@@ -190,7 +190,8 @@ export function ApplyDialog({
 		() => recommendation?.title ?? intake.summary,
 	);
 	const [description, setDescription] = useState(
-		() => recommendation?.summary ?? snippetFallback,
+		() =>
+			recommendation?.actionText ?? recommendation?.summary ?? snippetFallback,
 	);
 	const [startLocal, setStartLocal] = useState(() => {
 		try {
