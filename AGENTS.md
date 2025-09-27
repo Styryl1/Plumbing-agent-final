@@ -18,7 +18,7 @@ Full pipeline on completion: Once a feature “slice” is done, run the full pn
 agents.md
 . Always ensure all guards pass.
 
-Load context – never guess: Before coding, open and read all relevant PRPs/Epics in Docs/ (requirements, acceptance criteria). Key docs for most tasks include plumbing_agent_mvp_prp.md, plumbing_agent_mvp_epic.md, whatsapp_ai_unified_prp.md, schedule_x_prp.md, and invoicing_epic.md. Do not speculate on requirements – use the provided context. As one developer noted, AI agents “will never know exactly what it is that you are building and why… without you telling them”
+Load context – never guess: Before coding, open and read all relevant PRPs/Epics in Docs/ (requirements, acceptance criteria). Key docs for most tasks include plumbing_agent_mvp_prp.md, plumbing_agent_mvp_epic.md, Do not speculate on requirements – use the provided context. As one developer noted, AI agents “will never know exactly what it is that you are building and why… without you telling them”
 infoq.com
 , so we must explicitly provide business logic and context every time.
 
@@ -29,7 +29,7 @@ infoq.com
 infoq.com
  available – use them for real feedback and operations, instead of guessing outcomes:
 
-Supabase (DB): Apply migrations and introspect the schema via the Supabase MCP server. After any DB migration, run mcp__supabase__generate_typescript_types() (which updates our src/types/supabase.generated.ts). Commit the refreshed types (ensuring the manual shim src/types/supabase.ts remains only for extending types).
+Supabase (DB): Apply migrations and introspect the schema via the Supabase MCP server. After any DB migration, immediately run the scripted type refresh (`pnpm db:types:project`, which wraps `supabase gen types`) or the corresponding MCP helper so that src/types/supabase.generated.ts is regenerated. Commit the refreshed types (ensuring the manual shim src/types/supabase.ts remains only for extending types).
 
 Playwright (browser): Use the Playwright MCP to run interactive browser flows, capture screenshots, and perform accessibility checks on UI changes. This helps verify UI/UX in a real browser context.
 

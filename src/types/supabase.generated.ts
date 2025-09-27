@@ -1548,7 +1548,9 @@ export type Database = {
 					conflict_flag: boolean;
 					conflict_snapshot: Json | null;
 					created_at: string | null;
+					customer_can_reschedule: boolean;
 					customer_id: string;
+					customer_portal_token: string;
 					customer_signature: string | null;
 					customer_signature_key: string | null;
 					description: string | null;
@@ -1566,6 +1568,7 @@ export type Database = {
 					timer_started_at: string | null;
 					timer_total_seconds: number;
 					title: string;
+					token_expires_at: string | null;
 					updated_at: string | null;
 				};
 				Insert: {
@@ -1573,7 +1576,9 @@ export type Database = {
 					conflict_flag?: boolean;
 					conflict_snapshot?: Json | null;
 					created_at?: string | null;
+					customer_can_reschedule?: boolean;
 					customer_id: string;
+					customer_portal_token?: string;
 					customer_signature?: string | null;
 					customer_signature_key?: string | null;
 					description?: string | null;
@@ -1591,6 +1596,7 @@ export type Database = {
 					timer_started_at?: string | null;
 					timer_total_seconds?: number;
 					title: string;
+					token_expires_at?: string | null;
 					updated_at?: string | null;
 				};
 				Update: {
@@ -1598,7 +1604,9 @@ export type Database = {
 					conflict_flag?: boolean;
 					conflict_snapshot?: Json | null;
 					created_at?: string | null;
+					customer_can_reschedule?: boolean;
 					customer_id?: string;
+					customer_portal_token?: string;
 					customer_signature?: string | null;
 					customer_signature_key?: string | null;
 					description?: string | null;
@@ -1616,6 +1624,7 @@ export type Database = {
 					timer_started_at?: string | null;
 					timer_total_seconds?: number;
 					title?: string;
+					token_expires_at?: string | null;
 					updated_at?: string | null;
 				};
 				Relationships: [
